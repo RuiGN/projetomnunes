@@ -1,0 +1,789 @@
+A seguir está um catálogo amplo de funcionalidades possíveis para a plataforma. A proposta evolui para um ecossistema de acompanhamento terapêutico, saúde emocional, adesão ao tratamento e gestão de clínicas.
+
+Legenda:
+
+MVP: essencial para validar o produto.
+Expansão: funcionalidade para versões posteriores.
+Cuidado: exige validação clínica, jurídica ou regulatória.
+1. Cadastro e perfil do paciente
+Cadastro manual pelo profissional.
+Convite por link, QR Code, e-mail ou WhatsApp.
+Dados pessoais e contatos.
+Foto e nome social.
+Data de nascimento e gênero.
+Endereço.
+Contato de emergência.
+Responsável legal.
+Preferência de idioma.
+Preferências de acessibilidade.
+Informações sobre plano de saúde.
+Profissionais responsáveis pelo paciente.
+Histórico resumido de tratamentos.
+Alergias informadas pelo paciente.
+Condições de saúde declaradas.
+Objetivos pessoais do tratamento.
+Preferências religiosas ou espirituais opcionais.
+Configuração de privacidade.
+Consentimentos digitais.
+
+A seguir está um catálogo amplo de funcionalidades possíveis para a plataforma. A proposta evolui de um aplicativo de acompanhamento psicológico para um ecossistema de cuidado contínuo entre paciente, profissional, clínica e rede de apoio.
+
+Legenda: MVP = primeira versão; Evolução = versões posteriores; Regulado = exige avaliação jurídica, clínica ou regulatória.
+
+1. Cadastro e perfil do paciente
+Cadastro por convite da clínica ou profissional.
+Cadastro individual.
+Perfil com nome, foto, data de nascimento e contatos.
+Contato de emergência.
+Inclusão de familiares ou responsáveis.
+Preferência de idioma.
+Preferências de acessibilidade.
+Fuso horário.
+Histórico resumido de saúde.
+Condições ou diagnósticos informados pelo profissional.
+Alergias e restrições.
+Medicamentos em uso.
+Profissionais responsáveis.
+Plano terapêutico atual.
+Objetivos pessoais.
+Preferência religiosa ou espiritual, opcional.
+Configuração de privacidade por categoria de informação.
+Termos de consentimento assinados digitalmente.
+Exportação e exclusão da conta.
+2. Avaliação inicial e onboarding
+Questionário inicial personalizado.
+Levantamento de objetivos.
+Avaliação da rotina.
+Avaliação de sono.
+Avaliação de hábitos.
+Histórico de tratamentos.
+Histórico de medicamentos.
+Identificação de fatores de risco.
+Identificação de fatores de proteção.
+Definição de contatos de emergência.
+Plano de segurança inicial.
+Tour guiado do aplicativo.
+Vídeo de boas-vindas da clínica.
+Definição dos melhores horários para lembretes.
+Termo de ciência sobre limites do aplicativo.
+Seleção dos módulos que o paciente deseja utilizar.
+3. Agenda e consultas
+Agenda do paciente.
+Agenda do profissional.
+Marcação de consultas.
+Solicitação de novo horário.
+Confirmação ou cancelamento.
+Remarcação.
+Lista de espera.
+Lembretes configuráveis.
+Consultas recorrentes.
+Bloqueio de horários.
+Sincronização com Google Calendar e Outlook.
+Link para Google Meet, Zoom ou outra plataforma.
+Teleconsulta integrada.
+Sala de espera virtual.
+Registro de presença e falta.
+Justificativa de ausência.
+Envio de documentos antes da consulta.
+Formulário pré-consulta.
+Avaliação pós-consulta.
+Pagamento no agendamento.
+Histórico de consultas.
+4. Diário emocional
+Registro diário de humor.
+Escala de intensidade emocional.
+Seleção de emoções.
+Diário em texto.
+Diário por áudio.
+Transcrição automática de áudio.
+Inclusão de fotos.
+Registro do contexto da emoção.
+Identificação de gatilhos.
+Registro de pensamentos automáticos.
+Registro de reações físicas.
+Registro do comportamento adotado.
+Estratégia utilizada para enfrentar a situação.
+Campo “o que me ajudou hoje”.
+Campo de gratidão.
+Registro de conquistas.
+Comparação entre dias e semanas.
+Calendário emocional por cores.
+Gráficos de evolução.
+Compartilhamento seletivo com o profissional.
+Entrada privada, não compartilhada.
+Perguntas diárias configuradas pelo psicólogo.
+5. Check-in diário
+Pergunta “Como você está hoje?”.
+Nível de ansiedade.
+Nível de tristeza.
+Nível de irritabilidade.
+Nível de energia.
+Qualidade do sono.
+Apetite.
+Motivação.
+Concentração.
+Dor física.
+Vontade de se isolar.
+Adesão ao tratamento.
+Uso de álcool ou outras substâncias.
+Confirmação de medicação.
+Campo livre para observações.
+Check-in rápido por notificação.
+Questionário diferente conforme o dia.
+Alerta ao profissional segundo regras predefinidas.
+6. Metas e plano terapêutico
+Cadastro de objetivos de curto, médio e longo prazo.
+Divisão de objetivos em pequenas etapas.
+Prazo para cada meta.
+Indicador de progresso.
+Metas pessoais.
+Metas terapêuticas.
+Metas definidas em conjunto com o profissional.
+Registro de obstáculos.
+Plano de ação.
+Recompensas não financeiras.
+Revisão semanal.
+Histórico de alterações.
+Registro de conclusão.
+Comentários do profissional.
+Priorização de metas.
+Metas privadas ou compartilhadas.
+Sugestão de próximos passos.
+Celebração de conquistas.
+7. Hábitos e rotina
+Criador de rotina diária.
+Rotinas diferentes por dia da semana.
+Hábitos positivos.
+Hábitos que o paciente deseja reduzir.
+Checklist matinal.
+Checklist noturno.
+Horários de alimentação.
+Horários de estudo ou trabalho.
+Higiene pessoal.
+Hidratação.
+Exposição ao sol.
+Organização doméstica.
+Pausas durante o trabalho.
+Tempo fora das telas.
+Atividades sociais.
+Tempo de lazer.
+Contador de sequência de dias.
+Percentual de cumprimento semanal.
+Lembretes adaptativos.
+Reprogramação automática de tarefas não realizadas.
+Modo “dia difícil”, com rotina simplificada.
+8. Medicamentos
+Cadastro do medicamento.
+Foto da embalagem.
+Dose e apresentação.
+Horários de uso.
+Data de início e término.
+Lembretes.
+Confirmação de tomada.
+Registro de esquecimento.
+Registro de atraso.
+Motivo da não utilização.
+Histórico de adesão.
+Estoque estimado.
+Aviso de estoque baixo.
+Lembrete para comprar ou renovar receita.
+Registro de efeitos percebidos.
+Registro de medicamentos “SOS”.
+Limite diário informado pelo prescritor.
+Alerta quando o limite cadastrado for atingido.
+Compartilhamento de adesão com profissional autorizado.
+Exportação do histórico.
+Leitura de código de barras ou OCR da receita.
+Integração futura com farmácias.
+
+Importante: o sistema pode lembrar e registrar, mas não deve prescrever, mudar doses ou orientar interrupção do tratamento.
+
+9. Sono
+Horário de dormir e acordar.
+Duração do sono.
+Qualidade percebida.
+Número de despertares.
+Pesadelos.
+Sonolência durante o dia.
+Rotina noturna.
+Registro de cafeína.
+Registro de uso de telas antes de dormir.
+Diário do sono.
+Meta de horário.
+Lembrete para desacelerar.
+Áudios de relaxamento.
+Exercícios de respiração.
+Gráficos semanais.
+Correlação entre sono e humor.
+Integração com relógios e aplicativos de saúde.
+Relatório para o profissional.
+10. Sobriedade e prevenção de recaídas
+Contador de dias de sobriedade.
+Definição da data inicial.
+Registro de substâncias ou comportamentos acompanhados.
+Metas intermediárias.
+Registro de fissura ou vontade de usar.
+Intensidade da fissura.
+Identificação de gatilhos.
+Estratégias de enfrentamento.
+Lista pessoal de motivos para continuar.
+Contatos de apoio.
+Botão “preciso de ajuda”.
+Plano de prevenção de recaída.
+Registro de recaída sem linguagem punitiva.
+Reinício ou continuidade do histórico.
+Calendário de progresso.
+Medalhas por marcos.
+Comunidade moderada.
+Grupos de apoio online.
+Relatórios para clínicas de recuperação.
+Check-in reforçado em horários críticos.
+Mensagens previamente gravadas pela família ou terapeuta.
+11. Exercícios terapêuticos
+Catálogo de atividades.
+Atividades criadas pelo psicólogo.
+Questionários personalizados.
+Registro de pensamentos.
+Roda da vida.
+Lista de valores pessoais.
+Planejamento de resolução de problemas.
+Exercícios de atenção plena.
+Técnicas de respiração.
+Relaxamento muscular.
+Exposição gradual acompanhada pelo profissional.
+Registro de situações, pensamentos e respostas.
+Cartões de enfrentamento.
+Diário de autoestima.
+Exercícios de autocompaixão.
+Planejamento de atividades prazerosas.
+Exercícios de habilidades sociais.
+Psicoeducação.
+Respostas em texto, áudio ou vídeo.
+Prazo para entrega.
+Comentários do profissional.
+Biblioteca de modelos por abordagem terapêutica.
+Versionamento das atividades.
+12. Atividade física e bem-estar
+Planos de treino.
+Vídeos de exercícios.
+Yoga.
+Alongamento.
+Caminhada.
+Meditação guiada.
+Exercícios de respiração.
+Contagem de dias treinados.
+Metas semanais.
+Registro de duração e intensidade.
+Integração com dispositivos vestíveis.
+Aulas ao vivo.
+Conteúdo para iniciantes.
+Exercícios adaptados.
+Avaliação de disposição antes e depois da atividade.
+Relação entre exercício e humor.
+Desafios individuais ou em grupo.
+Recomendações aprovadas por profissionais habilitados.
+13. Espiritualidade
+Devocional diário.
+Plano de leitura bíblica.
+Registro de orações.
+Pedidos de oração privados.
+Reflexão do dia.
+Gratidão.
+Versículos favoritos.
+Áudios e vídeos.
+Conteúdo publicado pela instituição.
+Agenda de encontros.
+Diário espiritual.
+Metas espirituais.
+Compartilhamento opcional com líder ou profissional.
+Conteúdo para outras tradições.
+Possibilidade de desativar completamente o módulo.
+14. Conteúdo e educação
+Biblioteca de e-books.
+Vídeos.
+Podcasts.
+Artigos.
+Infográficos.
+Cursos curtos.
+Trilhas de aprendizagem.
+Conteúdo por diagnóstico ou necessidade.
+Favoritos.
+Histórico de consumo.
+Download para uso offline.
+Certificados.
+Questionários após o conteúdo.
+Recomendações feitas pelo profissional.
+Conteúdo próprio da clínica.
+Controle de acesso por plano.
+Busca por assunto.
+Avaliação do conteúdo.
+Publicação agendada.
+Controle de versões.
+Marketplace futuro de conteúdos profissionais.
+15. Comunicação com o profissional
+Mensagens individuais.
+Mensagens assíncronas.
+Áudios.
+Anexos.
+Comentários em atividades.
+Perguntas para a próxima consulta.
+Canal administrativo separado do canal clínico.
+Horário de disponibilidade visível.
+Respostas automáticas fora do expediente.
+Notificação de nova mensagem.
+Confirmação de leitura.
+Histórico de comunicação.
+Modelos de respostas.
+Comunicação via aplicativo, e-mail ou WhatsApp.
+Definição de limites de contato.
+Aviso de que o canal não atende emergências.
+Encaminhamento para outro profissional.
+16. Área do psicólogo ou terapeuta
+Painel geral.
+Lista de pacientes.
+Pacientes ativos e inativos.
+Ficha do paciente.
+Linha do tempo.
+Resumo da semana.
+Histórico de humor.
+Histórico de sono.
+Adesão às atividades.
+Adesão aos medicamentos.
+Registro de consultas.
+Anotações privadas do profissional.
+Modelos de evolução.
+Plano terapêutico.
+Criação de tarefas.
+Criação de questionários.
+Biblioteca de atividades.
+Alertas configuráveis.
+Filtros de pacientes.
+Agenda.
+Relatórios.
+Exportação em PDF.
+Assinatura eletrônica.
+Encaminhamentos.
+Upload de documentos.
+Indicadores de engajamento.
+Registro de consentimentos.
+Log de acessos.
+Supervisão clínica com acesso controlado.
+17. Prontuário e documentos
+Prontuário eletrônico.
+Evolução por consulta.
+Anamnese configurável.
+Plano terapêutico.
+Documentos anexos.
+Laudos e relatórios.
+Declarações.
+Recibos.
+Termos de consentimento.
+Assinatura eletrônica.
+Modelos de documentos.
+Numeração e versionamento.
+Bloqueio de edições posteriores.
+Registro de autoria e data.
+Exportação.
+Política de retenção.
+Permissões específicas.
+Auditoria de acessos.
+
+Esse módulo precisa ser desenhado conforme as normas aplicáveis a cada categoria profissional.
+
+18. Administração da clínica
+Cadastro da clínica.
+Filiais e unidades.
+Cadastro de profissionais.
+Perfis e permissões.
+Especialidades.
+Horários de atendimento.
+Salas físicas.
+Agenda central.
+Distribuição de pacientes.
+Gestão de lista de espera.
+Gestão de convênios.
+Pacotes de atendimento.
+Contratos.
+Controle de documentos.
+Painel operacional.
+Indicadores de ocupação.
+Taxa de faltas.
+Retenção de pacientes.
+Gestão de licenças do aplicativo.
+Identidade visual própria.
+Domínio personalizado.
+Configuração dos módulos oferecidos.
+Gestão de incidentes.
+Logs de auditoria.
+19. Financeiro
+Cadastro de preços.
+Cobrança por consulta.
+Planos recorrentes.
+Pacotes de sessões.
+Pix.
+Cartão de crédito.
+Boleto.
+Link de pagamento.
+Cobrança automática.
+Lembretes de vencimento.
+Controle de inadimplência.
+Reembolso e estorno.
+Recibos.
+Repasse para profissionais.
+Comissões.
+Fluxo de caixa.
+Contas a receber.
+Relatórios financeiros.
+Cupons de desconto.
+Período de teste.
+Integração contábil.
+Nota fiscal por integração.
+Divisão de pagamento entre clínica e profissional.
+20. Rede de apoio e familiares
+Convite a familiar ou responsável.
+Definição do que cada pessoa pode visualizar.
+Compartilhamento de metas específicas.
+Lembretes para apoio.
+Contato de emergência.
+Plano de segurança compartilhado.
+Mensagens motivacionais gravadas.
+Orientações para familiares.
+Agenda de reuniões familiares.
+Registro de participação.
+Controle especial para menores de idade.
+Revogação de acesso pelo paciente quando aplicável.
+Área educativa para cuidadores.
+21. Segurança e situações de crise
+Plano de segurança pessoal.
+Lista de sinais de alerta.
+Estratégias pessoais de enfrentamento.
+Pessoas de confiança.
+Telefones úteis.
+Botão para ligar ao contato escolhido.
+Orientação para serviços de emergência.
+Modo de crise com interface simplificada.
+Exercício rápido de estabilização.
+Ambiente seguro definido pelo paciente.
+Mensagem previamente escrita para pedir ajuda.
+Compartilhamento voluntário da localização.
+Alerta conforme protocolo da clínica.
+Registro de acionamentos.
+Escalonamento entre contatos.
+Informação clara sobre horários de monitoramento.
+Registro de ciência de que o app não é serviço de emergência.
+22. Comunidades e grupos
+Grupos terapêuticos privados.
+Grupos de sobriedade.
+Grupos por objetivo.
+Encontros online.
+Publicações anônimas ou identificadas.
+Moderação profissional.
+Regras da comunidade.
+Denúncia de conteúdo.
+Bloqueio de usuários.
+Conteúdo fixado.
+Desafios coletivos.
+Calendário de encontros.
+Enquetes.
+Mural de conquistas.
+Grupos exclusivos de uma clínica.
+Proibição de mensagens privadas entre pacientes, quando necessário.
+Detecção e encaminhamento de conteúdo de risco.
+23. Gamificação responsável
+Pontos por realização de atividades.
+Sequência de hábitos.
+Medalhas.
+Marcos de sobriedade.
+Evolução visual.
+Avatar.
+Jardim ou ambiente que evolui.
+Missões semanais.
+Conquistas privadas.
+Recompensas definidas pelo próprio paciente.
+Mensagens de incentivo.
+Celebração sem punição por interrupções.
+Opção de desativar gamificação.
+Proibição de rankings públicos sobre saúde mental.
+24. Inteligência artificial
+Usos recomendados
+Resumir o diário para o próprio paciente.
+Preparar um resumo semanal para revisão do psicólogo.
+Transcrever áudios.
+Organizar informações por assunto.
+Sugerir perguntas de reflexão não clínicas.
+Adaptar textos para linguagem mais simples.
+Recomendar conteúdos previamente aprovados.
+Criar rascunhos de atividades para o profissional revisar.
+Identificar queda de engajamento.
+Encontrar padrões de rotina.
+Gerar relatórios administrativos.
+Assistente de navegação pelo sistema.
+Busca inteligente no histórico.
+Automatizar lembretes.
+Usos de maior risco
+Avaliar risco clínico automaticamente.
+Identificar ideação suicida.
+Prever recaída.
+Interpretar testes psicológicos.
+Recomendar tratamentos.
+Diagnosticar.
+Atuar como “terapeuta virtual”.
+Alterar medicação.
+Enviar alertas clínicos sem validação humana.
+
+Os recursos do segundo grupo exigem validação clínica, supervisão humana e análise regulatória.
+
+25. Personalização e white label
+Nome e logotipo da clínica.
+Cores e tipografia.
+Domínio próprio.
+Aplicativo com marca do cliente.
+Tela inicial personalizada.
+Conteúdos próprios.
+Questionários próprios.
+Protocolos próprios.
+Termos de uso próprios.
+Mensagens e notificações personalizadas.
+Módulos ativados por cliente.
+E-mails personalizados.
+Relatórios com identidade da clínica.
+Área administrativa da rede.
+Publicação em lojas como aplicativo dedicado.
+26. Integrações
+Google Calendar.
+Outlook Calendar.
+Google Meet.
+Zoom.
+WhatsApp por Evolution API ou provedor oficial.
+Gmail e outros serviços de e-mail.
+Gateways de pagamento.
+Sistemas de nota fiscal.
+Plataformas de assinatura eletrônica.
+Apple Health.
+Google Health Connect.
+Relógios e pulseiras.
+Farmácias.
+Laboratórios.
+Sistemas de prontuário.
+Plataformas de telemedicina.
+CRM.
+Contabilidade.
+Webhooks e API pública.
+Importação e exportação por CSV.
+Login corporativo.
+27. Notificações
+Push.
+E-mail.
+WhatsApp.
+SMS.
+Lembrete de consulta.
+Lembrete de atividade.
+Lembrete de medicação.
+Check-in diário.
+Revisão semanal.
+Estoque baixo.
+Nova mensagem.
+Novo conteúdo.
+Meta próxima do prazo.
+Notificação silenciosa.
+Horário de silêncio.
+Frequência personalizada.
+Adiamento.
+Confirmação diretamente na notificação.
+Controle para evitar excesso de mensagens.
+Detecção de abandono e campanha de reengajamento.
+28. Relatórios e indicadores
+Para o paciente
+Evolução do humor.
+Qualidade do sono.
+Atividades realizadas.
+Hábitos.
+Sobriedade.
+Adesão às metas.
+Conquistas.
+Resumo mensal.
+Para o profissional
+Evolução individual.
+Correlação entre variáveis.
+Aderência ao plano.
+Frequência de check-ins.
+Atividades pendentes.
+Registro de medicamentos.
+Alertas.
+Comparação por períodos.
+Para a clínica
+Pacientes ativos.
+Engajamento.
+Taxa de faltas.
+Ocupação da agenda.
+Retenção.
+Receita.
+Inadimplência.
+Utilização por módulo.
+Desempenho operacional.
+Dados agregados e anonimizados.
+29. Acessibilidade
+Alto contraste.
+Tamanho de fonte ajustável.
+Leitor de tela.
+Navegação por teclado.
+Legendas em vídeos.
+Transcrição de áudio.
+Comandos por voz.
+Textos em linguagem simples.
+Ícones acompanhados de texto.
+Redução de animações.
+Interface simplificada.
+Modo para idosos.
+Modo para baixa alfabetização.
+Conteúdo em Libras.
+Suporte a vários idiomas.
+30. Segurança, privacidade e LGPD
+Criptografia em trânsito e armazenamento.
+Autenticação em dois fatores.
+Biometria.
+Perfis de acesso.
+Consentimentos granulares.
+Histórico de consentimento.
+Revogação de acesso.
+Log de auditoria.
+Registro de visualização e alteração.
+Sessões e dispositivos conectados.
+Encerramento remoto de sessão.
+Backup criptografado.
+Política de retenção.
+Exclusão segura.
+Portabilidade dos dados.
+Relatório de impacto.
+Plano de resposta a incidentes.
+Notificação de incidente.
+Separação dos dados de cada clínica.
+Ambiente de testes sem dados reais.
+Anonimização para relatórios.
+Controle de fornecedores e integrações.
+Termos diferentes para responsáveis e menores.
+31. Recursos offline e técnicos
+Funcionamento parcial sem internet.
+Sincronização posterior.
+Download de conteúdos.
+Aplicativo web progressivo.
+Aplicativo Android e iOS.
+Versão web para pacientes.
+Painel responsivo.
+Salvamento automático.
+Recuperação de formulários interrompidos.
+Controle de versões.
+Monitoramento de falhas.
+Central de status.
+Suporte interno.
+Base de conhecimento.
+Tutoriais.
+Canal para sugestões.
+Atualizações graduais.
+API preparada para integrações.
+32. Novas ideias diferenciais
+Resumo para a próxima consulta
+
+O sistema monta uma página com:
+
+Principais acontecimentos.
+Variação do humor.
+Metas realizadas.
+Perguntas que o paciente deseja fazer.
+Pontos selecionados para compartilhar.
+Cartão “Hoje não estou bem”
+
+Ao ativá-lo, o aplicativo:
+
+Simplifica a rotina.
+Suspende notificações não essenciais.
+Exibe estratégias de enfrentamento.
+Mostra contatos de apoio.
+Permite pedir ajuda com poucos toques.
+Cápsula de motivação
+
+O paciente grava mensagens, fotos e motivos para continuar. O conteúdo pode aparecer nos momentos de dificuldade.
+
+Prescrição digital de atividades
+
+O profissional monta uma “receita terapêutica” com atividades, frequência, prazo e forma de acompanhamento, sem confundir com prescrição médica.
+
+Jornada personalizada
+
+Cada paciente recebe apenas os módulos relevantes. Um paciente pode usar sono e ansiedade; outro, sobriedade e rede de apoio.
+
+Semáforo de compartilhamento
+
+Cada registro possui uma indicação:
+
+Verde: pode ser compartilhado.
+Amarelo: perguntar antes.
+Vermelho: totalmente privado.
+Preparação e encerramento de consulta
+
+Antes da sessão, o paciente responde como está e o que deseja discutir. Depois, registra o que entendeu, próximos passos e dúvidas.
+
+Modo baixa energia
+
+Transforma metas grandes em ações mínimas, como “levantar da cama”, “beber água” ou “abrir a janela”, definidas com o profissional.
+
+Cartões digitais de enfrentamento
+
+Textos curtos criados pelo paciente e terapeuta para situações específicas, acessíveis rapidamente e também offline.
+
+Indicador de vínculo com o tratamento
+
+Aponta queda de participação, faltas e tarefas abandonadas para que a clínica faça contato — sem emitir diagnóstico.
+
+33. Organização recomendada do produto
+
+Em vez de oferecer tudo junto, a plataforma pode ser dividida em módulos comerciais:
+
+Acompanhamento terapêutico
+Agenda e teleatendimento
+Diário emocional e check-ins
+Medicação e rotina
+Sono e bem-estar
+Sobriedade e prevenção de recaídas
+Conteúdo e cursos
+Espiritualidade
+Prontuário profissional
+Financeiro da clínica
+Comunicação
+IA assistiva
+White label
+Ordem recomendada de desenvolvimento
+Fase 1 — MVP
+Pacientes e profissionais.
+Diário emocional.
+Check-in diário.
+Metas e atividades.
+Agenda e lembretes.
+Comunicação.
+Painel de evolução.
+Consentimento e controle de acesso.
+Fase 2 — Comercial
+Gestão da clínica.
+Financeiro.
+White label.
+Conteúdos.
+Relatórios avançados.
+WhatsApp e videoconferência.
+Fase 3 — Especializações
+Sobriedade.
+Medicação.
+Sono.
+Rede de apoio.
+Espiritualidade.
+Grupos terapêuticos.
+Fase 4 — Inteligência e integrações
+Resumos por IA com revisão humana.
+Dispositivos vestíveis.
+API pública.
+Análises de padrões.
+Aplicativos personalizados para grandes clínicas.
+
+A recomendação estratégica é construir uma plataforma modular: cada clínica ativa somente os recursos adequados ao seu público. Isso reduz complexidade, facilita a venda e permite criar planos com preços diferentes.
+
+
+

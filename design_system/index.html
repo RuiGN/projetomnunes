@@ -1,0 +1,953 @@
+<!DOCTYPE html><html lang="en" :dir="$store.app.direction" x-data="{ direction: $store.app.direction }" x-bind:dir="direction" class="group/item" :data-mode="$store.app.mode" :data-sidebar="$store.app.sidebarMode"><head>
+
+    <meta charset="utf-8">
+    <title>Index | Sliced - Tailwind CSS Admin &amp; Dashboard Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Tailwind CSS Admin &amp; Dashboard Template" name="description">
+    <meta content="SRBThemes" name="author">
+    <!-- favicon -->
+    <link rel="shortcut icon" href="data:image/x-icon;base64,AAABAAEAFxcAAAEAIADICAAAFgAAACgAAAAXAAAALgAAAAEAIAAAAAAARAgAABMLAAATCwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA92hoIPRoaGD0aWu/9Wlq3/Vpav/2aWu/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA73BwEPNoapD1aWr/9Wlq//Zpa7/2aWuP9Wlqz/Zpa78AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPdoaCD2aWrf9Wlq//Vqap/vaGggAAAAAAAAAAD1aWqv9mlrvwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD0ZWUw9Wlq7/Vpat/vaGggAAAAAPRoaGD0aWu/9Wlq7/Vpav/2aWu/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA92hoIPZpat/1amrP72hoIPdoaCD2aWrf9Wlq//Rpatn1aWmZ9GlqzPZpa78AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD0aWm/9Wlq7+9oaCD3aGgg9mlq3/VoaebzamqA9WlpM/VpaTP0aGmz9mlrvwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA82hoQPVpav/0aGpg73BwEPZpat/1aWr/9Whp5vhoaEz1aWkz9WlpM/RoabP2aWu/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD0aWm/9Wlq3wAAAADzaGqA9mlq8vVpaWb1aGrm9Whp5vhoaEz1aWkz9Ghps/Zpa78AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA73BwEPVpau/1aGqA73BwEPVpau/1aWmZ9WlpM/Vqak31aGrm9Whp5vhoaEz0aGmz9mlrvwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD0amow9Wlq//NoaEDzaGhA9Wlq//VpaWb1aWkz9WlpM/Vqak31aGrm9Whp5vRpasz2aWu/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPJoaGD1aWr//2trH/RmaXD1aWr/9WlpZvVpaWb1aWlm9WlpZvNoaoD2aWry9Wlq//Zpa78AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8mhoYPVpav8AAAAA82hqgPVpav/1aWr/9Wlq//Vpav/1aWr/9Wlq//Vpav/1aWr/9mlrvwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADyaGhg9Wlq/+9wcBDzaGqA9Wlq//VpaWb1aWlm9WlpZvVpaWbzamqA9Wlq//Vpav/2aWu/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPNoaED1aWr/82hoQPNoaED1aWr/9mpqWfVpaTP1aWkz9WpqTfVoaub1aGnm9GlqzPZpa78AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPVpav/0aWlwAAAAAPVpat/1amqy9WlpM/Vqak31aGrm9Whp5vhoaEz0aGmz9mlrvwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9Wlqr/Zpat8AAAAA9mlrj/Vpav/1aWlm9Whq5vVoaeb4aGhM9WlpM/RoabP2aWu/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADzaGhA9Wlq//RoamDvcHAQ9Wlq3/Vpav/1aGnm+GhoTPVpaTP1aWkz9Ghps/Zpa78AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD1aGqf9mlq3/doaCDvaGgg9Wlq3/Voaeb1aWlm9WlpM/VpaTP0aGmz9mlrvwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAO9oaCD1aWrf9mlq3/9wcBDvaGgg9mlrv/Vpav/1aWnM9WlpmfRpasz2aWu/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAO9lZTD0aWrv9mlq3/doaCAAAAAA82hoQPZpa7/0aWrv9Wlq//Zpa78AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAO9lZTD1aWrf9Wlq//NoaoD/cHAQAAAAAAAAAAD1aWqv9mlrvwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAO9wcBD3amp/9Glq7/Vpav/0aWu/9GhqkPVpas/2aWu/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADvcHAQ9GZpcPZpaq/1aWrf9Wlq//VoaLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/8D+AP8A/gD+DP4A/CD+APgA/gD4AP4A8AD+APIA/gDgAP4A4AD+AOAA/gDkAP4A4AD+AOAA/gDyAP4A8gD+APAA/gD4AP4A+AD+APwg/gD+DP4A/wD+AP/A/gA=">
+    <!-- plugins CSS -->
+    
+    <!-- Icons CSS -->
+    
+    <!-- Tailwind CSS -->
+    
+    
+    
+    
+
+  <script type="module" src="js/main-a49b4ec4.js"></script>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body x-data="main" x-init="$store.app.hasCreative = window.location.href.includes('creative.html') , $store.app.hasdetached = window.location.href.includes('detached.html')" :class="[ $store.app.sidebar ? 'toggle-sidebar' : '', $store.app.fullscreen ? 'full' : '' , $store.app.hasCreative ? 'detached ' : '' , $store.app.hasdetached ? 'detached detached-simple ' : '' , $store.app.layout  ]" class="relative overflow-x-hidden text-sm antialiased font-normal text-black font-cerebri dark:text-white vertical ">
+
+<!-- Start Layout -->
+<div class="bg-[#f9fbfd] dark:bg-dark">
+
+    <!-- Start detached bg -->
+    <div class="bg-[url('../images/bg-main.png')] bg-black group-data-[sidebar=dark]/item:bg-darklight group-data-[sidebar=brand]/item:bg-sky-950 min-h-[220px] sm:min-h-[250px] bg-bottom fixed hidden w-full -z-50 detached-img"></div>
+    <!-- End detached bg -->
+
+    <!-- Start Menu Sidebar Olverlay -->
+    <div x-cloak="" class="fixed inset-0 bg-black/60 dark:bg-dark/90 z-10 lg:hidden" :class="{'hidden' : !$store.app.sidebar}" @click="$store.app.toggleSidebar()"></div>
+    <!-- End Menu Sidebar Olverlay -->
+
+    <!-- Start Main Content -->
+    <div class="flex mx-auto main-container">
+        <!-- Start Sidebar -->
+        <nav class="sidebar lg:z-[9] z-[10]">
+            <div class="h-full bg-white dark:bg-darklight group-data-[sidebar=dark]/item:bg-darklight group-data-[sidebar=brand]/item:bg-sky-950 ">
+                <div class="p-4">
+                    <a href="index.html" class="w-full main-logo">
+                        <img src="images/logo-dark.svg" class="mx-auto dark-logo h-7 logo dark:hidden group-data-[sidebar=dark]/item:hidden group-data-[sidebar=brand]/item:hidden" alt="logo">
+                        <img src="images/logo-light.svg" class="hidden mx-auto light-logo h-7 logo dark:block group-data-[sidebar=dark]/item:block group-data-[sidebar=brand]/item:block" alt="logo">
+                        <img src="images/logo-icon.svg" class="hidden mx-auto logo-icon h-7" alt="">
+                    </a>
+                </div>
+                <div class="h-[calc(100vh-60px)]  overflow-y-auto overflow-x-hidden px-5 pb-4 space-y-16 detached-menu">
+                    <ul class="relative flex flex-col gap-1 " x-data="sidebarMenu">
+                        <h2 class="my-2 text-sm text-black/50 dark:text-white/30 group-data-[sidebar=dark]/item:text-white/30 group-data-[sidebar=brand]/item:text-sky-200/50"><span>Menu</span></h2>
+                        <li class="menu nav-item">
+                            <a href="javascript:void(0);" class="items-center justify-between text-black nav-link group " :class="{'active' : isActive('dashboard')}" @click="toggle('dashboard')">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                        <path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2ZM12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4ZM15.8329 7.33748C16.0697 7.17128 16.3916 7.19926 16.5962 7.40381C16.8002 7.60784 16.8267 7.92955 16.6587 8.16418C14.479 11.2095 13.2796 12.8417 13.0607 13.0607C12.4749 13.6464 11.5251 13.6464 10.9393 13.0607C10.3536 12.4749 10.3536 11.5251 10.9393 10.9393C11.3126 10.5661 12.9438 9.36549 15.8329 7.33748ZM17.5 11C18.0523 11 18.5 11.4477 18.5 12C18.5 12.5523 18.0523 13 17.5 13C16.9477 13 16.5 12.5523 16.5 12C16.5 11.4477 16.9477 11 17.5 11ZM6.5 11C7.05228 11 7.5 11.4477 7.5 12C7.5 12.5523 7.05228 13 6.5 13C5.94772 13 5.5 12.5523 5.5 12C5.5 11.4477 5.94772 11 6.5 11ZM8.81802 7.40381C9.20854 7.79433 9.20854 8.4275 8.81802 8.81802C8.4275 9.20854 7.79433 9.20854 7.40381 8.81802C7.01328 8.4275 7.01328 7.79433 7.40381 7.40381C7.79433 7.01328 8.4275 7.01328 8.81802 7.40381ZM12 5.5C12.5523 5.5 13 5.94772 13 6.5C13 7.05228 12.5523 7.5 12 7.5C11.4477 7.5 11 7.05228 11 6.5C11 5.94772 11.4477 5.5 12 5.5Z" fill="currentColor"></path>
+                                    </svg>
+                                    <span class="ltr:pl-1.5 rtl:pr-1.5">Dashboard</span>
+                                </div>
+                                <div class="flex items-center justify-center w-4 h-4 dropdown-icon" :class="{'!rotate-180' : isActive('dashboard')}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                                        <path d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z" fill="currentColor"></path>
+                                    </svg>
+                                </div>
+                            </a>
+                            <ul x-cloak="" x-show="isActive('dashboard')" x-collapse="" class="flex flex-col gap-1 text-black sub-menu dark:text-white/60 group-data-[sidebar=dark]/item:text-white/60 group-data-[sidebar=brand]/item:text-sky-200/50">
+                                <li><a href="index.html">Default</a></li>
+                                <li><a href="project-dashboard.html">Projects</a></li>
+                                <li><a href="ecommerce-dashboard.html">eCommerce</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu nav-item">
+                            <a href="javascript:void(0);" class="items-center justify-between text-black nav-link group" :class="{'active' : isActive('apps')}" @click="toggle('apps')">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                        <path d="M7.5 11.5C5.01472 11.5 3 9.48528 3 7C3 4.51472 5.01472 2.5 7.5 2.5C9.98528 2.5 12 4.51472 12 7C12 9.48528 9.98528 11.5 7.5 11.5ZM7.5 21.5C5.01472 21.5 3 19.4853 3 17C3 14.5147 5.01472 12.5 7.5 12.5C9.98528 12.5 12 14.5147 12 17C12 19.4853 9.98528 21.5 7.5 21.5ZM17.5 11.5C15.0147 11.5 13 9.48528 13 7C13 4.51472 15.0147 2.5 17.5 2.5C19.9853 2.5 22 4.51472 22 7C22 9.48528 19.9853 11.5 17.5 11.5ZM17.5 21.5C15.0147 21.5 13 19.4853 13 17C13 14.5147 15.0147 12.5 17.5 12.5C19.9853 12.5 22 14.5147 22 17C22 19.4853 19.9853 21.5 17.5 21.5ZM7.5 9.5C8.88071 9.5 10 8.38071 10 7C10 5.61929 8.88071 4.5 7.5 4.5C6.11929 4.5 5 5.61929 5 7C5 8.38071 6.11929 9.5 7.5 9.5ZM7.5 19.5C8.88071 19.5 10 18.3807 10 17C10 15.6193 8.88071 14.5 7.5 14.5C6.11929 14.5 5 15.6193 5 17C5 18.3807 6.11929 19.5 7.5 19.5ZM17.5 9.5C18.8807 9.5 20 8.38071 20 7C20 5.61929 18.8807 4.5 17.5 4.5C16.1193 4.5 15 5.61929 15 7C15 8.38071 16.1193 9.5 17.5 9.5ZM17.5 19.5C18.8807 19.5 20 18.3807 20 17C20 15.6193 18.8807 14.5 17.5 14.5C16.1193 14.5 15 15.6193 15 17C15 18.3807 16.1193 19.5 17.5 19.5Z" fill="currentColor"></path>
+                                    </svg>
+                                    <span class="ltr:pl-1.5 rtl:pr-1.5">Apps</span>
+                                </div>
+                                <div class="flex items-center justify-center w-4 h-4 dropdown-icon" :class="{'!rotate-180' : isActive('apps')}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                                        <path d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z" fill="currentColor"></path>
+                                    </svg>
+                                </div>
+                            </a>
+                            <ul x-cloak="" x-show="isActive('apps')" x-collapse="" class="flex flex-col gap-1 text-black sub-menu dark:text-white/60 group-data-[sidebar=dark]/item:text-white/60 group-data-[sidebar=brand]/item:text-sky-200/50">
+                                <li><a href="email.html">email</a></li>
+                                <li><a href="chat.html">chat</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                                <li><a href="invoice.html">invoice</a></li>
+                                <li><a href="calender.html">Calendar</a></li>
+                                <li><a href="gallery.html">Gallery<span class="inline-block px-2 py-1 text-xs leading-none text-pink-500 rounded bg-pink-500/10 ltr:ml-3 rtl:mr-3">New</span></a></li>
+                                <li><a href="kanban.html">Kanban<span class="inline-block px-2 py-1 text-xs leading-none text-pink-500 rounded bg-pink-500/10 ltr:ml-3 rtl:mr-3">New</span></a></li>
+                            </ul>
+                        </li>
+                        <h2 class="my-2 text-sm text-black/50 dark:text-white/30 group-data-[sidebar=dark]/item:text-white/30 group-data-[sidebar=brand]/item:text-sky-200/50"><span>UI Kit</span></h2>
+                        <li class="menu nav-item">
+                            <a href="javascript:void(0);" class="items-center justify-between text-black nav-link group" :class="{'active' : isActive('components')}" @click="toggle('components')">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                        <path d="M12 1L21.5 6.5V17.5L12 23L2.5 17.5V6.5L12 1ZM5.49388 7.0777L12.0001 10.8444L18.5062 7.07774L12 3.311L5.49388 7.0777ZM4.5 8.81329V16.3469L11.0001 20.1101V12.5765L4.5 8.81329ZM13.0001 20.11L19.5 16.3469V8.81337L13.0001 12.5765V20.11Z" fill="currentColor"></path>
+                                    </svg>
+                                    <span class="ltr:pl-1.5 rtl:pr-1.5">Components</span>
+                                </div>
+                                <div class="flex items-center justify-center w-4 h-4 dropdown-icon" :class="{'!rotate-180' : isActive('components')}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                                        <path d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z" fill="currentColor"></path>
+                                    </svg>
+                                </div>
+                            </a>
+                            <ul x-cloak="" x-show="isActive('components')" x-collapse="" class="flex flex-col gap-1 text-black sub-menu dark:text-white/60 group-data-[sidebar=dark]/item:text-white/60 group-data-[sidebar=brand]/item:text-sky-200/50">
+                                <li><a href="ui-tabs.html">tabs</a></li>
+                                <li><a href="ui-accordions.html">accordions</a></li>
+                                <li><a href="ui-modals.html">modals</a></li>
+                                <li><a href="ui-clipboard.html">clipboard</a></li>
+                                <li><a href="ui-notification.html">Notification</a></li>
+                                <li><a href="ui-carousel.html">carousel</a></li>
+                                <li><a href="ui-pricing.html">pricing</a></li>
+                                <li><a href="ui-lightbox.html">lightbox</a></li>
+                                <li><a href="ui-countdown.html">Countdown</a></li>
+                                <li><a href="ui-counter.html">Counter</a></li>
+                                <li><a href="ui-flatpickr.html">Flatpickr <span class="inline-block px-2 py-1 text-xs leading-none text-pink-500 rounded bg-pink-500/10 ltr:ml-3 rtl:mr-3">New</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="menu nav-item">
+                            <a href="javascript:void(0);" class="items-center justify-between text-black nav-link group" :class="{'active' : isActive('elements')}" @click="toggle('elements')">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                        <path d="M13 9H21L11 24V15H4L13 0V9ZM11 11V7.22063L7.53238 13H13V17.3944L17.263 11H11Z" fill="currentColor"></path>
+                                    </svg>
+                                    <span class="ltr:pl-1.5 rtl:pr-1.5">UI Elements</span>
+                                </div>
+                                <div class="flex items-center justify-center w-4 h-4 dropdown-icon" :class="{'!rotate-180' : isActive('elements')}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                                        <path d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z" fill="currentColor"></path>
+                                    </svg>
+                                </div>
+                            </a>
+                            <ul x-cloak="" x-show="isActive('elements')" x-collapse="" class="flex flex-col gap-1 text-black sub-menu dark:text-white/60 group-data-[sidebar=dark]/item:text-white/60 group-data-[sidebar=brand]/item:text-sky-200/50">
+                                <li><a href="ui-alerts.html">Alerts</a></li>
+                                <li><a href="ui-buttons.html">Buttons</a></li>
+                                <li><a href="ui-buttons-group.html">buttons group</a></li>
+                                <li><a href="ui-badge.html">badge</a></li>
+                                <li><a href="ui-breadcrumb.html">breadcrumb</a></li>
+                                <li><a href="ui-videos.html">videos</a></li>
+                                <li><a href="ui-images.html">Images</a></li>
+                                <li><a href="ui-dropdowns.html">dropdowns</a></li>
+                                <li><a href="ui-typography.html">typography</a></li>
+                                <li><a href="ui-avatar.html">Avatar</a></li>
+                                <li><a href="ui-tooltips.html">tooltips</a></li>
+                                <li><a href="ui-loader.html">loader</a></li>
+                                <li><a href="ui-pagination.html">pagination</a></li>
+                                <li><a href="ui-progress-bar.html">progress bar</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu nav-item">
+                            <a href="chart.html" class="nav-link group" @click="toggle('single')">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                        <path d="M9 2.4578V4.58152C6.06817 5.76829 4 8.64262 4 12C4 16.4183 7.58172 20 12 20C15.3574 20 18.2317 17.9318 19.4185 15H21.5422C20.2679 19.0571 16.4776 22 12 22C6.47715 22 2 17.5228 2 12C2 7.52236 4.94289 3.73207 9 2.4578ZM12 2C17.5228 2 22 6.47715 22 12C22 12.3375 21.9833 12.6711 21.9506 13H11V2.04938C11.3289 2.01672 11.6625 2 12 2ZM13 4.06189V11H19.9381C19.4869 7.38128 16.6187 4.51314 13 4.06189Z" fill="currentColor"></path>
+                                    </svg>
+                                    <span class="ltr:pl-1.5 rtl:pr-1.5">Chart</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="menu nav-item">
+                            <a href="icons.html" class="nav-link group" @click="toggle('single')">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                        <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C13.4702 20 14.8478 19.6034 16.0316 18.9114L15.0237 17.1835C14.1359 17.7026 13.1027 18 12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12V13C18 13.5523 17.5523 14 17 14C16.4477 14 16 13.5523 16 13V9H14.6458C13.9407 8.37764 13.0144 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16C13.0465 16 13.9991 15.5982 14.7119 14.9404C15.2622 15.5886 16.0831 16 17 16C18.6569 16 20 14.6569 20 13V12ZM12 10C13.1046 10 14 10.8954 14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10Z" fill="currentColor"></path>
+                                    </svg>
+                                    <span class="ltr:pl-1.5 rtl:pr-1.5">Font Icons</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="menu nav-item">
+                            <a href="drag-and-drop.html" class="nav-link group" @click="toggle('single')">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                        <path d="M12 2L16.2426 6.24264L14.8284 7.65685L12 4.82843L9.17157 7.65685L7.75736 6.24264L12 2ZM2 12L6.24264 7.75736L7.65685 9.17157L4.82843 12L7.65685 14.8284L6.24264 16.2426L2 12ZM22 12L17.7574 16.2426L16.3431 14.8284L19.1716 12L16.3431 9.17157L17.7574 7.75736L22 12ZM12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12C14 13.1046 13.1046 14 12 14ZM12 22L7.75736 17.7574L9.17157 16.3431L12 19.1716L14.8284 16.3431L16.2426 17.7574L12 22Z" fill="currentColor"></path>
+                                    </svg>
+                                    <span class="ltr:pl-1.5 rtl:pr-1.5">Drag &amp; Drop</span>
+                                </div>
+                            </a>
+                        </li>
+                        <h2 class="my-2 text-sm text-black/50 dark:text-white/30 group-data-[sidebar=dark]/item:text-white/30 group-data-[sidebar=brand]/item:text-sky-200/50"><span>Table &amp; Forms</span></h2>
+                        <li class="menu nav-item">
+                            <a href="javascript:void(0);" class="items-center justify-between text-black nav-link group" :class="{'active' : isActive('forms')}" @click="toggle('forms')">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                        <path d="M21 8V20.9932C21 21.5501 20.5552 22 20.0066 22H3.9934C3.44495 22 3 21.556 3 21.0082V2.9918C3 2.45531 3.4487 2 4.00221 2H14.9968L21 8ZM19 9H14V4H5V20H19V9ZM8 7H11V9H8V7ZM8 11H16V13H8V11ZM8 15H16V17H8V15Z" fill="currentColor"></path>
+                                    </svg>
+                                    <span class="ltr:pl-1.5 rtl:pr-1.5">Forms</span>
+                                </div>
+                                <div class="flex items-center justify-center w-4 h-4 dropdown-icon" :class="{'!rotate-180' : isActive('forms')}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                                        <path d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z" fill="currentColor"></path>
+                                    </svg>
+                                </div>
+                            </a>
+                            <ul x-cloak="" x-show="isActive('forms')" x-collapse="" class="flex flex-col gap-1 text-black sub-menu dark:text-white/60 group-data-[sidebar=dark]/item:text-white/60 group-data-[sidebar=brand]/item:text-sky-200/50">
+                                <li><a href="forms-basic.html">Basic</a></li>
+                                <li><a href="forms-input-group.html">Input Group</a></li>
+                                <li><a href="forms-editors.html">Editors</a></li>
+                                <li><a href="forms-validation.html">Validation</a></li>
+                                <li><a href="forms-checkbox.html">Checkbox</a></li>
+                                <li><a href="forms-radio.html">Radio</a></li>
+                                <li><a href="forms-switches.html">Switches</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu nav-item">
+                            <a href="javascript:void(0);" class="items-center justify-between text-black nav-link group" :class="{'active' : isActive('table')}" @click="toggle('table')">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                        <path d="M4 8H20V5H4V8ZM14 19V10H10V19H14ZM16 19H20V10H16V19ZM8 19V10H4V19H8ZM3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3Z" fill="currentColor"></path>
+                                    </svg>
+                                    <span class="ltr:pl-1.5 rtl:pr-1.5">Tables</span>
+                                </div>
+                                <div class="flex items-center justify-center w-4 h-4 dropdown-icon" :class="{'!rotate-180' :  isActive('table')}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                                        <path d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z" fill="currentColor"></path>
+                                    </svg>
+                                </div>
+                            </a>
+                            <ul x-cloak="" x-show="isActive('table')" x-collapse="" class="flex flex-col gap-1 text-black sub-menu dark:text-white/60 group-data-[sidebar=dark]/item:text-white/60 group-data-[sidebar=brand]/item:text-sky-200/50">
+                                <li><a href="tables-basic.html">Basic</a></li>
+                                <li><a href="tables-datatables.html">datatables</a></li>
+                                <li><a href="tables-editable.html">editable</a></li>
+                            </ul>
+                        </li>
+                        <h2 class="my-2 text-sm text-black/50 dark:text-white/30 group-data-[sidebar=dark]/item:text-white/30 group-data-[sidebar=brand]/item:text-sky-200/50"><span>Users &amp; Pages</span></h2>
+                        <li class="menu nav-item">
+                            <a href="javascript:void(0);" class="items-center justify-between text-black nav-link group" :class="{'active' : isActive('users')}" @click="toggle('users')">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                        <path d="M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H18C18 18.6863 15.3137 16 12 16C8.68629 16 6 18.6863 6 22H4ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11Z" fill="currentColor"></path>
+                                    </svg>
+                                    <span class="ltr:pl-1.5 rtl:pr-1.5">Users</span>
+                                </div>
+                                <div class="flex items-center justify-center w-4 h-4 dropdown-icon" :class="{'!rotate-180' : isActive('users')}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                                        <path d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z" fill="currentColor"></path>
+                                    </svg>
+                                </div>
+                            </a>
+                            <ul x-cloak="" x-show="isActive('users')" x-collapse="" class="flex flex-col gap-1 text-black sub-menu dark:text-white/60 group-data-[sidebar=dark]/item:text-white/60 group-data-[sidebar=brand]/item:text-sky-200/50">
+                                <li><a href="pages-users-profile.html">Profile</a></li>
+                                <li><a href="pages-users-settings.html">Settings</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu nav-item">
+                            <a href="javascript:void(0);" class="items-center justify-between text-black nav-link group dark:text-white/80" :class="{'active' : isActive('pages')}" @click="toggle('pages')">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                        <path d="M5 8V20H19V8H5ZM5 6H19V4H5V6ZM20 22H4C3.44772 22 3 21.5523 3 21V3C3 2.44772 3.44772 2 4 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22ZM7 10H11V14H7V10ZM7 16H17V18H7V16ZM13 11H17V13H13V11Z" fill="currentColor"></path>
+                                    </svg>
+                                    <span class="ltr:pl-1.5 rtl:pr-1.5">Pages</span>
+                                </div>
+                                <div class="flex items-center justify-center w-4 h-4 dropdown-icon" :class="{'!rotate-180' :isActive('pages')}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                                        <path d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z" fill="currentColor"></path>
+                                    </svg>
+                                </div>
+                            </a>
+                            <ul x-cloak="" x-show="isActive('pages')" x-collapse="" class="flex flex-col gap-1 text-black sub-menu dark:text-white/60 group-data-[sidebar=dark]/item:text-white/60 group-data-[sidebar=brand]/item:text-sky-200/50">
+                                <li><a href="blank.html">Starter Page</a></li>
+                                <li><a href="pages-maintenance.html">maintenance</a></li>
+                                <li><a href="pages-coming-soon.html">coming soon</a></li>
+                                <li><a href="pages-404.html">404 Error</a></li>
+                                <li><a href="pages-500.html">500 Error</a></li>
+                                <li><a href="pages-503.html">503 Error</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu nav-item">
+                            <a href="javascript:void(0);" class="items-center justify-between text-black nav-link group" :class="{'active' : isActive('layout')}" @click="toggle('layout')">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                        <path fill="currentColor" d="M4 21C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3H20C20.5523 3 21 3.44772 21 4V20C21 20.5523 20.5523 21 20 21H4ZM8 10H5V19H8V10ZM19 10H10V19H19V10ZM19 5H5V8H19V5Z"></path>
+                                    </svg>
+                                    <span class="ltr:pl-1.5 rtl:pr-1.5">Layout</span>
+                                </div>
+                                <div class="flex items-center justify-center w-4 h-4 dropdown-icon" :class="{'!rotate-180' : isActive('layout')}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                                        <path d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z" fill="currentColor"></path>
+                                    </svg>
+                                </div>
+                            </a>
+                            <ul x-cloak="" x-show="isActive('layout')" x-collapse="" class="flex flex-col gap-1 text-black sub-menu dark:text-white/60 group-data-[sidebar=dark]/item:text-white/60 group-data-[sidebar=brand]/item:text-sky-200/50">
+                                <li><a href="creative.html">Creative Detached</a></li>
+                                <li><a href="detached.html">Detached</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu nav-item">
+                            <a href="javascript:void(0);" class="items-center justify-between text-black nav-link group" :class="{'active' : isActive('authentication')}" @click="toggle('authentication')">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                        <path d="M6 10V20H19V10H6ZM18 8H20C20.5523 8 21 8.44772 21 9V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V9C3 8.44772 3.44772 8 4 8H6V7C6 3.68629 8.68629 1 12 1C15.3137 1 18 3.68629 18 7V8ZM16 8V7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7V8H16ZM7 11H9V13H7V11ZM7 14H9V16H7V14ZM7 17H9V19H7V17Z" fill="currentColor"></path>
+                                    </svg>
+                                    <span class="ltr:pl-1.5 rtl:pr-1.5">Authentication</span>
+                                </div>
+                                <div class="flex items-center justify-center w-4 h-4 dropdown-icon" :class="{'!rotate-180' : isActive('authentication')}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                                        <path d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z" fill="currentColor"></path>
+                                    </svg>
+                                </div>
+                            </a>
+                            <ul x-cloak="" x-show="isActive('authentication')" x-collapse="" class="flex flex-col gap-1 text-black sub-menu dark:text-white/60 group-data-[sidebar=dark]/item:text-white/60 group-data-[sidebar=brand]/item:text-sky-200/50">
+                                <li><a href="login.html">Sign In</a></li>
+                                <li><a href="signup.html">Sign Up</a></li>
+                                <li><a href="reset-pw.html">Reset Password</a></li>
+                            </ul>
+                        </li>
+                        <h2 class="my-2 text-sm text-black/50 dark:text-white/30 group-data-[sidebar=dark]/item:text-white/30 group-data-[sidebar=brand]/item:text-sky-200/50"><span>Supports</span></h2>
+                        <li class="menu nav-item">
+                            <a href="https://sliced-tailwind.netlify.app/docs/html/#change" target="_blank" class="nav-link group" :class="{'active' : isActive('change')}">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                        <path d="M8 4H21V6H8V4ZM4.5 6.5C3.67157 6.5 3 5.82843 3 5C3 4.17157 3.67157 3.5 4.5 3.5C5.32843 3.5 6 4.17157 6 5C6 5.82843 5.32843 6.5 4.5 6.5ZM4.5 13.5C3.67157 13.5 3 12.8284 3 12C3 11.1716 3.67157 10.5 4.5 10.5C5.32843 10.5 6 11.1716 6 12C6 12.8284 5.32843 13.5 4.5 13.5ZM4.5 20.4C3.67157 20.4 3 19.7284 3 18.9C3 18.0716 3.67157 17.4 4.5 17.4C5.32843 17.4 6 18.0716 6 18.9C6 19.7284 5.32843 20.4 4.5 20.4ZM8 11H21V13H8V11ZM8 18H21V20H8V18Z" fill="currentColor"></path>
+                                    </svg>
+                                    <span class="ltr:pl-1.5 rtl:pr-1.5">Changelog</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="menu nav-item">
+                            <a href="https://sliced-tailwind.netlify.app/docs/html/" target="_blank" class="nav-link group" :class="{'active' : isActive('docs')}">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                        <path d="M20 22H4C3.44772 22 3 21.5523 3 21V3C3 2.44772 3.44772 2 4 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22ZM19 20V4H5V20H19ZM8 7H16V9H8V7ZM8 11H16V13H8V11ZM8 15H13V17H8V15Z" fill="currentColor"></path>
+                                    </svg>
+                                    <span class="ltr:pl-1.5 rtl:pr-1.5">Documentation</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="relative p-4 pt-0 text-center rounded-md bg-purple help-box group-data-[sidebar=brand]/item:bg-sky-500">
+                        <div class="relative -top-6">
+                            <span class="text-black mx-auto border border-black/10 shadow-[0_0.75rem_1.5rem_rgba(18,38,63,.03)]  bg-white flex items-center justify-center h-12 w-12 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 15H13V17H11V15ZM13 13.3551V14H11V12.5C11 11.9477 11.4477 11.5 12 11.5C12.8284 11.5 13.5 10.8284 13.5 10C13.5 9.17157 12.8284 8.5 12 8.5C11.2723 8.5 10.6656 9.01823 10.5288 9.70577L8.56731 9.31346C8.88637 7.70919 10.302 6.5 12 6.5C13.933 6.5 15.5 8.067 15.5 10C15.5 11.5855 14.4457 12.9248 13 13.3551Z" fill="currentColor"></path>
+                                </svg>
+                            </span>
+                        </div>
+                        <h4 class="text-xl text-white">Help Center</h4>
+                        <p class="mt-4 text-white/70">Looks like there might be a new theme soon.</p>   
+                        <div class="mt-5">
+                            <a href="javascript:void(0);" class="btn-white text-slate-500">Go to help</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- End sidebar -->
+        <!-- Start Content Area -->
+        <div class="flex-1 main-content">
+            <!-- Start Topbar -->
+            <div class="bg-white dark:bg-darklight dark:border-darkborder flex gap-4   items-center justify-between px-4 h-[60px] border-b border-black/10 detached-topbar relative">
+                <div class="flex items-center flex-1 gap-2 sm:gap-4 lg:z-0 z-11">
+                    <button type="button" class="text-black dark:text-white/80" @click="$store.app.toggleSidebar()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                            <path d="M3 4H21V6H3V4ZM3 11H15V13H3V11ZM3 18H21V20H3V18Z" fill="currentColor"></path>
+                        </svg>
+                    </button>
+                    <form class="flex-1 hidden min-[420px]:block">
+                        <div class="relative max-w-[180px] md:max-w-[350px]">
+                            <input type="text" id="search" class="border-black/10 dark:text-white/80 dark:placeholder:text-white/30 dark:border-darkborder dark:bg-dark dark:focus:border-white/30 focus:border-black/30 placeholder:text-black/50 border text-black text-sm rounded block w-full ltr:pl-3 rtl:pr-3 ltr:pr-7 rtl:pl-7 h-10 bg-[#f9fbfd] focus:ring-0 focus:outline-0" placeholder="Search..." required="">
+                            <button type="button" class="absolute inset-y-0 flex items-center text-black ltr:right-0 rtl:left-0 ltr:pr-2 rtl:pl-2 dark:text-white/80">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4">
+                                    <path d="M11 2C15.968 2 20 6.032 20 11C20 15.968 15.968 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2ZM11 18C14.8675 18 18 14.8675 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18ZM19.4853 18.0711L22.3137 20.8995L20.8995 22.3137L18.0711 19.4853L19.4853 18.0711Z" fill="currentColor"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="flex items-center gap-4  z-[9] ">
+                    <div class="h-5" x-data="{ fullScreen: false }">
+                        <button class="text-black dark:text-white/80" x-cloak="" x-bind:class="{ 'hidden': fullScreen, 'block': !fullScreen }" x-on:click="fullScreen = !fullScreen" @click="$store.app.toggleFullScreen()">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                <path d="M16 3H22V9H20V5H16V3ZM2 3H8V5H4V9H2V3ZM20 19V15H22V21H16V19H20ZM4 19H8V21H2V15H4V19Z" fill="currentColor"></path>
+                            </svg>
+                        </button>
+                        <button class="text-black dark:text-white/80" x-cloak="" x-bind:class="{ 'block': fullScreen, 'hidden': !fullScreen }" x-on:click="fullScreen = !fullScreen" @click="$store.app.toggleFullScreen()">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                <path d="M18 7H22V9H16V3H18V7ZM8 9H2V7H6V3H8V9ZM18 17V21H16V15H22V17H18ZM8 15V21H6V17H2V15H8Z" fill="currentColor"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div>
+                        <a href="javascript:;" class="text-black" x-cloak="" x-show="$store.app.mode === 'light'" @click="$store.app.toggleMode('dark')">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                <path d="M10 7C10 10.866 13.134 14 17 14C18.9584 14 20.729 13.1957 21.9995 11.8995C22 11.933 22 11.9665 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C12.0335 2 12.067 2 12.1005 2.00049C10.8043 3.27098 10 5.04157 10 7ZM4 12C4 16.4183 7.58172 20 12 20C15.0583 20 17.7158 18.2839 19.062 15.7621C18.3945 15.9187 17.7035 16 17 16C12.0294 16 8 11.9706 8 7C8 6.29648 8.08133 5.60547 8.2379 4.938C5.71611 6.28423 4 8.9417 4 12Z" fill="currentColor"></path>
+                            </svg>
+                        </a>
+                        <a href="javascript:;" class="text-black dark:text-white/80" x-cloak="" x-show="$store.app.mode === 'dark'" @click="$store.app.toggleMode('light')">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                                <path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16ZM11 1H13V4H11V1ZM11 20H13V23H11V20ZM3.51472 4.92893L4.92893 3.51472L7.05025 5.63604L5.63604 7.05025L3.51472 4.92893ZM16.9497 18.364L18.364 16.9497L20.4853 19.0711L19.0711 20.4853L16.9497 18.364ZM19.0711 3.51472L20.4853 4.92893L18.364 7.05025L16.9497 5.63604L19.0711 3.51472ZM5.63604 16.9497L7.05025 18.364L4.92893 20.4853L3.51472 19.0711L5.63604 16.9497ZM23 11V13H20V11H23ZM4 11V13H1V11H4Z" fill="currentColor"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="h-5">
+                        <div x-data="modals">
+                            <button class="text-black dark:text-white/80" @click="toggle()">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 0 1 1.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.559.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.894.149c-.424.07-.764.383-.929.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 0 1-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.398.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 0 1-.12-1.45l.527-.737c.25-.35.272-.806.108-1.204-.165-.397-.506-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.108-1.204l-.526-.738a1.125 1.125 0 0 1 .12-1.45l.773-.773a1.125 1.125 0 0 1 1.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894Z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                                </svg>
+                            </button>
+                            <div class="fixed inset-0 bg-black/80 hidden z-[12] overflow-y-auto dark:bg-dark/90" :class="open &amp;&amp; '!block'">
+                                <div class="flex items-start justify-center min-h-screen z-[12] px-4" @click.self="open = false">
+                                    <div x-show="open" x-transition="" x-transition.duration.300="" class="relative w-full max-w-lg p-0 my-8 overflow-hidden bg-white border rounded-lg shadow-3xl border-black/10 dark:bg-darklight dark:border-darkborder">
+                                        <div class="flex items-center justify-between px-5 py-3 bg-white border-b border-black/10 dark:bg-darklight dark:border-darkborder">
+                                            <h5 class="text-lg font-semibold dark:text-white">Layout Settings</h5>
+                                            <button type="button" class="text-muted hover:text-black dark:hover:text-white" @click="toggle">
+                                                <svg class="w-5 h-5" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M24.2929 6.29289L6.29289 24.2929C6.10536 24.4804 6 24.7348 6 25C6 25.2652 6.10536 25.5196 6.29289 25.7071C6.48043 25.8946 6.73478 26 7 26C7.26522 26 7.51957 25.8946 7.70711 25.7071L25.7071 7.70711C25.8946 7.51957 26 7.26522 26 7C26 6.73478 25.8946 6.48043 25.7071 6.29289C25.5196 6.10536 25.2652 6 25 6C24.7348 6 24.4804 6.10536 24.2929 6.29289Z" fill="currentcolor"></path>
+                                                    <path d="M7.70711 6.29289C7.51957 6.10536 7.26522 6 7 6C6.73478 6 6.48043 6.10536 6.29289 6.29289C6.10536 6.48043 6 6.73478 6 7C6 7.26522 6.10536 7.51957 6.29289 7.70711L24.2929 25.7071C24.4804 25.8946 24.7348 26 25 26C25.2652 26 25.5196 25.8946 25.7071 25.7071C25.8946 25.5196 26 25.2652 26 25C26 24.7348 25.8946 24.4804 25.7071 24.2929L7.70711 6.29289Z" fill="currentcolor"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <div class="p-5 space-y-4">
+                                            <div class="text-black dark:text-muted">
+                                                <h6 class="mb-4 text-base font-semibold capitalize text-slate-800 dark:text-slate-100">Sidebar Colors</h6>
+                                                <div class="flex flex-wrap items-center gap-3">
+                                                    <label class="inline-flex cursor-pointer">
+                                                        <input type="radio" name="sidebarColor" value="light" x-model="$store.app.sidebarMode" class="form-radio text-purple">
+                                                        <span>Light</span>
+                                                    </label>
+                                                    <label class="inline-flex cursor-pointer">
+                                                        <input type="radio" name="sidebarColor" value="dark" x-model="$store.app.sidebarMode" class="form-radio text-purple">
+                                                        <span>Dark</span>
+                                                    </label>
+                                                    <label class="inline-flex cursor-pointer">
+                                                        <input type="radio" name="sidebarColor" value="brand" x-model="$store.app.sidebarMode" class="form-radio text-purple">
+                                                        <span>Brand</span>
+                                                    </label>
+                                                </div>
+            
+                                                <h6 class="mt-6 mb-4 text-base font-semibold capitalize text-slate-800 dark:text-slate-100">Select Layouts</h6>
+                                                <div class="flex flex-wrap items-center gap-3">
+                                                    <label class="inline-flex cursor-pointer">
+                                                        <input type="radio" name="layout" value="vertical" x-model="$store.app.layout" class="form-radio text-purple">
+                                                        <span>Vertical</span>
+                                                    </label>
+                                                    <label class="inline-flex cursor-pointer">
+                                                        <input type="radio" name="layout" value="detached" x-model="$store.app.layout" class="form-radio text-purple">
+                                                        <span>Detached</span>
+                                                    </label>
+                                                </div>
+            
+                                                <h6 class="mt-6 mb-4 text-base font-semibold capitalize text-slate-800 dark:text-slate-100">Layout Modes</h6>
+                                                <div class="flex flex-wrap items-center gap-3">
+                                                    <label class="inline-flex cursor-pointer">
+                                                        <input type="radio" name="mode" value="light" x-model="$store.app.mode" class="form-radio text-purple" checked="">
+                                                        <span>Light</span>
+                                                    </label>
+                                                    <label class="inline-flex cursor-pointer">
+                                                        <input type="radio" name="mode" value="dark" x-model="$store.app.mode" class="form-radio text-purple">
+                                                        <span>Dark</span>
+                                                    </label>
+                                                </div>
+            
+                                                <h6 class="mt-6 mb-4 text-base font-semibold capitalize text-slate-800 dark:text-slate-100">Layout Direction</h6>
+                                                <div class="flex flex-wrap items-center gap-3">
+                                                    <label class="inline-flex cursor-pointer">
+                                                        <input type="radio" name="direction" value="ltr" x-model="$store.app.direction" class="form-radio text-purple" checked="">
+                                                        <span>LTR</span>
+                                                    </label>
+                                                    <label class="inline-flex cursor-pointer">
+                                                        <input type="radio" name="direction" value="rtl" x-model="$store.app.direction" class="form-radio text-purple">
+                                                        <span>RTL</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-end gap-4">
+                                                <button type="reset" class="transition-all duration-300 border rounded-md btn text-danger border-danger hover:bg-danger hover:text-white" @click="$store.app.resetLayout() , open = false">Reset Layout</button>
+                                                <button type="button" class="transition-all duration-300 border rounded-md btn text-purple border-purple hover:bg-purple hover:text-white" @click="$store.app.setLayout() , open = false">Set Layouts</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div x-data="{
+                        open: false,
+                        toggle() {
+                            if (this.open) {
+                                return this.close();
+                            }
+                    
+                            this.$refs.button.focus();
+                                    
+                            this.open = true;
+                            Alpine.store('app').showSettings = true;
+                        },
+                        close(focusAfter) {
+                            if (!this.open) return;
+                    
+                            this.open = false;
+                            Alpine.store('app').showSettings = false;
+                            focusAfter &amp;&amp; focusAfter.focus();
+                        }
+                    }" x-on:keydown.escape.prevent.stop="close($refs.button)" x-on:focusin.window="!$refs.panel.contains($event.target) &amp;&amp; close()" x-id="['dropdown-button']" class="relative notification h-[60px] flex items-center justify-center">
+                        <button x-ref="button" x-on:click="toggle()" :aria-expanded="open" :aria-controls="$id('dropdown-button')" type="button" class="relative text-black dark:text-white/80">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 mx-auto">
+                                <path d="M5 18H19V11.0314C19 7.14806 15.866 4 12 4C8.13401 4 5 7.14806 5 11.0314V18ZM12 2C16.9706 2 21 6.04348 21 11.0314V20H3V11.0314C3 6.04348 7.02944 2 12 2ZM9.5 21H14.5C14.5 22.3807 13.3807 23.5 12 23.5C10.6193 23.5 9.5 22.3807 9.5 21Z" fill="currentColor"></path>
+                            </svg>
+                            <span class="absolute w-2 h-2 border border-white rounded-full -top-px ltr:right-px rtl:left-px bg-purple"></span>
+                        </button>
+            
+                        <div x-ref="panel" x-show="open" x-transition.origin.top.left="" x-on:click.outside="close($refs.button)" :id="$id('dropdown-button')" style="display: none;" class="absolute z-10 rounded bg-white dark:bg-darklight dark:border-darkborder dark:text-white/80 ltr:right-0 rtl:left-0 text-black/60 border border-black/10 min-w-[253px] top-full noti-area">
+                            <div x-data="{ notifications: [
+                                { id: 1, avatar: 'assets/images/avatar-1.png', message: 'Edited the details of Project', time: '1s ago', show: true },
+                                { id: 2, avatar: 'assets/images/avatar-4.png', message: 'Released a new version', time: '2m ago', show: true },
+                                { id: 3, avatar: 'assets/images/avatar-13.png', message: 'Submitted a bug', time: '10m ago', show: true },
+                                { id: 4, avatar: 'assets/images/avatar-19.png', message: 'Modified A data in Page', time: '15m ago', show: true },
+                                { id: 5, avatar: 'assets/images/avatar-24.png', message: 'Modified A data in Page', time: '30m ago', show: true },
+                                { id: 6, avatar: 'assets/images/avatar-1.png', message: 'Edited the details of Project', time: '45m ago', show: true },
+                                { id: 7, avatar: 'assets/images/avatar-4.png', message: 'Released a new version', time: '1h ago', show: true },
+                                { id: 8, avatar: 'assets/images/avatar-13.png', message: 'Submitted a bug', time: '2h ago', show: true },
+                            ]}">
+                                <h4 class="text-black dark:text-white/80 px-2 py-2.5 border-b border-black/10 flex items-center gap-2">
+                                    Notification
+                                    <span class="inline-block bg-purple/10 text-purple text-[10px] p-1 leading-none rounded" x-text="notifications.filter(notification => notification.show).length"></span>
+                                </h4>
+                                <ul class="overflow-y-auto max-h-56">
+                                    <template x-for="notification in notifications" :key="notification.id">
+                                        <li x-show="notification.show" x-transition.duration.300ms="">
+                                            <div class="flex items-center rounded px-2 py-2.5 hover:bg-black/5 hover:text-black gap-2 cursor-pointer group">
+                                                <div class="flex-none overflow-hidden rounded-full h-9 w-9">
+                                                    <img :src="notification.avatar" class="object-cover" alt="avatar">
+                                                </div>
+                                                <div class="relative flex-1">
+                                                    <p class="whitespace-nowrap overflow-hidden text-ellipsis w-[185px] text-black dark:text-white ltr:pr-4 rtl:pl-4" x-text="notification.message"></p>
+                                                    <p class="text-xs text-black/40 dark:text-darkmuted" x-text="notification.time"></p>
+                                                    <button type="button" @click="notification.show = false" class="absolute hidden transition-all duration-300 rotate-0 ltr:right-0 rtl:left-0 top-1 dark:text-white/80 group-hover:block hover:opacity-80 hover:rotate-180">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-3.5 h-3.5">
+                                                            <path d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z" fill="currentColor"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+            
+                            <div class="px-2 py-2.5 border-t border-black/10 dark:border-darkborder">
+                                <a href="javascript:;" class="text-black duration-300 dark:text-white dark:hover:text-purple hover:text-purple">Read More
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-3.5 h-3.5 inline-block relative -top-[1px] rtl:rotate-180">
+                                        <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" fill="currentColor"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div x-data="{
+                        open: false,
+                        toggle() {
+                            if (this.open) {
+                                return this.close();
+                            }
+                    
+                            this.$refs.button.focus();
+                    
+                            this.open = true;
+                        },
+                        close(focusAfter) {
+                            if (!this.open) return;
+                    
+                            this.open = false;
+                    
+                            focusAfter &amp;&amp; focusAfter.focus();
+                        }
+                    }" x-on:keydown.escape.prevent.stop="close($refs.button)" x-on:focusin.window="!$refs.panel.contains($event.target) &amp;&amp; close()" x-id="['dropdown-button']" class="relative profile h-[60px] flex items-center justify-center">
+                        <button x-ref="button" x-on:click="toggle()" :aria-expanded="open" :aria-controls="$id('dropdown-button')" type="button" class="flex items-center gap-1.5 xl:gap-0 dark:text-white/80">
+                            <img class="rounded-full h-7 w-7 ltr:xl:mr-2 rtl:xl:ml-2" src="images/user.png" alt="Header Avatar">
+                            <span class="hidden fw-medium xl:block dark:text-white/80">Stevens L.</span>
+                            <svg :class="{ 'transform rotate-180': open }" class="text-gray-400 transition-transform duration-300 size-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+            
+                        <ul x-ref="panel" x-show="open" x-transition.origin.top.left="" x-on:click.outside="close($refs.button)" :id="$id('dropdown-button')" style="display: none;" class="absolute z-10 w-40 overflow-hidden bg-white border rounded top-full dark:text-darkmuted dark:border-darkborder dark:bg-darklight ltr:right-0 rtl:left-0 text-black/60 border-black/10">
+                            <li>
+                                <a href="javaScript:;" class="flex items-center gap-2 px-2 py-2.5 dark:hover:bg-white/5 dark:hover:text-white hover:bg-black/5 hover:text-black">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4">
+                                        <path d="M20 22H18V20C18 18.3431 16.6569 17 15 17H9C7.34315 17 6 18.3431 6 20V22H4V20C4 17.2386 6.23858 15 9 15H15C17.7614 15 20 17.2386 20 20V22ZM12 13C8.68629 13 6 10.3137 6 7C6 3.68629 8.68629 1 12 1C15.3137 1 18 3.68629 18 7C18 10.3137 15.3137 13 12 13ZM12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" fill="currentColor"></path>
+                                    </svg>
+                                    Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javaScript:;" class="flex items-center gap-2 px-2 py-2.5 dark:hover:bg-white/5 dark:hover:text-white hover:bg-black/5 hover:text-black">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4">
+                                        <path d="M6.17071 18C6.58254 16.8348 7.69378 16 9 16C10.3062 16 11.4175 16.8348 11.8293 18H22V20H11.8293C11.4175 21.1652 10.3062 22 9 22C7.69378 22 6.58254 21.1652 6.17071 20H2V18H6.17071ZM12.1707 11C12.5825 9.83481 13.6938 9 15 9C16.3062 9 17.4175 9.83481 17.8293 11H22V13H17.8293C17.4175 14.1652 16.3062 15 15 15C13.6938 15 12.5825 14.1652 12.1707 13H2V11H12.1707ZM6.17071 4C6.58254 2.83481 7.69378 2 9 2C10.3062 2 11.4175 2.83481 11.8293 4H22V6H11.8293C11.4175 7.16519 10.3062 8 9 8C7.69378 8 6.58254 7.16519 6.17071 6H2V4H6.17071ZM9 6C9.55228 6 10 5.55228 10 5C10 4.44772 9.55228 4 9 4C8.44772 4 8 4.44772 8 5C8 5.55228 8.44772 6 9 6ZM15 13C15.5523 13 16 12.5523 16 12C16 11.4477 15.5523 11 15 11C14.4477 11 14 11.4477 14 12C14 12.5523 14.4477 13 15 13ZM9 20C9.55228 20 10 19.5523 10 19C10 18.4477 9.55228 18 9 18C8.44772 18 8 18.4477 8 19C8 19.5523 8.44772 20 9 20Z" fill="currentColor"></path>
+                                    </svg>
+                                    Settings
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javaScript:;" class="flex items-center gap-2 px-2 py-2.5 dark:hover:bg-white/5 dark:hover:text-white hover:bg-black/5 hover:text-black">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4">
+                                        <path d="M5.45455 15L1 18.5V3C1 2.44772 1.44772 2 2 2H17C17.5523 2 18 2.44772 18 3V15H5.45455ZM4.76282 13H16V4H3V14.3851L4.76282 13ZM8 17H18.2372L20 18.3851V8H21C21.5523 8 22 8.44772 22 9V22.5L17.5455 19H9C8.44772 19 8 18.5523 8 18V17Z" fill="currentColor"></path>
+                                    </svg>
+                                    Messages
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javaScript:;" class="flex items-center gap-2 px-2 py-2.5 dark:hover:bg-white/5 dark:hover:text-white hover:bg-black/5 hover:text-black">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4">
+                                        <path d="M19.9381 8H21C22.1046 8 23 8.89543 23 10V14C23 15.1046 22.1046 16 21 16H19.9381C19.446 19.9463 16.0796 23 12 23V21C15.3137 21 18 18.3137 18 15V9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9V16H3C1.89543 16 1 15.1046 1 14V10C1 8.89543 1.89543 8 3 8H4.06189C4.55399 4.05369 7.92038 1 12 1C16.0796 1 19.446 4.05369 19.9381 8ZM3 10V14H4V10H3ZM20 10V14H21V10H20ZM7.75944 15.7849L8.81958 14.0887C9.74161 14.6662 10.8318 15 12 15C13.1682 15 14.2584 14.6662 15.1804 14.0887L16.2406 15.7849C15.0112 16.5549 13.5576 17 12 17C10.4424 17 8.98882 16.5549 7.75944 15.7849Z" fill="currentColor"></path>
+                                    </svg>
+                                    Support
+                                </a>
+                            </li>
+                            <li class="block h-px my-1 bg-black/5 dark:bg-darkborder"></li>
+                            <li>
+                                <a href="javaScript:;" class="flex items-center gap-2 px-2 py-2.5 dark:hover:bg-white/5 dark:hover:text-white hover:bg-black/5 hover:text-black text-black dark:text-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4">
+                                        <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C15.2713 2 18.1757 3.57078 20.0002 5.99923L17.2909 5.99931C15.8807 4.75499 14.0285 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C14.029 20 15.8816 19.2446 17.2919 17.9998L20.0009 17.9998C18.1765 20.4288 15.2717 22 12 22ZM19 16V13H11V11H19V8L24 12L19 16Z" fill="currentColor"></path>
+                                    </svg>
+                                    Sign Out
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- End Topbar -->            <!-- Start Content -->
+            <div class="h-[calc(100vh-60px)]  relative overflow-y-auto overflow-x-hidden p-4 space-y-4 detached-content">
+
+                <nav class="w-full">
+                    <ul class="space-y-2 detached-breadcrumb">
+                        <li class="text-xs dark:text-white/80">Sliced</li>
+                        <li class="text-xl font-semibold text-slate-800 dark:text-slate-100">Dashboard</li>
+                    </ul>
+                </nav>
+                <!-- Start All Card -->
+                <div class="flex flex-col gap-4 min-h-[calc(100vh-212px)]">
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                        <div class="flex items-center justify-between gap-6 p-5 border rounded dark:border-darkborder border-black/10 bg-white dark:bg-darklight">
+                            <div>
+                                <p class="text-base dark:text-gray-300">Total Views</p>
+                                <h4 class="flex items-center gap-4 mt-3 text-2xl font-semibold text-slate-800 dark:text-slate-100">15102
+                                    <span class="p-1 text-sm leading-none rounded-md bg-success/20 text-success">23%</span>
+                                </h4>
+                                <p class="text-muted">Current Month</p>
+                            </div>
+                            <div>
+                                <div id="chart" dir="ltr"></div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between gap-6 p-5 border rounded dark:border-darkborder border-black/10 bg-white dark:bg-darklight">
+                            <div>
+                                <p class="text-base dark:text-white/80">Paid Visits</p>
+                                <h4 class="flex items-center gap-4 mt-3 text-2xl font-semibold text-slate-800 dark:text-slate-100">4581
+                                    <span class="p-1 text-sm leading-none rounded-md bg-danger/20 text-danger">24%</span>
+                                </h4>
+                                <p class="text-muted">Current Month</p>
+                            </div>
+                            <div>
+                                <div id="chart2" dir="ltr"></div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between gap-6 p-5 border rounded dark:border-darkborder border-black/10 bg-white dark:bg-darklight">
+                            <div>
+                                <p class="text-base dark:text-white/80">Total Referral</p>
+                                <h4 class="flex items-center gap-4 mt-3 text-2xl font-semibold text-slate-800 dark:text-slate-100">2140
+                                    <span class="p-1 text-sm leading-none rounded-md bg-danger/20 text-danger">10%</span>
+                                </h4>
+                                <p class="text-muted">Current Month</p>
+                            </div>
+                            <div>
+                                <div id="chart4" dir="ltr"></div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between gap-6 p-5 border rounded dark:border-darkborder border-black/10 bg-white dark:bg-darklight">
+                            <div>
+                                <p class="text-base dark:text-white/80">This Week</p>
+                                <h4 class="flex items-center gap-4 mt-3 text-2xl font-semibold text-slate-800 dark:text-slate-100">7714
+                                    <span class="p-1 text-sm leading-none rounded-md bg-success/20 text-success">82%</span>
+                                </h4>
+                                <p class="text-muted">Current Month</p>
+                            </div>
+                            <div>
+                                <div id="chart3" dir="ltr"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+                        <div class="gap-6 p-5 bg-white border rounded dark:bg-darklight dark:border-darkborder md:col-span-2 xl:col-span-2 border-black/10">
+                            <div class="flex items-center justify-between gap-4 mb-4">
+                                <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100">Total Revenue</h2>
+                                <div>
+                                    <div x-data="{ dropdown: false}" class="ltr:ml-auto rtl:mr-auto dropdown">
+                                        <a href="javaScript:;" class="text-black dark:text-white" @click="dropdown = !dropdown" @keydown.escape="dropdown = false">
+                                            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9 12.75C9.69036 12.75 10.25 13.3096 10.25 14C10.25 14.6904 9.69036 15.25 9 15.25C8.30964 15.25 7.75 14.6904 7.75 14C7.75 13.3096 8.30964 12.75 9 12.75Z" fill="currentColor"></path>
+                                                <path d="M14 12.75C14.6904 12.75 15.25 13.3096 15.25 14C15.25 14.6904 14.6904 15.25 14 15.25C13.3096 15.25 12.75 14.6904 12.75 14C12.75 13.3096 13.3096 12.75 14 12.75Z" fill="currentColor"></path>
+                                                <path d="M20.25 14C20.25 13.3096 19.6904 12.75 19 12.75C18.3096 12.75 17.75 13.3096 17.75 14C17.75 14.6904 18.3096 15.25 19 15.25C19.6904 15.25 20.25 14.6904 20.25 14Z" fill="currentColor"></path>
+                                            </svg>
+                                        </a>
+                                        <ul x-show="dropdown" @click.away="dropdown = false" x-transition="" x-transition.duration.300ms="" class=" whitespace-nowrap ltr:right-0 rtl:left-0">
+                                            <li><a href="javascript:;">Weekly</a></li>
+                                            <li><a href="javascript:;">Monthly</a></li>
+                                            <li><a href="javascript:;">Yearly</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div id="chart5" dir="ltr"></div>
+                            </div>
+                        </div>
+                        <div class="p-5 bg-white border rounded border-black/10 dark:bg-darklight dark:border-darkborder">
+                            <h2 class="mb-4 text-base font-semibold capitalize text-slate-800 dark:text-slate-100">Top Traffic by Source</h2>
+                            <div class="grid grid-cols-1 gap-4">
+                                <div class="space-y-1">
+                                    <div class="flex items-center gap-4">
+                                        <span class="flex items-center justify-center rounded size-10 text-purple bg-purple/20">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                                <path d="M10.3645 19.8327L12.2941 16.4905C12.1969 16.4968 12.0988 16.5 12 16.5C10.3037 16.5 8.82656 15.5614 8.0597 14.1752L4.79459 8.51986C4.28545 9.57206 4 10.7527 4 12C4 15.8578 6.73064 19.0778 10.3645 19.8327ZM12.5897 19.9786C16.7326 19.6767 20 16.2199 20 12C20 11.1269 19.8601 10.2865 19.6016 9.5H15.7422C16.2209 10.215 16.5 11.0749 16.5 12C16.5 12.8477 16.2656 13.6406 15.8581 14.3175L12.5897 19.9786ZM14.1434 13.2875L14.1651 13.25C14.3782 12.8824 14.5 12.4554 14.5 12C14.5 10.6193 13.3807 9.5 12 9.5C10.6193 9.5 9.5 10.6193 9.5 12C9.5 12.4383 9.6128 12.8503 9.81094 13.2084L9.83494 13.25C10.2669 13.9973 11.0747 14.5 12 14.5C12.9098 14.5 13.7061 14.014 14.1434 13.2875ZM6.03522 6.66871L7.9635 10.0086C8.69821 8.52222 10.2297 7.5 12 7.5H18.6153C17.1753 5.38723 14.7497 4 12 4C9.62968 4 7.50014 5.03086 6.03522 6.66871ZM12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22Z" fill="currentColor"></path>
+                                            </svg>
+                                        </span>
+                                        <div>
+                                            <p class="dark:text-white">Chrome</p>
+                                            <p class="text-muted">Top Browser</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between gap-4">
+                                        <div class="relative w-full h-1 bg-black/10 dark:bg-darkborder rounded-2xl">
+                                            <div class="bg-purple h-full w-[56%] rounded-2xl"></div>
+                                        </div>
+                                        <p class="text-purple text-[15px] leading-[22px] font-medium flex-none">
+                                            56%
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="space-y-1">
+                                    <div class="flex items-center gap-4">
+                                        <span class="flex items-center justify-center text-black rounded size-10 dark:text-white bg-black/20 dark:bg-white/10">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                                <path d="M17.8133 6.50295L13.4152 13.4142L6.50392 17.8123C7.70928 18.9527 9.26918 19.7222 11.001 19.9381V18H13.001V19.9381C14.4617 19.756 15.8001 19.18 16.9066 18.3199L15.5365 16.9497L16.9507 15.5355L18.3208 16.9056C19.181 15.7991 19.7569 14.4607 19.9391 13H18.001V11H19.9391C19.7231 9.2682 18.9536 7.70831 17.8133 6.50295ZM17.498 6.18771C16.2927 5.04733 14.7328 4.27785 13.001 4.06189V6H11.001V4.06189C9.54027 4.24404 8.20186 4.81999 7.09533 5.68014L8.46544 7.05025L7.05123 8.46447L5.68112 7.09436C4.82097 8.20088 4.24502 9.53929 4.06287 11H6.00098V13H4.06287C4.27882 14.7318 5.04831 16.2917 6.18868 17.4971L10.5868 10.5858L17.498 6.18771ZM12.001 22C6.47813 22 2.00098 17.5228 2.00098 12C2.00098 6.47715 6.47813 2 12.001 2C17.5238 2 22.001 6.47715 22.001 12C22.001 17.5228 17.5238 22 12.001 22Z" fill="currentColor"></path>
+                                            </svg>
+                                        </span>
+                                        <div>
+                                            <p class="dark:text-white">Safari</p>
+                                            <p class="text-muted">Top Browser</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between gap-4">
+                                        <div class="relative w-full h-1 bg-black/10 dark:bg-darkborder rounded-2xl">
+                                            <div class="bg-black dark:bg-white h-full w-[86%] rounded-2xl"></div>
+                                        </div>
+                                        <p class="text-black dark:text-white text-[15px] leading-[22px] font-medium flex-none">
+                                            86%
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="space-y-1">
+                                    <div class="flex items-center gap-4">
+                                        <span class="flex items-center justify-center rounded size-10 text-danger bg-danger/20">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                                <path d="M12.001 2C17.5238 2 22.001 6.47715 22.001 12C22.001 17.5228 17.5238 22 12.001 22C6.47813 22 2.00098 17.5228 2.00098 12C2.00098 10.5365 2.31538 9.14635 2.88033 7.89353C3.34744 6.95503 4.11409 6.01955 4.73082 5.7004C4.07759 6.98266 3.75823 8.24073 3.69049 9.08266C4.14533 7.58266 5.00622 6.32621 6.21106 5.43911C8.27719 3.92016 11.059 3.85202 12.1671 4.81976C10.1107 5.52581 7.87073 8.36653 8.36428 11.6952C8.44419 12.2447 8.60906 12.7785 8.85299 13.2774C8.46912 12.2661 8.43525 10.8435 9.05461 9.91935C9.74654 8.88911 10.7332 8.67137 11.2607 8.78266C11.0526 8.73911 10.5929 9.61936 10.5252 9.77419C10.3523 10.1679 10.2664 10.5943 10.2736 11.0242C10.2888 11.9223 10.6594 12.7778 11.3042 13.4032C13.2256 15.2754 16.3268 14.5387 17.7155 12.4016C18.6687 10.9306 18.7848 8.43427 17.5607 6.4504C17.2554 5.96696 16.8913 5.52325 16.4768 5.12944C14.6262 3.36387 11.9979 2.56054 9.49503 2.92549C8.38907 3.10214 7.44765 3.42052 6.67077 3.88065C7.75554 2.79776 9.9123 2 12.001 2ZM6.87552 7.7048C4.62257 8.48634 3.37469 10.8751 4.29738 14.165C5.22008 17.4549 8.19356 19.8873 11.7518 19.9962L12.001 20C16.2525 20 19.7295 16.6835 19.9858 12.4965L19.995 12.284C19.8654 12.6327 19.7118 12.958 19.5321 13.2648L19.3925 13.4914C17.2881 16.7299 12.7109 17.5664 9.91169 14.8388C9.52745 14.4661 9.20448 14.042 8.94958 13.5821L8.84398 13.381C7.10788 12.994 6.26027 12.0549 6.30116 10.5637C6.32833 9.5728 6.53175 8.6049 6.87552 7.7048Z" fill="currentColor"></path>
+                                            </svg>
+                                        </span>
+                                        <div>
+                                            <p class="dark:text-white">Forefox</p>
+                                            <p class="text-muted">Top Browser</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between gap-4">
+                                        <div class="relative w-full h-1 bg-black/10 dark:bg-darkborder rounded-2xl">
+                                            <div class="bg-danger h-full w-[65%] rounded-2xl"></div>
+                                        </div>
+                                        <p class="text-danger text-[15px] leading-[22px] font-medium flex-none">
+                                            65%
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="space-y-1">
+                                    <div class="flex items-center gap-4">
+                                        <span class="flex items-center justify-center rounded size-10 text-info bg-info/20">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                                <path d="M6.94904 18.2042C6.30026 16.775 6 15.201 6 14C6 12.5038 6.58998 10.907 7.60307 9.67679C8.24373 8.89885 9.0774 8.24143 10.0679 7.85877C9.58717 7.78813 9.06479 7.75 8.5 7.75C5.99051 7.75 4 9.6121 4 12C4 14.5028 5.14935 16.7372 6.94904 18.2042ZM12 20C12.9283 20 13.8197 19.8421 14.6488 19.5514C11.2851 18.9939 9.00087 16.9378 8.02881 14.5882C8.1242 15.6137 8.45824 16.8842 9.05806 17.9454C9.7767 19.2169 10.7531 20 12 20ZM16.5 12C16.5 12.474 16.4359 12.9117 16.3121 13.315C16.5177 13.3369 16.7475 13.35 17 13.35C18.7765 13.35 20 12.1161 20 10.5C20 7.37014 16.704 4 12 4C9.98053 4 8.13583 4.74827 6.72803 5.98269C7.29501 5.83052 7.89017 5.75 8.5 5.75C10.907 5.75 12.8964 6.35136 14.3071 7.46512C15.7378 8.59457 16.5 10.1977 16.5 12ZM12 9.5C10.6193 9.5 9.5 10.6193 9.5 12C9.5 14.5 11.8 17.7 16.5 17.7C16.9419 17.7 17.3394 17.6686 17.6957 17.6179C18.0046 17.574 18.2824 17.5155 18.531 17.4504C18.7234 17.4 18.8983 17.3456 19.0566 17.2909C19.194 17.2434 19.3189 17.1956 19.4319 17.15C19.5635 17.0969 19.679 17.0466 19.7794 17.0029C19.9878 16.9122 20.1306 16.85 20.2161 16.85C20.4 16.85 20.5 16.95 20.5 17.15C20.5 17.306 20.4291 17.4257 20.2161 17.7129C20.1745 17.7691 20.1274 17.8317 20.0743 17.9022L20.0007 18C19.8289 18.2288 19.6475 18.4499 19.4571 18.6629C19.1995 18.951 18.9254 19.2241 18.6364 19.4807C16.8708 21.0481 14.5466 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6 22 10.5C22 13.3 19.8 15.35 17 15.35C15 15.35 13.6 14.7 13.6 14C13.6 13.8607 13.7092 13.7456 13.8515 13.5956C14.1178 13.3151 14.5 12.9123 14.5 12C14.5 10.6193 13.3807 9.5 12 9.5Z" fill="currentColor"></path>
+                                            </svg>
+                                        </span>
+                                        <div>
+                                            <p class="dark:text-white">Edge</p>
+                                            <p class="text-muted">Top Browser</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between gap-4">
+                                        <div class="relative w-full h-1 bg-black/10 dark:bg-darkborder rounded-2xl">
+                                            <div class="bg-info h-full w-[40%] rounded-2xl"></div>
+                                        </div>
+                                        <p class="text-info text-[15px] leading-[22px] font-medium flex-none">
+                                            40%
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gap-6 p-5 bg-white border rounded dark:bg-darklight dark:border-darkborder border-black/10">
+                            <h2 class="mb-4 text-base font-semibold capitalize text-slate-800 dark:text-slate-100">Users by Device</h2>
+                            <div id="chart6" dir="ltr"></div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div class="gap-6 p-5 bg-white border rounded dark:bg-darklight dark:border-darkborder border-black/10">
+                            <h2 class="mb-4 text-base font-semibold capitalize text-slate-800 dark:text-slate-100">Top Performing Pages</h2>
+                            <div class="overflow-auto">
+                                <table class="min-w-[640px] w-full">
+                                    <thead>
+                                        <tr class="ltr:text-left rtl:text-right">
+                                            <th>Page Name</th>
+                                            <th>Clicks</th>
+                                            <th>Sessions</th>
+                                            <th>% Change</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="text-muted">
+                                            <td>http://sliced.com/Index.html</td>
+                                            <td>55</td>
+                                            <td>2952</td>
+                                            <td>27% <span class="px-1 text-xs font-bold rounded bg-success/10 text-success">3.8%</span></td>
+                                        </tr>
+                                        <tr class="text-muted">
+                                            <td>http://google.com</td>
+                                            <td>229</td>
+                                            <td>2392</td>
+                                            <td>65% <span class="px-1 text-xs font-bold rounded bg-success/10 text-success">7.9%</span></td>
+                                        </tr>
+                                        <tr class="text-muted">
+                                            <td>http://facebook.com/Index.html</td>
+                                            <td>12</td>
+                                            <td>2792</td>
+                                            <td>37% <span class="px-1 text-xs font-bold rounded bg-danger/10 text-danger">19.8%</span></td>
+                                        </tr>
+                                        <tr class="text-muted">
+                                            <td>http://twitter.com</td>
+                                            <td>239</td>
+                                            <td>6534</td>
+                                            <td>74% <span class="px-1 text-xs font-bold rounded bg-danger/10 text-danger">23.3%</span></td>
+                                        </tr>
+                                        <tr class="text-muted">
+                                            <td>http://github.com/Index.html</td>
+                                            <td>53</td>
+                                            <td>3434</td>
+                                            <td>71% <span class="px-1 text-xs font-bold rounded bg-success/10 text-success">46.2%</span></td>
+                                        </tr>
+                                        <tr class="text-muted">
+                                            <td>http://instagram.com</td>
+                                            <td>65</td>
+                                            <td>123</td>
+                                            <td>69% <span class="px-1 text-xs font-bold rounded bg-danger/10 text-danger">6.89%</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="gap-6 p-5 bg-white border rounded dark:bg-darklight dark:border-darkborder border-black/10">
+                            <h2 class="mb-4 text-base font-semibold capitalize text-slate-800 dark:text-slate-100">Users by Countries</h2>
+                            <div class="overflow-auto">
+                                <table class="min-w-[640px] w-full">
+                                    <thead>
+                                        <tr class="ltr:text-left rtl:text-right">
+                                            <th>Countries Name</th>
+                                            <th>Device</th>
+                                            <th>Age</th>
+                                            <th>Sessions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="text-muted">
+                                            <td>Ireland</td>
+                                            <td>Desktop</td>
+                                            <td>18</td>
+                                            <td>2.3K <span class="px-1 text-xs font-bold rounded bg-success/10 text-success">3.8%</span></td>
+                                        </tr>
+                                        <tr class="text-muted">
+                                            <td>United States</td>
+                                            <td>Mobile</td>
+                                            <td>24 - 36</td>
+                                            <td>879 <span class="px-1 text-xs font-bold rounded bg-success/10 text-success">7.9%</span></td>
+                                        </tr>
+                                        <tr class="text-muted">
+                                            <td>Germany</td>
+                                            <td>Tablet</td>
+                                            <td>50</td>
+                                            <td>340 <span class="px-1 text-xs font-bold rounded bg-danger/10 text-danger">19.8%</span></td>
+                                        </tr>
+                                        <tr class="text-muted">
+                                            <td>United Kingdom</td>
+                                            <td>Desktop</td>
+                                            <td>24 - 36</td>
+                                            <td>5.4K <span class="px-1 text-xs font-bold rounded bg-danger/10 text-danger">23.3%</span></td>
+                                        </tr>
+                                        <tr class="text-muted">
+                                            <td>India</td>
+                                            <td>Tablet</td>
+                                            <td>18</td>
+                                            <td>1.3K <span class="px-1 text-xs font-bold rounded bg-success/10 text-success">46.2%</span></td>
+                                        </tr>
+                                        <tr class="text-muted">
+                                            <td>Singapore</td>
+                                            <td>Mobile</td>
+                                            <td>18 - 24</td>
+                                            <td>699 <span class="px-1 text-xs font-bold rounded bg-danger/10 text-danger">6.89%</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End All Card -->
+                <!-- Start Footer -->
+                <footer class="py-2 text-center text-black dark:text-darkmuted ltr:md:text-left rtl:md:text-right">
+                    <span class="hidden ltr:float-right rtl:float-left md:inline-block">
+                        Crafted with
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4 inline-block relative -mt-[2px]">
+                            <path d="M12.001 4.52853C14.35 2.42 17.98 2.49 20.2426 4.75736C22.5053 7.02472 22.583 10.637 20.4786 12.993L11.9999 21.485L3.52138 12.993C1.41705 10.637 1.49571 7.01901 3.75736 4.75736C6.02157 2.49315 9.64519 2.41687 12.001 4.52853Z" class="fill-purple"></path>
+                        </svg>
+                        by
+                        <a href="javascript:void(0);">SRBThemes</a>
+                    </span>
+                    <p x-data="{ year: new Date().getFullYear() }">
+                        © <span x-text="year"></span> Sliced.
+                    </p>
+                </footer>
+                <!-- End Footer -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<button type="button" class="fixed z-50 px-4 text-white border-gray-200 shadow-lg h-11 ltr:right-0 rtl:left-0 bg-purple ltr:rounded-l-md rtl:rounded-r-md top-1/3" @click="$store.app.direction = ($store.app.direction === 'ltr') ? 'rtl' : 'ltr'"><span class="rtl:hidden">RTL</span> <span class="ltr:hidden">LTR</span></button>
+
+<script src="js/cdn.min_1.js"></script>
+
+<script src="js/cdn.min.js"></script>
+
+
+<script src="js/apexcharts.min.js"></script>
+
+<script src="js/appexchart-app.js"></script>
+
+
+
+</body></html>
