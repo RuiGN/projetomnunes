@@ -1,0 +1,66 @@
+{
+  "backup": {
+    "algorithm": "Fernet (AES-128-CBC + HMAC-SHA256)",
+    "ciphertext_integrity_verified": true,
+    "ciphertext_sha256": "1e9336e9585ed0b5942194f68b5a0ddb53030ddc9565ce907a8a87776cc49c7a",
+    "encrypted": true,
+    "key_persisted": false,
+    "manifest_sha256": "be7f6e0801d8bb745cae2edf133af1d34309bfc34074b50842466e9ce78f922c",
+    "persisted_before_restore": true,
+    "provenance_verified": true
+  },
+  "data_classification": "synthetic-only",
+  "exercise_scope": "format-level encrypted SQLite restore; production PostgreSQL and object storage restore remains an environment-specific operational exercise",
+  "exercise_started_at": "2026-09-01T08:44:26.234885+00:00",
+  "objectives_seconds": {
+    "rpo": 300.0
+  },
+  "recovery_checkpoint_at": "2026-09-01T08:44:26.264959+00:00",
+  "restore": {
+    "corrupted_backup_rejected": true,
+    "integrity_verified": true,
+    "isolated": true,
+    "restored_record_count": 3,
+    "source_record_count": 3,
+    "tenant_isolation_verified": true
+  },
+  "schema_version": 2,
+  "simulation": {
+    "actions_exercised": [
+      "opened restricted incident record",
+      "revoked isolated exercise credential",
+      "recorded notification decision",
+      "verified evidence chain of custody"
+    ],
+    "chain_of_custody_verified": true,
+    "containment_verified": true,
+    "corrective_actions": [
+      {
+        "action": "Run the provider-specific PostgreSQL/object-storage restore drill.",
+        "due_at": "2026-09-01T08:44:26+00:00",
+        "owner": "Platform Operations"
+      },
+      {
+        "action": "Review the responder contact roster.",
+        "due_at": "2026-09-01T08:44:26+00:00",
+        "owner": "Incident Commander"
+      }
+    ],
+    "evidence_manifest_sha256": "1d822395d98fd71f8de6a51df41ef1c1abac48e05a23dcac9a591dbf92434133",
+    "evidence_preserved": true,
+    "failures": [],
+    "failures_exercised": [
+      "tampered encrypted backup rejected"
+    ],
+    "incident_id": "INC-DRILL-6422a368-f0f9-491f-818a-36a6431f1753",
+    "incident_record_verified": true,
+    "notification_assessment_verified": true,
+    "scenario": "suspected credential compromise during restore"
+  },
+  "status": "passed",
+  "timings_seconds": {
+    "rpo_observed": 0.00579,
+    "rto_observed": 0.001965,
+    "total": 0.036411
+  }
+}

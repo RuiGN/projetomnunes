@@ -1,0 +1,135 @@
+"""URL routes for the PRD 8.12.2 course authoring surface (slice 1)."""
+
+from django.urls import path
+
+from .learning_views import (
+    content_certificate_verify,
+    content_cohort_create,
+    content_cohort_detail,
+    content_cohort_member_add,
+    content_course_authoring_detail,
+    content_course_certificate,
+    content_course_create,
+    content_course_enroll,
+    content_course_lesson_create,
+    content_course_module_create,
+    content_course_module_detail,
+    content_course_prerequisite_add,
+    content_course_publish,
+    content_learning_authoring_index,
+    content_lesson_event,
+    content_lesson_player,
+    content_quiz_create,
+    content_quiz_detail,
+    content_quiz_feedback,
+    content_quiz_participate,
+    content_quiz_publish,
+    content_quiz_question_create,
+    content_quiz_submit,
+)
+
+urlpatterns = [
+    path("", content_learning_authoring_index, name="content_learning_authoring_index"),
+    path("cursos/novo/", content_course_create, name="content_course_create"),
+    path("coortes/nova/", content_cohort_create, name="content_cohort_create"),
+    path(
+        "<uuid:course_id>/matricula/",
+        content_course_enroll,
+        name="content_course_enroll",
+    ),
+    path(
+        "<uuid:course_id>/questionarios/",
+        content_quiz_create,
+        name="content_quiz_create",
+    ),
+    path(
+        "questionarios/<uuid:quiz_id>/",
+        content_quiz_detail,
+        name="content_quiz_detail",
+    ),
+    path(
+        "questionarios/<uuid:quiz_id>/questoes/",
+        content_quiz_question_create,
+        name="content_quiz_question_create",
+    ),
+    path(
+        "questionarios/<uuid:quiz_id>/publicar/",
+        content_quiz_publish,
+        name="content_quiz_publish",
+    ),
+    path(
+        "questionarios/<uuid:quiz_id>/participar/",
+        content_quiz_participate,
+        name="content_quiz_participate",
+    ),
+    path(
+        "questionarios/<uuid:quiz_id>/enviar/",
+        content_quiz_submit,
+        name="content_quiz_submit",
+    ),
+    path(
+        "questionarios/tentativas/<uuid:attempt_id>/",
+        content_quiz_feedback,
+        name="content_quiz_feedback",
+    ),
+    path(
+        "certificados/<str:public_code>/",
+        content_certificate_verify,
+        name="content_certificate_verify",
+    ),
+    path(
+        "coortes/<uuid:cohort_id>/",
+        content_cohort_detail,
+        name="content_cohort_detail",
+    ),
+    path(
+        "coortes/<uuid:cohort_id>/membros/",
+        content_cohort_member_add,
+        name="content_cohort_member_add",
+    ),
+    path(
+        "<uuid:course_id>/certificado/",
+        content_course_certificate,
+        name="content_course_certificate",
+    ),
+    path(
+        "<uuid:course_id>/aulas/<uuid:lesson_id>/",
+        content_lesson_player,
+        name="content_lesson_player",
+    ),
+    path(
+        "<uuid:course_id>/aulas/<uuid:lesson_id>/evento/",
+        content_lesson_event,
+        name="content_lesson_event",
+    ),
+    path(
+        "<uuid:course_id>/",
+        content_course_authoring_detail,
+        name="content_course_authoring_detail",
+    ),
+    path(
+        "<uuid:course_id>/modulos/",
+        content_course_module_create,
+        name="content_course_module_create",
+    ),
+    path(
+        "<uuid:course_id>/modulos/<uuid:module_id>/",
+        content_course_module_detail,
+        name="content_course_module_detail",
+    ),
+    path(
+        "<uuid:course_id>/modulos/<uuid:module_id>/aulas/",
+        content_course_lesson_create,
+        name="content_course_lesson_create",
+    ),
+    path(
+        "<uuid:course_id>/pre-requisitos/",
+        content_course_prerequisite_add,
+        name="content_course_prerequisite_add",
+    ),
+    path(
+        "<uuid:course_id>/publicar/",
+        content_course_publish,
+        name="content_course_publish",
+    ),
+]

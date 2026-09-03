@@ -1,0 +1,73 @@
+{% load accessible_forms %}
+<form id="{{ form_id }}"
+  class="form-stack"
+  method="post"
+  enctype="multipart/form-data"
+  novalidate
+  data-form-guard
+  data-dirty-message="Há alterações não salvas."
+>
+  {% csrf_token %}
+  {% if form.errors %}
+    <div
+      class="form-error-summary"
+      role="alert"
+      tabindex="-1"
+      data-focus-error-summary
+      aria-labelledby="{{ form_id }}-error-title"
+    >
+      <h2 id="{{ form_id }}-error-title">Revise os campos indicados</h2>
+      <p>Não foi possível salvar. Corrija os problemas abaixo.</p>
+      <ul>
+        {% for field in form %}
+          {% for error in field.errors %}
+            <li><a href="#{{ field|error_target_id }}">{{ field.label }}: {{ error }}</a></li>
+          {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  {% for field in form %}
+    <div class="form-field{% if field.errors %} has-error{% endif %}">
+      {% if field.field.widget.input_type == "radio" %}
+        <fieldset class="choice-group">
+          <legend>{{ field.label }}{% if field.field.required %} <span aria-hidden="true">*</span>{% endif %}</legend>
+          {{ field|accessible_widget }}
+        </fieldset>
+      {% elif field.field.widget.input_type == "checkbox" %}
+        <div class="{% if field.name == 'enabled' %}switch-control{% else %}choice-control{% endif %}">
+          {{ field|accessible_widget }}
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        </div>
+      {% else %}
+        <label for="{{ field.id_for_label }}">
+          {{ field.label }}{% if field.field.required %} <span aria-hidden="true">*</span>{% endif %}
+        </label>
+        {{ field|accessible_widget }}
+      {% endif %}
+
+      {% if field.help_text %}
+        <p class="field-help" id="{{ field.auto_id }}_helptext">{{ field.help_text }}</p>
+      {% endif %}
+      {% for error in field.errors %}
+        <p class="field-error" id="{{ field.auto_id }}_error_{{ forloop.counter0 }}">{{ error }}</p>
+      {% endfor %}
+    </div>
+  {% endfor %}
+
+  <div class="form-actions">
+    <button class="primary-action" type="submit" data-submit-button>{{ submit_label }}</button>
+    {% if destructive_action %}
+      <button
+        class="destructive-action"
+        type="submit"
+        name="action"
+        value="delete"
+        data-destructive-action
+        data-confirmation="{{ destructive_action.confirmation }}"
+      >{{ destructive_action.label }}</button>
+    {% endif %}
+  </div>
+</form>

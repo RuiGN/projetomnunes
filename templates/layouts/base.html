@@ -1,0 +1,26 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page_title }} · Plataforma de cuidado</title>
+  <script src="{% static 'js/theme.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'css/framework.css' %}">
+  <link rel="stylesheet" href="{% static 'css/tokens.css' %}">
+  <link rel="stylesheet" href="{% static 'css/workspace.css' %}">
+  {% if active_clinic_branding %}
+    <style>:root { --clinic-primary: {{ active_clinic_branding.primary_color }}; --clinic-secondary: {{ active_clinic_branding.secondary_color }}; }</style>
+  {% endif %}
+  <script defer src="{% static 'js/workspace-navigation.js' %}"></script>
+  <script defer src="{% static 'js/form-behaviors.js' %}"></script>
+  <script defer src="{% static 'js/lesson-player.js' %}"></script>
+  <script defer src="{% static 'vendor/apexcharts/apexcharts.min.js' %}"></script>
+  <script defer src="{% static 'js/charts.js' %}"></script>
+  <script defer src="{% static 'vendor/alpine/alpine-3.14.1.min.js' %}"></script>
+</head>
+<body class="workspace-body">
+  <a class="skip-link" href="#main-content">Ir para o conteúdo principal</a>
+  {% block workspace %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,10 @@
+<section class="content-state {% if state.kind == 'loading' %}state-loading{% elif state.kind == 'empty' %}state-empty{% elif state.kind == 'no_results' %}state-no_results{% elif state.kind == 'unavailable' %}state-unavailable{% elif state.kind == 'error' %}state-error{% elif state.kind == 'restricted' %}state-restricted{% else %}state-unavailable{% endif %}"{% if state.announce %} role="status" aria-live="polite"{% endif %}>
+  <span class="content-state-icon" aria-hidden="true">{% if state.kind == 'loading' %}◌{% elif state.kind == 'empty' %}◇{% elif state.kind == 'no_results' %}⌕{% elif state.kind == 'error' %}!{% elif state.kind == 'restricted' %}⊘{% else %}○{% endif %}</span>
+  <div class="content-state-body">
+    <h2>{{ state.title }}</h2>
+    <p>{{ state.message }}</p>
+    {% if state.action %}
+      <a class="content-state-action" href="{{ state.action.url }}">{{ state.action.label }}</a>
+    {% endif %}
+  </div>
+</section>

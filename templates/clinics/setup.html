@@ -1,0 +1,109 @@
+{% extends layout_template %}
+{% load accessible_forms %}
+
+{% block content %}
+<section class="welcome-panel" aria-labelledby="clinic-setup-title">
+  <div>
+    <p class="workspace-eyebrow">Configuração da clínica ativa</p>
+    <h1 id="clinic-setup-title">Configurar clínica</h1>
+    <p class="workspace-intro">Revise cada etapa na ordem. As mudanças ficam restritas a {{ active_clinic.name }} e são registradas na auditoria.</p>
+  </div>
+</section>
+
+<nav aria-label="Etapas da configuração" class="breadcrumbs">
+  <ol>
+    {% for stage_key, stage_label in setup_stages %}
+      <li{% if current_stage == stage_key %} aria-current="step"{% endif %}>
+        <a href="?stage={{ stage_key }}">{{ stage_label }}</a>
+      </li>
+    {% endfor %}
+  </ol>
+</nav>
+
+<section class="component-section" aria-labelledby="current-stage-title">
+  {% if current_stage == "identity" %}
+    <p class="workspace-eyebrow">Etapa 1 de 5</p>
+    <h2 id="current-stage-title">Dados institucionais</h2>
+    <p>Informe identificação, contato administrativo e endereço estruturado.</p>
+  {% elif current_stage == "operations" %}
+    <p class="workspace-eyebrow">Etapa 2 de 5</p>
+    <h2 id="current-stage-title">Atendimento e horários</h2>
+    <p>Defina fuso, idioma, canais, semana operacional e orientação fora do horário.</p>
+  {% elif current_stage == "branding" %}
+    <p class="workspace-eyebrow">Etapa 3 de 5</p>
+    <h2 id="current-stage-title">Identidade visual</h2>
+    <p>Envie um logotipo raster seguro e escolha cores com contraste adequado.</p>
+  {% elif current_stage == "modules" %}
+    <p class="workspace-eyebrow">Etapa 4 de 5</p>
+    <h2 id="current-stage-title">Módulos</h2>
+    <p>Ative somente recursos necessários. Pré-requisitos são verificados pelo servidor.</p>
+  {% else %}
+    <p class="workspace-eyebrow">Etapa 5 de 5</p>
+    <h2 id="current-stage-title">Revisão</h2>
+    {% if clinic_configuration %}
+      <dl>
+        <dt>Nome de exibição</dt><dd>{{ clinic_configuration.display_name }}</dd>
+        <dt>Fuso horário</dt><dd>{{ clinic_configuration.timezone_name }}</dd>
+        <dt>Idioma</dt><dd>{{ clinic_configuration.language_code }}</dd>
+        <dt>Módulos ativos</dt><dd>{{ clinic_configuration.enabled_modules|join:", "|default:"Nenhum" }}</dd>
+      </dl>
+    {% else %}
+      <p>Comece pelos dados institucionais para montar a revisão.</p>
+    {% endif %}
+  {% endif %}
+
+  {% if current_stage != "review" %}
+    <form method="post" enctype="multipart/form-data" class="form-stack" novalidate data-form-guard data-dirty-message="Há alterações não salvas.">
+      {% csrf_token %}
+      <input type="hidden" name="stage" value="{{ current_stage }}">
+      {% if form.errors %}
+        <div class="form-error-summary" role="alert" tabindex="-1" data-focus-error-summary aria-labelledby="clinic-setup-error-title">
+          <h3 id="clinic-setup-error-title">Revise os campos informados</h3>
+          <ul>
+            {% for field in form %}
+              {% for error in field.errors %}
+                <li><a href="#{{ field|error_target_id }}">{{ field.label }}: {{ error }}</a></li>
+              {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      {% for field in form %}
+        <div class="form-field{% if field.errors %} has-error{% endif %}">
+          {% if field.field.widget.input_type == "checkbox" %}
+            <fieldset class="choice-group">
+              <legend>{{ field.label }}{% if field.field.required %} <span aria-hidden="true">*</span>{% endif %}</legend>
+              {{ field|accessible_widget }}
+            </fieldset>
+          {% else %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span aria-hidden="true">*</span>{% endif %}</label>
+            {{ field|accessible_widget }}
+          {% endif %}
+          {% if field.help_text %}<p class="field-help" id="{{ field.auto_id }}_helptext">{{ field.help_text }}</p>{% endif %}
+          {% for error in field.errors %}<p class="field-error" id="{{ field.auto_id }}_error_{{ forloop.counter0 }}">{{ error }}</p>{% endfor %}
+        </div>
+      {% endfor %}
+      {% if current_stage == "branding" %}
+        <div
+          class="content-card clinic-brand-preview"
+          aria-live="polite"
+          data-brand-preview
+          {% if clinic_configuration %}style="--clinic-primary: {{ clinic_configuration.primary_color }}; --clinic-secondary: {{ clinic_configuration.secondary_color }}"{% endif %}
+        >
+          <h3>Pré-visualização da marca</h3>
+          <img
+            {% if clinic_configuration.logo %}src="{{ clinic_configuration.logo.url }}"{% endif %}
+            alt="Pré-visualização do logotipo de {{ clinic_configuration.display_name|default:active_clinic.name }}"
+            class="clinic-brand-preview__logo{% if not clinic_configuration.logo %} hidden{% endif %}"
+            data-brand-preview-logo
+          >
+          <p>As cores serão aplicadas aos tokens permitidos nos temas claro e escuro após a validação de contraste.</p>
+          <button type="button" class="primary-action">Exemplo de ação principal</button>
+        </div>
+      {% endif %}
+      <button type="submit" class="primary-action" data-submit-button>Salvar e continuar</button>
+    </form>
+  {% endif %}
+</section>
+{% endblock %}

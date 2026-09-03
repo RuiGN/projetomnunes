@@ -1,0 +1,54 @@
+{% extends layout_template %}
+
+{% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem;">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1 style="margin: 0;">Unidades e salas</h1>
+    <div style="display: flex; gap: 0.5rem;">
+      <a href="{% url 'unit_create' %}" class="button button-primary">Nova unidade</a>
+      <a href="{% url 'room_create' %}" class="button">Nova sala</a>
+    </div>
+  </div>
+
+  {% if units %}
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Unidade</th>
+        <th scope="col">Fuso horário</th>
+        <th scope="col">Salas</th>
+        <th scope="col">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for unit in units %}
+      <tr>
+        <td>{{ unit.name }}{% if not unit.is_active %} (inativa){% endif %}</td>
+        <td>{{ unit.timezone_name }}</td>
+        <td>
+          {% for room in unit.rooms.all %}
+            {{ room.name }}{% if not room.is_active %} (inativa){% endif %}{% if not forloop.last %}, {% endif %}
+          {% empty %}
+            —
+          {% endfor %}
+        </td>
+        <td>
+          <a href="{% url 'unit_update' unit.pk %}" class="button">Editar</a>
+          {% if unit.is_active %}
+          <form method="post" action="{% url 'unit_deactivate' unit.pk %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="button button-danger">Inativar</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>Nenhuma unidade cadastrada.</p>
+  {% endif %}
+</div>
+{% endblock %}

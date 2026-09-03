@@ -1,0 +1,18 @@
+{% extends layout_template %}
+
+{% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 900px; margin: 0 auto; display: grid; gap: 20px;">
+  <header class="journal-header">
+    <div>
+      <span class="workspace-eyebrow">Meu acompanhamento</span>
+      <h1 class="page-title" style="margin: 0;">Minhas Metas</h1>
+    </div>
+    <a href="{% url 'goal_create' %}" class="primary-action" style="text-decoration: none; padding: 10px 18px; border-radius: 9px; font-weight: 600;">Nova meta</a>
+  </header>
+  <div id="goals-http-placeholder" style="padding: 12px; border: 1px solid var(--color-border); border-radius: 12px; background: var(--color-surface);">
+    Painel de metas carregado.
+  </div>
+</div>
+{% endblock %}

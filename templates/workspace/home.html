@@ -1,0 +1,48 @@
+{% extends layout_template %}
+
+{% block content %}
+<section class="welcome-panel" aria-labelledby="workspace-title">
+  <div>
+    <p class="workspace-eyebrow">Contexto operacional</p>
+    <h1 id="workspace-title">Área de trabalho</h1>
+    <p class="workspace-intro">Acesse as funções autorizadas da clínica ativa. Novos módulos aparecerão aqui conforme forem disponibilizados.</p>
+  </div>
+  <div class="context-chip">
+    <span>Ambiente atual</span>
+    <strong>{{ active_clinic.name }}</strong>
+  </div>
+</section>
+<section class="component-section" aria-labelledby="operational-summary-title">
+  <div class="section-heading">
+    <div>
+      <p class="workspace-eyebrow">Resumo factual</p>
+      <h2 id="operational-summary-title">Visão operacional</h2>
+    </div>
+  </div>
+  <div class="summary-card-grid">
+    {% for card in summary_cards|slice:":2" %}
+      {% include "components/summary_card.html" with card=card only %}
+    {% endfor %}
+  </div>
+</section>
+<section class="component-section" id="activity-list" aria-labelledby="activity-title">
+  <div class="section-heading">
+    <div>
+      <p class="workspace-eyebrow">Registros sintéticos</p>
+      <h2 id="activity-title">Atividades da plataforma</h2>
+    </div>
+    <form class="table-filter" method="get">
+      <label for="activity-search">Buscar atividade</label>
+      <input type="hidden" name="order" value="{{ current_order }}">
+      <input id="activity-search" name="q" type="search" value="{{ search_query }}">
+      <button type="submit">Buscar</button>
+    </form>
+  </div>
+  {% if activity_table.rows %}
+    {% include "components/responsive_table.html" with table=activity_table only %}
+    {% include "components/pagination.html" with pagination=activity_pagination only %}
+  {% else %}
+    {% include "components/content_state.html" with state=content_states.2 only %}
+  {% endif %}
+</section>
+{% endblock %}

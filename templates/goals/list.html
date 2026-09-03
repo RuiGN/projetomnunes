@@ -1,0 +1,89 @@
+{% extends layout_template %}
+{% load accessible_forms %}
+
+{% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 900px; margin: 0 auto; display: grid; gap: 20px;">
+  <header class="journal-header">
+    <div>
+      <span class="workspace-eyebrow">Meu acompanhamento</span>
+      <h1 class="page-title" style="margin: 0;">Minhas Metas</h1>
+      <p style="margin: 4px 0 0; color: var(--color-text-muted); font-size: 14px;">
+        Celebre cada pequena etapa. Pausar ou reabrir uma meta nunca é uma falha.
+      </p>
+    </div>
+    <a href="{% url 'goal_create' %}" class="primary-action" style="text-decoration: none; padding: 10px 18px; border-radius: 9px; font-weight: 600;">
+      <span aria-hidden="true">+</span> Nova meta
+    </a>
+  </header>
+
+  <nav class="table-filter" aria-label="Filtrar metas por estado" style="display: flex; flex-wrap: wrap; gap: 8px;">
+    {% for st, label in ""|center:0 %}
+    {% endfor %}
+    <a href="{% url 'goal_list' %}" class="calendar-nav-btn{% if not selected_status %} is-active{% endif %}" style="text-decoration: none;">Todas</a>
+    <a href="?status=active" class="calendar-nav-btn{% if selected_status == 'active' %} is-active{% endif %}" style="text-decoration: none;">Ativas</a>
+    <a href="?status=paused" class="calendar-nav-btn{% if selected_status == 'paused' %} is-active{% endif %}" style="text-decoration: none;">Pausadas</a>
+    <a href="?status=completed" class="calendar-nav-btn{% if selected_status == 'completed' %} is-active{% endif %}" style="text-decoration: none;">Concluídas</a>
+    <a href="?status=archived" class="calendar-nav-btn{% if selected_status == 'archived' %} is-active{% endif %}" style="text-decoration: none;">Arquivadas</a>
+  </nav>
+
+  {% if rows %}
+    <div style="display: grid; gap: 14px;">
+      {% for row in rows %}
+        <article class="journal-entry-card" aria-labelledby="goal-title-{{ row.goal.pk }}">
+          <header class="journal-entry-header">
+            <div>
+              <h2 id="goal-title-{{ row.goal.pk }}" style="margin: 0; font-size: 17px; font-weight: 700;">
+                <a href="{% url 'goal_detail' row.goal.pk %}" style="text-decoration: none; color: inherit;">{{ row.goal.title }}</a>
+              </h2>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; align-items: center;">
+                <span class="mood-badge mood-neutral">{{ row.goal.get_horizon_display }}</span>
+                <span class="mood-badge mood-neutral">Prioridade {{ row.goal.get_priority_display }}</span>
+                <span class="visibility-badge {% if row.goal.visibility == 'shareable' %}visibility-shareable{% elif row.goal.visibility == 'confirmation_required' %}visibility-confirmation{% else %}visibility-private{% endif %}">
+                  <span aria-hidden="true">●</span>
+                  {% if row.goal.visibility == 'shareable' %}Verde{% elif row.goal.visibility == 'confirmation_required' %}Amarelo{% else %}Vermelho (Privado){% endif %}
+                </span>
+                {% if row.goal.due_date %}
+                  <span class="journal-entry-date">Prazo: {{ row.goal.due_date|date:"d/m/Y" }}</span>
+                {% endif %}
+                <span class="visibility-badge {% if row.goal.status == 'completed' %}visibility-shareable{% elif row.goal.status == 'paused' %}visibility-confirmation{% else %}visibility-private{% endif %}">
+                  {{ row.goal.get_status_display }}
+                </span>
+              </div>
+            </div>
+            <a href="{% url 'goal_detail' row.goal.pk %}" class="calendar-nav-btn" style="font-size: 13px;">Abrir</a>
+          </header>
+          <div style="display: grid; gap: 4px;">
+            <span style="font-size: 13px; color: var(--color-text-muted);" aria-live="polite">
+              Progresso: {{ row.done }} de {{ row.total }} etapas concluídas ({{ row.percent }}%)
+            </span>
+            <div
+              role="progressbar"
+              aria-label="Progresso da meta {{ row.goal.title }}"
+              aria-valuenow="{{ row.percent }}"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              style="height: 8px; border-radius: 6px; background: var(--color-border); overflow: hidden;"
+            >
+              <div style="width: {{ row.percent }}%; height: 100%; background: var(--color-success);"></div>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="content-state" style="padding: 40px 24px; text-align: center; border: 1px dashed var(--color-border); border-radius: 14px; background: var(--color-surface);">
+      <p style="margin: 0 0 12px; font-size: 17px; font-weight: 600;">Nenhuma meta aqui ainda</p>
+      <p style="margin: 0 0 20px; color: var(--color-text-muted);">
+        {% if selected_status %}
+          Não há metas neste estado. Que tal começar com algo pequeno?
+        {% else %}
+          Metas são mais fáceis quando divididas em pequenas etapas. Comece com algo simples hoje.
+        {% endif %}
+      </p>
+      <a href="{% url 'goal_create' %}" class="primary-action" style="display: inline-flex; padding: 10px 18px; border-radius: 9px; text-decoration: none; font-weight: 600;">Criar minha primeira meta</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

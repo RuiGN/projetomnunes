@@ -1,0 +1,59 @@
+{% extends layout_template %}
+
+{% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 960px; margin: 0 auto; display: grid; gap: 20px;">
+  <header class="journal-header">
+    <div>
+      <span class="workspace-eyebrow">Acompanhamento</span>
+      <h1 class="page-title" style="margin: 0;">Minha evolução</h1>
+      <p style="margin: 4px 0 0; color: var(--color-text-muted); font-size: 14px;">
+        {{ data.period_start|date:"d/m/Y" }} – {{ data.period_end|date:"d/m/Y" }}
+      </p>
+    </div>
+  </header>
+
+  <div class="navigation-alert" role="note" style="padding: 12px 16px; border-radius: 10px;">
+    {{ non_diagnostic_notice }}
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+    <article class="journal-entry-card">
+      <p style="margin: 0; font-size: 13px; color: var(--color-text-muted);">Check-ins no período</p>
+      <p style="margin: 4px 0 0; font-size: 24px; font-weight: 700;">{{ data.checkin_count }}</p>
+    </article>
+    <article class="journal-entry-card">
+      <p style="margin: 0; font-size: 13px; color: var(--color-text-muted);">Metas em andamento</p>
+      <p style="margin: 4px 0 0; font-size: 24px; font-weight: 700;">{{ data.active_goals }}</p>
+    </article>
+    <article class="journal-entry-card">
+      <p style="margin: 0; font-size: 13px; color: var(--color-text-muted);">Exercícios concluídos</p>
+      <p style="margin: 4px 0 0; font-size: 24px; font-weight: 700;">{{ data.completed_exercises }}</p>
+    </article>
+    <article class="journal-entry-card">
+      <p style="margin: 0; font-size: 13px; color: var(--color-text-muted);">Próximas consultas</p>
+      <p style="margin: 4px 0 0; font-size: 24px; font-weight: 700;">{{ data.upcoming_appointments }}</p>
+    </article>
+  </div>
+
+  <section aria-labelledby="mood-heading">
+    <h2 id="mood-heading" style="font-size: 16px; font-weight: 700; margin: 0 0 10px;">Distribuição de humor (diário)</h2>
+    <div style="display: grid; gap: 8px;">
+      {% for count in data.mood_distribution %}
+        <div style="display: grid; grid-template-columns: 110px 1fr 40px; gap: 10px; align-items: center;">
+          <span style="font-size: 13px;">{{ forloop.counter }} · {% if forloop.counter == 1 %}Muito mal{% elif forloop.counter == 2 %}Mal{% elif forloop.counter == 3 %}Neutro{% elif forloop.counter == 4 %}Bem{% else %}Muito bem{% endif %}</span>
+          <div role="img" aria-label="Humor {{ forloop.counter }}: {{ count }} registro(s)" style="height: 14px; border-radius: 7px; background: var(--color-border); overflow: hidden;">
+            <div style="width: {{ count }}%; height: 100%; background: var(--color-primary); min-width: 2px;"></div>
+          </div>
+          <span style="font-size: 13px; text-align: right;">{{ count }}</span>
+        </div>
+      {% endfor %}
+    </div>
+    <p style="margin: 8px 0 0; font-size: 13px; color: var(--color-text-muted);">
+      Tabela equivalente: a barra de cada humor mostra a contagem de registros no período.
+      Comparações são apenas com seus próprios períodos; não indicam diagnóstico nem causalidade.
+    </p>
+  </section>
+</div>
+{% endblock %}

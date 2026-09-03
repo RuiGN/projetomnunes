@@ -1,0 +1,51 @@
+{% extends layout_template %}
+
+{% block title %}Questionário: {{ quiz.title }}{% endblock %}
+
+{% block content %}
+<main style="max-width:1080px;margin:0 auto;display:grid;gap:24px;">
+  <header>
+    <span class="workspace-eyebrow">Curso: {{ course.title }}</span>
+    <h1 class="page-title">{{ quiz.title }}</h1>
+    <p role="note" aria-live="polite" style="border:1px solid var(--color-border);border-radius:8px;padding:12px;">
+      {{ disclaimer }}
+    </p>
+    <p>Nota mínima: {{ quiz.minimum_grade }} · Tentativas: {{ quiz.max_attempts }} · {{ quiz.get_status_display }}</p>
+  </header>
+  <section class="card" style="padding:24px;display:grid;gap:16px;" aria-labelledby="questions-title">
+    <h2 id="questions-title">Questões</h2>
+    <ol style="display:grid;gap:8px;">
+      {% for question in questions %}
+      <li>Questão {{ question.position }}: {{ question.prompt }}</li>
+      {% empty %}
+      <li aria-live="polite">Nenhuma questão ainda.</li>
+      {% endfor %}
+    </ol>
+  </section>
+  {% if quiz.status == "draft" %}
+  <section class="card" style="padding:24px;display:grid;gap:12px;" aria-labelledby="add-question-title">
+    <h2 id="add-question-title">Adicionar questão</h2>
+    <form method="post" action="{% url 'content_quiz_question_create' quiz.pk %}" style="display:grid;gap:12px;">
+      {% csrf_token %}
+      <label for="question-prompt">Enunciado</label>
+      <textarea id="question-prompt" name="prompt" rows="2" required maxlength="2000"></textarea>
+      <label for="option-a">Opção A</label><input id="option-a" name="option_a" type="text" required />
+      <label for="option-b">Opção B</label><input id="option-b" name="option_b" type="text" required />
+      <label for="option-c">Opção C</label><input id="option-c" name="option_c" type="text" />
+      <label for="option-d">Opção D</label><input id="option-d" name="option_d" type="text" />
+      <label for="correct-key">Chave correta</label>
+      <input id="correct-key" name="correct_key" type="text" maxlength="4" required />
+      <label for="question-position">Posição</label>
+      <input id="question-position" name="position" type="number" min="1" value="{{ questions|length|add:1 }}" required />
+      <button type="submit">Adicionar questão</button>
+    </form>
+  </section>
+  <section class="card" style="padding:24px;">
+    <form method="post" action="{% url 'content_quiz_publish' quiz.pk %}">
+      {% csrf_token %}
+      <button type="submit">Publicar questionário</button>
+    </form>
+  </section>
+  {% endif %}
+</main>
+{% endblock %}

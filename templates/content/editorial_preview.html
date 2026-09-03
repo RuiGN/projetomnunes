@@ -1,0 +1,11 @@
+{% extends layout_template %}
+
+{% block title %}Pré-visualização: {{ content.title }}{% endblock %}
+
+{% block content %}
+<main class="editorial-preview" style="width:min(100%,820px);margin:0 auto;display:grid;gap:24px;">
+  <header><span class="workspace-eyebrow">Pré-visualização responsiva · versão {{ version.version }}</span><h1 class="page-title">{{ content.title }}</h1></header>
+  <article class="card" aria-label="Conteúdo pré-visualizado" style="padding:clamp(16px,4vw,32px);overflow-wrap:anywhere;">{{ version.body|safe }}</article>
+  <a href="{% url 'content_editorial_detail' content_id=content.pk %}">Voltar ao editor</a>
+</main>
+{% endblock %}

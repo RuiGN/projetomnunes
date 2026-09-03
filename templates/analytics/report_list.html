@@ -1,0 +1,59 @@
+{% extends layout_template %}
+{% load accessible_forms %}
+
+{% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 900px; margin: 0 auto; display: grid; gap: 20px;">
+  <header class="journal-header">
+    <div>
+      <span class="workspace-eyebrow">Exportações</span>
+      <h1 class="page-title" style="margin: 0;">Relatórios</h1>
+      <p style="margin: 4px 0 0; color: var(--color-text-muted); font-size: 14px;">
+        Relatórios expiram e cada download é registrado.
+      </p>
+    </div>
+  </header>
+
+  {% if can_generate %}
+    <div class="card" style="padding: 24px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-surface);">
+      <form class="form-stack" method="post" action="{% url 'report_generate' %}" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="form-field">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field|accessible_widget }}
+            {% for error in field.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+          </div>
+        {% endfor %}
+        <div class="form-actions">
+          <button type="submit" class="primary-action">Gerar relatório</button>
+        </div>
+      </form>
+    </div>
+  {% endif %}
+
+  {% if reports %}
+    <div style="display: grid; gap: 10px;">
+      {% for report in reports %}
+        <article class="journal-entry-card">
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between;">
+            <div>
+              <strong>{{ report.title }}</strong>
+              <span class="mood-badge mood-neutral">{{ report.get_kind_display }}</span>
+              <span style="font-size: 13px; color: var(--color-text-muted);">
+                {{ report.period_start|date:"d/m/Y" }} – {{ report.period_end|date:"d/m/Y" }}
+              </span>
+            </div>
+            <a href="{% url 'report_download' report.pk %}?key={{ report.download_key }}" class="calendar-nav-btn" style="text-decoration: none;">Baixar</a>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="content-state" style="padding: 40px 24px; text-align: center; border: 1px dashed var(--color-border); border-radius: 14px; background: var(--color-surface);">
+      <p style="margin: 0; color: var(--color-text-muted);">Nenhum relatório gerado ainda.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

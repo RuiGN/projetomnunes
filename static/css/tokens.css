@@ -1,0 +1,267 @@
+@font-face {
+  font-family: "Cerebri Sans";
+  src: url("../fonts/cerebrisans-regular.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cerebri Sans";
+  src: url("../fonts/cerebrisans-medium.woff") format("woff");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cerebri Sans";
+  src: url("../fonts/cerebrisans-semibold.woff") format("woff");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cerebri Sans";
+  src: url("../fonts/cerebrisans-bold.woff") format("woff");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "RemixIcon";
+  src:
+    url("../fonts/remixicon.woff2") format("woff2"),
+    url("../fonts/remixicon.woff") format("woff"),
+    url("../fonts/remixicon.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+}
+
+:root {
+  --color-brand: #6a69f5;
+  --color-brand-action: #5654e8;
+  --color-brand-soft: #f2f2ff;
+  --color-link: #3533d8;
+  --color-detached-surface: #f9fbfdbf;
+  --color-success: #50cd89;
+  --color-warning: #ffc700;
+  --color-danger: #f1416c;
+  --color-danger-text: #b4234d;
+  --color-info: #009ef7;
+  --color-text: #151515;
+  --color-text-secondary: #94989a;
+  --color-text-muted: #6b7280;
+  --color-canvas: #f9fbfd;
+  --color-surface: #ffffff;
+  --color-border: #e2e6eb;
+  --color-control-border: #767676;
+  --color-focus: #3533d8;
+  --color-focus-ring: #3533d8;
+  --font-sans: "Cerebri Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --color-canvas: #151515;
+  --color-surface: #1f1f1f;
+  --color-border: #323a46;
+  --color-control-border: #858f9f;
+  --color-text: #ffffff;
+  --color-text-muted: #c6c9cb;
+  --color-focus: #a9a8ff;
+  --color-focus-ring: #a9a8ff;
+  --color-danger-text: #ff8dac;
+  --color-link: #a9a8ff;
+  --color-brand-soft: #29294a;
+  --color-detached-surface: #1f1f1fe6;
+  color-scheme: dark;
+}
+
+.ds-page {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-text);
+  font-family: "Cerebri Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.ds-shell {
+  width: min(1120px, calc(100% - 32px));
+  margin-inline: auto;
+  padding-block: 40px 64px;
+}
+
+.ds-header,
+.ds-section,
+.ds-theme-panel {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+}
+
+.ds-header,
+.ds-section {
+  padding: 24px;
+}
+
+.ds-header {
+  margin-bottom: 24px;
+}
+
+.ds-section + .ds-section {
+  margin-top: 20px;
+}
+
+.ds-kicker {
+  margin: 0 0 8px;
+  color: var(--color-focus);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ds-title,
+.ds-heading,
+.ds-subheading {
+  margin-top: 0;
+  line-height: 1.2;
+}
+
+.ds-title {
+  margin-bottom: 12px;
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 700;
+}
+
+.ds-heading {
+  margin-bottom: 16px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.ds-subheading {
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.ds-muted {
+  color: var(--color-text-muted);
+}
+
+.ds-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.ds-swatch {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface);
+}
+
+.ds-swatch-color {
+  min-height: 76px;
+  background: var(--swatch-color);
+}
+
+.ds-color-brand { --swatch-color: var(--color-brand); }
+.ds-color-success { --swatch-color: var(--color-success); }
+.ds-color-warning { --swatch-color: var(--color-warning); }
+.ds-color-danger { --swatch-color: var(--color-danger); }
+.ds-color-info { --swatch-color: var(--color-info); }
+.ds-color-text { --swatch-color: #151515; }
+
+.ds-swatch-copy {
+  padding: 12px;
+}
+
+.ds-swatch-copy strong,
+.ds-swatch-copy code {
+  display: block;
+}
+
+.ds-themes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.ds-theme-panel {
+  padding: 20px;
+}
+
+.ds-icon-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.ds-type-regular { font-weight: 400; }
+.ds-type-medium { font-weight: 500; }
+.ds-type-semibold { font-weight: 600; }
+.ds-type-bold { font-weight: 700; }
+
+.ds-icon-example {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.ri {
+  display: inline-block;
+  font-family: "RemixIcon";
+  font-size: 20px;
+  font-style: normal;
+  line-height: 1;
+}
+
+.ri-information-line::before {
+  content: "\f0f8";
+}
+
+.ri-check-line::before {
+  content: "\eb7b";
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .ds-shell {
+    width: min(100% - 24px, 1120px);
+    padding-block: 24px 40px;
+  }
+
+  .ds-header,
+  .ds-section {
+    padding: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

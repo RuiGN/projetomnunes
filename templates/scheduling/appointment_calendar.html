@@ -1,0 +1,64 @@
+{% extends layout_template %}
+
+{% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 1100px; margin: 0 auto; display: grid; gap: 20px;">
+  <header class="journal-header">
+    <div>
+      <span class="workspace-eyebrow">Coordenação de consultas</span>
+      <h1 class="page-title" style="margin: 0;">Agenda semanal</h1>
+      <p style="margin: 4px 0 0; color: var(--color-text-muted); font-size: 14px;">
+        Semana de {{ week_start|date:"d/m/Y" }}. A lista textual abaixo é equivalente à grade.
+      </p>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <a href="?date={{ prev_week }}" class="calendar-nav-btn" style="text-decoration: none;">‹ Semana anterior</a>
+      <a href="{% url 'appointment_list' %}" class="calendar-nav-btn" style="text-decoration: none;">Lista</a>
+      <a href="?date={{ next_week }}" class="calendar-nav-btn" style="text-decoration: none;">Próxima semana ›</a>
+    </div>
+  </header>
+
+  <div class="calendar-grid" style="display: grid; grid-template-columns: repeat(7, minmax(120px, 1fr)); gap: 8px; overflow-x: auto;" role="grid" aria-label="Agenda semanal">
+    {% for day, day_appointments in week_days %}
+      <section class="calendar-day" style="border: 1px solid var(--color-border); border-radius: 12px; background: var(--color-surface); padding: 10px; min-height: 120px;" role="gridcell" aria-label="{{ day|date:'l, d \d\e F' }}">
+        <h2 style="margin: 0; font-size: 13px; font-weight: 700;">
+          {{ day|date:"D" }}
+        </h2>
+        <p style="margin: 2px 0 8px; font-size: 12px; color: var(--color-text-muted);">{{ day|date:"d/m" }}</p>
+        {% for appointment in day_appointments %}
+          <a href="{% url 'appointment_list' %}" style="display: block; margin-bottom: 6px; padding: 6px 8px; border-radius: 8px; background: var(--color-canvas); text-decoration: none; color: inherit; font-size: 12px;">
+            {{ appointment.start_at|date:"H:i" }} — {{ appointment.service.name }}
+          </a>
+        {% empty %}
+          <p style="margin: 0; font-size: 12px; color: var(--color-text-muted);">—</p>
+        {% endfor %}
+      </section>
+    {% endfor %}
+  </div>
+
+  <h2 style="margin: 8px 0 0; font-size: 16px; font-weight: 700;">Lista textual equivalente</h2>
+  {% if appointments %}
+    <div style="display: grid; gap: 10px;">
+      {% for appointment in appointments %}
+        <article class="journal-entry-card">
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between;">
+            <div>
+              <strong>{{ appointment.service.name }}</strong>
+              <span class="mood-badge mood-neutral">{{ appointment.start_at|date:"d/m/Y H:i" }} – {{ appointment.end_at|date:"H:i" }}</span>
+              <span class="visibility-badge {% if appointment.status == 'confirmed' %}visibility-shareable{% elif appointment.status == 'canceled' %}visibility-private{% else %}visibility-confirmation{% endif %}">{{ appointment.get_status_display }}</span>
+            </div>
+            {% if can_manage and appointment.status == 'requested' %}
+              <form method="post" action="{% url 'appointment_confirm' appointment.pk %}">{% csrf_token %}<button type="submit" class="calendar-nav-btn">Confirmar</button></form>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="content-state" style="padding: 32px 24px; text-align: center; border: 1px dashed var(--color-border); border-radius: 14px; background: var(--color-surface);">
+      <p style="margin: 0; color: var(--color-text-muted);">Nenhuma consulta nesta semana.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

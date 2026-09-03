@@ -1,0 +1,26 @@
+{% extends layout_template %}
+
+{% block title %}Minhas Recomendações | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
+
+{% block content %}
+<div class="content-recommendations" style="max-width: 820px; margin: 0 auto; display: grid; gap: 20px;">
+  <header>
+    <span class="workspace-eyebrow">Curadoria clínica</span>
+    <h1 class="page-title" style="margin: 0;">Minhas Recomendações</h1>
+  </header>
+
+  {% if recommendations %}
+    <ul style="list-style: none; padding: 0; display: grid; gap: 16px;">
+      {% for item in recommendations %}
+        <li class="card" style="padding: 20px; border: 1px solid var(--color-border); border-radius: 14px; background: var(--color-surface);">
+          <h2 style="margin: 0 0 8px;">{{ item.objective }}</h2>
+          <p style="margin: 0 0 8px; color: var(--color-muted);">Recomendado por {{ item.recommended_by }}</p>
+          {% if item.valid_until %}<p style="margin: 0;">Válido até {{ item.valid_until }}</p>{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="empty-state">Nenhuma recomendação ativa no momento.</div>
+  {% endif %}
+</div>
+{% endblock %}

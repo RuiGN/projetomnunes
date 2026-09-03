@@ -1,0 +1,22 @@
+{% extends layout_template %}
+
+{% block content %}
+<section class="welcome-panel" aria-labelledby="clinic-onboarding-title">
+  <div><p class="workspace-eyebrow">Preparação operacional</p><h1 id="clinic-onboarding-title">Onboarding da clínica</h1><p class="workspace-intro">Pendências factuais para liberar a operação inicial.</p></div>
+</section>
+<section class="component-section" aria-labelledby="checklist-title">
+  <h2 id="checklist-title">Checklist de preparação</h2>
+  <ul class="checklist">
+    {% for item in items %}
+    <li class="checklist-item{% if item.is_complete %} is-complete{% endif %}">
+      <span class="checklist-mark" aria-hidden="true">{% if item.is_complete %}✓{% else %}○{% endif %}</span>
+      <div>
+        <strong>{{ item.label }}</strong>
+        <p>{{ item.detail }}</p>
+      </div>
+      <span class="sr-only">{% if item.is_complete %}concluído{% else %}pendente{% endif %}</span>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endblock %}

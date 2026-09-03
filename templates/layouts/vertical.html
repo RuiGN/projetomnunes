@@ -1,0 +1,52 @@
+{% extends "layouts/base.html" %}
+
+{% block workspace %}
+<div
+  class="layout-vertical workspace-shell"
+  x-data="workspaceNavigation"
+  x-effect="syncScrollLock"
+  @keydown.escape.window="closeSidebar"
+>
+  <aside class="desktop-sidebar" aria-label="Barra lateral">
+    <a class="brand-mark" href="{% url 'workspace_vertical' %}" aria-label="Início da plataforma">
+      {% if active_clinic_branding.logo %}
+        <img src="{{ active_clinic_branding.logo.url }}" alt="{{ active_clinic_branding.display_name }}" class="clinic-brand-preview__logo">
+      {% else %}
+        <span aria-hidden="true">◒</span><span>Cuidado contínuo</span>
+      {% endif %}
+    </a>
+    {% include "layouts/partials/navigation.html" with navigation_label="Navegação vertical" %}
+  </aside>
+
+  <div class="workspace-column">
+    {% include "layouts/partials/header.html" %}
+    <nav aria-label="Caminho de navegação" class="breadcrumbs">
+      <ol><li><a href="{% url 'workspace_vertical' %}">Início</a></li><li aria-current="page">Área de trabalho</li></ol>
+    </nav>
+    {% include "layouts/partials/messages.html" %}
+    <main id="main-content" class="workspace-main" tabindex="-1">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <div class="drawer-overlay" x-cloak x-show="sidebarOpen" @click="closeSidebar" aria-hidden="true"></div>
+  <aside
+    id="mobile-sidebar"
+    class="mobile-sidebar"
+    x-cloak
+    x-show="sidebarOpen"
+    x-transition
+    role="dialog"
+    aria-modal="true"
+    aria-label="Menu principal"
+    x-ref="mobileSidebar"
+    @keydown.tab="trapFocus"
+  >
+    <div class="mobile-sidebar-heading">
+      <strong>Menu</strong>
+      <button type="button" x-ref="sidebarClose" @click="closeSidebar">Fechar menu</button>
+    </div>
+    {% include "layouts/partials/navigation.html" with navigation_label="Navegação vertical" %}
+  </aside>
+</div>
+{% endblock %}

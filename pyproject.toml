@@ -1,0 +1,83 @@
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = [
+    "--strict-config",
+    "--strict-markers",
+    "--cov=config",
+    "--cov=core",
+    "--cov=tenancy",
+    "--cov=accounts",
+    "--cov=clinics",
+    "--cov=people",
+    "--cov=consents",
+    "--cov=audit",
+    "--cov=privacy",
+    "--cov=therapist_dashboard",
+    "--cov=onboarding",
+    "--cov=journal",
+    "--cov=scheduling",
+    "--cov=analytics",
+    "--cov=finance",
+    "--cov=content",
+    "--cov-report=term-missing",
+]
+
+[tool.coverage.run]
+branch = true
+source = [
+    "config",
+    "core",
+    "tenancy",
+    "accounts",
+    "clinics",
+    "people",
+    "consents",
+    "audit",
+    "privacy",
+    "therapist_dashboard",
+    "onboarding",
+    "journal",
+    "scheduling",
+    "analytics",
+    "finance",
+    "content",
+]
+
+[tool.ruff]
+target-version = "py314"
+line-length = 88
+exclude = [".venv", "**/migrations/*"]
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "N", "SIM", "UP", "W"]
+
+[tool.mypy]
+python_version = "3.14"
+plugins = ["mypy_django_plugin.main"]
+strict = true
+files = [
+    "manage.py",
+    "config",
+    "core",
+    "tenancy",
+    "accounts",
+    "clinics",
+    "people",
+    "consents",
+    "audit",
+    "privacy",
+    "therapist_dashboard",
+    "onboarding",
+    "journal",
+    "scheduling",
+    "analytics",
+    "finance",
+    "content",
+    "tests",
+]
+
+
+[tool.django-stubs]
+django_settings_module = "config.settings.test"

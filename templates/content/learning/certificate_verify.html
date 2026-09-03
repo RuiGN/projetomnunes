@@ -1,0 +1,24 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Verificação de certificado</title>
+  <link rel="stylesheet" href="{% static 'css/framework.css' %}">
+  <link rel="stylesheet" href="{% static 'css/tokens.css' %}">
+</head>
+<body class="workspace-body">
+  <main style="max-width:720px;margin:0 auto;padding:24px;display:grid;gap:16px;">
+    <h1 class="page-title">Verificação de certificado</h1>
+    {% if status == "valid" %}
+    <p role="status" aria-live="polite">Certificado válido</p>
+    <p>Curso: {{ course_title }}</p>
+    {% elif status == "revoked" %}
+    <p role="status" aria-live="polite">Certificado revogado</p>
+    {% else %}
+    <p role="status" aria-live="polite">Certificado não encontrado</p>
+    {% endif %}
+  </main>
+</body>
+</html>

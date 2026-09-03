@@ -1,0 +1,21 @@
+{% extends layout_template %}
+
+{% block title %}Gestão editorial{% endblock %}
+
+{% block content %}
+<main style="max-width: 1080px; margin: 0 auto; display: grid; gap: 24px;">
+  <header style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;">
+    <div><span class="workspace-eyebrow">CMS</span><h1 class="page-title">Gestão editorial</h1></div>
+    <a class="primary-action" href="{% url 'content_editorial_create' %}">Criar conteúdo</a>
+  </header>
+  <section class="card" aria-labelledby="content-list-title" style="padding:24px;overflow-x:auto;">
+    <h2 id="content-list-title">Conteúdos</h2>
+    {% if contents %}
+      <table style="width:100%;border-collapse:collapse;">
+        <thead><tr><th scope="col">Título</th><th scope="col">Status</th><th scope="col">Versão</th><th scope="col">Ação</th></tr></thead>
+        <tbody>{% for item in contents %}<tr><td>{{ item.title }}</td><td>{{ item.get_status_display }}</td><td>{{ item.current_version }}</td><td><a href="{% url 'content_editorial_detail' content_id=item.pk %}">Editar</a></td></tr>{% endfor %}</tbody>
+      </table>
+    {% else %}<p>Nenhum conteúdo editorial.</p>{% endif %}
+  </section>
+</main>
+{% endblock %}

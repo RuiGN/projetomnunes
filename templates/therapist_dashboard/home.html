@@ -1,0 +1,104 @@
+{% extends layout_template %}
+
+{% block content %}
+<section class="welcome-panel" aria-labelledby="therapist-dashboard-title">
+  <div>
+    <p class="workspace-eyebrow">Área inicial</p>
+    <h1 id="therapist-dashboard-title">Pacientes vinculados</h1>
+    <p class="workspace-intro">Indicadores factuais, sem classificação ou diagnóstico automatizado.</p>
+  </div>
+  <div class="shortcut-row">
+    <a class="primary-action" href="{% url 'patient_create' %}">Cadastrar paciente</a>
+    <a class="link-action" href="{% url 'patient_list' %}">Enviar convite</a>
+    <a class="link-action" href="{% url 'clinic_onboarding' %}">Revisar pendências</a>
+  </div>
+</section>
+
+<section class="summary-card-grid" aria-label="Indicadores factuais">
+  <article class="summary-card tone-neutral" aria-labelledby="metric-active-title">
+    <div class="summary-card-heading"><h2 id="metric-active-title">Pacientes ativos vinculados</h2><p>Vínculos terapêuticos vigentes.</p></div>
+    <data value="{{ snapshot.active_patients }}">{{ snapshot.active_patients }}</data>
+  </article>
+  <article class="summary-card tone-info" aria-labelledby="metric-new-title">
+    <div class="summary-card-heading"><h2 id="metric-new-title">Novos vínculos</h2><p>Criados nos últimos 30 dias.</p></div>
+    <data value="{{ snapshot.new_links }}">{{ snapshot.new_links }}</data>
+  </article>
+  <article class="summary-card tone-warning" aria-labelledby="metric-incomplete-title">
+    <div class="summary-card-heading"><h2 id="metric-incomplete-title">Cadastros incompletos</h2><p>Sem telefone registrado.</p></div>
+    <data value="{{ snapshot.incomplete_registrations }}">{{ snapshot.incomplete_registrations }}</data>
+  </article>
+  <article class="summary-card tone-warning" aria-labelledby="metric-consent-title">
+    <div class="summary-card-heading"><h2 id="metric-consent-title">Consentimentos pendentes</h2><p>Pacientes vinculados sem aceite registrado.</p></div>
+    <data value="{{ snapshot.pending_consents }}">{{ snapshot.pending_consents }}</data>
+  </article>
+</section>
+
+<section class="component-section" aria-labelledby="registrations-title">
+  <h2 id="registrations-title">Cadastros por período</h2>
+  <p class="workspace-intro">Registros de pacientes vinculados, por mês. A tabela abaixo é o equivalente acessível do gráfico.</p>
+  {{ snapshot.registration_series|json_script:"registration-series" }}
+  <div class="chart-container">
+    <div id="registrations-chart" role="img" aria-label="Gráfico de cadastros por mês"></div>
+  </div>
+  <div class="responsive-table-wrapper">
+    <table class="responsive-table">
+      <caption>Cadastros por mês</caption>
+      <thead><tr><th scope="col">Mês</th><th scope="col">Cadastros</th></tr></thead>
+      <tbody>
+        {% for item in snapshot.registration_series %}<tr><th scope="row">{{ item.label }}</th><td>{{ item.count }}</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="component-section" aria-labelledby="patients-title">
+  <div class="section-heading"><div><h2 id="patients-title">Pacientes</h2></div>
+    <form class="table-filter" method="get">
+      <label for="patient-search">Buscar</label>
+      <input id="patient-search" name="q" type="search" value="{{ query }}">
+      <button type="submit">Buscar</button>
+    </form>
+  </div>
+  {% if patients %}
+  <div class="table-scroll" role="region" aria-label="Pacientes vinculados" tabindex="0">
+    <table class="responsive-table">
+      <thead><tr><th scope="col">Nome</th><th scope="col">Contato</th><th scope="col">Última atividade</th><th scope="col">Ações</th></tr></thead>
+      <tbody>
+        {% for row in patients %}
+        <tr>
+          <th scope="row">{{ row.full_name }}{% if row.social_name %}<br><small>Nome social: {{ row.social_name }}</small>{% endif %}</th>
+          <td>{{ row.email }}<br>{{ row.phone|default:"Telefone não informado" }}</td>
+          <td>{{ row.updated_at|date:"d/m/Y" }}</td>
+          <td class="table-actions"><a href="{% url 'patient_detail' row.patient_profile_id %}">Abrir ficha</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if patients.has_other_pages %}
+  <nav class="pagination" aria-label="Paginação de pacientes">
+    <p class="pagination-status">Página {{ patients.number }} de {{ patients.paginator.num_pages }}</p>
+    <div class="pagination-links">
+      {% if patients.has_previous %}<a href="?q={{ query }}&page={{ patients.previous_page_number }}">Anterior</a>{% endif %}
+      {% if patients.has_next %}<a href="?q={{ query }}&page={{ patients.next_page_number }}">Próxima</a>{% endif %}
+    </div>
+  </nav>
+  {% endif %}
+  {% else %}<div class="content-card" role="status"><h3>Nenhum paciente vinculado</h3><p>Cadastre um paciente ou aguarde novos vínculos.</p></div>{% endif %}
+</section>
+
+<script src="/static/vendor/apexcharts/apexcharts.min.js" defer></script>
+<script defer>
+  (function () {
+    var data = JSON.parse(document.getElementById("registration-series").textContent);
+    var container = document.getElementById("registrations-chart");
+    if (!container || typeof ApexCharts === "undefined") { return; }
+    new ApexCharts(container, {
+      chart: { type: "bar", height: 240 },
+      series: [{ name: "Cadastros", data: data.map(function (d) { return d.count; }) }],
+      xaxis: { categories: data.map(function (d) { return d.label; }) },
+      colors: ["#6A69F5"],
+    }).render();
+  })();
+</script>
+{% endblock %}

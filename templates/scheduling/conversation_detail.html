@@ -1,0 +1,76 @@
+{% extends layout_template %}
+{% load accessible_forms %}
+
+{% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 900px; margin: 0 auto; display: grid; gap: 20px;">
+  <header class="journal-header">
+    <div>
+      <span class="workspace-eyebrow">Comunicação</span>
+      <h1 class="page-title" style="margin: 0;">{{ page_title }}</h1>
+      <p style="margin: 4px 0 0; color: var(--color-text-muted); font-size: 14px;">
+        {{ non_emergency_notice }}
+      </p>
+    </div>
+    <a href="{% url 'conversation_list' %}" class="calendar-nav-btn" style="text-decoration: none;">Voltar</a>
+  </header>
+
+  {% if out_of_hours_notice %}
+    <div class="navigation-alert" role="status" style="padding: 12px 16px; border-radius: 10px;">
+      {{ out_of_hours_notice }}
+    </div>
+  {% endif %}
+
+  <div role="log" aria-live="polite" style="display: grid; gap: 10px;">
+    {% for message in messages %}
+      <div class="journal-entry-card" style="padding: 12px 16px;">
+        <p style="margin: 0; font-size: 14px; color: var(--color-text-muted);">
+          <strong>{{ message.sender.get_full_name|default:message.sender.email }}</strong> · {{ message.created_at|date:"d/m/Y H:i" }}
+        </p>
+        <p style="margin: 6px 0 0; white-space: pre-wrap;">{{ message.body }}</p>
+        {% for attachment in message.attachments_list %}
+          <p style="margin: 6px 0 0; font-size: 13px; color: var(--color-text-muted);">
+            Anexo: {{ attachment.original_name }}
+            {% if attachment.scan_status == 'clean' %}
+              <a href="{% url 'attachment_download' attachment.pk %}" class="calendar-nav-btn" style="font-size: 12px;">Baixar</a>
+            {% else %}
+              (aguardando aprovação de segurança)
+            {% endif %}
+          </p>
+        {% endfor %}
+      </div>
+    {% empty %}
+      <div class="content-state" style="padding: 32px 24px; text-align: center; border: 1px dashed var(--color-border); border-radius: 14px; background: var(--color-surface);">
+        <p style="margin: 0; color: var(--color-text-muted);">Envie a primeira mensagem.</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if page_obj.has_previous or page_obj.has_next %}
+    <nav aria-label="Paginação do histórico" style="display: flex; gap: 8px; justify-content: center;">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="calendar-nav-btn" style="text-decoration: none;">‹ Mais antigas</a>
+      {% endif %}
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="calendar-nav-btn" style="text-decoration: none;">Mais recentes ›</a>
+      {% endif %}
+    </nav>
+  {% endif %}
+
+  <div class="card" style="padding: 24px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-surface);">
+    <form class="form-stack" method="post" novalidate>
+      {% csrf_token %}
+      <div class="form-field{% if form.body.errors %} has-error{% endif %}">
+        <label for="{{ form.body.id_for_label }}">{{ form.body.label }}</label>
+        {{ form.body|accessible_widget }}
+        <p class="field-help">{{ form.body.help_text }}</p>
+        {% for error in form.body.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="primary-action">{{ submit_label }}</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

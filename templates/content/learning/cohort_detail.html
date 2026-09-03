@@ -1,0 +1,28 @@
+{% extends layout_template %}
+
+{% block title %}Coorte: {{ cohort.name }}{% endblock %}
+
+{% block content %}
+<main style="max-width:1080px;margin:0 auto;display:grid;gap:24px;">
+  <header><span class="workspace-eyebrow">Coortes</span><h1 class="page-title">{{ cohort.name }}</h1></header>
+  <section class="card" style="padding:24px;display:grid;gap:16px;" aria-labelledby="members-title">
+    <h2 id="members-title">Membros</h2>
+    <ul style="display:grid;gap:8px;">
+      {% for member in members %}
+      <li>{{ member.user.get_full_name|default:member.user.email }}</li>
+      {% empty %}
+      <li aria-live="polite">Nenhum membro ainda.</li>
+      {% endfor %}
+    </ul>
+  </section>
+  <section class="card" style="padding:24px;display:grid;gap:12px;" aria-labelledby="add-member-title">
+    <h2 id="add-member-title">Adicionar membro</h2>
+    <form method="post" action="{% url 'content_cohort_member_add' cohort.pk %}" style="display:grid;gap:12px;">
+      {% csrf_token %}
+      <label for="member-user">Usuário (ID)</label>
+      <input id="member-user" name="user_id" type="text" required />
+      <button type="submit">Adicionar membro</button>
+    </form>
+  </section>
+</main>
+{% endblock %}

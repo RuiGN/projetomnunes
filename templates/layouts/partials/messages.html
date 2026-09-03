@@ -1,0 +1,12 @@
+{# Django messages framework — accessible live region with PT-BR labels. #}
+{% if messages %}
+<div class="workspace-messages" role="region" aria-label="Mensagens do sistema">
+  {% for message in messages %}
+  <p
+    class="workspace-message workspace-message--{{ message.level_tag }}"
+    role="{{ message.level_tag|default:'info' }}"
+    aria-live="polite"
+  >{{ message }}</p>
+  {% endfor %}
+</div>
+{% endif %}

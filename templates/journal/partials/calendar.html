@@ -1,0 +1,96 @@
+<section class="emotional-calendar-card" aria-labelledby="calendar-heading">
+  <div class="calendar-header">
+    <h2 id="calendar-heading">Calendário Emocional — {{ calendar_data.month_name }}</h2>
+    <nav class="calendar-nav" aria-label="Navegação do calendário por mês">
+      <a
+        href="?year={{ calendar_data.previous_year }}&month={{ calendar_data.previous_month }}&period={{ selected_period }}&emotion={{ selected_emotion }}&mood={{ selected_mood }}"
+        class="calendar-nav-btn"
+        aria-label="Mês anterior"
+      >
+        <span aria-hidden="true">&larr;</span> Anterior
+      </a>
+      <a
+        href="?year={{ calendar_data.next_year }}&month={{ calendar_data.next_month }}&period={{ selected_period }}&emotion={{ selected_emotion }}&mood={{ selected_mood }}"
+        class="calendar-nav-btn"
+        aria-label="Próximo mês"
+      >
+        Próximo <span aria-hidden="true">&rarr;</span>
+      </a>
+    </nav>
+  </div>
+
+  <div class="calendar-grid" role="grid" aria-readonly="true" aria-label="Dias de {{ calendar_data.month_name }}">
+    <div class="calendar-day-header" role="columnheader">Dom</div>
+    <div class="calendar-day-header" role="columnheader">Seg</div>
+    <div class="calendar-day-header" role="columnheader">Ter</div>
+    <div class="calendar-day-header" role="columnheader">Qua</div>
+    <div class="calendar-day-header" role="columnheader">Qui</div>
+    <div class="calendar-day-header" role="columnheader">Sex</div>
+    <div class="calendar-day-header" role="columnheader">Sáb</div>
+
+    {% for week in calendar_data.weeks %}
+      <div role="row" style="display: contents;">
+        {% for day in week %}
+          <div
+            role="gridcell"
+            tabindex="0"
+            class="calendar-day-cell{% if not day.is_current_month %} is-other-month{% endif %}{% if day.is_today %} is-today{% endif %}"
+            aria-label="{{ day.accessible_label }}"
+          >
+            <span class="calendar-day-num" aria-hidden="true">{{ day.day_number }}</span>
+            {% if day.entry_count > 0 %}
+              <span
+                class="calendar-mood-dot {{ day.mood_class }}"
+                aria-hidden="true"
+                title="{{ day.dominant_mood_label }}"
+              ></span>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="calendar-legend" aria-label="Legenda de cores do humor">
+    <strong>Legenda:</strong>
+    {% for mood_val, mood_label, mood_class in calendar_data.legend %}
+      <span class="legend-item">
+        <span class="legend-swatch {{ mood_class }}" aria-hidden="true"></span>
+        <span>{{ mood_label }} ({{ mood_val }})</span>
+      </span>
+    {% endfor %}
+    <span class="legend-item">
+      <span class="legend-swatch mood-empty" style="border: 1px dashed var(--color-border);" aria-hidden="true"></span>
+      <span>Sem registro</span>
+    </span>
+  </div>
+
+  {% if calendar_data.text_summary_rows %}
+    <details class="calendar-accessible-summary" style="margin-top: 16px;">
+      <summary style="cursor: pointer; font-weight: 600; color: var(--color-text-muted);">
+        Ver resumo textual do mês (tabela acessível)
+      </summary>
+      <div style="margin-top: 10px; overflow-x: auto;">
+        <table class="responsive-table" aria-label="Registros de humor de {{ calendar_data.month_name }}">
+          <caption>Histórico diário em {{ calendar_data.month_name }}</caption>
+          <thead>
+            <tr>
+              <th scope="col">Data</th>
+              <th scope="col">Humor predominante</th>
+              <th scope="col">Total de registros</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for date_str, mood_lbl, count in calendar_data.text_summary_rows %}
+              <tr>
+                <td>{{ date_str }}</td>
+                <td>{{ mood_lbl }}</td>
+                <td>{{ count }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </details>
+  {% endif %}
+</section>

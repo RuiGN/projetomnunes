@@ -1,0 +1,63 @@
+{% extends layout_template %}
+
+{% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem;">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1 style="margin: 0;">Contas a receber</h1>
+    <a href="{% url 'service_price_create' %}" class="button button-primary">Cadastrar preço</a>
+  </div>
+
+  <form method="get" style="display: flex; gap: 0.5rem; align-items: center;">
+    <label for="status">Status</label>
+    <select id="status" name="status">
+      <option value="">Todos</option>
+      <option value="open" {% if selected_status == "open" %}selected{% endif %}>Em aberto</option>
+      <option value="paid" {% if selected_status == "paid" %}selected{% endif %}>Pago</option>
+      <option value="overdue" {% if selected_status == "overdue" %}selected{% endif %}>Vencido</option>
+      <option value="canceled" {% if selected_status == "canceled" %}selected{% endif %}>Cancelado</option>
+    </select>
+    <button type="submit" class="button">Filtrar</button>
+  </form>
+
+  {% if charges %}
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Serviço</th>
+        <th scope="col">Valor</th>
+        <th scope="col">Vencimento</th>
+        <th scope="col">Status</th>
+        <th scope="col">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for charge in charges %}
+      <tr>
+        <td>{{ charge.service_name }}</td>
+        <td>{{ charge.net_amount }} {{ charge.currency }}</td>
+        <td>{{ charge.due_date|date:"d/m/Y" }}</td>
+        <td>{{ charge.status }}</td>
+        <td>
+          {% if charge.status == "open" or charge.status == "overdue" %}
+          <form method="post" action="{% url 'charge_settle' charge.charge_id %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="button button-primary">Baixar</button>
+          </form>
+          <form method="post" action="{% url 'charge_cancel' charge.charge_id %}" style="display: inline;">
+            {% csrf_token %}
+            <input type="text" name="reason" placeholder="Motivo" required>
+            <button type="submit" class="button button-danger">Cancelar</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>Nenhuma cobrança encontrada.</p>
+  {% endif %}
+</div>
+{% endblock %}

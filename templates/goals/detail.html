@@ -1,0 +1,83 @@
+{% extends layout_template %}
+
+{% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto; display: grid; gap: 24px;">
+  <header class="journal-header">
+    <div>
+      <span class="workspace-eyebrow">Minhas Metas</span>
+      <h1 class="page-title" style="margin: 0;">{{ goal.title }}</h1>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <a href="{% url 'goal_edit' goal.pk %}" class="primary-action" style="text-decoration: none; padding: 10px 16px; border-radius: 9px; font-weight: 600;">Editar</a>
+      <a href="{% url 'goal_list' %}" class="calendar-nav-btn" style="text-decoration: none;">Voltar</a>
+    </div>
+  </header>
+
+  <article class="journal-entry-card" style="padding: 24px;">
+    <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px;">
+      <span class="mood-badge mood-neutral">{{ goal.get_horizon_display }}</span>
+      <span class="mood-badge mood-neutral">Prioridade {{ goal.get_priority_display }}</span>
+      <span class="visibility-badge {% if goal.visibility == 'shareable' %}visibility-shareable{% elif goal.visibility == 'confirmation_required' %}visibility-confirmation{% else %}visibility-private{% endif %}">
+        <span aria-hidden="true">●</span>
+        {% if goal.visibility == 'shareable' %}Verde — Compartilhável{% elif goal.visibility == 'confirmation_required' %}Amarelo — Confirmar antes{% else %}Vermelho — Somente você{% endif %}
+      </span>
+      {% if goal.due_date %}<span class="journal-entry-date">Prazo: {{ goal.due_date|date:"d/m/Y" }}</span>{% endif %}
+      <span class="visibility-badge {% if goal.status == 'completed' %}visibility-shareable{% elif goal.status == 'paused' %}visibility-confirmation{% else %}visibility-private{% endif %}">
+        {{ goal.get_status_display }}
+      </span>
+    </div>
+
+    {% if goal.description %}
+      <p style="margin: 0 0 16px; line-height: 1.6;">{{ goal.description }}</p>
+    {% endif %}
+
+    <div style="display: grid; gap: 4px; margin-bottom: 18px;">
+      <span style="font-size: 13px; color: var(--color-text-muted);" aria-live="polite">
+        Progresso: {{ done_count }} de {{ total_steps }} etapas concluídas ({{ percent }}%)
+      </span>
+      <div role="progressbar" aria-label="Progresso da meta {{ goal.title }}" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100"
+           style="height: 8px; border-radius: 6px; background: var(--color-border); overflow: hidden;">
+        <div style="width: {{ percent }}%; height: 100%; background: var(--color-success);"></div>
+      </div>
+    </div>
+
+    <h2 style="font-size: 16px; font-weight: 700; margin: 0 0 10px;">Pequenas etapas</h2>
+    {% if steps %}
+      <ul style="display: grid; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none;">
+        {% for step in steps %}
+          <li style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-canvas);">
+            <span style="{% if step.is_done %}text-decoration: line-through; color: var(--color-text-muted);{% endif %}">
+              {{ step.order }}. {{ step.description }}
+            </span>
+            <form method="post" action="{% url 'goal_step_toggle' step.pk %}">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.path }}">
+              <input type="hidden" name="is_done" value="{% if step.is_done %}false{% else %}true{% endif %}">
+              <button type="submit" class="calendar-nav-btn" style="font-size: 13px; min-height: 38px; cursor: pointer;">
+                {% if step.is_done %}Reabrir etapa{% else %}Concluir etapa{% endif %}
+              </button>
+            </form>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p style="color: var(--color-text-muted); margin: 0 0 18px;">
+        Esta meta ainda não tem etapas. Você pode editar a meta e adicionar pequenas etapas quando quiser.
+      </p>
+    {% endif %}
+
+    <div style="padding-top: 14px; border-top: 1px solid var(--color-border); display: grid; gap: 12px;">
+      <h3 style="font-size: 15px; font-weight: 600; margin: 0;">Estado da meta:</h3>
+      <form method="post" action="{% url 'goal_status_change' goal.pk %}" style="display: flex; flex-wrap: wrap; gap: 8px;">
+        {% csrf_token %}
+        <button type="submit" name="status" value="active" class="calendar-nav-btn" style="cursor: pointer;">Ativar</button>
+        <button type="submit" name="status" value="paused" class="calendar-nav-btn" style="cursor: pointer;">Pausar (descansar é ok)</button>
+        <button type="submit" name="status" value="completed" class="calendar-nav-btn" style="cursor: pointer; border-color: #50cd89; font-weight: 600;">Marcar como concluída</button>
+        <button type="submit" name="status" value="archived" class="destructive-action" style="padding: 8px 14px; border-radius: 8px; font-size: 13px; cursor: pointer;">Arquivar</button>
+      </form>
+    </div>
+  </article>
+</div>
+{% endblock %}

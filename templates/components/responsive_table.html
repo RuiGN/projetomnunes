@@ -1,0 +1,44 @@
+{% load presentation %}
+<div class="responsive-table-wrapper">
+  <table class="responsive-table">
+    <caption>{{ table.caption }}</caption>
+    <thead>
+      <tr>
+        {% for column in table.columns %}
+          <th scope="col"{% if column.aria_sort %} aria-sort="{{ column.aria_sort }}"{% endif %}>
+            {% if column.order_url %}<a href="{{ column.order_url }}" aria-label="Ordenar por {{ column.label }}">{{ column.label }}</a>{% else %}{{ column.label }}{% endif %}
+          </th>
+        {% endfor %}
+        <th scope="col">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in table.rows %}
+        <tr>
+          {% for cell in row.cells %}
+            {% if forloop.first %}<th scope="row">{{ cell }}</th>{% else %}<td>{{ cell }}</td>{% endif %}
+          {% endfor %}
+          <td class="table-actions">
+            {% for action in row.actions %}<a href="{{ action.url }}">{{ action.label }}</a>{% empty %}<span>Sem ações</span>{% endfor %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<section class="mobile-row-list" aria-label="{{ table.caption }}">
+  {% for row in table.rows %}
+    <article class="mobile-row-card" aria-labelledby="{{ table.id }}-{{ row.id }}-title">
+      <h3 id="{{ table.id }}-{{ row.id }}-title">{{ row.cells|at_index:0 }}</h3>
+      <dl>
+        {% for column in table.columns %}
+          <div>
+            <dt>{{ column.label }}</dt>
+            <dd>{{ row.cells|at_index:forloop.counter0 }}</dd>
+          </div>
+        {% endfor %}
+      </dl>
+      {% if row.actions %}<div class="mobile-row-actions">{% for action in row.actions %}<a href="{{ action.url }}">{{ action.label }}</a>{% endfor %}</div>{% endif %}
+    </article>
+  {% endfor %}
+</section>

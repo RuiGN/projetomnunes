@@ -1,0 +1,14 @@
+{% extends layout_template %}
+
+{% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 640px; margin: 0 auto;">
+  <h1>Adicionar à lista de espera</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="button button-primary">{{ submit_label }}</button>
+  </form>
+</div>
+{% endblock %}

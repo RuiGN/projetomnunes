@@ -1,0 +1,17 @@
+{% extends layout_template %}
+
+{% block content %}
+<section class="welcome-panel" aria-labelledby="patient-list-title">
+  <div><p class="workspace-eyebrow">Clínica ativa</p><h1 id="patient-list-title">Pacientes</h1><p class="workspace-intro">Cadastros mínimos e vínculos autorizados.</p></div>
+  <a class="primary-action" href="{% url 'patient_create' %}">Cadastrar paciente</a>
+</section>
+<section class="component-section" aria-labelledby="patient-results-title">
+  <h2 id="patient-results-title">Pessoas cadastradas</h2>
+  {% if patients %}
+    <div class="table-scroll" role="region" aria-label="Lista de pacientes" tabindex="0">
+      <table><thead><tr><th scope="col">Nome</th><th scope="col">Contato</th><th scope="col">Acesso</th></tr></thead>
+      <tbody>{% for patient in patients %}<tr><th scope="row">{{ patient.full_name }}{% if patient.social_name %}<br><small>Nome social: {{ patient.social_name }}</small>{% endif %}</th><td>{{ patient.email }}<br>{{ patient.phone }}</td><td>{% if patient.user_id %}Conta vinculada{% else %}<form method="post" action="{% url 'patient_invite' patient.pk %}">{% csrf_token %}<button type="submit" class="link-action">Enviar convite</button></form>{% endif %}</td></tr>{% endfor %}</tbody></table>
+    </div>
+  {% else %}<div class="content-card" role="status"><h3>Nenhum paciente cadastrado</h3><p>Use a ação principal para iniciar um cadastro mínimo.</p></div>{% endif %}
+</section>
+{% endblock %}

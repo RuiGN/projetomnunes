@@ -1,0 +1,32 @@
+{% extends layout_template %}
+
+{% block title %}Certificado: {{ course.title }}{% endblock %}
+
+{% block content %}
+<main style="max-width:1080px;margin:0 auto;display:grid;gap:24px;">
+  <header>
+    <span class="workspace-eyebrow">Curso: {{ course.title }}</span>
+    <h1 class="page-title">Certificado de conclusão</h1>
+  </header>
+  {% if certificate %}
+  <section class="card" style="padding:24px;display:grid;gap:12px;" aria-labelledby="cert-title">
+    <h2 id="cert-title">Certificado emitido</h2>
+    <p>Código de verificação: <code>{{ certificate.public_code }}</code></p>
+    <p>Compartilhe este código para verificação pública.</p>
+  </section>
+  {% else %}
+  <section class="card" style="padding:24px;display:grid;gap:12px;" aria-labelledby="cert-pending-title">
+    <h2 id="cert-pending-title">Certificado ainda não emitido</h2>
+    {% if completed %}
+    <p>Você concluiu todas as aulas. Emita seu certificado abaixo.</p>
+    <form method="post" action="{% url 'content_course_certificate' course.pk %}">
+      {% csrf_token %}
+      <button type="submit" class="primary-action">Emitir certificado</button>
+    </form>
+    {% else %}
+    <p>Conclua todas as aulas do curso para emitir o certificado.</p>
+    {% endif %}
+  </section>
+  {% endif %}
+</main>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends layout_template %}
+{% load accessible_forms %}
+
+{% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 760px; margin: 0 auto; display: grid; gap: 24px;">
+  <header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+    <div>
+      <span class="workspace-eyebrow">Agenda</span>
+      <h1 class="page-title" style="margin: 0;">{{ page_title }}</h1>
+    </div>
+    <a href="{% url 'appointment_list' %}" class="calendar-nav-btn" style="text-decoration: none;">Voltar à agenda</a>
+  </header>
+
+  <div class="card" style="padding: 24px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-surface);">
+    <form class="form-stack" method="post" novalidate data-form-guard>
+      {% csrf_token %}
+      {% if form.errors %}
+        <div class="form-error-summary" role="alert" tabindex="-1" aria-labelledby="request-error-title">
+          <h2 id="request-error-title">Revise os campos indicados</h2>
+          <ul>
+            {% for field in form %}{% for error in field.errors %}<li><a href="#{{ field|error_target_id }}">{{ field.label }}: {{ error }}</a></li>{% endfor %}{% endfor %}
+            {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% for field in form %}
+        <div class="form-field{% if field.errors %} has-error{% endif %}">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field|accessible_widget }}
+          {% if field.help_text %}<p class="field-help">{{ field.help_text }}</p>{% endif %}
+          {% for error in field.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+        </div>
+      {% endfor %}
+
+      <div class="form-actions">
+        <button type="submit" class="primary-action" data-submit-button>{{ submit_label }}</button>
+        <a href="{% url 'appointment_list' %}" class="calendar-nav-btn" style="text-decoration: none;">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+<header class="workspace-header">
+  <button
+    class="mobile-menu-button"
+    type="button"
+    x-ref="sidebarToggle"
+    @click="openSidebar"
+    :aria-expanded="sidebarOpen.toString()"
+    aria-controls="mobile-sidebar"
+  >
+    <span aria-hidden="true">☰</span>
+    <span>Abrir menu</span>
+  </button>
+
+  <div class="clinic-context">
+    <span class="context-label">Clínica ativa</span>
+    <strong>{{ active_clinic.name }}</strong>
+  </div>
+
+  {% if available_clinics|length > 1 %}
+    <form class="clinic-switcher" method="get" action="{% url 'clinic_switch_review' %}">
+      <label for="clinic-id">Trocar clínica</label>
+      <select id="clinic-id" name="clinic_id">
+        {% for clinic in available_clinics %}
+          <option value="{{ clinic.pk }}"{% if clinic.pk == active_clinic.pk %} selected{% endif %}>{{ clinic.name }}</option>
+        {% endfor %}
+      </select>
+      <input type="hidden" name="next" value="{{ request.path }}">
+      <button type="submit">Revisar troca</button>
+    </form>
+  {% endif %}
+
+  <div class="user-identity">
+    <span class="user-avatar" aria-hidden="true">{{ user.first_name|first|default:"U" }}</span>
+    <span>
+      <span class="context-label">Sessão de</span>
+      <strong>{{ user.get_full_name|default:user.email }}</strong>
+    </span>
+  </div>
+
+  <button
+    class="theme-toggle"
+    type="button"
+    data-theme-toggle
+    @click="$store.theme.toggle()"
+    aria-label="Alternar tema claro e escuro"
+  >
+    <span aria-hidden="true" data-theme-icon>◐</span>
+    <span class="sr-only" data-theme-status aria-live="polite">Tema do sistema</span>
+  </button>
+
+  <form class="layout-preference" method="post" action="{% url 'workspace_layout_preference' %}">
+    {% csrf_token %}
+    <label for="preferred-layout">Layout</label>
+    <select id="preferred-layout" name="layout">
+      <option value="vertical"{% if user.preferred_layout == 'vertical' %} selected{% endif %}>Vertical</option>
+      <option value="detached"{% if user.preferred_layout == 'detached' %} selected{% endif %}>Destacado</option>
+    </select>
+    <input type="hidden" name="next" value="{{ request.path }}">
+    <button type="submit">Aplicar</button>
+  </form>
+</header>

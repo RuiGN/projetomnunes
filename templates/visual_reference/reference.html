@@ -1,0 +1,170 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Referência do sistema visual</title>
+  <script src="{% static 'js/theme.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'css/framework.css' %}">
+  <link rel="stylesheet" href="{% static 'css/tokens.css' %}">
+  <link rel="stylesheet" href="{% static 'css/workspace.css' %}">
+  <script defer src="{% static 'js/form-behaviors.js' %}"></script>
+  <script defer src="{% static 'vendor/apexcharts/apexcharts.min.js' %}"></script>
+  <script defer src="{% static 'js/charts.js' %}"></script>
+</head>
+<body class="ds-page">
+  <main class="ds-shell">
+    <header class="ds-header">
+      <p class="ds-kicker">Uso interno</p>
+      <h1 class="ds-title">Referência do sistema visual</h1>
+      <p class="ds-muted">
+        Tokens e padrões acessíveis da plataforma. Estados sempre combinam cor,
+        texto e contexto; a comunicação não depende apenas da cor.
+      </p>
+    </header>
+
+    <section class="ds-section" aria-labelledby="colors-title">
+      <h2 class="ds-heading" id="colors-title">Cores semânticas</h2>
+      <p class="ds-muted">Valores aprovados para tema claro, com foco em contraste AA.</p>
+      <div class="ds-grid">
+        <article class="ds-swatch">
+          <div class="ds-swatch-color ds-color-brand" aria-hidden="true"></div>
+          <div class="ds-swatch-copy"><strong>Marca</strong><code>#6A69F5</code></div>
+        </article>
+        <article class="ds-swatch">
+          <div class="ds-swatch-color ds-color-success" aria-hidden="true"></div>
+          <div class="ds-swatch-copy"><strong>Sucesso</strong><code>#50CD89</code></div>
+        </article>
+        <article class="ds-swatch">
+          <div class="ds-swatch-color ds-color-warning" aria-hidden="true"></div>
+          <div class="ds-swatch-copy"><strong>Atenção</strong><code>#FFC700</code></div>
+        </article>
+        <article class="ds-swatch">
+          <div class="ds-swatch-color ds-color-danger" aria-hidden="true"></div>
+          <div class="ds-swatch-copy"><strong>Erro</strong><code>#F1416C</code></div>
+        </article>
+        <article class="ds-swatch">
+          <div class="ds-swatch-color ds-color-info" aria-hidden="true"></div>
+          <div class="ds-swatch-copy"><strong>Informação</strong><code>#009EF7</code></div>
+        </article>
+        <article class="ds-swatch">
+          <div class="ds-swatch-color ds-color-text" aria-hidden="true"></div>
+          <div class="ds-swatch-copy"><strong>Texto</strong><code>#151515</code></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="ds-section" aria-labelledby="themes-title">
+      <h2 class="ds-heading" id="themes-title">Superfícies</h2>
+      <div class="ds-themes">
+        <article class="ds-theme-panel" data-theme="light">
+          <h3 class="ds-subheading">Tema claro</h3>
+          <p>Fundo principal <code>#F9FBFD</code> e superfície <code>#FFFFFF</code>.</p>
+        </article>
+        <article class="ds-theme-panel" data-theme="dark">
+          <h3 class="ds-subheading">Tema escuro</h3>
+          <p>Fundo <code>#151515</code>, superfície <code>#1F1F1F</code> e borda <code>#323A46</code>.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="ds-section" aria-labelledby="type-title">
+      <h2 class="ds-heading" id="type-title">Tipografia</h2>
+      <p class="ds-type-regular">Cerebri Sans regular 400 para leitura contínua.</p>
+      <p class="ds-type-medium">Cerebri Sans medium 500 para ações e rótulos.</p>
+      <p class="ds-type-semibold">Cerebri Sans semibold 600 para subtítulos.</p>
+      <p class="ds-type-bold">Cerebri Sans bold 700 para títulos principais.</p>
+    </section>
+
+    <section class="ds-section" aria-labelledby="icons-title">
+      <h2 class="ds-heading" id="icons-title">Ícones Remix Icon</h2>
+      <p class="ds-muted">
+        Ícones decorativos ficam ocultos para leitores de tela. Ações ambíguas
+        recebem texto visível ou nome acessível.
+      </p>
+      <div class="ds-icon-row">
+        <span class="ds-icon-example">
+          <i class="ri ri-information-line" aria-hidden="true"></i>
+          Informação complementar
+        </span>
+        <button class="ds-icon-example" type="button" aria-label="Confirmar exemplo">
+          <i class="ri ri-check-line" aria-hidden="true"></i>
+          <span>Confirmar</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="ds-section" aria-labelledby="cards-title">
+      <h2 class="ds-heading" id="cards-title">Cards de resumo</h2>
+      <p class="ds-muted">Indicadores factuais combinam texto, valor e contexto sem conclusão clínica.</p>
+      <div class="summary-card-grid">
+        {% for card in summary_cards %}
+          {% include "components/summary_card.html" with card=card only %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="ds-section" aria-labelledby="tables-title">
+      <h2 class="ds-heading" id="tables-title">Tabela responsiva e paginação</h2>
+      {% include "components/responsive_table.html" with table=activity_table only %}
+      {% include "components/pagination.html" with pagination=activity_pagination only %}
+    </section>
+
+    <section class="ds-section" aria-labelledby="states-title">
+      <h2 class="ds-heading" id="states-title">Estados de conteúdo</h2>
+      <div class="content-state-grid">
+        {% for state in content_states %}
+          {% include "components/content_state.html" with state=state only %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="ds-section" aria-labelledby="formatting-title">
+      <h2 class="ds-heading" id="formatting-title">Formatação e privacidade</h2>
+      <ul class="formatting-guidance">
+        <li><strong>Fuso horário efetivo:</strong> datas exibem o contexto temporal aplicável.</li>
+        <li><strong>Identificadores pessoais:</strong> valores chegam mascarados pelo backend.</li>
+        <li><strong>Truncamento:</strong> o valor integral permanece acessível ou disponível no detalhe autorizado.</li>
+        <li><strong>Ausência de dados:</strong> zero, dado ausente e indisponibilidade são estados diferentes.</li>
+        <li><strong>Densidade:</strong> a apresentação compacta é reservada a telas amplas e não reduz os alvos de interação.</li>
+      </ul>
+    </section>
+
+    <section class="ds-section" aria-labelledby="forms-title">
+      <h2 class="ds-heading" id="forms-title">Formulário acessível</h2>
+      <p class="ds-muted">Validação do servidor é a fonte de verdade; máscaras apenas auxiliam a entrada.</p>
+      {% if reference_form_validated %}
+        <p class="form-success" role="status">Exemplo validado pelo servidor. Nenhum dado foi armazenado.</p>
+      {% endif %}
+      {% include "components/form.html" with form=reference_form form_id="reference-form" submit_label="Salvar exemplo" only %}
+    </section>
+
+    <section class="ds-section chart-block" data-chart-block aria-labelledby="chart-title">
+      <h2 class="ds-heading" id="chart-title">Gráfico de registros operacionais</h2>
+      <p id="chart-summary" data-chart-summary>
+        Registros por semana: 4 na Semana 1, 7 na Semana 2 e 5 na Semana 3.
+        Apenas registros agregados autorizados; não representa diagnóstico ou causalidade.
+      </p>
+      <div
+        class="accessible-chart"
+        data-apex-chart
+        data-chart-label="Registros operacionais por semana"
+        data-series-label="Registros"
+        data-value-label="Quantidade de registros"
+        data-categories='["Semana 1", "Semana 2", "Semana 3"]'
+        data-series="[4, 7, 5]"
+      ></div>
+      <table id="chart-table" class="chart-data-table" data-chart-table>
+        <caption>Registros por semana</caption>
+        <thead><tr><th scope="col">Período</th><th scope="col">Registros</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Semana 1</th><td>4</td></tr>
+          <tr><th scope="row">Semana 2</th><td>7</td></tr>
+          <tr><th scope="row">Semana 3</th><td>5</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

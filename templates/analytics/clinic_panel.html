@@ -1,0 +1,66 @@
+{% extends layout_template %}
+
+{% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 960px; margin: 0 auto; display: grid; gap: 20px;">
+  <header class="journal-header">
+    <div>
+      <span class="workspace-eyebrow">Operação</span>
+      <h1 class="page-title" style="margin: 0;">Painel operacional</h1>
+      <p style="margin: 4px 0 0; color: var(--color-text-muted); font-size: 14px;">
+        {{ data.period_start|date:"d/m/Y" }} – {{ data.period_end|date:"d/m/Y" }} ·
+        atualizado em {{ data.last_updated|date:"d/m/Y H:i" }}
+      </p>
+    </div>
+  </header>
+
+  <div class="navigation-alert" role="note" style="padding: 12px 16px; border-radius: 10px;">
+    Métricas operacionais agregadas e anonimizadas. Recortes abaixo do limiar foram suprimidos.
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px;">
+    <article class="journal-entry-card">
+      <p style="margin: 0; font-size: 13px; color: var(--color-text-muted);">Consultas no período</p>
+      <p style="margin: 4px 0 0; font-size: 24px; font-weight: 700;">{{ data.total_appointments }}</p>
+    </article>
+    <article class="journal-entry-card">
+      <p style="margin: 0; font-size: 13px; color: var(--color-text-muted);">Ocupação da agenda</p>
+      <p style="margin: 4px 0 0; font-size: 24px; font-weight: 700;">{% if data.occupancy_rate is not None %}{{ data.occupancy_rate }}%{% else %}—{% endif %}</p>
+    </article>
+    <article class="journal-entry-card">
+      <p style="margin: 0; font-size: 13px; color: var(--color-text-muted);">Taxa de faltas</p>
+      <p style="margin: 4px 0 0; font-size: 24px; font-weight: 700;">{% if data.no_show_rate is not None %}{{ data.no_show_rate }}%{% else %}—{% endif %}</p>
+    </article>
+    <article class="journal-entry-card">
+      <p style="margin: 0; font-size: 13px; color: var(--color-text-muted);">Pacientes ativos</p>
+      <p style="margin: 4px 0 0; font-size: 24px; font-weight: 700;">{% if data.active_patients is not None %}{{ data.active_patients }}{% else %}oculto{% endif %}</p>
+    </article>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+    <section class="card" style="padding: 16px;" aria-labelledby="by-unit-heading">
+      <h2 id="by-unit-heading" style="font-size: 15px; font-weight: 700; margin: 0 0 10px;">Consultas por unidade</h2>
+      <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+        <thead><tr style="text-align: left;"><th scope="col" style="padding: 6px;">Unidade</th><th scope="col" style="padding: 6px;">Consultas</th></tr></thead>
+        <tbody>
+          {% for row in data.by_unit %}
+            <tr><td style="padding: 6px;">{{ row.label }}</td><td style="padding: 6px;">{% if row.count is not None %}{{ row.count }}{% else %}oculto{% endif %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+    <section class="card" style="padding: 16px;" aria-labelledby="by-pro-heading">
+      <h2 id="by-pro-heading" style="font-size: 15px; font-weight: 700; margin: 0 0 10px;">Consultas por profissional</h2>
+      <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+        <thead><tr style="text-align: left;"><th scope="col" style="padding: 6px;">Profissional</th><th scope="col" style="padding: 6px;">Consultas</th></tr></thead>
+        <tbody>
+          {% for row in data.by_professional %}
+            <tr><td style="padding: 6px;">{{ row.label }}</td><td style="padding: 6px;">{% if row.count is not None %}{{ row.count }}{% else %}oculto{% endif %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </div>
+</div>
+{% endblock %}

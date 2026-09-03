@@ -1,0 +1,167 @@
+{% extends layout_template %}
+
+{% block title %}Detalhes do Registro | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
+
+{% block content %}
+<div class="journal-detail-container" style="max-width: 800px; margin: 0 auto; display: grid; gap: 24px;">
+  <header class="journal-header">
+    <div>
+      <span class="workspace-eyebrow">Diário Emocional</span>
+      <h1 class="page-title" style="margin: 0;">Registro de {{ entry.created_at|date:"d/m/Y \à\s H:i" }}</h1>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <a href="{% url 'journal_edit' entry.pk %}" class="primary-action" style="text-decoration: none; padding: 10px 16px; border-radius: 9px; font-weight: 600;">
+        Editar
+      </a>
+      <a href="{% url 'journal_list' %}" class="calendar-nav-btn" style="text-decoration: none;">
+        Voltar ao diário
+      </a>
+    </div>
+  </header>
+
+  <article class="journal-entry-card" style="padding: 24px;">
+    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--color-border);">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+        <span class="mood-badge mood-{{ entry.mood }}">
+          Humor: {{ entry.get_mood_display }} ({{ entry.mood }}/5)
+        </span>
+        <span style="font-size: 14px; color: var(--color-text-muted);">
+          Intensidade: {{ entry.intensity }}/5
+        </span>
+      </div>
+
+      <div>
+        {% if entry.visibility == "shareable" %}
+          <span class="visibility-badge visibility-shareable">
+            <span aria-hidden="true">●</span> Verde — Compartilhável
+          </span>
+        {% elif entry.visibility == "confirmation_required" %}
+          <span class="visibility-badge visibility-confirmation">
+            <span aria-hidden="true">●</span> Amarelo — Requer confirmação
+          </span>
+        {% else %}
+          <span class="visibility-badge visibility-private">
+            <span aria-hidden="true">●</span> Vermelho — Somente você (Privado)
+          </span>
+        {% endif %}
+      </div>
+    </div>
+
+    {# Context #}
+    <div style="margin-bottom: 20px;">
+      <h2 style="font-size: 16px; font-weight: 700; margin: 0 0 8px;">Relato do Diário</h2>
+      <p style="margin: 0; font-size: 16px; line-height: 1.6; white-space: pre-wrap;">{{ entry.context }}</p>
+    </div>
+
+    {# Emotions #}
+    {% if entry.emotions %}
+      <div style="margin-bottom: 20px;">
+        <h2 style="font-size: 16px; font-weight: 700; margin: 0 0 8px;">Emoções Identificadas</h2>
+        <div class="emotion-list">
+          {% for emo in entry.emotions %}
+            <span class="emotion-tag" style="font-size: 14px; padding: 4px 10px;">{{ emo }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    {# Triggers, Reactions, Strategies #}
+    {% if entry.triggers or entry.reactions or entry.strategies %}
+      <div class="journal-entry-details" style="display: grid; gap: 14px; padding: 16px; margin-bottom: 20px;">
+        {% if entry.triggers %}
+          <div>
+            <strong style="display: block; margin-bottom: 4px;">Gatilhos:</strong>
+            <p style="margin: 0;">{{ entry.triggers }}</p>
+          </div>
+        {% endif %}
+        {% if entry.reactions %}
+          <div>
+            <strong style="display: block; margin-bottom: 4px;">Reações físicas:</strong>
+            <p style="margin: 0;">{{ entry.reactions }}</p>
+          </div>
+        {% endif %}
+        {% if entry.strategies %}
+          <div>
+            <strong style="display: block; margin-bottom: 4px;">O que me ajudou:</strong>
+            <p style="margin: 0;">{{ entry.strategies }}</p>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {# Quick visibility change #}
+    <div style="padding-top: 16px; border-top: 1px solid var(--color-border);">
+      <h3 style="font-size: 15px; font-weight: 600; margin: 0 0 10px;">Alterar visibilidade deste registro:</h3>
+      <form method="post" action="{% url 'journal_set_visibility' entry.pk %}" style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <button
+          type="submit"
+          name="visibility"
+          value="shareable"
+          class="calendar-nav-btn{% if entry.visibility == 'shareable' %} is-active{% endif %}"
+          style="{% if entry.visibility == 'shareable' %}border-color: #50cd89; font-weight: 700;{% endif %}"
+        >
+          ● Verde (Compartilhável)
+        </button>
+        <button
+          type="submit"
+          name="visibility"
+          value="confirmation_required"
+          class="calendar-nav-btn{% if entry.visibility == 'confirmation_required' %} is-active{% endif %}"
+          style="{% if entry.visibility == 'confirmation_required' %}border-color: #ffc700; font-weight: 700;{% endif %}"
+        >
+          ● Amarelo (Perguntar antes)
+        </button>
+        <button
+          type="submit"
+          name="visibility"
+          value="private"
+          class="calendar-nav-btn{% if entry.visibility == 'private' %} is-active{% endif %}"
+          style="{% if entry.visibility == 'private' %}border-color: #f1416c; font-weight: 700;{% endif %}"
+        >
+          ● Vermelho (Privado)
+        </button>
+      </form>
+
+      {% if entry.visibility != "private" %}
+        <div style="margin-top: 16px;">
+          <form method="post" action="{% url 'journal_revoke_sharing' entry.pk %}">
+            {% csrf_token %}
+            <button
+              type="submit"
+              class="destructive-action"
+              style="padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;"
+            >
+              Revogar todo o compartilhamento deste registro
+            </button>
+          </form>
+        </div>
+      {% endif %}
+    </div>
+
+    {# Access Requests History #}
+    {% if access_requests %}
+      <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--color-border);">
+        <h3 style="font-size: 15px; font-weight: 600; margin: 0 0 12px;">Histórico de solicitações de acesso deste registro:</h3>
+        <div style="display: grid; gap: 8px;">
+          {% for req in access_requests %}
+            <div style="padding: 10px; border: 1px solid var(--color-border); border-radius: 8px; font-size: 13px; background: var(--color-canvas);">
+              <div style="display: flex; justify-content: space-between; gap: 8px;">
+                <span><strong>Terapeuta:</strong> {{ req.therapist.get_full_name|default:req.therapist.email }}</span>
+                <span><strong>Status:</strong> {{ req.get_status_display }}</span>
+              </div>
+              <div><strong>Finalidade:</strong> {{ req.purpose }}</div>
+              <div style="color: var(--color-text-muted); font-size: 12px;">
+                Solicitado em: {{ req.requested_at|date:"d/m/Y H:i" }}
+                {% if req.expires_at %} | Expira em: {{ req.expires_at|date:"d/m/Y H:i" }}{% endif %}
+                {% if req.revoked_at %} | Revogado em: {{ req.revoked_at|date:"d/m/Y H:i" }}{% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </article>
+</div>
+{% endblock %}

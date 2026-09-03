@@ -1,0 +1,35 @@
+{% extends layout_template %}
+{% load accessible_forms %}
+
+{% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 760px; margin: 0 auto; display: grid; gap: 24px;">
+  <header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+    <div>
+      <span class="workspace-eyebrow">Comunicação</span>
+      <h1 class="page-title" style="margin: 0;">{{ page_title }}</h1>
+      <p style="margin: 4px 0 0; color: var(--color-text-muted); font-size: 14px;">{{ non_emergency_notice }}</p>
+    </div>
+    <a href="{% url 'conversation_list' %}" class="calendar-nav-btn" style="text-decoration: none;">Voltar</a>
+  </header>
+
+  <div class="card" style="padding: 24px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-surface);">
+    <form class="form-stack" method="post" novalidate data-form-guard>
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-field{% if field.errors %} has-error{% endif %}">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field|accessible_widget }}
+          {% if field.help_text %}<p class="field-help">{{ field.help_text }}</p>{% endif %}
+          {% for error in field.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+        </div>
+      {% endfor %}
+      <div class="form-actions">
+        <button type="submit" class="primary-action" data-submit-button>{{ submit_label }}</button>
+        <a href="{% url 'conversation_list' %}" class="calendar-nav-btn" style="text-decoration: none;">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

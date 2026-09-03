@@ -1,0 +1,17 @@
+{% extends layout_template %}
+
+{% block title %}Comparar versões: {{ content.title }}{% endblock %}
+
+{% block content %}
+<main style="max-width:1080px;margin:0 auto;display:grid;gap:24px;">
+  <header><span class="workspace-eyebrow">Histórico editorial</span><h1 class="page-title">Comparar versões {{ before.version }} e {{ after.version }}</h1></header>
+  <section class="card" aria-label="Diferenças entre versões" style="padding:24px;display:grid;gap:8px;overflow-wrap:anywhere;">
+    {{ comparison|safe }}
+  </section>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;">
+    <article class="card" style="padding:20px;"><h2>Versão {{ before.version }}</h2>{{ before.body|safe }}</article>
+    <article class="card" style="padding:20px;"><h2>Versão {{ after.version }}</h2>{{ after.body|safe }}</article>
+  </div>
+  <a href="{% url 'content_editorial_detail' content_id=content.pk %}">Voltar ao editor</a>
+</main>
+{% endblock %}

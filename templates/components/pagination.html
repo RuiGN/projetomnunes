@@ -1,0 +1,12 @@
+<nav class="pagination" aria-label="Paginação">
+  <p class="pagination-status">{{ pagination.current_label }}</p>
+  <div class="pagination-links">
+    {% if pagination.first %}<a href="{{ pagination.first }}">Primeira</a>{% endif %}
+    {% if pagination.previous %}<a href="{{ pagination.previous }}">Anterior</a>{% endif %}
+    {% for page in pagination.pages %}
+      {% if page.current %}<span aria-current="page">{{ page.number }}</span>{% else %}<a href="{{ page.url }}" aria-label="Ir para a página {{ page.number }}">{{ page.number }}</a>{% endif %}
+    {% endfor %}
+    {% if pagination.next %}<a href="{{ pagination.next }}">Próxima</a>{% endif %}
+    {% if pagination.last %}<a href="{{ pagination.last }}">Última</a>{% endif %}
+  </div>
+</nav>

@@ -1,0 +1,45 @@
+{% comment %}
+Accessible lesson player contract (PRD 8.12.3.1/8.12.3.4): native controls,
+caption track, visible transcript, resumable position, playback speed and
+keyboard focus support.
+{% endcomment %}
+<figure
+  class="lesson-player"
+  data-resume-seconds="{{ player.resume_seconds|default:0 }}"
+  tabindex="-1"
+>
+  <h3 class="lesson-player-title">{{ player.title }}</h3>
+  <video
+    controls
+    preload="metadata"
+    playsinline
+    aria-label="Reprodução da aula {{ player.title }}"
+    data-resume-seconds="{{ player.resume_seconds|default:0 }}"
+  >
+    {% if player.media_url %}
+    <source src="{{ player.media_url }}" type="video/mp4">
+    {% endif %}
+    {% if player.captions_url %}
+    <track kind="captions" src="{{ player.captions_url }}" srclang="pt-BR" label="Legendas em português" default>
+    {% endif %}
+    Seu navegador não suporta reprodução de vídeo.
+  </video>
+  <div class="lesson-player-controls" role="group" aria-label="Controles de reprodução">
+    <label for="lesson-speed">Velocidade</label>
+    <select id="lesson-speed" data-playback-rate>
+      <option value="0.5">0,5×</option>
+      <option value="0.75">0,75×</option>
+      <option value="1" selected>1×</option>
+      <option value="1.25">1,25×</option>
+      <option value="1.5">1,5×</option>
+      <option value="2">2×</option>
+    </select>
+  </div>
+  <p class="lesson-player-duration">{{ player.duration_minutes }} minutos</p>
+  {% if player.transcript %}
+  <details class="lesson-player-transcript" open>
+    <summary>Transcrição da aula</summary>
+    <p>{{ player.transcript }}</p>
+  </details>
+  {% endif %}
+</figure>

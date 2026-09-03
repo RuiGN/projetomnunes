@@ -1,0 +1,66 @@
+{
+  "artifact": {
+    "authenticated": true,
+    "encrypted": true,
+    "locator": "/mnt/2c8d19a3-3bbb-4f90-b09f-9e17c780ce6a/Projects/projetomnunes/.hermes/evidence/postgres-restore-drill-backup.json"
+  },
+  "backup": {
+    "ciphertext_verified": true,
+    "encrypted": true,
+    "key_persisted": false,
+    "persisted_before_restore": true,
+    "plaintext_verified": true
+  },
+  "data_classification": "synthetic-only",
+  "database": {
+    "cross_tenant_visible_count": 0,
+    "engine": "PostgreSQL 17",
+    "restored_record_count": 3,
+    "source_record_count": 3,
+    "tenant_a_visible_count": 2
+  },
+  "digests": {
+    "artifact_sha256": "4e6be65119d84a1195690090d818403d82013e308efbfa2361f06e6c63e37e8f",
+    "image_sha256": "18cfe3ef5e6815560c98237d6216d1e5119702fb0f3894c8785dd58b8bbe5d73",
+    "manifest_sha256": "2293fc4a10287e4df59ebeffa3301327b23a23492d84e32c830fb02cb8e71531",
+    "script_sha256": "17512153085ba6a1fff238c7d5497625054560623f705a80386b5d4232de4295",
+    "source_sha256": "a7010d21f1b08877d1ef4c8dd47c7f33d34d1817f5706695cbf34da8a77aafcd"
+  },
+  "duration_seconds": 5.730005,
+  "failures": [],
+  "image": {
+    "reference": "postgres:17-alpine@sha256:18cfe3ef5e6815560c98237d6216d1e5119702fb0f3894c8785dd58b8bbe5d73",
+    "sha256": "18cfe3ef5e6815560c98237d6216d1e5119702fb0f3894c8785dd58b8bbe5d73",
+    "verified": true
+  },
+  "isolation": {
+    "distinct_source_and_target": true,
+    "ephemeral_tmpfs_databases": true,
+    "internal_network": true,
+    "published_ports": false
+  },
+  "manifest": {
+    "locator": "/mnt/2c8d19a3-3bbb-4f90-b09f-9e17c780ce6a/Projects/projetomnunes/.hermes/evidence/postgres-restore-drill-manifest.json"
+  },
+  "objectives_seconds": {
+    "rpo": 300.0,
+    "rto": 60.0
+  },
+  "recovery": {
+    "controlled_change_at": "2026-09-01T15:15:23.507366+00:00",
+    "controlled_change_subject_key": "synthetic-subject-post-checkpoint",
+    "restored_contains_controlled_change": false,
+    "rpo_calculation": "controlled_change_at - recovery_checkpoint_at",
+    "rpo_within_objective": true,
+    "rto_within_objective": true,
+    "source_contains_controlled_change": true
+  },
+  "recovery_checkpoint_at": "2026-09-01T15:15:23.423025+00:00",
+  "schema_version": 2,
+  "started_at": "2026-09-01T15:15:18.377175+00:00",
+  "status": "passed",
+  "timings_seconds": {
+    "rpo_observed": 0.084341,
+    "rto_observed": 0.525793
+  }
+}

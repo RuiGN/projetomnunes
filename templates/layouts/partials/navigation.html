@@ -1,0 +1,102 @@
+<nav aria-label="Navegação principal" class="workspace-navigation">
+  {% if pending_consent_revocation_count %}
+    <a href="{% url 'consent_revocation_work_queue' %}" role="status" class="navigation-alert">
+      {{ pending_consent_revocation_count }} revogação operacional pendente{{ pending_consent_revocation_count|pluralize:"s" }}
+    </a>
+  {% endif %}
+  <p class="navigation-label">{{ navigation_label }}</p>
+  <ul class="navigation-list">
+    {% if can_manage_active_clinic %}
+    <li>
+      <a href="{% url 'clinic_setup' %}" class="navigation-link{% if request.resolver_match.url_name == 'clinic_setup' %} is-active{% endif %}"{% if request.resolver_match.url_name == 'clinic_setup' %} aria-current="page"{% endif %}>
+        <span class="navigation-icon" aria-hidden="true">⚙</span>
+        <span>Configurar clínica</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'patient_list' %}" class="navigation-link{% if request.resolver_match.url_name == 'patient_list' or request.resolver_match.url_name == 'patient_create' %} is-active{% endif %}"{% if request.resolver_match.url_name == 'patient_list' or request.resolver_match.url_name == 'patient_create' %} aria-current="page"{% endif %}>
+        <span class="navigation-icon" aria-hidden="true">♧</span>
+        <span>Pacientes</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'professional_list' %}" class="navigation-link{% if request.resolver_match.url_name == 'professional_list' %} is-active{% endif %}"{% if request.resolver_match.url_name == 'professional_list' %} aria-current="page"{% endif %}>
+        <span class="navigation-icon" aria-hidden="true">♙</span>
+        <span>Profissionais</span>
+      </a>
+    </li>
+    {% endif %}
+    <li>
+      <a href="{% url 'journal_list' %}" class="navigation-link{% if request.resolver_match.url_name == 'journal_list' or request.resolver_match.url_name == 'journal_create' or request.resolver_match.url_name == 'journal_detail' or request.resolver_match.url_name == 'journal_edit' %} is-active{% endif %}"{% if request.resolver_match.url_name == 'journal_list' or request.resolver_match.url_name == 'journal_create' or request.resolver_match.url_name == 'journal_detail' or request.resolver_match.url_name == 'journal_edit' %} aria-current="page"{% endif %}>
+        <span class="navigation-icon" aria-hidden="true">✎</span>
+        <span>Diário emocional</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'goal_list' %}" class="navigation-link{% if request.resolver_match.url_name == 'goal_list' or request.resolver_match.url_name == 'goal_create' or request.resolver_match.url_name == 'goal_detail' or request.resolver_match.url_name == 'goal_edit' %} is-active{% endif %}"{% if request.resolver_match.url_name == 'goal_list' or request.resolver_match.url_name == 'goal_create' or request.resolver_match.url_name == 'goal_detail' or request.resolver_match.url_name == 'goal_edit' %} aria-current="page"{% endif %}>
+        <span class="navigation-icon" aria-hidden="true">◎</span>
+        <span>Minhas metas</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'patient_exercise_list' %}" class="navigation-link{% if 'exercicios' in request.resolver_match.url_name %} is-active{% endif %}"{% if 'exercicios' in request.resolver_match.url_name %} aria-current="page"{% endif %}>
+        <span class="navigation-icon" aria-hidden="true">✎</span>
+        <span>Exercícios</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'low_energy_home' %}" class="navigation-link{% if request.resolver_match.url_name == 'low_energy_home' %} is-active{% endif %}"{% if request.resolver_match.url_name == 'low_energy_home' %} aria-current="page"{% endif %}>
+        <span class="navigation-icon" aria-hidden="true">☾</span>
+        <span>Modo baixa energia</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'appointment_list' %}" class="navigation-link{% if 'appointment' in request.resolver_match.url_name %} is-active{% endif %}"{% if 'appointment' in request.resolver_match.url_name %} aria-current="page"{% endif %}>
+        <span class="navigation-icon" aria-hidden="true">◷</span>
+        <span>Agenda</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'conversation_list' %}" class="navigation-link{% if 'conversation' in request.resolver_match.url_name %} is-active{% endif %}"{% if 'conversation' in request.resolver_match.url_name %} aria-current="page"{% endif %}>
+        <span class="navigation-icon" aria-hidden="true">✉</span>
+        <span>Mensagens</span>
+      </a>
+    </li>
+    {% if is_patient %}
+    <li>
+      <a href="{% url 'patient_dashboard' %}" class="navigation-link{% if request.resolver_match.url_name == 'patient_dashboard' %} is-active{% endif %}"{% if request.resolver_match.url_name == 'patient_dashboard' %} aria-current="page"{% endif %}>
+        <span class="navigation-icon" aria-hidden="true">◔</span>
+        <span>Minha evolução</span>
+      </a>
+    </li>
+    {% endif %}
+    {% if is_therapist %}
+    <li>
+      <a href="{% url 'therapist_dashboard' %}" class="navigation-link{% if request.resolver_match.url_name == 'therapist_dashboard' %} is-active{% endif %}"{% if request.resolver_match.url_name == 'therapist_dashboard' %} aria-current="page"{% endif %}>
+        <span class="navigation-icon" aria-hidden="true">◑</span>
+        <span>Painel profissional</span>
+      </a>
+    </li>
+    {% endif %}
+    {% if is_clinic_admin %}
+    <li>
+      <a href="{% url 'clinic_panel' %}" class="navigation-link{% if request.resolver_match.url_name == 'clinic_panel' %} is-active{% endif %}"{% if request.resolver_match.url_name == 'clinic_panel' %} aria-current="page"{% endif %}>
+        <span class="navigation-icon" aria-hidden="true">▤</span>
+        <span>Painel operacional</span>
+      </a>
+    </li>
+    {% endif %}
+    <li>
+      <a href="{% url 'workspace_vertical' %}" class="navigation-link{% if request.resolver_match.url_name == 'workspace_vertical' %} is-active{% endif %}"{% if request.resolver_match.url_name == 'workspace_vertical' %} aria-current="page"{% endif %}>
+        <span class="navigation-icon" aria-hidden="true">⌂</span>
+        <span>Área de trabalho</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'workspace_detached' %}" class="navigation-link{% if request.resolver_match.url_name == 'workspace_detached' %} is-active{% endif %}"{% if request.resolver_match.url_name == 'workspace_detached' %} aria-current="page"{% endif %}>
+        <span class="navigation-icon" aria-hidden="true">▦</span>
+        <span>Visão destacada</span>
+      </a>
+    </li>
+  </ul>
+</nav>

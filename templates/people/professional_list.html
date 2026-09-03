@@ -1,0 +1,69 @@
+{% extends layout_template %}
+
+{% block content %}
+<section class="welcome-panel" aria-labelledby="professional-list-title">
+  <div>
+    <p class="workspace-eyebrow">Equipe da clínica ativa</p>
+    <h1 id="professional-list-title">Profissionais</h1>
+    <p class="workspace-intro">Perfis, vínculos e credenciais informadas, sem confirmação automática pela plataforma.</p>
+  </div>
+  <a class="primary-action" href="{% url 'invitation_issue' %}">Convidar profissional</a>
+</section>
+
+<form method="get" class="content-card form-stack" aria-label="Filtros de profissionais">
+  <div class="form-field">
+    <label for="professional-status">Status</label>
+    <select id="professional-status" name="status">
+      <option value="">Todos</option>
+      <option value="active"{% if selected_status == 'active' %} selected{% endif %}>Ativo</option>
+      <option value="scheduled"{% if selected_status == 'scheduled' %} selected{% endif %}>Agendado</option>
+      <option value="suspended"{% if selected_status == 'suspended' %} selected{% endif %}>Suspenso</option>
+      <option value="expired"{% if selected_status == 'expired' %} selected{% endif %}>Encerrado</option>
+    </select>
+  </div>
+  <div class="form-field">
+    <label for="professional-role">Papel</label>
+    <select id="professional-role" name="role">
+      <option value="">Todos</option>
+      <option value="therapist"{% if selected_role == 'therapist' %} selected{% endif %}>Terapeuta</option>
+      <option value="administrative_staff"{% if selected_role == 'administrative_staff' %} selected{% endif %}>Equipe administrativa</option>
+    </select>
+  </div>
+  <div class="form-field">
+    <label for="professional-specialty">Especialidade técnica</label>
+    <input id="professional-specialty" name="specialty" value="{{ selected_specialty }}">
+  </div>
+  <button type="submit" class="primary-action">Aplicar filtros</button>
+</form>
+
+<section class="component-section" aria-labelledby="professional-results-title">
+  <h2 id="professional-results-title">Resultado</h2>
+  {% if professionals %}
+    <div class="table-scroll" role="region" aria-label="Lista de profissionais" tabindex="0">
+      <table>
+        <thead><tr><th scope="col">Nome</th><th scope="col">Papel</th><th scope="col">Status</th><th scope="col">Unidade</th><th scope="col">Especialidades</th><th scope="col">Ações</th></tr></thead>
+        <tbody>
+          {% for professional in professionals %}
+          <tr>
+            <th scope="row">{{ professional.full_name }}{% if professional.social_name %}<br><small>Nome social: {{ professional.social_name }}</small>{% endif %}</th>
+            <td>{{ professional.role }}</td>
+            <td>{{ professional.status }}</td>
+            <td>{{ professional.unit_name|default:"Não informada" }}</td>
+            <td>{{ professional.specialties|join:", "|default:"Não informadas" }}</td>
+            <td>
+              {% if professional.status == "suspended" %}
+                <form method="post" action="{% url 'professional_reactivate' professional.membership_id %}">{% csrf_token %}<button type="submit">Reativar</button></form>
+              {% else %}
+                <form method="post" action="{% url 'professional_suspend' professional.membership_id %}">{% csrf_token %}<button type="submit" class="destructive-action">Suspender</button></form>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="content-card" role="status"><h3>Nenhum profissional encontrado</h3><p>Revise os filtros ou convide o primeiro profissional.</p></div>
+  {% endif %}
+</section>
+{% endblock %}

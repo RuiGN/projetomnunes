@@ -1,0 +1,9 @@
+{% extends "layouts/vertical.html" %}
+
+{% block content %}
+<section class="content-card" role="alert" aria-labelledby="revocation-work-error-title">
+  <h1 id="revocation-work-error-title">Não foi possível confirmar o atendimento</h1>
+  <p>{{ error }}</p>
+  <a href="{% url 'consent_revocation_work_queue' %}">Voltar para a fila</a>
+</section>
+{% endblock %}

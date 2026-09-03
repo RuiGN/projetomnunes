@@ -1,0 +1,108 @@
+# Brazilian Portuguese translations for Projetomnunes.
+msgid ""
+msgstr ""
+"Project-Id-Version: projetomnunes 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-01 19:14-0300\n"
+"PO-Revision-Date: 2026-09-01 18:40-0300\n"
+"Last-Translator: Projetomnunes Team\n"
+"Language-Team: Brazilian Portuguese\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "Reason for revocation"
+msgstr ""
+
+msgid ""
+"I understand that revocation stops future use for this purpose and does not "
+"erase the historical evidence."
+msgstr ""
+
+#, python-format
+msgid "Informe no máximo %(limit_value)d dígitos."
+msgstr "Informe no máximo %(limit_value)d dígitos."
+
+msgid "Terms and consents"
+msgstr "Termos e consentimentos"
+
+msgid ""
+"Read each document and record your decision. Optional authorizations are not "
+"preselected and may be refused without blocking your basic rights."
+msgstr ""
+"Leia cada documento e registre sua decisão. Autorizações opcionais não vêm "
+"marcadas e podem ser recusadas sem bloquear seus direitos básicos."
+
+msgid "Required acceptances"
+msgstr "Aceites necessários"
+
+msgid "There are no required acceptances pending."
+msgstr "Não há aceites necessários pendentes."
+
+msgid "Optional authorizations"
+msgstr "Autorizações opcionais"
+
+msgid "There are no optional authorizations available."
+msgstr "Não há autorizações opcionais disponíveis."
+
+msgid "Review your decision"
+msgstr "Revise sua decisão"
+
+msgid "Select accept or refuse before continuing."
+msgstr "Selecione aceitar ou recusar antes de continuar."
+
+msgid "The decision could not be recorded."
+msgstr "Não foi possível registrar a decisão."
+
+msgid "Back to terms"
+msgstr "Voltar aos termos"
+
+#, python-format
+msgid "Version %(version)s · Purpose: %(purpose)s"
+msgstr "Versão %(version)s · Finalidade: %(purpose)s"
+
+msgid "If you refuse:"
+msgstr "Em caso de recusa:"
+
+msgid "Alternative:"
+msgstr "Alternativa:"
+
+msgid "Clinic contact:"
+msgstr "Contato da clínica:"
+
+msgid "Recorded decision:"
+msgstr "Decisão registrada:"
+
+msgid "Choose an option"
+msgstr "Escolha uma opção"
+
+msgid "I accept for the stated purpose"
+msgstr "Aceito para a finalidade informada"
+
+msgid "I do not accept"
+msgstr "Não aceito"
+
+msgid "Record decision"
+msgstr "Registrar decisão"
+
+msgid ""
+"A revogação interrompe novos usos para esta finalidade, preservando a "
+"evidência histórica e obrigações legais aplicáveis."
+msgstr ""
+
+msgid "Motivo da revogação"
+msgstr ""
+
+msgid "Entendo o escopo e desejo revogar esta autorização."
+msgstr ""
+
+msgid "Revogar autorização"
+msgstr ""
+
+msgid "Não foi possível revogar a autorização"
+msgstr ""
+
+msgid "Voltar aos termos e consentimentos"
+msgstr ""

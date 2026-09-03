@@ -1,0 +1,64 @@
+{% extends layout_template %}
+
+{% block title %}Construtor: {{ course.title }}{% endblock %}
+
+{% block content %}
+<main style="max-width:1080px;margin:0 auto;display:grid;gap:24px;">
+  <header><span class="workspace-eyebrow">Cursos</span><h1 class="page-title">{{ course.title }}</h1>
+    <p>{{ course.get_status_display }} · versão de currículo {{ course.curriculum_version }}</p>
+  </header>
+  <section class="card" style="padding:24px;display:grid;gap:16px;" aria-labelledby="modules-title">
+    <h2 id="modules-title">Módulos</h2>
+    <ol style="display:grid;gap:8px;">
+      {% for module in modules %}
+      <li><a href="{% url 'content_course_module_detail' course.pk module.pk %}">Módulo {{ module.position }}: {{ module.title }}</a> · {{ module.get_status_display }}</li>
+      {% empty %}
+      <li aria-live="polite">Nenhum módulo ainda.</li>
+      {% endfor %}
+    </ol>
+  </section>
+  <section class="card" style="padding:24px;display:grid;gap:12px;" aria-labelledby="add-module-title">
+    <h2 id="add-module-title">Adicionar módulo</h2>
+    <form method="post" action="{% url 'content_course_module_create' course.pk %}" style="display:grid;gap:12px;">
+      {% csrf_token %}
+      <label for="module-title">Título do módulo</label>
+      <input id="module-title" name="title" type="text" required maxlength="255" />
+      <label for="module-position">Posição</label>
+      <input id="module-position" name="position" type="number" min="1" value="{{ modules|length|add:1 }}" required />
+      <button type="submit">Adicionar módulo</button>
+    </form>
+  </section>
+  <section class="card" style="padding:24px;display:grid;gap:12px;" aria-labelledby="prereq-title">
+    <h2 id="prereq-title">Pré-requisito</h2>
+    <form method="post" action="{% url 'content_course_prerequisite_add' course.pk %}" style="display:grid;gap:12px;">
+      {% csrf_token %}
+      <label for="prereq-id">Curso de pré-requisito (ID)</label>
+      <input id="prereq-id" name="prerequisite_course_id" type="text" required />
+      <button type="submit">Vincular pré-requisito</button>
+    </form>
+  </section>
+  <section class="card" style="padding:24px;display:grid;gap:12px;" aria-labelledby="publish-title">
+    <h2 id="publish-title">Publicação</h2>
+    <form method="post" action="{% url 'content_course_publish' course.pk %}">
+      {% csrf_token %}
+      <button type="submit">Publicar curso</button>
+    </form>
+  </section>
+  <section class="card" style="padding:24px;display:grid;gap:12px;" aria-labelledby="quiz-title">
+    <h2 id="quiz-title">Questionário educacional</h2>
+    <form method="post" action="{% url 'content_quiz_create' course.pk %}" style="display:grid;gap:12px;">
+      {% csrf_token %}
+      <label for="quiz-slug">Slug</label>
+      <input id="quiz-slug" name="slug" type="text" required maxlength="160" />
+      <label for="quiz-title">Título</label>
+      <input id="quiz-title" name="title" type="text" required maxlength="255" />
+      <label for="quiz-grade">Nota mínima (0–100)</label>
+      <input id="quiz-grade" name="minimum_grade" type="number" min="0" max="100" value="70" required />
+      <label for="quiz-attempts">Tentativas</label>
+      <input id="quiz-attempts" name="max_attempts" type="number" min="1" value="3" required />
+      <label><input type="checkbox" name="shuffle_questions" /> Embaralhar questões</label>
+      <button type="submit">Criar questionário</button>
+    </form>
+  </section>
+</main>
+{% endblock %}

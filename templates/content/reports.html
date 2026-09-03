@@ -1,0 +1,34 @@
+{% extends layout_template %}
+
+{% block title %}Denúncias de conteúdo{% endblock %}
+
+{% block content %}
+<main style="max-width:1080px;margin:0 auto;display:grid;gap:24px;">
+  <header>
+    <span class="workspace-eyebrow">Curadoria</span>
+    <h1 class="page-title">Denúncias de conteúdo</h1>
+  </header>
+  <section class="card" style="padding:24px;display:grid;gap:16px;" aria-labelledby="reports-title">
+    <h2 id="reports-title">Denúncias abertas</h2>
+    {% for report in reports %}
+    <div style="display:grid;gap:8px;border-top:1px solid var(--color-border);padding-top:12px;">
+      <p><strong>{{ report.content.title }}</strong> — reportado por {{ report.reporter.email }}</p>
+      <p>{{ report.reason }}</p>
+      <form method="post" action="{% url 'content_report_resolve' report.pk %}" style="display:grid;gap:8px;">
+        {% csrf_token %}
+        <label for="resolution-{{ report.pk }}">Resolução</label>
+        <select id="resolution-{{ report.pk }}" name="resolution">
+          <option value="resolved">Resolvido</option>
+          <option value="dismissed">Descartado</option>
+        </select>
+        <label for="note-{{ report.pk }}">Nota</label>
+        <textarea id="note-{{ report.pk }}" name="note" rows="2"></textarea>
+        <button type="submit">Resolver denúncia</button>
+      </form>
+    </div>
+    {% empty %}
+    <p aria-live="polite">Nenhuma denúncia aberta.</p>
+    {% endfor %}
+  </section>
+</main>
+{% endblock %}

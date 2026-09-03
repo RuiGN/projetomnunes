@@ -1,0 +1,16 @@
+{% extends "layouts/base.html" %}
+
+{% block workspace %}
+<main id="main-content" class="auth-page" tabindex="-1">
+  <section class="auth-card" aria-labelledby="auth-message-title">
+    <a class="brand-mark auth-brand" href="{% url 'home' %}" aria-label="Início da plataforma">
+      <span aria-hidden="true">◒</span><span>Cuidado contínuo</span>
+    </a>
+    <div class="auth-heading">
+      <h1 id="auth-message-title">{{ title }}</h1>
+      <p role="status">{{ message }}</p>
+    </div>
+    <a class="primary-action auth-message-action" href="{{ action_url }}">{{ action_label }}</a>
+  </section>
+</main>
+{% endblock %}

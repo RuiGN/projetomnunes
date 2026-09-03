@@ -1,0 +1,39 @@
+{% extends layout_template %}
+
+{% block content %}
+<section class="welcome-panel" aria-labelledby="patient-onboarding-title">
+  <div><p class="workspace-eyebrow">Boas-vindas</p><h1 id="patient-onboarding-title">Sua jornada</h1><p class="workspace-intro">Registre objetivos e preferências. Tudo pode ser revisado depois.</p></div>
+</section>
+<nav class="stepper" aria-label="Etapas do onboarding">
+  <ol>
+    {% for s in steps %}<li{% if s == step %} aria-current="step"{% endif %}>{{ s }}</li>{% endfor %}
+  </ol>
+</nav>
+<section class="content-card">
+  {% if step == "goals" %}
+    <h2>Objetivos pessoais</h2>
+    <p class="workspace-intro">Declare, se quiser, o que espera trabalhar. Não há nota, risco ou diagnóstico.</p>
+    <form method="post" class="form-stack" novalidate>
+      {% csrf_token %}<input type="hidden" name="step" value="goals">
+      <div class="form-field"><label for="{{ form.goals.id_for_label }}">{{ form.goals.label }}</label>{{ form.goals }}{% if form.goals.errors %}<div role="alert">{{ form.goals.errors }}</div>{% endif %}</div>
+      <div class="form-actions"><button type="submit" class="primary-action">Continuar</button></div>
+    </form>
+  {% elif step == "preferences" %}
+    <h2>Preferências de contato e lembretes</h2>
+    <form method="post" class="form-stack" novalidate>
+      {% csrf_token %}<input type="hidden" name="step" value="preferences">
+      {% for field in form %}<div class="form-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.errors %}<div role="alert">{{ field.errors }}</div>{% endif %}</div>{% endfor %}
+      <div class="form-actions"><button type="submit" class="primary-action">Continuar</button></div>
+    </form>
+  {% elif step == "terms" %}
+    <h2>Termos e limites</h2>
+    <p class="workspace-intro" role="note">Esta plataforma não substitui atendimento profissional nem serviço de emergência. Em perigo imediato, acione o serviço de emergência da sua localidade.</p>
+    {% for document in documents %}<article class="document-summary"><h3>{{ document.title }}</h3><p>{{ document.purpose }}</p></article>{% empty %}<p>Nenhum termo publicado ainda.</p>{% endfor %}
+    <form method="post">{% csrf_token %}<input type="hidden" name="step" value="terms"><div class="form-actions"><button type="submit" class="primary-action">Li e entendi os limites</button></div></form>
+  {% else %}
+    <h2>Onboarding concluído</h2>
+    <p class="workspace-intro">Seus objetivos e preferências foram registrados. Você pode revisá-los a qualquer momento.</p>
+    <a class="primary-action" href="{% url 'workspace_vertical' %}">Ir para a área inicial</a>
+  {% endif %}
+</section>
+{% endblock %}

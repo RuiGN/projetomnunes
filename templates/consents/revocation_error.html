@@ -1,0 +1,14 @@
+{% extends "layouts/vertical.html" %}
+{% load i18n %}
+
+{% block content %}
+<section class="content-card" aria-labelledby="revocation-error-title">
+  <h1 id="revocation-error-title">{% translate "Não foi possível revogar a autorização" %}</h1>
+  <p>{{ document.title }}</p>
+  {% if form.non_field_errors %}<div role="alert">{{ form.non_field_errors }}</div>{% endif %}
+  {% for field in form %}
+    {% if field.errors %}<div role="alert">{{ field.label }}: {{ field.errors }}</div>{% endif %}
+  {% endfor %}
+  <a href="{% url 'consent_center' %}">{% translate "Voltar aos termos e consentimentos" %}</a>
+</section>
+{% endblock %}

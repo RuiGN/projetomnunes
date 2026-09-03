@@ -1,0 +1,1 @@
+"""SQLite-compatible migrations package."""

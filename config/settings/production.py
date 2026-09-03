@@ -1,0 +1,98 @@
+"""Hardened production settings backed by PostgreSQL."""
+
+import os
+
+from .base import (  # noqa: F401
+    ACCOUNT_SESSION_ABSOLUTE_SECONDS,
+    ACCOUNT_SESSION_IDLE_SECONDS,
+    ASGI_APPLICATION,
+    AUDIT_RETENTION_DAYS,
+    AUTH_PASSWORD_VALIDATORS,
+    AUTH_USER_MODEL,
+    BASE_DIR,
+    CONSENT_REVOCATION_DESTINATIONS,
+    CONTENT_SECURITY_POLICY,
+    DEFAULT_AUTO_FIELD,
+    DEFAULT_FROM_EMAIL,
+    INSTALLED_APPS,
+    LANGUAGE_CODE,
+    LOCALE_PATHS,
+    LOGGING,
+    LOGIN_RATE_LIMIT_ATTEMPTS,
+    LOGIN_RATE_LIMIT_WINDOW_SECONDS,
+    LOGIN_URL,
+    MAILERS,
+    MEDIA_ROOT,
+    MEDIA_URL,
+    MFA_RATE_LIMIT_ATTEMPTS,
+    MFA_RATE_LIMIT_WINDOW_SECONDS,
+    MIDDLEWARE,
+    PASSWORD_RECOVERY_RATE_LIMIT_ATTEMPTS,
+    PASSWORD_RECOVERY_RATE_LIMIT_WINDOW_SECONDS,
+    PASSWORD_RESET_TIMEOUT,
+    PERMISSIONS_POLICY,
+    PRIVACY_EXPORT_TTL_SECONDS,
+    PRIVACY_LIFECYCLE_DESTINATIONS,
+    PRIVACY_REAUTH_MAX_AGE_SECONDS,
+    PRIVACY_REQUEST_DUE_DAYS,
+    PRIVATE_MEDIA_ROOT,
+    PRIVATE_UPLOAD_MALWARE_SCAN_COMMAND,
+    REFERRER_POLICY,
+    ROOT_URLCONF,
+    SENSITIVE_REAUTH_RATE_LIMIT_ATTEMPTS,
+    SENSITIVE_REAUTH_RATE_LIMIT_WINDOW_SECONDS,
+    STATIC_ROOT,
+    STATIC_URL,
+    STATICFILES_DIRS,
+    TEMPLATES,
+    TIME_ZONE,
+    USE_I18N,
+    USE_TZ,
+    WSGI_APPLICATION,
+    environment_flag,
+    postgres_database_from_environment,
+    required_environment,
+)
+
+SECRET_KEY = required_environment("DJANGO_SECRET_KEY")
+AUDIT_INTEGRITY_KEY = required_environment("AUDIT_INTEGRITY_KEY")
+MFA_ENCRYPTION_KEY = required_environment("MFA_ENCRYPTION_KEY")
+MFA_ENFORCEMENT_ENABLED = environment_flag("MFA_ENFORCEMENT_ENABLED", default=True)
+CACHE_URL = required_environment("CACHE_URL")
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": CACHE_URL,
+        "OPTIONS": {
+            "socket_connect_timeout": 5,
+            "socket_timeout": 5,
+        },
+    }
+}
+DEBUG = False
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in required_environment("DJANGO_ALLOWED_HOSTS").split(",")
+    if host.strip()
+]
+DATABASES = {"default": postgres_database_from_environment()}
+DATABASES["default"]["OPTIONS"] = {
+    "sslmode": "verify-full",
+    "sslrootcert": required_environment("DB_SSLROOTCERT"),
+}
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = "Lax"
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_HSTS_SECONDS = max(
+    int(os.environ.get("DJANGO_SECURE_HSTS_SECONDS", "31536000")),
+    31536000,
+)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"

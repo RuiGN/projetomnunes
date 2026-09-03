@@ -1,0 +1,47 @@
+{% extends "layouts/base.html" %}
+
+{% block workspace %}
+<div
+  class="layout-detached workspace-shell"
+  x-data="workspaceNavigation"
+  x-effect="syncScrollLock"
+  @keydown.escape.window="closeSidebar"
+>
+  <div class="detached-frame">
+    <div class="detached-brand-row">
+      <a class="brand-mark" href="{% url 'workspace_vertical' %}" aria-label="Início da plataforma">
+        <span aria-hidden="true">◒</span><span>Cuidado contínuo</span>
+      </a>
+      {% include "layouts/partials/navigation.html" with navigation_label="Navegação destacada" %}
+    </div>
+    {% include "layouts/partials/header.html" %}
+    <nav aria-label="Caminho de navegação" class="breadcrumbs">
+      <ol><li><a href="{% url 'workspace_vertical' %}">Início</a></li><li aria-current="page">Área de trabalho</li></ol>
+    </nav>
+    {% include "layouts/partials/messages.html" %}
+    <main id="main-content" class="workspace-main detached-main" tabindex="-1">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <div class="drawer-overlay" x-cloak x-show="sidebarOpen" @click="closeSidebar" aria-hidden="true"></div>
+  <aside
+    id="mobile-sidebar"
+    class="mobile-sidebar"
+    x-cloak
+    x-show="sidebarOpen"
+    x-transition
+    role="dialog"
+    aria-modal="true"
+    aria-label="Menu principal"
+    x-ref="mobileSidebar"
+    @keydown.tab="trapFocus"
+  >
+    <div class="mobile-sidebar-heading">
+      <strong>Menu</strong>
+      <button type="button" x-ref="sidebarClose" @click="closeSidebar">Fechar menu</button>
+    </div>
+    {% include "layouts/partials/navigation.html" with navigation_label="Navegação destacada" %}
+  </aside>
+</div>
+{% endblock %}

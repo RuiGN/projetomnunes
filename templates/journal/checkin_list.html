@@ -1,0 +1,105 @@
+{% extends layout_template %}
+
+{% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 900px; margin: 0 auto; display: grid; gap: 20px;">
+  <header class="journal-header">
+    <div>
+      <span class="workspace-eyebrow">Acompanhamento pessoal</span>
+      <h1 class="page-title" style="margin: 0;">Histórico de Check-ins</h1>
+      {% if total_checkins_count %}
+        <p style="margin: 4px 0 0; color: var(--color-text-muted); font-size: 14px;">
+          {{ total_checkins_count }} registro{{ total_checkins_count|pluralize:"s" }} no total
+        </p>
+      {% endif %}
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <a href="{% url 'checkin_today' %}" class="primary-action" style="text-decoration: none; padding: 10px 16px; border-radius: 9px; font-weight: 600;">
+        Fazer check-in de hoje
+      </a>
+      <a href="{% url 'journal_list' %}" class="calendar-nav-btn" style="text-decoration: none;">
+        Voltar ao diário
+      </a>
+    </div>
+  </header>
+
+  {% if checkins.object_list %}
+    <div class="responsive-table-wrapper">
+      <table class="responsive-table">
+        <caption>Respostas enviadas por dia</caption>
+        <thead>
+          <tr>
+            <th scope="col">Data</th>
+            <th scope="col">Estado geral</th>
+            <th scope="col">Ansiedade</th>
+            <th scope="col">Energia</th>
+            <th scope="col">Sono</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for checkin in checkins %}
+            <tr>
+              <th scope="row">{{ checkin.date|date:"d/m/Y" }}</th>
+              <td>{{ checkin.answers.general_state|default:"—" }}/5</td>
+              <td>{{ checkin.answers.anxiety|default:"—" }}/5</td>
+              <td>{{ checkin.answers.energy|default:"—" }}/5</td>
+              <td>{{ checkin.answers.sleep_quality|default:"—" }}/5</td>
+              <td>
+                {% if checkin.is_draft %}
+                  <span class="visibility-badge visibility-confirmation">Rascunho</span>
+                {% else %}
+                  <span class="visibility-badge visibility-shareable">Enviado</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mobile-row-list">
+      {% for checkin in checkins %}
+        <article class="mobile-row-card">
+          <h3>{{ checkin.date|date:"d/m/Y" }}</h3>
+          <dl>
+            <div><dt>Estado geral</dt><dd>{{ checkin.answers.general_state|default:"—" }}/5</dd></div>
+            <div><dt>Ansiedade</dt><dd>{{ checkin.answers.anxiety|default:"—" }}/5</dd></div>
+            <div><dt>Energia</dt><dd>{{ checkin.answers.energy|default:"—" }}/5</dd></div>
+            <div><dt>Sono</dt><dd>{{ checkin.answers.sleep_quality|default:"—" }}/5</dd></div>
+            <div>
+              <dt>Status</dt>
+              <dd>{% if checkin.is_draft %}Rascunho{% else %}Enviado{% endif %}</dd>
+            </div>
+          </dl>
+        </article>
+      {% endfor %}
+    </div>
+
+    {% if checkins.paginator.num_pages > 1 %}
+      <nav class="pagination" aria-label="Paginação do histórico de check-ins">
+        <p class="pagination-status">Página {{ checkins.number }} de {{ checkins.paginator.num_pages }}</p>
+        <div class="pagination-links">
+          {% if checkins.has_previous %}
+            <a href="?page={{ checkins.previous_page_number }}" class="calendar-nav-btn" aria-label="Página anterior">Anterior</a>
+          {% endif %}
+          {% if checkins.has_next %}
+            <a href="?page={{ checkins.next_page_number }}" class="calendar-nav-btn" aria-label="Próxima página">Próxima</a>
+          {% endif %}
+        </div>
+      </nav>
+    {% endif %}
+  {% else %}
+    <div class="content-state" style="padding: 40px 24px; text-align: center; border: 1px dashed var(--color-border); border-radius: 14px; background: var(--color-surface);">
+      <p style="margin: 0 0 12px; font-size: 17px; font-weight: 600;">Nenhum check-in registrado ainda</p>
+      <p style="margin: 0 0 20px; color: var(--color-text-muted);">
+        O check-in diário é rápido e ajuda você a acompanhar seu dia a dia. Comece agora.
+      </p>
+      <a href="{% url 'checkin_today' %}" class="primary-action" style="display: inline-flex; padding: 10px 18px; border-radius: 9px; text-decoration: none; font-weight: 600;">
+        Fazer meu primeiro check-in
+      </a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "layouts/base.html" %}
+{% load accessible_forms %}
+
+{% block workspace %}
+<main id="main-content" class="auth-page" tabindex="-1">
+  <section class="auth-card" aria-labelledby="auth-title">
+    <a class="brand-mark auth-brand" href="{% url 'home' %}" aria-label="Início da plataforma">
+      <span aria-hidden="true">◒</span><span>Cuidado contínuo</span>
+    </a>
+    <div class="auth-heading">
+      <h1 id="auth-title">{{ title }}</h1>
+      <p>{{ description }}</p>
+    </div>
+    <form method="post" class="form-stack" novalidate>
+      {% csrf_token %}
+      {% if form.errors %}
+        <div class="form-error-summary" role="alert" tabindex="-1" aria-labelledby="auth-error-title">
+          <h2 id="auth-error-title">Não foi possível continuar</h2>
+          <ul>
+            {% for field in form %}
+              {% for error in field.errors %}
+                <li><a href="#{{ field|error_target_id }}">{{ field.label }}: {{ error }}</a></li>
+              {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      {% for field in form %}
+        <div class="form-field{% if field.errors %} has-error{% endif %}">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field|accessible_widget }}
+          {% for error in field.errors %}
+            <p class="field-error" id="{{ field.auto_id }}_error_{{ forloop.counter0 }}">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endfor %}
+      <div class="form-actions">
+        <button class="primary-action" type="submit">{{ submit_label }}</button>
+      </div>
+    </form>
+    {% if secondary_url and secondary_label %}
+      <a class="auth-secondary-link" href="{{ secondary_url }}">{{ secondary_label }}</a>
+    {% endif %}
+  </section>
+</main>
+{% endblock %}

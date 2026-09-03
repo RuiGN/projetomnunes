@@ -1,0 +1,53 @@
+{% extends layout_template %}
+
+{% block content %}
+<section class="welcome-panel" aria-labelledby="patient-detail-title">
+  <div><p class="workspace-eyebrow">Cadastro mínimo</p><h1 id="patient-detail-title">{{ patient.full_name }}{% if patient.social_name %} <small>({{ patient.social_name }})</small>{% endif %}</h1><p class="workspace-intro">Dados cadastrais autorizados da clínica ativa.</p></div>
+  <a class="primary-action" href="{% url 'patient_list' %}">Voltar à lista</a>
+</section>
+
+<section class="component-section" aria-labelledby="detail-identity-title">
+  <h2 id="detail-identity-title">Identificação</h2>
+  <dl class="detail-list">
+    <div><dt>Nome completo</dt><dd>{{ patient.full_name }}</dd></div>
+    <div><dt>Nome social</dt><dd>{{ patient.social_name|default:"—" }}</dd></div>
+    <div><dt>Data de nascimento</dt><dd>{{ patient.birth_date|date:"d/m/Y" }}</dd></div>
+    <div><dt>Gênero</dt><dd>{{ patient.get_gender_display|default:"Não informado" }}</dd></div>
+    <div><dt>E-mail</dt><dd>{{ patient.email }}</dd></div>
+    <div><dt>Telefone</dt><dd>{{ patient.phone|default:"—" }}</dd></div>
+    <div><dt>Idioma</dt><dd>{{ patient.language_code }}</dd></div>
+    <div><dt>Fuso horário</dt><dd>{{ patient.timezone_name }}</dd></div>
+  </dl>
+</section>
+
+{% if patient.accessibility_preferences %}
+<section class="component-section" aria-labelledby="detail-accessibility-title">
+  <h2 id="detail-accessibility-title">Acessibilidade</h2>
+  <p>{{ patient.accessibility_preferences }}</p>
+</section>
+{% endif %}
+
+{% if patient.address %}
+<section class="component-section" aria-labelledby="detail-address-title">
+  <h2 id="detail-address-title">Endereço</h2>
+  <dl class="detail-list">
+    <div><dt>Finalidade</dt><dd>{{ patient.address_purpose|default:"—" }}</dd></div>
+    <div><dt>Endereço</dt><dd>{{ patient.address.line }}</dd></div>
+    <div><dt>Cidade</dt><dd>{{ patient.address.city }}</dd></div>
+    <div><dt>UF</dt><dd>{{ patient.address.state }}</dd></div>
+    <div><dt>CEP</dt><dd>{{ patient.address.postal_code }}</dd></div>
+  </dl>
+</section>
+{% endif %}
+
+{% if patient.emergency_contact %}
+<section class="component-section" aria-labelledby="detail-emergency-title">
+  <h2 id="detail-emergency-title">Contato de emergência</h2>
+  <dl class="detail-list">
+    <div><dt>Finalidade</dt><dd>{{ patient.emergency_contact_purpose|default:"—" }}</dd></div>
+    <div><dt>Nome</dt><dd>{{ patient.emergency_contact.name }}</dd></div>
+    <div><dt>Telefone</dt><dd>{{ patient.emergency_contact.phone }}</dd></div>
+  </dl>
+</section>
+{% endif %}
+{% endblock %}

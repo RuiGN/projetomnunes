@@ -1,0 +1,235 @@
+{% extends layout_template %}
+{% load accessible_forms %}
+
+{% block title %}Diário Emocional | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
+
+{% block content %}
+<div class="journal-layout">
+  <header class="journal-header">
+    <div>
+      <span class="workspace-eyebrow">Acompanhamento pessoal</span>
+      <h1 class="page-title" style="margin: 0;">Diário Emocional</h1>
+    </div>
+    <div class="journal-actions">
+      <a href="{% url 'journal_create' %}" class="primary-action" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 10px 18px; border-radius: 9px; font-weight: 600;">
+        <span aria-hidden="true">+</span> Novo registro
+      </a>
+    </div>
+  </header>
+
+  {# Pending Access Requests from Therapist #}
+  {% if pending_access_requests %}
+    <section class="card" style="padding: 20px; border: 1px solid var(--color-warning); border-left-width: 6px; border-radius: 12px; background: var(--color-surface);" aria-labelledby="pending-requests-title">
+      <h2 id="pending-requests-title" style="margin: 0 0 10px; font-size: 18px; font-weight: 700; color: #8c6d00;">
+        Solicitações de Acesso Pendentes ({{ pending_access_requests|length }})
+      </h2>
+      <p style="margin: 0 0 16px; color: var(--color-text-muted); font-size: 14px;">
+        Seu terapeuta solicitou permissão para visualizar os registros abaixo. Você decide se autoriza ou recusa cada solicitação.
+      </p>
+      <div style="display: grid; gap: 12px;">
+        {% for req in pending_access_requests %}
+          <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-canvas);">
+            <div>
+              <p style="margin: 0 0 4px; font-weight: 600;">
+                Terapeuta: {{ req.therapist.get_full_name|default:req.therapist.email }}
+              </p>
+              <p style="margin: 0 0 4px; font-size: 14px; color: var(--color-text-muted);">
+                Finalidade declarada: {{ req.purpose }}
+              </p>
+              <p style="margin: 0; font-size: 13px; color: var(--color-text-muted);">
+                Registro de {{ req.journal_entry.created_at|date:"d/m/Y \à\s H:i" }} ({{ req.journal_entry.get_mood_display }})
+              </p>
+            </div>
+            <form method="post" action="{% url 'journal_respond_access_request' req.pk %}" style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+              {% csrf_token %}
+              <select name="expires_days" class="form-control" style="width: auto; min-height: 38px; padding: 4px 8px; font-size: 13px;">
+                <option value="7">Válido por 7 dias</option>
+                <option value="30" selected>Válido por 30 dias</option>
+                <option value="90">Válido por 90 dias</option>
+                <option value="">Sem data de expiração</option>
+              </select>
+              <button type="submit" name="decision" value="approve" class="primary-action" style="padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600;">
+                Autorizar
+              </button>
+              <button type="submit" name="decision" value="reject" class="calendar-nav-btn" style="padding: 8px 14px; font-size: 13px;">
+                Recusar
+              </button>
+            </form>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  {# Emotional Calendar #}
+  {% include "journal/partials/calendar.html" %}
+
+  {# Filters & History #}
+  <section class="journal-history-section" aria-labelledby="history-heading">
+    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px;">
+      <h2 id="history-heading" style="margin: 0; font-size: 20px; font-weight: 700;">
+        Histórico de Registros
+        {% if total_entries_count %}
+          <span style="font-size: 14px; font-weight: 400; color: var(--color-text-muted);">({{ total_entries_count }} encontrado{{ total_entries_count|pluralize:"s" }})</span>
+        {% endif %}
+      </h2>
+
+      <form method="get" class="table-filter" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;" aria-label="Filtrar histórico do diário">
+        <input type="hidden" name="year" value="{{ calendar_data.year }}">
+        <input type="hidden" name="month" value="{{ calendar_data.month }}">
+        
+        <div style="display: inline-flex; align-items: center; gap: 6px;">
+          <label for="id_period" style="font-size: 14px; font-weight: 600;">Período:</label>
+          <select name="period" id="id_period" class="form-control" style="width: auto; min-height: 40px; padding: 6px 10px;">
+            <option value="7d"{% if selected_period == "7d" %} selected{% endif %}>Últimos 7 dias</option>
+            <option value="30d"{% if selected_period == "30d" or not selected_period %} selected{% endif %}>Últimos 30 dias</option>
+            <option value="90d"{% if selected_period == "90d" %} selected{% endif %}>Últimos 90 dias</option>
+            <option value="all"{% if selected_period == "all" %} selected{% endif %}>Todo o histórico</option>
+          </select>
+        </div>
+
+        <div style="display: inline-flex; align-items: center; gap: 6px;">
+          <label for="id_emotion" style="font-size: 14px; font-weight: 600;">Emoção:</label>
+          <select name="emotion" id="id_emotion" class="form-control" style="width: auto; min-height: 40px; padding: 6px 10px;">
+            <option value="">Todas as emoções</option>
+            {% for emo_key, emo_lbl in filter_form.fields.emotion.choices %}
+              {% if emo_key %}
+                <option value="{{ emo_key }}"{% if selected_emotion == emo_key %} selected{% endif %}>{{ emo_lbl }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+
+        <div style="display: inline-flex; align-items: center; gap: 6px;">
+          <label for="id_mood" style="font-size: 14px; font-weight: 600;">Humor:</label>
+          <select name="mood" id="id_mood" class="form-control" style="width: auto; min-height: 40px; padding: 6px 10px;">
+            <option value="">Todos os humores</option>
+            {% for mood_val, mood_lbl in filter_form.fields.mood.choices %}
+              {% if mood_val %}
+                <option value="{{ mood_val }}"{% if selected_mood == mood_val %} selected{% endif %}>{{ mood_lbl }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+
+        <button type="submit" class="calendar-nav-btn" style="cursor: pointer;">Filtrar</button>
+        {% if selected_period != "30d" or selected_emotion or selected_mood %}
+          <a href="?year={{ calendar_data.year }}&month={{ calendar_data.month }}" class="calendar-nav-btn" style="text-decoration: none;">Limpar filtros</a>
+        {% endif %}
+      </form>
+    </div>
+
+    {# Entries List #}
+    {% if entries.object_list %}
+      <div style="display: grid; gap: 16px;">
+        {% for entry in entries %}
+          <article class="journal-entry-card" aria-labelledby="entry-title-{{ entry.pk }}">
+            <header class="journal-entry-header">
+              <div class="journal-entry-meta">
+                <span class="mood-badge mood-{{ entry.mood }}">
+                  Humor: {{ entry.get_mood_display }} ({{ entry.mood }}/5)
+                </span>
+                <span class="journal-entry-date">
+                  {{ entry.created_at|date:"d/m/Y \à\s H:i" }}
+                </span>
+                {% if entry.visibility == "shareable" %}
+                  <span class="visibility-badge visibility-shareable" title="Visível para o terapeuta vinculado">
+                    <span aria-hidden="true">●</span> Verde — Compartilhável
+                  </span>
+                {% elif entry.visibility == "confirmation_required" %}
+                  <span class="visibility-badge visibility-confirmation" title="Requer sua confirmação antes de liberar ao terapeuta">
+                    <span aria-hidden="true">●</span> Amarelo — Confirmar antes
+                  </span>
+                {% else %}
+                  <span class="visibility-badge visibility-private" title="Privado: somente você tem acesso">
+                    <span aria-hidden="true">●</span> Vermelho — Privado
+                  </span>
+                {% endif %}
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <a href="{% url 'journal_detail' entry.pk %}" class="calendar-nav-btn" style="font-size: 13px; min-height: 38px;">Ver detalhes</a>
+                <a href="{% url 'journal_edit' entry.pk %}" class="calendar-nav-btn" style="font-size: 13px; min-height: 38px;">Editar</a>
+              </div>
+            </header>
+
+            <div class="journal-entry-body">
+              <p style="margin: 0;">{{ entry.context|linebreaksbr }}</p>
+            </div>
+
+            {% if entry.emotions %}
+              <div class="emotion-list" aria-label="Emoções identificadas">
+                {% for emo in entry.emotions %}
+                  <span class="emotion-tag">{{ emo }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            {% if entry.triggers or entry.reactions or entry.strategies %}
+              <div class="journal-entry-details">
+                {% if entry.triggers %}
+                  <div class="journal-detail-item">
+                    <strong>Gatilhos:</strong> <span>{{ entry.triggers }}</span>
+                  </div>
+                {% endif %}
+                {% if entry.reactions %}
+                  <div class="journal-detail-item">
+                    <strong>Reações físicas:</strong> <span>{{ entry.reactions }}</span>
+                  </div>
+                {% endif %}
+                {% if entry.strategies %}
+                  <div class="journal-detail-item">
+                    <strong>O que me ajudou:</strong> <span>{{ entry.strategies }}</span>
+                  </div>
+                {% endif %}
+              </div>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+
+      {# Pagination #}
+      {% if entries.paginator.num_pages > 1 %}
+        <nav class="pagination" aria-label="Paginação do diário">
+          <p class="pagination-status">
+            Página {{ entries.number }} de {{ entries.paginator.num_pages }}
+          </p>
+          <div class="pagination-links">
+            {% if entries.has_previous %}
+              <a href="?page={{ entries.previous_page_number }}&period={{ selected_period }}&emotion={{ selected_emotion }}&mood={{ selected_mood }}&year={{ calendar_data.year }}&month={{ calendar_data.month }}" class="calendar-nav-btn" aria-label="Página anterior">Anterior</a>
+            {% endif %}
+            
+            {% for num in entries.paginator.page_range %}
+              {% if num == entries.number %}
+                <span class="calendar-nav-btn is-active" aria-current="page" style="background: var(--color-brand); color: #fff; border-color: var(--color-brand);">{{ num }}</span>
+              {% else %}
+                <a href="?page={{ num }}&period={{ selected_period }}&emotion={{ selected_emotion }}&mood={{ selected_mood }}&year={{ calendar_data.year }}&month={{ calendar_data.month }}" class="calendar-nav-btn">{{ num }}</a>
+              {% endif %}
+            {% endfor %}
+
+            {% if entries.has_next %}
+              <a href="?page={{ entries.next_page_number }}&period={{ selected_period }}&emotion={{ selected_emotion }}&mood={{ selected_mood }}&year={{ calendar_data.year }}&month={{ calendar_data.month }}" class="calendar-nav-btn" aria-label="Próxima página">Próxima</a>
+            {% endif %}
+          </div>
+        </nav>
+      {% endif %}
+
+    {% else %}
+      <div class="content-state" style="padding: 40px 24px; text-align: center; border: 1px dashed var(--color-border); border-radius: 14px; background: var(--color-surface);">
+        <p style="margin: 0 0 12px; font-size: 17px; font-weight: 600; color: var(--color-text);">Nenhum registro encontrado</p>
+        <p style="margin: 0 0 20px; color: var(--color-text-muted);">
+          {% if selected_emotion or selected_mood or selected_period != "30d" %}
+            Não há registros correspondentes aos filtros selecionados.
+          {% else %}
+            Você ainda não criou registros no seu diário emocional. Comece registrando como você se sente hoje.
+          {% endif %}
+        </p>
+        {% if selected_emotion or selected_mood or selected_period != "30d" %}
+          <a href="?year={{ calendar_data.year }}&month={{ calendar_data.month }}" class="calendar-nav-btn" style="display: inline-flex;">Limpar filtros</a>
+        {% else %}
+          <a href="{% url 'journal_create' %}" class="primary-action" style="display: inline-flex; padding: 10px 18px; border-radius: 9px; text-decoration: none; font-weight: 600;">Criar primeiro registro</a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

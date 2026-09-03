@@ -1,0 +1,32 @@
+{% extends layout_template %}
+
+{% block title %}Módulo: {{ module.title }}{% endblock %}
+
+{% block content %}
+<main style="max-width:1080px;margin:0 auto;display:grid;gap:24px;">
+  <header><span class="workspace-eyebrow">Curso: {{ course.title }}</span><h1 class="page-title">{{ module.title }}</h1></header>
+  <section class="card" style="padding:24px;display:grid;gap:16px;" aria-labelledby="lessons-title">
+    <h2 id="lessons-title">Aulas</h2>
+    <ol style="display:grid;gap:8px;">
+      {% for lesson in lessons %}
+      <li>Aula {{ lesson.position }}: {{ lesson.title }} · {{ lesson.duration_minutes }} min · {{ lesson.get_status_display }}</li>
+      {% empty %}
+      <li aria-live="polite">Nenhuma aula ainda.</li>
+      {% endfor %}
+    </ol>
+  </section>
+  <section class="card" style="padding:24px;display:grid;gap:12px;" aria-labelledby="add-lesson-title">
+    <h2 id="add-lesson-title">Adicionar aula</h2>
+    <form method="post" action="{% url 'content_course_lesson_create' course.pk module.pk %}" style="display:grid;gap:12px;">
+      {% csrf_token %}
+      <label for="lesson-title">Título da aula</label>
+      <input id="lesson-title" name="title" type="text" required maxlength="255" />
+      <label for="lesson-duration">Duração (minutos)</label>
+      <input id="lesson-duration" name="duration_minutes" type="number" min="1" value="30" required />
+      <label for="lesson-position">Posição</label>
+      <input id="lesson-position" name="position" type="number" min="1" value="{{ lessons|length|add:1 }}" required />
+      <button type="submit">Adicionar aula</button>
+    </form>
+  </section>
+</main>
+{% endblock %}

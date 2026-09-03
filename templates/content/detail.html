@@ -1,0 +1,36 @@
+{% extends layout_template %}
+
+{% block title %}{{ content.title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
+
+{% block content %}
+<div class="content-detail" style="max-width: 820px; margin: 0 auto; display: grid; gap: 24px;">
+  <header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+    <div>
+      <span class="workspace-eyebrow">{{ content.get_kind_display }}</span>
+      <h1 class="page-title" style="margin: 0;">{{ content.title }}</h1>
+    </div>
+    <a href="{% url 'content_library' %}" style="text-decoration: none;">Voltar à biblioteca</a>
+  </header>
+
+  <article class="card" style="padding: 24px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-surface);">
+    <div class="content-body">{{ body|safe }}</div>
+  </article>
+
+  {% if recommend_form %}
+    <section class="card" style="padding: 24px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-surface);">
+      <h2 style="margin-top: 0;">Recomendar a um paciente</h2>
+      <form method="post" action="{% url 'content_recommend' content_id=content.pk %}" class="form-stack" style="display: grid; gap: 16px;">
+        {% csrf_token %}
+        {% for field in recommend_form %}
+          <div class="form-field">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% for error in field.errors %}<div class="form-error" role="alert">{{ error }}</div>{% endfor %}
+          </div>
+        {% endfor %}
+        <button type="submit" class="primary-action">Atribuir recomendação</button>
+      </form>
+    </section>
+  {% endif %}
+</div>
+{% endblock %}
