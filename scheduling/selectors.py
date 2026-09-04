@@ -31,6 +31,7 @@ __all__ = [
     "WaitlistStatus",
     "active_services_for_clinic",
     "appointment_for_finance",
+    "appointment_for_integrations",
     "appointments_visible_to",
     "conversations_for_actor",
     "messages_for_conversation",
@@ -50,6 +51,13 @@ def appointment_for_finance(
     *, clinic_id: UUID, appointment_id: UUID
 ) -> Appointment | None:
     """Return one appointment for finance charge generation, tenant-scoped."""
+    return Appointment.objects.for_clinic(clinic_id).filter(pk=appointment_id).first()
+
+
+def appointment_for_integrations(
+    *, clinic_id: UUID, appointment_id: UUID
+) -> Appointment | None:
+    """Return one appointment for external integrations, tenant-scoped."""
     return Appointment.objects.for_clinic(clinic_id).filter(pk=appointment_id).first()
 
 

@@ -21,6 +21,7 @@ addopts = [
     "--cov=analytics",
     "--cov=finance",
     "--cov=content",
+    "--cov=integrations",
     "--cov-report=term-missing",
 ]
 
@@ -43,6 +44,7 @@ source = [
     "analytics",
     "finance",
     "content",
+    "integrations",
 ]
 
 [tool.ruff]
@@ -75,6 +77,13 @@ files = [
     "analytics",
     "finance",
     "content",
+    "integrations",
+    "routines",
+    "wellness",
+    "support_network",
+    "communities",
+    "medical_records",
+    "ai_assistant",
     "tests",
 ]
 

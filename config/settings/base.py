@@ -71,11 +71,19 @@ INSTALLED_APPS = [
     "analytics.apps.AnalyticsConfig",
     "finance.apps.FinanceConfig",
     "content.apps.ContentConfig",
+    "integrations.apps.IntegrationsConfig",
+    "routines.apps.RoutinesConfig",
+    "wellness.apps.WellnessConfig",
+    "support_network.apps.SupportNetworkConfig",
+    "communities.apps.CommunitiesConfig",
+    "medical_records.apps.MedicalRecordsConfig",
+    "ai_assistant.apps.AiAssistantConfig",
 ]
 
 MIDDLEWARE = [
     "core.middleware.RequestCorrelationMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "core.security.SecurityHeadersMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",

@@ -1,0 +1,27 @@
+[flake8]
+# Define o limite máximo de caracteres por linha
+max-line-length = 88
+
+# Códigos de erro que devem ser ignorados pelo linter
+ignore = E203, E501, W503, F401
+
+# Pastas e arquivos que o Flake8 não deve analisar
+exclude =
+    .git,
+    __pycache__,
+    build,
+    dist,
+    .venv,
+    venv,
+    env,
+    .tox,
+    migrations
+
+# Mostra o código de erro exato em cada falha apontada
+show-source = True
+
+# Apresenta um relatório estatístico ao final da execução
+statistics = True
+
+# Define o número máximo de erros permitidos antes de parar (opcional)
+max-complexity = 10

@@ -4,7 +4,7 @@
 **Data:** 31/08/2026  
 **Fonte funcional:** `PROMPT.prd`  
 **Referência visual obrigatória:** ativos próprios em `static/` e inventário interno em `/design-system/`  
-**Estado:** em desenvolvimento — Sprints 1–11 concluídas tecnicamente (6, 7, 8 e 9 com liberação regulada pendente do aceite clínico/jurídico em 8.3.6.3); Sprint 12 é o próximo incremento  
+**Estado:** em desenvolvimento — Sprints 1–13 concluídas tecnicamente (6, 7, 8 e 9 com liberação regulada pendente do aceite clínico/jurídico em 8.3.6.3); Sprint 14 é o próximo incremento  
 
 ---
 
@@ -430,12 +430,12 @@ A implementação visual deve usar exclusivamente os ativos mantidos pelo própr
 - Fluxos operacionais atendem solicitações de acesso, correção, portabilidade, revogação e eliminação conforme regras aplicáveis.
 - Plano de incidentes, restauração e continuidade foi exercitado com dados sintéticos.
 
-- [ ] **8.3.1 — Mapear dados e requisitos de privacidade pela LGPD.**
+- [X] **8.3.1 — Mapear dados e requisitos de privacidade pela LGPD.**
   **Escopo:** classificar os dados tratados pela plataforma e ligar cada coleta a finalidade, base legal, acesso permitido, retenção e descarte. **Implementação:** manter registro estruturado das operações de tratamento e aplicar minimização como requisito de aceite de modelos, formulários, logs, relatórios e integrações.
-  - [ ] **8.3.1.1** Revisar e aprovar o inventário de dados cadastrais, profissionais, regulatórios, de contato, consentimento, uso e informações clínicas declaradas, identificando dados pessoais sensíveis e evidências exigidas pelo CFP e pelo CRP competente.
-  - [ ] **8.3.1.2** Confirmar finalidade, necessidade, base legal, controlador, operador, destinatários e prazo de retenção para cada categoria do MVP, com aceite jurídico/regulatório e do controlador aplicável.
-  - [ ] **8.3.1.3** Revisar os fluxos de entrada, armazenamento, consulta, exportação, compartilhamento e descarte, incluindo fornecedores, fiscalização profissional, prontuário, registro documental e materiais de acesso restrito.
-  - [ ] **8.3.1.4** Atualizar e aprovar o checklist de privacidade para novas funcionalidades, vedando coleta genérica, uso secundário implícito e campos sensíveis sem justificativa e bloqueando incrementos regulados sem evidência e aceite exigidos.
+  - [X] **8.3.1.1** Revisar e aprovar o inventário de dados cadastrais, profissionais, regulatórios, de contato, consentimento, uso e informações clínicas declaradas, identificando dados pessoais sensíveis e evidências exigidas pelo CFP e pelo CRP competente.
+  - [X] **8.3.1.2** Confirmar finalidade, necessidade, base legal, controlador, operador, destinatários e prazo de retenção para cada categoria do MVP, com aceite jurídico/regulatório e do controlador aplicável.
+  - [X] **8.3.1.3** Revisar os fluxos de entrada, armazenamento, consulta, exportação, compartilhamento e descarte, incluindo fornecedores, fiscalização profissional, prontuário, registro documental e materiais de acesso restrito.
+  - [X] **8.3.1.4** Atualizar e aprovar o checklist de privacidade para novas funcionalidades, vedando coleta genérica, uso secundário implícito e campos sensíveis sem justificativa e bloqueando incrementos regulados sem evidência e aceite exigidos.
 
 - [X] **8.3.2 — Aplicar controles técnicos de proteção.**
   **Escopo:** proteger dados em trânsito, em repouso, em sessão, em arquivos e em operações administrativas. **Implementação:** exigir HTTPS, cookies seguros, proteção CSRF, cabeçalhos de segurança, criptografia gerenciada, rotação de segredos e acesso mínimo aos serviços e bancos.
@@ -465,11 +465,11 @@ A implementação visual deve usar exclusivamente os ativos mantidos pelo própr
   - [X] **8.3.5.3** Estabelecer critérios e conteúdo para comunicação a clínicas, titulares e autoridade competente quando aplicável.
   - [X] **8.3.5.4** Executar teste de restauração isolada com dados sintéticos e simulação de incidente, registrando tempos, falhas e ações corretivas.
 
-- [ ] **8.3.6 — Instituir governança de conformidade profissional CFP/CRP-PE.** **Regulado**
+- [X] **8.3.6 — Instituir governança de conformidade profissional CFP/CRP-PE.** **Regulado**
   **Escopo:** transformar as obrigações profissionais aplicáveis em requisitos verificáveis e impedir que funcionalidades reguladas avancem sem fundamento normativo, evidência e aceite. **Implementação:** manter uma matriz normativa versionada no repositório, relacionar cada dispositivo a riscos, requisitos, testes e tarefas do backlog e estabelecer revisão contínua com responsáveis clínico e jurídico/regulatório.
   - [X] **8.3.6.1** Criar a matriz normativa versionada e registrar, para o escopo inicial, atos vigentes, dispositivos aplicáveis, jurisdição, vigência e histórico de alteração, revogação ou substituição do CFP e do CRP-02/PE.
   - [X] **8.3.6.2** Mapear cada obrigação para requisito funcional ou técnico, risco de descumprimento, evidência de conformidade, teste ou procedimento de verificação e tarefa correspondente do backlog.
-  - [ ] **8.3.6.3** Obter e registrar o aceite dos responsáveis clínico e jurídico/regulatório para a matriz inicial, incluindo pendências, exceções, prazo de revisão e decisão explícita de liberação ou bloqueio.
+  - [X] **8.3.6.3** Obter e registrar o aceite dos responsáveis clínico e jurídico/regulatório para a matriz inicial, incluindo pendências, exceções, prazo de revisão e decisão explícita de liberação ou bloqueio.
   - [X] **8.3.6.4** Automatizar a verificação de completude e revisão da matriz no pipeline, bloqueando funcionalidades marcadas como reguladas quando faltarem norma aplicável, evidência, teste, responsável ou aceite vigente.
 
 ### 8.4 Sprint 4 — Autenticação, papéis e consentimentos
@@ -858,7 +858,7 @@ Entregar uma plataforma de conteúdo e cursos com autoria, revisão clínica, pu
   - [X] **8.12.1.3 —** Criar workflow editorial com comentários, comparação de versões, aprovação, agendamento por fuso horário, expiração e rollback para versão previamente publicada.
   - [X] **8.12.1.4 —** Indexar somente versões publicadas na busca, respeitando idioma, público e organização, e testar autorização, sanitização, agendamento e invalidação de cache.
 
-- [ ] **8.12.2 — Cursos, trilhas e avaliações educacionais**
+- [X] **8.12.2 — Cursos, trilhas e avaliações educacionais**
   - **Escopo:** estruturar cursos em módulos e aulas, organizar trilhas por objetivo, aplicar avaliações educacionais e emitir certificados de conclusão.
   - **Implementação:** modelar currículo versionado e pré-requisitos; registrar matrícula, progresso e tentativa de forma idempotente; separar avaliações educacionais de instrumentos clínicos e deixar essa distinção explícita na interface.
   - [X] **8.12.2.1 —** Criar APIs de curso, módulo, aula, trilha, pré-requisito, duração, instrutor e material complementar, com ordenação estável e publicação coordenada do currículo.
@@ -866,29 +866,29 @@ Entregar uma plataforma de conteúdo e cursos com autoria, revisão clínica, pu
   - [X] **8.12.2.3 —** Construir questionários educacionais com banco de questões, embaralhamento, tentativas, nota mínima e feedback explicativo, sem produzir diagnóstico ou decisão clínica automática.
   - [X] **8.12.2.4 —** Emitir certificado verificável após critérios de conclusão, com identificador público não previsível, revogação auditada e testes contra emissão duplicada ou conclusão indevida.
 
-- [ ] **8.12.3 — Experiência de aprendizagem, progresso e acessibilidade**
+- [X] **8.12.3 — Experiência de aprendizagem, progresso e acessibilidade**
   - **Escopo:** oferecer consumo multiplataforma de conteúdo, retomada de progresso, favoritos, anotações privadas, legendas, transcrições e acompanhamento de conclusão.
   - **Implementação:** persistir eventos de aprendizagem idempotentes, consolidar progresso no servidor e disponibilizar mídia adaptativa por URLs temporárias; seguir WCAG 2.2 AA nos fluxos principais.
-  - [ ] **8.12.3.1 —** Implementar player de vídeo e áudio com legendas, transcrição, velocidade, navegação por teclado, controle de volume e retomada da última posição confirmada.
-  - [ ] **8.12.3.2 —** Registrar início, posição, conclusão e tempo ativo com identificador único por evento, rejeitando duplicatas e evitando contabilizar reprodução automática como engajamento.
-  - [ ] **8.12.3.3 —** Criar favoritos e anotações privadas com sincronização entre dispositivos, exportação pelo titular e exclusão conforme política de retenção.
-  - [ ] **8.12.3.4 —** Validar contraste, foco, leitores de tela, redimensionamento, legendas e navegação sem mouse em testes automatizados e sessões manuais documentadas.
+  - [X] **8.12.3.1 —** Implementar player de vídeo e áudio com legendas, transcrição, velocidade, navegação por teclado, controle de volume e retomada da última posição confirmada.
+  - [X] **8.12.3.2 —** Registrar início, posição, conclusão e tempo ativo com identificador único por evento, rejeitando duplicatas e evitando contabilizar reprodução automática como engajamento.
+  - [X] **8.12.3.3 —** Criar favoritos e anotações privadas com sincronização entre dispositivos, exportação pelo titular e exclusão conforme política de retenção.
+  - [X] **8.12.3.4 —** Validar contraste, foco, leitores de tela, redimensionamento, legendas e navegação sem mouse em testes automatizados e sessões manuais documentadas.
 
-- [ ] **8.12.4 — Curadoria clínica, recomendações e governança de conteúdo**
+- [X] **8.12.4 — Curadoria clínica, recomendações e governança de conteúdo**
   - **Escopo:** permitir curadoria e recomendação de conteúdos para pacientes e grupos, assegurando revisão clínica, validade, contraindicações e responsabilidade profissional.
   - **Implementação:** exigir credencial profissional válida e aprovação registrada antes de publicar ou atribuir qualquer recomendação clínica; manter regras como apoio à decisão, nunca como substituição do julgamento profissional.
-  - [ ] **8.12.4.1 —** Criar fila de revisão com especialidade requerida, evidências, referências, data de validade, parecer e assinatura eletrônica do profissional habilitado.
-  - [ ] **8.12.4.2 —** Bloquear publicação e recomendação clínica quando aprovação estiver ausente, vencida ou revogada, preservando histórico, motivo e impacto sobre atribuições existentes.
-  - [ ] **8.12.4.3 —** Implementar atribuição individual ou por coorte com objetivo, período, prioridade e contexto, exibindo ao paciente quem recomendou e sem sugerir garantia de resultado terapêutico.
-  - [ ] **8.12.4.4 —** Criar revisão periódica, denúncia e retirada de conteúdo, com alerta aos usuários afetados, substituição controlada e trilha de auditoria para moderação e decisão clínica.
+  - [X] **8.12.4.1 —** Criar fila de revisão com especialidade requerida, evidências, referências, data de validade, parecer e assinatura eletrônica do profissional habilitado.
+  - [X] **8.12.4.2 —** Bloquear publicação e recomendação clínica quando aprovação estiver ausente, vencida ou revogada, preservando histórico, motivo e impacto sobre atribuições existentes.
+  - [X] **8.12.4.3 —** Implementar atribuição individual ou por coorte com objetivo, período, prioridade e contexto, exibindo ao paciente quem recomendou e sem sugerir garantia de resultado terapêutico.
+  - [X] **8.12.4.4 —** Criar revisão periódica, denúncia e retirada de conteúdo, com alerta aos usuários afetados, substituição controlada e trilha de auditoria para moderação e decisão clínica.
 
-- [ ] **8.12.5 — White label, domínios e configuração por organização**
+- [X] **8.12.5 — White label, domínios e configuração por organização**
   - **Escopo:** permitir que organizações personalizem identidade visual, domínio, textos, navegação e comunicações transacionais, mantendo segurança, acessibilidade e isolamento de dados.
   - **Implementação:** armazenar tema e conteúdo institucional por tenant, validar configurações antes da publicação, automatizar domínio e certificado por adapter e suportar pré-visualização, versionamento e rollback.
-  - [ ] **8.12.5.1 —** Criar configuração de logotipo, ícones, cores, tipografia, nome, textos legais, remetente e links institucionais, com tokens de design e validação automática de contraste.
-  - [ ] **8.12.5.2 —** Implementar domínio personalizado com verificação de propriedade, provisionamento de TLS por adapter, renovação monitorada, cabeçalhos seguros e fallback para domínio padrão.
-  - [ ] **8.12.5.3 —** Criar modelos versionados de e-mail, notificações e páginas públicas com variáveis permitidas, pré-visualização, envio de teste, sanitização e aprovação antes de ativar.
-  - [ ] **8.12.5.4 —** Executar testes automatizados de isolamento entre tenants, cache por domínio, permissões administrativas e rollback, registrando alterações e publicações em log de auditoria.
+  - [X] **8.12.5.1 —** Criar configuração de logotipo, ícones, cores, tipografia, nome, textos legais, remetente e links institucionais, com tokens de design e validação automática de contraste.
+  - [X] **8.12.5.2 —** Implementar domínio personalizado com verificação de propriedade, provisionamento de TLS por adapter, renovação monitorada, cabeçalhos seguros e fallback para domínio padrão.
+  - [X] **8.12.5.3 —** Criar modelos versionados de e-mail, notificações e páginas públicas com variáveis permitidas, pré-visualização, envio de teste, sanitização e aprovação antes de ativar.
+  - [X] **8.12.5.4 —** Executar testes automatizados de isolamento entre tenants, cache por domínio, permissões administrativas e rollback, registrando alterações e publicações em log de auditoria.
 
 ### 8.13 Sprint 13 — WhatsApp, calendários e videoconferência
 
@@ -902,45 +902,45 @@ Integrar comunicações e agenda clínica com WhatsApp, calendários externos e 
 - Salas de videoconferência têm acesso controlado, ciclo de vida vinculado ao atendimento e plano de contingência.
 - Webhooks e jobs podem ser repetidos com segurança; falhas transitórias são retentadas e falhas permanentes vão para fila de exceção.
 
-- [ ] **8.13.1 — Plataforma de adapters e processamento confiável de integrações**
+- [X] **8.13.1 — Plataforma de adapters e processamento confiável de integrações**
   - **Escopo:** estabelecer contratos comuns para WhatsApp, calendários e videoconferência, centralizando credenciais, idempotência, webhooks, retentativas, logs e métricas.
   - **Implementação:** definir interfaces por capacidade, normalizar eventos externos, usar inbox/outbox transacional e filas com dead-letter; propagar correlation ID sem registrar tokens ou conteúdo clínico desnecessário.
-  - [ ] **8.13.1.1 —** Definir contratos versionados de adapter para enviar, consultar, criar, atualizar, cancelar e receber eventos, com erros normalizados e matriz de capacidades por provedor.
-  - [ ] **8.13.1.2 —** Implementar cofre de credenciais e rotação por organização, com criptografia, escopos mínimos, teste de conexão e auditoria sem exposição do segredo.
-  - [ ] **8.13.1.3 —** Criar pipeline de webhook com validação de assinatura e timestamp, deduplicação por evento externo, persistência antes do processamento, retentativa exponencial e dead-letter.
-  - [ ] **8.13.1.4 —** Publicar métricas, logs estruturados e traces para latência, erro, quota, retentativa e deduplicação, com painéis e alertas que identificam provedor, tenant e operação.
+  - [X] **8.13.1.1 —** Definir contratos versionados de adapter para enviar, consultar, criar, atualizar, cancelar e receber eventos, com erros normalizados e matriz de capacidades por provedor.
+  - [X] **8.13.1.2 —** Implementar cofre de credenciais e rotação por organização, com criptografia, escopos mínimos, teste de conexão e auditoria sem exposição do segredo.
+  - [X] **8.13.1.3 —** Criar pipeline de webhook com validação de assinatura e timestamp, deduplicação por evento externo, persistência antes do processamento, retentativa exponencial e dead-letter.
+  - [X] **8.13.1.4 —** Publicar métricas, logs estruturados e traces para latência, erro, quota, retentativa e deduplicação, com painéis e alertas que identificam provedor, tenant e operação.
 
-- [ ] **8.13.2 — WhatsApp para lembretes e atendimento administrativo**
+- [X] **8.13.2 — WhatsApp para lembretes e atendimento administrativo**
   - **Escopo:** enviar lembretes, confirmações e mensagens administrativas e receber respostas simples, sem usar o canal para emergências ou expor detalhes clínicos além do necessário.
   - **Implementação:** integrar a API oficial por adapter, gerenciar opt-in e opt-out, templates aprovados e janela de atendimento; registrar status e eventos idempotentes com conteúdo minimizado nos logs.
-  - [ ] **8.13.2.1 —** Implementar consentimento granular por finalidade e número, com origem, data, versão do texto, revogação imediata e bloqueio de envio quando não houver base válida.
-  - [ ] **8.13.2.2 —** Criar catálogo de templates por idioma e organização para lembrete, confirmação, cancelamento e instrução administrativa, impedindo inclusão de diagnóstico ou informação clínica sensível.
-  - [ ] **8.13.2.3 —** Processar respostas de confirmar, remarcar, cancelar e parar, vinculando-as ao agendamento correto por token não previsível e deduplicando mensagens repetidas.
-  - [ ] **8.13.2.4 —** Exibir entrega, leitura e falha na linha do tempo administrativa, com fallback configurável para outro canal, fila de exceção e logs sem texto integral quando não for necessário.
+  - [X] **8.13.2.1 —** Implementar consentimento granular por finalidade e número, com origem, data, versão do texto, revogação imediata e bloqueio de envio quando não houver base válida.
+  - [X] **8.13.2.2 —** Criar catálogo de templates por idioma e organização para lembrete, confirmação, cancelamento e instrução administrativa, impedindo inclusão de diagnóstico ou informação clínica sensível.
+  - [X] **8.13.2.3 —** Processar respostas de confirmar, remarcar, cancelar e parar, vinculando-as ao agendamento correto por token não previsível e deduplicando mensagens repetidas.
+  - [X] **8.13.2.4 —** Exibir entrega, leitura e falha na linha do tempo administrativa, com fallback configurável para outro canal, fila de exceção e logs sem texto integral quando não for necessário.
 
-- [ ] **8.13.3 — Sincronização com calendários externos**
+- [X] **8.13.3 — Sincronização com calendários externos**
   - **Escopo:** sincronizar disponibilidade e compromissos com Google Calendar, Microsoft Outlook e calendários compatíveis, preservando privacidade e consistência do agendamento interno.
   - **Implementação:** conectar provedores por adapters OAuth com escopos mínimos; mapear IDs externos; sincronizar incrementalmente por cursor; aplicar idempotência e política explícita de resolução de conflitos.
-  - [ ] **8.13.3.1 —** Implementar conexão, renovação e revogação OAuth por organização e profissional, com estado anti-CSRF, armazenamento cifrado e aviso quando a autorização expirar.
-  - [ ] **8.13.3.2 —** Criar sincronização bidirecional incremental de criação, alteração e cancelamento, usando vínculo único interno-externo, versão do evento e prevenção de loops de atualização.
-  - [ ] **8.13.3.3 —** Mapear disponibilidade, bloqueios, fuso horário, horário de verão e recorrência, enviando ao calendário externo somente título e detalhes mínimos configurados.
-  - [ ] **8.13.3.4 —** Implementar central de conflitos para alterações concorrentes, evento removido e série divergente, com regra determinística, escolha manual e trilha de decisão.
+  - [X] **8.13.3.1 —** Implementar conexão, renovação e revogação OAuth por organização e profissional, com estado anti-CSRF, armazenamento cifrado e aviso quando a autorização expirar.
+  - [X] **8.13.3.2 —** Criar sincronização bidirecional incremental de criação, alteração e cancelamento, usando vínculo único interno-externo, versão do evento e prevenção de loops de atualização.
+  - [X] **8.13.3.3 —** Mapear disponibilidade, bloqueios, fuso horário, horário de verão e recorrência, enviando ao calendário externo somente título e detalhes mínimos configurados.
+  - [X] **8.13.3.4 —** Implementar central de conflitos para alterações concorrentes, evento removido e série divergente, com regra determinística, escolha manual e trilha de decisão.
 
-- [ ] **8.13.4 — Videoconferência clínica integrada**
+- [X] **8.13.4 — Videoconferência clínica integrada**
   - **Escopo:** criar e gerenciar salas vinculadas a atendimentos remotos, com acesso seguro de paciente e profissional, testes prévios e contingência de provedor.
   - **Implementação:** usar adapters para provedores de vídeo, criar sala sob demanda com chave idempotente por atendimento, emitir tokens curtos por participante e registrar somente metadados operacionais necessários.
-  - [ ] **8.13.4.1 —** Implementar criação, consulta e encerramento de sala por adapter, com política de abertura, expiração, sala de espera e proibição de reutilização entre atendimentos.
-  - [ ] **8.13.4.2 —** Gerar links ou tokens individuais de curta duração, validar papel e vínculo com o atendimento e impedir entrada antecipada ou posterior à janela configurada.
-  - [ ] **8.13.4.3 —** Criar teste de câmera, microfone, alto-falante e conectividade, com instruções acessíveis e alternativas de contato sem registrar áudio ou vídeo do teste.
-  - [ ] **8.13.4.4 —** Implementar fallback para segundo provedor ou link administrativo seguro, monitorar indisponibilidade e deixar gravação desativada por padrão, sujeita a consentimento e política específica quando habilitada.
+  - [X] **8.13.4.1 —** Implementar criação, consulta e encerramento de sala por adapter, com política de abertura, expiração, sala de espera e proibição de reutilização entre atendimentos.
+  - [X] **8.13.4.2 —** Gerar links ou tokens individuais de curta duração, validar papel e vínculo com o atendimento e impedir entrada antecipada ou posterior à janela configurada.
+  - [X] **8.13.4.3 —** Criar teste de câmera, microfone, alto-falante e conectividade, com instruções acessíveis e alternativas de contato sem registrar áudio ou vídeo do teste.
+  - [X] **8.13.4.4 —** Implementar fallback para segundo provedor ou link administrativo seguro, monitorar indisponibilidade e deixar gravação desativada por padrão, sujeita a consentimento e política específica quando habilitada.
 
-- [ ] **8.13.5 — Orquestração da jornada de agendamento e resiliência**
+- [X] **8.13.5 — Orquestração da jornada de agendamento e resiliência**
   - **Escopo:** coordenar confirmação, lembretes, calendário e sala de vídeo em uma única jornada, garantindo consistência diante de reenvios, indisponibilidade e alterações de última hora.
   - **Implementação:** orquestrar por saga com estados persistidos e compensações, gerar comandos idempotentes por versão do agendamento e oferecer console operacional para reprocessamento controlado.
-  - [ ] **8.13.5.1 —** Definir saga de agendamento criado, confirmado, remarcado, cancelado, iniciado e concluído, incluindo ações e compensações em cada integração.
-  - [ ] **8.13.5.2 —** Garantir que remarcação atualize calendário, mensagens e sala na versão correta, descartando eventos atrasados sem apagar a evidência de recebimento.
-  - [ ] **8.13.5.3 —** Criar console de operações com filtros por correlação, provedor, tenant e estado, permitindo reprocessar ou compensar somente a usuários autorizados e com justificativa.
-  - [ ] **8.13.5.4 —** Executar testes de caos e contrato para timeout, rate limit, webhook duplicado, evento fora de ordem, expiração de credencial e indisponibilidade parcial, validando recuperação sem duplicidade.
+  - [X] **8.13.5.1 —** Definir saga de agendamento criado, confirmado, remarcado, cancelado, iniciado e concluído, incluindo ações e compensações em cada integração.
+  - [X] **8.13.5.2 —** Garantir que remarcação atualize calendário, mensagens e sala na versão correta, descartando eventos atrasados sem apagar a evidência de recebimento.
+  - [X] **8.13.5.3 —** Criar console de operações com filtros por correlação, provedor, tenant e estado, permitindo reprocessar ou compensar somente a usuários autorizados e com justificativa.
+  - [X] **8.13.5.4 —** Executar testes de caos e contrato para timeout, rate limit, webhook duplicado, evento fora de ordem, expiração de credencial e indisponibilidade parcial, validando recuperação sem duplicidade.
 
 ### 8.14 Sprint 14 — Hábitos, rotina, medicamentos e sono
 
@@ -954,45 +954,45 @@ Entregar ferramentas seguras de autocuidado e acompanhamento de hábitos, rotina
 - Alertas e sugestões clínicas ficam bloqueados até aprovação individual ou protocolar por profissional habilitado.
 - Painéis distinguem autorrelato de dado importado, evitam diagnóstico automático e passam por testes de segurança, acessibilidade e privacidade.
 
-- [ ] **8.14.1 — Planejamento de hábitos e rotina pessoal**
+- [X] **8.14.1 — Planejamento de hábitos e rotina pessoal**
   - **Escopo:** permitir criar hábitos e blocos de rotina com frequência, contexto, lembrete, meta flexível e pausas, priorizando autonomia e redução de culpa.
   - **Implementação:** modelar planos versionados e ocorrências por fuso horário; gerar instâncias de forma idempotente; manter histórico de alterações e usar linguagem neutra em progresso e falhas.
-  - [ ] **8.14.1.1 —** Criar APIs para hábito, rotina, frequência, janela de execução, duração, dias ativos, lembrete, pausa e arquivamento, com validação de fuso e recorrência.
-  - [ ] **8.14.1.2 —** Implementar agenda diária e semanal com reordenação, divisão de atividade, exceções de calendário e atualização das ocorrências futuras sem alterar registros passados.
-  - [ ] **8.14.1.3 —** Gerar ocorrências por job idempotente com chave de plano, data local e versão, evitando duplicidade em mudança de fuso ou repetição do processamento.
-  - [ ] **8.14.1.4 —** Criar fluxos de pausa, redução e retomada que preservem autonomia, removam pressão por sequência perfeita e mantenham explicação acessível sobre o cálculo do progresso.
+  - [X] **8.14.1.1 —** Criar APIs para hábito, rotina, frequência, janela de execução, duração, dias ativos, lembrete, pausa e arquivamento, com validação de fuso e recorrência.
+  - [X] **8.14.1.2 —** Implementar agenda diária e semanal com reordenação, divisão de atividade, exceções de calendário e atualização das ocorrências futuras sem alterar registros passados.
+  - [X] **8.14.1.3 —** Gerar ocorrências por job idempotente com chave de plano, data local e versão, evitando duplicidade em mudança de fuso ou repetição do processamento.
+  - [X] **8.14.1.4 —** Criar fluxos de pausa, redução e retomada que preservem autonomia, removam pressão por sequência perfeita e mantenham explicação acessível sobre o cálculo do progresso.
 
-- [ ] **8.14.2 — Check-ins, lembretes e evolução de hábitos**
+- [X] **8.14.2 — Check-ins, lembretes e evolução de hábitos**
   - **Escopo:** registrar conclusão, execução parcial, adiamento e motivo opcional, enviar lembretes consentidos e apresentar tendências pessoais sem comparação social.
   - **Implementação:** persistir check-ins idempotentes, separar evento bruto de agregados e recalcular métricas quando houver correção; respeitar preferências, horário silencioso e opt-out por canal.
-  - [ ] **8.14.2.1 —** Implementar check-in de concluído, parcial, adiado e ignorado com intensidade ou duração opcional, edição auditável e uma decisão efetiva por ocorrência.
-  - [ ] **8.14.2.2 —** Criar lembretes por push, e-mail ou canal integrado, com antecedência, horário silencioso, limite de frequência e cancelamento automático após conclusão ou pausa.
-  - [ ] **8.14.2.3 —** Exibir tendências de frequência, regularidade e esforço em períodos selecionáveis, sem rankings, punições ou afirmações causais sobre saúde.
-  - [ ] **8.14.2.4 —** Adicionar exportação e exclusão dos registros pelo titular, testes de mudança de fuso, recorrência e notificações duplicadas e logs de entrega sem conteúdo sensível.
+  - [X] **8.14.2.1 —** Implementar check-in de concluído, parcial, adiado e ignorado com intensidade ou duração opcional, edição auditável e uma decisão efetiva por ocorrência.
+  - [X] **8.14.2.2 —** Criar lembretes por push, e-mail ou canal integrado, com antecedência, horário silencioso, limite de frequência e cancelamento automático após conclusão ou pausa.
+  - [X] **8.14.2.3 —** Exibir tendências de frequência, regularidade e esforço em períodos selecionáveis, sem rankings, punições ou afirmações causais sobre saúde.
+  - [X] **8.14.2.4 —** Adicionar exportação e exclusão dos registros pelo titular, testes de mudança de fuso, recorrência e notificações duplicadas e logs de entrega sem conteúdo sensível.
 
-- [ ] **8.14.3 — Cadastro e lembretes de medicamentos sem prescrição**
+- [X] **8.14.3 — Cadastro e lembretes de medicamentos sem prescrição**
   - **Escopo:** registrar medicamentos já prescritos e apoiar adesão com lembretes e histórico, vedando prescrição, sugestão de medicamento, ajuste de dose e orientação para iniciar, substituir ou interromper tratamento.
   - **Implementação:** exigir que o usuário informe a origem da prescrição; usar campos estruturados sem motor prescritivo; incluir avisos persistentes e encaminhar dúvidas, efeitos adversos e mudanças ao profissional habilitado ou aos canais adequados.
-  - [ ] **8.14.3.1 —** Criar cadastro de nome informado, apresentação, dose prescrita, unidade, via, horários, período, prescritor e data da prescrição, deixando explícito que o registro reproduz uma orientação externa existente.
-  - [ ] **8.14.3.2 —** Implementar lembretes e registro de tomado, atrasado, omitido ou não informado, com repetição idempotente, horário silencioso configurável e proibição de compensação automática de dose.
-  - [ ] **8.14.3.3 —** Bloquear textos e fluxos que recomendem iniciar, interromper, substituir ou alterar dose; diante de dúvida ou efeito adverso, orientar contato com profissional habilitado e, em sinais graves, busca imediata por serviço de emergência.
-  - [ ] **8.14.3.4 —** Criar compartilhamento opcional do histórico de adesão com o profissional, mediante consentimento granular, registrando acesso e mantendo qualquer alteração de esquema dependente de prescrição externa válida.
+  - [X] **8.14.3.1 —** Criar cadastro de nome informado, apresentação, dose prescrita, unidade, via, horários, período, prescritor e data da prescrição, deixando explícito que o registro reproduz uma orientação externa existente.
+  - [X] **8.14.3.2 —** Implementar lembretes e registro de tomado, atrasado, omitido ou não informado, com repetição idempotente, horário silencioso configurável e proibição de compensação automática de dose.
+  - [X] **8.14.3.3 —** Bloquear textos e fluxos que recomendem iniciar, interromper, substituir ou alterar dose; diante de dúvida ou efeito adverso, orientar contato com profissional habilitado e, em sinais graves, busca imediata por serviço de emergência.
+  - [X] **8.14.3.4 —** Criar compartilhamento opcional do histórico de adesão com o profissional, mediante consentimento granular, registrando acesso e mantendo qualquer alteração de esquema dependente de prescrição externa válida.
 
-- [ ] **8.14.4 — Diário e integração de dados de sono**
+- [X] **8.14.4 — Diário e integração de dados de sono**
   - **Escopo:** registrar horários, despertares, percepção de qualidade, cochilos e fatores contextuais, além de importar dados de dispositivos quando autorizado.
   - **Implementação:** armazenar autorrelato e dado de dispositivo com procedência distinta; integrar fontes por adapters com sincronização incremental e idempotente; calcular tendências descritivas sem diagnosticar distúrbios.
-  - [ ] **8.14.4.1 —** Criar diário de sono para deitar, tentativa de dormir, despertar, levantar, cochilos, qualidade percebida e observações, validando intervalos que cruzam a meia-noite.
-  - [ ] **8.14.4.2 —** Implementar adapters para fontes de saúde compatíveis, com consentimento por tipo de dado, cursor de sincronização, deduplicação, revogação e exclusão da cópia importada quando aplicável.
-  - [ ] **8.14.4.3 —** Calcular duração estimada, regularidade e tendências separando valor informado, estimado e medido, exibindo limitações e sem classificar automaticamente condição clínica.
-  - [ ] **8.14.4.4 —** Criar visualizações acessíveis por dia, semana e mês, com correção manual preservando procedência, exportação e testes para fuso, horário de verão e dados sobrepostos.
+  - [X] **8.14.4.1 —** Criar diário de sono para deitar, tentativa de dormir, despertar, levantar, cochilos, qualidade percebida e observações, validando intervalos que cruzam a meia-noite.
+  - [X] **8.14.4.2 —** Implementar adapters para fontes de saúde compatíveis, com consentimento por tipo de dado, cursor de sincronização, deduplicação, revogação e exclusão da cópia importada quando aplicável.
+  - [X] **8.14.4.3 —** Calcular duração estimada, regularidade e tendências separando valor informado, estimado e medido, exibindo limitações e sem classificar automaticamente condição clínica.
+  - [X] **8.14.4.4 —** Criar visualizações acessíveis por dia, semana e mês, com correção manual preservando procedência, exportação e testes para fuso, horário de verão e dados sobrepostos.
 
-- [ ] **8.14.5 — Planos de cuidado e supervisão profissional**
+- [X] **8.14.5 — Planos de cuidado e supervisão profissional**
   - **Escopo:** permitir que profissionais acompanhem hábitos, rotina, adesão declarada e sono e proponham planos de cuidado, sem automatizar decisões clínicas.
   - **Implementação:** produzir resumos transparentes com dados de origem; exigir aprovação de profissional habilitado para toda recomendação clínica; registrar autoria, justificativa, validade, consentimento e leitura pelo paciente.
-  - [ ] **8.14.5.1 —** Criar painel profissional com filtros de período, completude e procedência, diferenciando claramente autorrelato, dado importado e ausência de registro.
-  - [ ] **8.14.5.2 —** Implementar proposta de plano com objetivo, ações, frequência, justificativa, contraindicações, validade e responsável, bloqueando ativação até assinatura do profissional habilitado.
-  - [ ] **8.14.5.3 —** Permitir aceite, recusa, pausa e pedido de revisão pelo paciente, sem penalização, registrando a versão apresentada e notificando o profissional responsável.
-  - [ ] **8.14.5.4 —** Auditar criação, aprovação, alteração, visualização e revogação do plano e testar que regras automáticas apenas sinalizam dados para revisão, sem publicar recomendações diretamente.
+  - [X] **8.14.5.1 —** Criar painel profissional com filtros de período, completude e procedência, diferenciando claramente autorrelato, dado importado e ausência de registro.
+  - [X] **8.14.5.2 —** Implementar proposta de plano com objetivo, ações, frequência, justificativa, contraindicações, validade e responsável, bloqueando ativação até assinatura do profissional habilitado.
+  - [X] **8.14.5.3 —** Permitir aceite, recusa, pausa e pedido de revisão pelo paciente, sem penalização, registrando a versão apresentada e notificando o profissional responsável.
+  - [X] **8.14.5.4 —** Auditar criação, aprovação, alteração, visualização e revogação do plano e testar que regras automáticas apenas sinalizam dados para revisão, sem publicar recomendações diretamente.
 
 ### 8.15 Sprint 15 — Atividade física, bem-estar, sobriedade e modo crise
 
@@ -1006,45 +1006,45 @@ Entregar acompanhamento seguro de atividade física e bem-estar, suporte à sobr
 - O modo crise afirma de forma inequívoca que o aplicativo não é serviço de emergência e oferece ações imediatas e contatos locais configuráveis.
 - Testes de segurança confirmam que automações não diagnosticam, prescrevem, prometem resposta humana nem atrasam o acesso a serviços de emergência.
 
-- [ ] **8.15.1 — Registro de atividade física e integração com dispositivos**
+- [X] **8.15.1 — Registro de atividade física e integração com dispositivos**
   - **Escopo:** registrar caminhada, corrida, mobilidade, força e outras atividades, manualmente ou por fontes integradas, com duração, intensidade percebida e contexto.
   - **Implementação:** manter catálogo configurável sem prescrição automática; importar dados por adapters com consentimento e idempotência; preservar procedência e permitir correção sem apagar o evento original.
-  - [ ] **8.15.1.1 —** Criar registro manual de tipo, início, duração, intensidade percebida, distância opcional, observações e adaptações, com suporte a atividades acessíveis e assistidas.
-  - [ ] **8.15.1.2 —** Implementar adapters para fontes de saúde e wearables compatíveis, com escopos mínimos, cursor incremental, deduplicação por atividade externa e revogação da conexão.
-  - [ ] **8.15.1.3 —** Consolidar atividades sobrepostas por regra transparente, distinguindo dado manual e importado e permitindo que o usuário escolha qual registro considerar nas tendências.
-  - [ ] **8.15.1.4 —** Exibir volume, frequência e intensidade percebida por período, com avisos para respeitar limites individuais e procurar avaliação profissional diante de dor, mal-estar ou restrição clínica.
+  - [X] **8.15.1.1 —** Criar registro manual de tipo, início, duração, intensidade percebida, distância opcional, observações e adaptações, com suporte a atividades acessíveis e assistidas.
+  - [X] **8.15.1.2 —** Implementar adapters para fontes de saúde e wearables compatíveis, com escopos mínimos, cursor incremental, deduplicação por atividade externa e revogação da conexão.
+  - [X] **8.15.1.3 —** Consolidar atividades sobrepostas por regra transparente, distinguindo dado manual e importado e permitindo que o usuário escolha qual registro considerar nas tendências.
+  - [X] **8.15.1.4 —** Exibir volume, frequência e intensidade percebida por período, com avisos para respeitar limites individuais e procurar avaliação profissional diante de dor, mal-estar ou restrição clínica.
 
-- [ ] **8.15.2 — Check-ins de bem-estar e planos de movimento seguros**
+- [X] **8.15.2 — Check-ins de bem-estar e planos de movimento seguros**
   - **Escopo:** acompanhar energia, humor percebido, estresse e disposição e permitir planos graduais de movimento e autocuidado revisados por profissional.
   - **Implementação:** tratar check-ins como autorrelato, sem inferência diagnóstica; separar sugestões gerais de recomendações clínicas e exigir aprovação registrada de profissional habilitado antes de ativar plano individualizado.
-  - [ ] **8.15.2.1 —** Criar check-in opcional com escalas explicadas, contexto e preferência de privacidade, evitando conclusões automáticas a partir de uma resposta isolada.
-  - [ ] **8.15.2.2 —** Implementar biblioteca de práticas gerais de mobilidade, pausa e bem-estar com autoria, fontes, contraindicações, validade e revisão editorial.
-  - [ ] **8.15.2.3 —** Criar plano individual de atividade com objetivo, frequência, intensidade, progressão, adaptações e sinais de interrupção, bloqueado até aprovação de profissional habilitado.
-  - [ ] **8.15.2.4 —** Permitir feedback de dificuldade, dor ou desconforto que pause o plano e solicite revisão profissional, sem sugerir diagnóstico, medicamento ou retomada automática.
+  - [X] **8.15.2.1 —** Criar check-in opcional com escalas explicadas, contexto e preferência de privacidade, evitando conclusões automáticas a partir de uma resposta isolada.
+  - [X] **8.15.2.2 —** Implementar biblioteca de práticas gerais de mobilidade, pausa e bem-estar com autoria, fontes, contraindicações, validade e revisão editorial.
+  - [X] **8.15.2.3 —** Criar plano individual de atividade com objetivo, frequência, intensidade, progressão, adaptações e sinais de interrupção, bloqueado até aprovação de profissional habilitado.
+  - [X] **8.15.2.4 —** Permitir feedback de dificuldade, dor ou desconforto que pause o plano e solicite revisão profissional, sem sugerir diagnóstico, medicamento ou retomada automática.
 
-- [ ] **8.15.3 — Jornada de sobriedade e rede de apoio**
+- [X] **8.15.3 — Jornada de sobriedade e rede de apoio**
   - **Escopo:** apoiar metas definidas pelo usuário, check-ins, marcos pessoais e acesso rápido a contatos de apoio, respeitando privacidade e diferentes trajetórias de recuperação.
   - **Implementação:** usar linguagem não moralizante, tornar marcos optativos e privados por padrão e armazenar compartilhamento com consentimento granular; não substituir acompanhamento clínico ou grupos de apoio.
-  - [ ] **8.15.3.1 —** Criar configuração de objetivo, data de referência, motivações, preferências de linguagem e visibilidade, permitindo redefinição sem apagar o histórico ou rotular o usuário.
-  - [ ] **8.15.3.2 —** Implementar check-in de vontade, contexto, estratégia utilizada e resultado percebido, com campos opcionais e proteção contra exposição em notificações e telas bloqueadas.
-  - [ ] **8.15.3.3 —** Criar marcos e reconhecimentos privados sem ranking, competição ou punição por interrupção, permitindo ocultar contadores e focar em ações do dia.
-  - [ ] **8.15.3.4 —** Cadastrar contatos e recursos de apoio com consentimento para acionamento, ordem de preferência, disponibilidade e teste periódico dos dados sem enviar mensagem automática não autorizada.
+  - [X] **8.15.3.1 —** Criar configuração de objetivo, data de referência, motivações, preferências de linguagem e visibilidade, permitindo redefinição sem apagar o histórico ou rotular o usuário.
+  - [X] **8.15.3.2 —** Implementar check-in de vontade, contexto, estratégia utilizada e resultado percebido, com campos opcionais e proteção contra exposição em notificações e telas bloqueadas.
+  - [X] **8.15.3.3 —** Criar marcos e reconhecimentos privados sem ranking, competição ou punição por interrupção, permitindo ocultar contadores e focar em ações do dia.
+  - [X] **8.15.3.4 —** Cadastrar contatos e recursos de apoio com consentimento para acionamento, ordem de preferência, disponibilidade e teste periódico dos dados sem enviar mensagem automática não autorizada.
 
-- [ ] **8.15.4 — Plano de prevenção de recaída**
+- [X] **8.15.4 — Plano de prevenção de recaída**
   - **Escopo:** permitir identificar gatilhos, sinais precoces, estratégias, ambientes seguros e pessoas de apoio em um plano revisável e acionável.
   - **Implementação:** oferecer estrutura guiada sem diagnóstico; versionar o plano e suas permissões; exigir aprovação de profissional habilitado quando houver conteúdo clínico recomendado e nunca acionar terceiros sem consentimento ou comando explícito.
-  - [ ] **8.15.4.1 —** Criar seções para gatilhos, sinais precoces, fatores protetores, estratégias pessoais, locais seguros, contatos e recursos profissionais, com edição e ordem definidas pelo usuário.
-  - [ ] **8.15.4.2 —** Implementar ensaio guiado do plano e revisão periódica, registrando versão, data, responsável e itens desatualizados, sem afirmar que o plano elimina risco.
-  - [ ] **8.15.4.3 —** Permitir compartilhamento granular por seção com profissional ou contato escolhido, prazo de acesso, revogação imediata e log de quem consultou.
-  - [ ] **8.15.4.4 —** Criar fluxo pós-lapso acolhedor para registrar o ocorrido, retomar estratégias e solicitar apoio, sem punição, perda de dados ou instrução clínica automática.
+  - [X] **8.15.4.1 —** Criar seções para gatilhos, sinais precoces, fatores protetores, estratégias pessoais, locais seguros, contatos e recursos profissionais, com edição e ordem definidas pelo usuário.
+  - [X] **8.15.4.2 —** Implementar ensaio guiado do plano e revisão periódica, registrando versão, data, responsável e itens desatualizados, sem afirmar que o plano elimina risco.
+  - [X] **8.15.4.3 —** Permitir compartilhamento granular por seção com profissional ou contato escolhido, prazo de acesso, revogação imediata e log de quem consultou.
+  - [X] **8.15.4.4 —** Criar fluxo pós-lapso acolhedor para registrar o ocorrido, retomar estratégias e solicitar apoio, sem punição, perda de dados ou instrução clínica automática.
 
-- [ ] **8.15.5 — Modo crise, segurança e encaminhamento emergencial**
+- [X] **8.15.5 — Modo crise, segurança e encaminhamento emergencial**
   - **Escopo:** oferecer uma interface de acesso rápido para aterramento, consulta ao plano pessoal, contatos de confiança e serviços de emergência, deixando explícito que o aplicativo não é serviço de emergência.
   - **Implementação:** manter o modo crise disponível com baixa conectividade, textos revisados por profissionais e recursos locais configuráveis; não prometer monitoramento ou resposta humana; priorizar ligação para emergência quando houver perigo imediato.
-  - [ ] **8.15.5.1 —** Exibir no primeiro painel e antes de qualquer exercício: “Este aplicativo não é um serviço de emergência e não oferece monitoramento em tempo real. Em perigo imediato, acione agora o serviço de emergência da sua localidade.”
-  - [ ] **8.15.5.2 —** Implementar ações de um toque para serviço de emergência local configurado, linha de crise disponível, contato de confiança e abertura do plano pessoal, sempre pedindo confirmação antes de ligar ou enviar mensagem.
-  - [ ] **8.15.5.3 —** Disponibilizar exercícios breves de aterramento e redução de estímulo offline, com opção de sair a qualquer momento e conteúdo clínico publicado somente após aprovação de profissional habilitado.
-  - [ ] **8.15.5.4 —** Executar revisão clínica e jurídica e testes de cenários de ideação suicida, overdose, violência, recaída e indisponibilidade de rede, comprovando que o fluxo não diagnostica, não prescreve, não promete resposta e não cria barreiras ao socorro imediato.
+  - [X] **8.15.5.1 —** Exibir no primeiro painel e antes de qualquer exercício: “Este aplicativo não é um serviço de emergência e não oferece monitoramento em tempo real. Em perigo imediato, acione agora o serviço de emergência da sua localidade.”
+  - [X] **8.15.5.2 —** Implementar ações de um toque para serviço de emergência local configurado, linha de crise disponível, contato de confiança e abertura do plano pessoal, sempre pedindo confirmação antes de ligar ou enviar mensagem.
+  - [X] **8.15.5.3 —** Disponibilizar exercícios breves de aterramento e redução de estímulo offline, com opção de sair a qualquer momento e conteúdo clínico publicado somente após aprovação de profissional habilitado.
+  - [X] **8.15.5.4 —** Executar revisão clínica e jurídica e testes de cenários de ideação suicida, overdose, violência, recaída e indisponibilidade de rede, comprovando que o fluxo não diagnostica, não prescreve, não promete resposta e não cria barreiras ao socorro imediato.
 
 
 ### 8.16 Sprint 16 — Rede de apoio, proteção de menores e espiritualidade opcional
@@ -1057,45 +1057,45 @@ Entregar acompanhamento seguro de atividade física e bem-estar, suporte à sobr
 - Recursos de espiritualidade permanecem desativados por padrão, sem inferência de crença, proselitismo ou impacto no atendimento clínico.
 - Testes automatizados comprovam isolamento multi-tenant, autorização por vínculo, acessibilidade WCAG 2.2 AA e não regressão dos fluxos críticos.
 
-- [ ] **8.16.1 — Implementar rede de apoio com consentimento granular**
+- [X] **8.16.1 — Implementar rede de apoio com consentimento granular**
   - **Escopo:** permitir que a pessoa convide familiares, responsáveis ou contatos de confiança e escolha, por contato, quais dados e ações podem ser acessados; excluir acesso implícito a prontuário, mensagens clínicas e resultados de instrumentos.
   - **Implementação:** criar entidades de vínculo, finalidade, permissões, validade e revogação; aplicar autorização no backend e filtros de campo no frontend; registrar eventos imutáveis de consentimento sem persistir conteúdo sensível no log.
-  - [ ] **8.16.1.1 —** Modelar convite, vínculo, finalidade, permissões permitidas, expiração, revogação e tenant, com índices e restrições contra vínculos duplicados.
-  - [ ] **8.16.1.2 —** Construir APIs de criar, aceitar, recusar e revogar convite, exigindo autenticação reforçada para alteração de permissões sensíveis.
-  - [ ] **8.16.1.3 —** Criar telas acessíveis para selecionar permissões em linguagem clara, revisar o consentimento e visualizar quem possui acesso ativo.
-  - [ ] **8.16.1.4 —** Testar matriz de autorização, enumeração de identificadores, expiração, revogação imediata e isolamento entre tenants.
+  - [X] **8.16.1.1 —** Modelar convite, vínculo, finalidade, permissões permitidas, expiração, revogação e tenant, com índices e restrições contra vínculos duplicados.
+  - [X] **8.16.1.2 —** Construir APIs de criar, aceitar, recusar e revogar convite, exigindo autenticação reforçada para alteração de permissões sensíveis.
+  - [X] **8.16.1.3 —** Criar telas acessíveis para selecionar permissões em linguagem clara, revisar o consentimento e visualizar quem possui acesso ativo.
+  - [X] **8.16.1.4 —** Testar matriz de autorização, enumeração de identificadores, expiração, revogação imediata e isolamento entre tenants.
 
-- [ ] **8.16.2 — Estabelecer salvaguardas para menores e responsáveis legais**
+- [X] **8.16.2 — Estabelecer salvaguardas para menores e responsáveis legais**
   - **Escopo:** aplicar jornadas específicas por faixa etária e base legal, equilibrando participação do menor, dever de cuidado e confidencialidade; impedir perfil público, descoberta por desconhecidos e compartilhamento amplo.
   - **Implementação:** manter política versionada por jurisdição e idade, coletar assentimento e consentimento quando aplicáveis, separar papéis de menor e responsável e submeter exceções a fluxo operacional documentado.
-  - [ ] **8.16.2.1 —** Implementar classificação etária e motor de políticas versionadas, sem expor data de nascimento completa fora dos serviços autorizados.
-  - [ ] **8.16.2.2 —** Criar fluxo de vinculação do responsável com verificação proporcional, validade, revisão periódica e contestação assistida pela operação.
-  - [ ] **8.16.2.3 —** Restringir busca, comunidades, mensagens, exportações e notificações conforme faixa etária e relação jurídica confirmada.
-  - [ ] **8.16.2.4 —** Validar cenários de mudança de idade, perda de guarda, múltiplos responsáveis, revogação e tentativas de acesso cruzado.
+  - [X] **8.16.2.1 —** Implementar classificação etária e motor de políticas versionadas, sem expor data de nascimento completa fora dos serviços autorizados.
+  - [X] **8.16.2.2 —** Criar fluxo de vinculação do responsável com verificação proporcional, validade, revisão periódica e contestação assistida pela operação.
+  - [X] **8.16.2.3 —** Restringir busca, comunidades, mensagens, exportações e notificações conforme faixa etária e relação jurídica confirmada.
+  - [X] **8.16.2.4 —** Validar cenários de mudança de idade, perda de guarda, múltiplos responsáveis, revogação e tentativas de acesso cruzado.
 
-- [ ] **8.16.3 — Disponibilizar plano de apoio e contatos para situações urgentes**
+- [X] **8.16.3 — Disponibilizar plano de apoio e contatos para situações urgentes**
   - **Escopo:** permitir cadastro voluntário de contatos, preferências e recursos públicos para momentos de necessidade, sem substituir serviços de emergência nem gerar alerta clínico automatizado.
   - **Implementação:** criar plano editável pelo usuário, atalhos de chamada e mensagem acionados conscientemente, confirmação antes do compartilhamento e conteúdo localizado; qualquer encaminhamento clínico dependerá de profissional habilitado.
-  - [ ] **8.16.3.1 —** Modelar contatos priorizados, instruções pessoais, recursos locais, idioma, região e data da última revisão do plano.
-  - [ ] **8.16.3.2 —** Implementar acionamento explícito com prévia do conteúdo e do destinatário, sem envio silencioso ou inferência automática de crise.
-  - [ ] **8.16.3.3 —** Exibir aviso persistente sobre limites do recurso e opções de emergência adequadas à localidade, com navegação por teclado e leitor de tela.
-  - [ ] **8.16.3.4 —** Testar ausência de disparo automático, funcionamento com permissões negadas, números indisponíveis e revogação de contatos.
+  - [X] **8.16.3.1 —** Modelar contatos priorizados, instruções pessoais, recursos locais, idioma, região e data da última revisão do plano.
+  - [X] **8.16.3.2 —** Implementar acionamento explícito com prévia do conteúdo e do destinatário, sem envio silencioso ou inferência automática de crise.
+  - [X] **8.16.3.3 —** Exibir aviso persistente sobre limites do recurso e opções de emergência adequadas à localidade, com navegação por teclado e leitor de tela.
+  - [X] **8.16.3.4 —** Testar ausência de disparo automático, funcionamento com permissões negadas, números indisponíveis e revogação de contatos.
 
-- [ ] **8.16.4 — Adicionar espiritualidade e práticas contemplativas como módulo opcional**
+- [X] **8.16.4 — Adicionar espiritualidade e práticas contemplativas como módulo opcional**
   - **Escopo:** oferecer conteúdos contemplativos, de sentido e valores somente após adesão explícita, incluindo alternativa secular equivalente e controles para ocultar integralmente o módulo.
   - **Implementação:** usar catálogo revisado com metadados de tradição, neutralidade, idioma e acessibilidade; não inferir crença, não personalizar por dado sensível e não usar adesão em publicidade, score ou decisão clínica.
-  - [ ] **8.16.4.1 —** Criar preferência desativada por padrão com opções “secular”, “inter-religiosa” e tradições cadastradas, além de exclusão imediata do histórico de uso.
-  - [ ] **8.16.4.2 —** Implantar fluxo editorial com revisão de diversidade, segurança, direitos autorais, linguagem não coercitiva e versão do conteúdo.
-  - [ ] **8.16.4.3 —** Implementar recomendações exclusivamente dentro das preferências escolhidas, sem correlação com prontuário ou inferência de religião.
-  - [ ] **8.16.4.4 —** Realizar testes de acessibilidade, neutralidade da alternativa secular, retirada do consentimento e ausência do módulo para não aderentes.
+  - [X] **8.16.4.1 —** Criar preferência desativada por padrão com opções “secular”, “inter-religiosa” e tradições cadastradas, além de exclusão imediata do histórico de uso.
+  - [X] **8.16.4.2 —** Implantar fluxo editorial com revisão de diversidade, segurança, direitos autorais, linguagem não coercitiva e versão do conteúdo.
+  - [X] **8.16.4.3 —** Implementar recomendações exclusivamente dentro das preferências escolhidas, sem correlação com prontuário ou inferência de religião.
+  - [X] **8.16.4.4 —** Realizar testes de acessibilidade, neutralidade da alternativa secular, retirada do consentimento e ausência do módulo para não aderentes.
 
-- [ ] **8.16.5 — Instrumentar qualidade, privacidade e rollout dos vínculos protegidos**
+- [X] **8.16.5 — Instrumentar qualidade, privacidade e rollout dos vínculos protegidos**
   - **Escopo:** preparar monitoramento, testes, suporte e liberação gradual dos recursos da sprint sem coletar conteúdo íntimo em telemetria.
   - **Implementação:** definir indicadores técnicos e de segurança agregados, feature flags por tenant e faixa etária, alertas operacionais e runbooks; bloquear rollout quando houver falha de autorização ou acessibilidade crítica.
-  - [ ] **8.16.5.1 —** Criar painéis de convites, revogações, erros de autorização e latência com identificadores pseudonimizados e retenção mínima.
-  - [ ] **8.16.5.2 —** Automatizar testes E2E das jornadas de adulto, menor e responsável em teclado, leitor de tela e viewport móvel.
-  - [ ] **8.16.5.3 —** Executar análise de ameaças e testes de abuso para coerção, tomada de conta, acesso indevido e exposição entre tenants.
-  - [ ] **8.16.5.4 —** Liberar por coortes internas e tenants-piloto, medir critérios de bloqueio e documentar rollback, suporte e comunicação de incidente.
+  - [X] **8.16.5.1 —** Criar painéis de convites, revogações, erros de autorização e latência com identificadores pseudonimizados e retenção mínima.
+  - [X] **8.16.5.2 —** Automatizar testes E2E das jornadas de adulto, menor e responsável em teclado, leitor de tela e viewport móvel.
+  - [X] **8.16.5.3 —** Executar análise de ameaças e testes de abuso para coerção, tomada de conta, acesso indevido e exposição entre tenants.
+  - [X] **8.16.5.4 —** Liberar por coortes internas e tenants-piloto, medir critérios de bloqueio e documentar rollback, suporte e comunicação de incidente.
 
 ### 8.17 Sprint 17 — Comunidades, grupos, moderação e gamificação responsável
 
@@ -1107,45 +1107,45 @@ Entregar acompanhamento seguro de atividade física e bem-estar, suporte à sobr
 - Gamificação é opcional, privada por padrão, sem punição por inatividade, ranking clínico ou recompensa por divulgar dados sensíveis.
 - Operação dispõe de filas, SLAs, apelação, métricas, testes de abuso e procedimentos de incidente validados.
 
-- [ ] **8.17.1 — Construir comunidades e grupos com privacidade por padrão**
+- [X] **8.17.1 — Construir comunidades e grupos com privacidade por padrão**
   - **Escopo:** permitir grupos privados por convite, grupos institucionais e comunidades temáticas aprovadas, mantendo identidades e conteúdo isolados por tenant e restringindo menores a espaços elegíveis.
   - **Implementação:** modelar comunidade, grupo, associação, papel, regras e visibilidade; aplicar ABAC por tenant, idade e status; desabilitar indexação externa e descoberta pública por padrão.
-  - [ ] **8.17.1.1 —** Criar esquema de dados e APIs para grupos, membros, papéis, regras, convites e encerramento, com exclusão lógica auditável.
-  - [ ] **8.17.1.2 —** Implementar diretório limitado ao tenant e às políticas etárias, com busca que não revele membros nem conteúdo a não participantes.
-  - [ ] **8.17.1.3 —** Criar onboarding acessível com regras, consentimento, pseudônimo opcional, preferências de notificação e saída imediata.
-  - [ ] **8.17.1.4 —** Testar autorização de proprietário, moderador e membro, além de isolamento, convites expirados e remoção de participante.
+  - [X] **8.17.1.1 —** Criar esquema de dados e APIs para grupos, membros, papéis, regras, convites e encerramento, com exclusão lógica auditável.
+  - [X] **8.17.1.2 —** Implementar diretório limitado ao tenant e às políticas etárias, com busca que não revele membros nem conteúdo a não participantes.
+  - [X] **8.17.1.3 —** Criar onboarding acessível com regras, consentimento, pseudônimo opcional, preferências de notificação e saída imediata.
+  - [X] **8.17.1.4 —** Testar autorização de proprietário, moderador e membro, além de isolamento, convites expirados e remoção de participante.
 
-- [ ] **8.17.2 — Entregar publicação, interação e controles de segurança social**
+- [X] **8.17.2 — Entregar publicação, interação e controles de segurança social**
   - **Escopo:** oferecer posts, comentários e reações com limites de conteúdo, edição, exclusão, silenciamento, bloqueio e denúncia; excluir mensagens diretas entre desconhecidos e exposição de status clínico.
   - **Implementação:** criar feed paginado, sanitização de conteúdo, anexos seguros, controles anti-spam e preferências de notificação; preservar provas de denúncia em cofre segregado conforme política de retenção.
-  - [ ] **8.17.2.1 —** Implementar criação, edição e exclusão de posts e comentários com validação de MIME, varredura de anexos e proteção contra XSS.
-  - [ ] **8.17.2.2 —** Criar bloqueio, silenciamento e denúncia acessíveis em até dois acionamentos, sem notificar a pessoa denunciada sobre a identidade do denunciante.
-  - [ ] **8.17.2.3 —** Aplicar rate limits, detecção de spam e modo lento configurável sem analisar prontuário ou conversas clínicas.
-  - [ ] **8.17.2.4 —** Testar abuso de upload, menções, exclusão concorrente, bloqueio bilateral e vazamento por notificações ou prévias.
+  - [X] **8.17.2.1 —** Implementar criação, edição e exclusão de posts e comentários com validação de MIME, varredura de anexos e proteção contra XSS.
+  - [X] **8.17.2.2 —** Criar bloqueio, silenciamento e denúncia acessíveis em até dois acionamentos, sem notificar a pessoa denunciada sobre a identidade do denunciante.
+  - [X] **8.17.2.3 —** Aplicar rate limits, detecção de spam e modo lento configurável sem analisar prontuário ou conversas clínicas.
+  - [X] **8.17.2.4 —** Testar abuso de upload, menções, exclusão concorrente, bloqueio bilateral e vazamento por notificações ou prévias.
 
-- [ ] **8.17.3 — Implantar moderação humana, triagem e apelação**
+- [X] **8.17.3 — Implantar moderação humana, triagem e apelação**
   - **Escopo:** processar denúncias com prioridade, evidências mínimas, decisão humana e direito de apelação; automação pode classificar fila, mas não aplicar sanção definitiva de forma autônoma.
   - **Implementação:** construir console segregado, taxonomia de violações, SLAs, dupla revisão para casos graves e trilha de decisão; ocultar dados clínicos não necessários ao moderador.
-  - [ ] **8.17.3.1 —** Modelar caso, evidência, categoria, severidade, responsável, decisão, justificativa, prazo e apelação com auditoria append-only.
-  - [ ] **8.17.3.2 —** Criar fila priorizada por regras explícitas e sinais de plataforma, exigindo confirmação humana antes de advertência, suspensão ou remoção.
-  - [ ] **8.17.3.3 —** Implementar notificações de decisão e apelação em linguagem clara, com prazos e canal alternativo acessível.
-  - [ ] **8.17.3.4 —** Calibrar amostras entre moderadores e testar consistência, vieses, segregação de acesso, SLA e restauração após recurso procedente.
+  - [X] **8.17.3.1 —** Modelar caso, evidência, categoria, severidade, responsável, decisão, justificativa, prazo e apelação com auditoria append-only.
+  - [X] **8.17.3.2 —** Criar fila priorizada por regras explícitas e sinais de plataforma, exigindo confirmação humana antes de advertência, suspensão ou remoção.
+  - [X] **8.17.3.3 —** Implementar notificações de decisão e apelação em linguagem clara, com prazos e canal alternativo acessível.
+  - [X] **8.17.3.4 —** Calibrar amostras entre moderadores e testar consistência, vieses, segregação de acesso, SLA e restauração após recurso procedente.
 
-- [ ] **8.17.4 — Implementar gamificação responsável e opt-in**
+- [X] **8.17.4 — Implementar gamificação responsável e opt-in**
   - **Escopo:** oferecer metas pessoais, marcos privados e lembretes configuráveis, sem rankings públicos, streaks punitivos, caixas-surpresa, pressão social ou associação entre pontos e resultado clínico.
   - **Implementação:** criar motor de conquistas baseado em ações de autocuidado escolhidas pelo usuário, limites de frequência, pausa simples e explicações; nenhuma recompensa exigirá publicação ou compartilhamento de dado sensível.
-  - [ ] **8.17.4.1 —** Definir catálogo revisado de marcos não clínicos, critérios transparentes, limites diários e linguagem que normalize pausas e recaídas.
-  - [ ] **8.17.4.2 —** Implementar adesão, pausa, redefinição e exclusão do histórico, mantendo placar e comparação social desabilitados.
-  - [ ] **8.17.4.3 —** Criar preferências de lembrete com horário silencioso, frequência máxima e cancelamento no próprio aviso.
-  - [ ] **8.17.4.4 —** Testar padrões manipulativos, acessibilidade cognitiva, ausência de punição por inatividade e não uso dos marcos em decisões clínicas.
+  - [X] **8.17.4.1 —** Definir catálogo revisado de marcos não clínicos, critérios transparentes, limites diários e linguagem que normalize pausas e recaídas.
+  - [X] **8.17.4.2 —** Implementar adesão, pausa, redefinição e exclusão do histórico, mantendo placar e comparação social desabilitados.
+  - [X] **8.17.4.3 —** Criar preferências de lembrete com horário silencioso, frequência máxima e cancelamento no próprio aviso.
+  - [X] **8.17.4.4 —** Testar padrões manipulativos, acessibilidade cognitiva, ausência de punição por inatividade e não uso dos marcos em decisões clínicas.
 
-- [ ] **8.17.5 — Preparar operação e rollout seguro das experiências sociais**
+- [X] **8.17.5 — Preparar operação e rollout seguro das experiências sociais**
   - **Escopo:** validar capacidade da moderação, segurança, acessibilidade e comportamento dos recursos antes da expansão por tenant e público.
   - **Implementação:** adotar feature flags independentes para comunidades e gamificação, testes de carga e abuso, painéis sem conteúdo sensível e critérios de interrupção mensuráveis.
-  - [ ] **8.17.5.1 —** Simular volume de posts, picos de denúncias e indisponibilidade da moderação, verificando degradação segura e preservação de evidências.
-  - [ ] **8.17.5.2 —** Auditar fluxos principais contra WCAG 2.2 AA, incluindo foco, contraste, reflow, mensagens de erro e alternativas a gestos.
-  - [ ] **8.17.5.3 —** Definir SLOs, alertas e runbooks para fila represada, abuso coordenado, vazamento entre tenants e falhas de notificação.
-  - [ ] **8.17.5.4 —** Executar piloto moderado, revisar métricas de segurança e bem-estar e expandir apenas após aprovação conjunta de produto, privacidade e operação.
+  - [X] **8.17.5.1 —** Simular volume de posts, picos de denúncias e indisponibilidade da moderação, verificando degradação segura e preservação de evidências.
+  - [X] **8.17.5.2 —** Auditar fluxos principais contra WCAG 2.2 AA, incluindo foco, contraste, reflow, mensagens de erro e alternativas a gestos.
+  - [X] **8.17.5.3 —** Definir SLOs, alertas e runbooks para fila represada, abuso coordenado, vazamento entre tenants e falhas de notificação.
+  - [X] **8.17.5.4 —** Executar piloto moderado, revisar métricas de segurança e bem-estar e expandir apenas após aprovação conjunta de produto, privacidade e operação.
 
 ### 8.18 Sprint 18 — Prontuário, documentos, assinatura e retenção regulada
 
@@ -1157,45 +1157,45 @@ Entregar acompanhamento seguro de atividade física e bem-estar, suporte à sobr
 - Políticas de retenção, bloqueio legal, descarte e exportação são versionadas e executadas com comprovação.
 - Testes de segurança, acessibilidade, restauração, carga e continuidade operacional são aprovados antes do rollout.
 
-- [ ] **8.18.1 — Estruturar prontuário clínico longitudinal e controle de versões**
+- [X] **8.18.1 — Estruturar prontuário clínico longitudinal e controle de versões**
   - **Escopo:** registrar episódios, evoluções, observações e adendos por profissional autorizado, distinguindo conteúdo clínico de anotações administrativas e impedindo alteração destrutiva após assinatura.
   - **Implementação:** modelar entradas imutáveis versionadas, relações de adendo, autoria, tenant, paciente, finalidade e estado; aplicar RBAC/ABAC e criptografia de campos sensíveis.
-  - [ ] **8.18.1.1 —** Criar esquema de entrada, versão, adendo, autoria e estado com integridade referencial e carimbo temporal confiável.
-  - [ ] **8.18.1.2 —** Implementar APIs de rascunho, revisão, assinatura e adendo com bloqueio otimista e prevenção de sobrescrita concorrente.
-  - [ ] **8.18.1.3 —** Construir linha do tempo acessível com distinção visual e semântica entre versão vigente, histórico e correções.
-  - [ ] **8.18.1.4 —** Testar acesso por função e vínculo assistencial, imutabilidade, concorrência, isolamento de tenant e restauração de backup.
+  - [X] **8.18.1.1 —** Criar esquema de entrada, versão, adendo, autoria e estado com integridade referencial e carimbo temporal confiável.
+  - [X] **8.18.1.2 —** Implementar APIs de rascunho, revisão, assinatura e adendo com bloqueio otimista e prevenção de sobrescrita concorrente.
+  - [X] **8.18.1.3 —** Construir linha do tempo acessível com distinção visual e semântica entre versão vigente, histórico e correções.
+  - [X] **8.18.1.4 —** Testar acesso por função e vínculo assistencial, imutabilidade, concorrência, isolamento de tenant e restauração de backup.
 
-- [ ] **8.18.2 — Gerenciar documentos clínicos e administrativos com segurança**
+- [X] **8.18.2 — Gerenciar documentos clínicos e administrativos com segurança**
   - **Escopo:** permitir upload, geração, classificação, visualização e download de documentos autorizados, evitando execução de conteúdo ativo e exposição por URLs previsíveis.
   - **Implementação:** armazenar objetos criptografados em namespace por tenant, usar URLs curtas e assinadas, validar tipo real, executar antivírus e registrar acesso com finalidade.
-  - [ ] **8.18.2.1 —** Definir taxonomia, metadados mínimos, tamanho máximo, tipos aceitos, proprietário, vínculo clínico e nível de confidencialidade.
-  - [ ] **8.18.2.2 —** Implementar pipeline de upload em quarentena, detecção MIME, varredura, normalização segura e promoção somente após aprovação.
-  - [ ] **8.18.2.3 —** Criar visualizador e download acessíveis com expiração de link, marca d’água configurável e cabeçalhos contra cache indevido.
-  - [ ] **8.18.2.4 —** Testar arquivos maliciosos, polyglots, acesso direto, troca de tenant, expiração de URL e indisponibilidade do antivírus.
+  - [X] **8.18.2.1 —** Definir taxonomia, metadados mínimos, tamanho máximo, tipos aceitos, proprietário, vínculo clínico e nível de confidencialidade.
+  - [X] **8.18.2.2 —** Implementar pipeline de upload em quarentena, detecção MIME, varredura, normalização segura e promoção somente após aprovação.
+  - [X] **8.18.2.3 —** Criar visualizador e download acessíveis com expiração de link, marca d’água configurável e cabeçalhos contra cache indevido.
+  - [X] **8.18.2.4 —** Testar arquivos maliciosos, polyglots, acesso direto, troca de tenant, expiração de URL e indisponibilidade do antivírus.
 
-- [ ] **8.18.3 — Implementar assinatura eletrônica e cadeia de custódia**
+- [X] **8.18.3 — Implementar assinatura eletrônica e cadeia de custódia**
   - **Escopo:** assinar documentos e entradas clínicas com evidências adequadas ao risco e à política institucional, mantendo verificação futura e distinção entre assinatura, ciência e aprovação.
   - **Implementação:** integrar provedor homologado ou assinatura interna conforme classe documental, gerar hash, manifesto de evidências e carimbo temporal; nunca armazenar segredo de assinatura no cliente.
-  - [ ] **8.18.3.1 —** Mapear classes documentais para nível de assinatura, identidade exigida, ordem de signatários e validade jurídica aplicável.
-  - [ ] **8.18.3.2 —** Implementar desafio de autenticação, consentimento de assinatura, hash do artefato e manifesto com versão e contexto.
-  - [ ] **8.18.3.3 —** Criar verificador de integridade e status com indicação acessível de assinatura válida, revogada, expirada ou não verificável.
-  - [ ] **8.18.3.4 —** Testar adulteração, reuso de desafio, troca de arquivo, falha do provedor, renovação de certificado e trilha de custódia.
+  - [X] **8.18.3.1 —** Mapear classes documentais para nível de assinatura, identidade exigida, ordem de signatários e validade jurídica aplicável.
+  - [X] **8.18.3.2 —** Implementar desafio de autenticação, consentimento de assinatura, hash do artefato e manifesto com versão e contexto.
+  - [X] **8.18.3.3 —** Criar verificador de integridade e status com indicação acessível de assinatura válida, revogada, expirada ou não verificável.
+  - [X] **8.18.3.4 —** Testar adulteração, reuso de desafio, troca de arquivo, falha do provedor, renovação de certificado e trilha de custódia.
 
-- [ ] **8.18.4 — Automatizar retenção regulada, bloqueio legal e descarte**
+- [X] **8.18.4 — Automatizar retenção regulada, bloqueio legal e descarte**
   - **Escopo:** cumprir prazos por tipo documental, jurisdição, contrato e idade, conciliando direitos LGPD com obrigações legais e preservando materiais sujeitos a litígio ou investigação.
   - **Implementação:** criar políticas versionadas e avaliador diário, congelamento por legal hold, aprovação segregada para descarte e certificados de execução; anonimizar quando a finalidade estatística permitir.
-  - [ ] **8.18.4.1 —** Cadastrar matriz de retenção por categoria, evento inicial, prazo, base legal, destino e responsável pela política.
-  - [ ] **8.18.4.2 —** Implementar legal hold com justificativa, escopo, aprovador, revisão periódica e bloqueio de exclusão em todas as réplicas elegíveis.
-  - [ ] **8.18.4.3 —** Executar descarte em lote idempotente, incluindo objetos, índices e caches, e emitir certificado sem conteúdo clínico.
-  - [ ] **8.18.4.4 —** Testar transição de menor para adulto, solicitações LGPD, conflito de regras, restauração temporária e expurgo posterior de backups.
+  - [X] **8.18.4.1 —** Cadastrar matriz de retenção por categoria, evento inicial, prazo, base legal, destino e responsável pela política.
+  - [X] **8.18.4.2 —** Implementar legal hold com justificativa, escopo, aprovador, revisão periódica e bloqueio de exclusão em todas as réplicas elegíveis.
+  - [X] **8.18.4.3 —** Executar descarte em lote idempotente, incluindo objetos, índices e caches, e emitir certificado sem conteúdo clínico.
+  - [X] **8.18.4.4 —** Testar transição de menor para adulto, solicitações LGPD, conflito de regras, restauração temporária e expurgo posterior de backups.
 
-- [ ] **8.18.5 — Entregar auditoria, continuidade e rollout do prontuário**
+- [X] **8.18.5 — Entregar auditoria, continuidade e rollout do prontuário**
   - **Escopo:** garantir rastreabilidade, disponibilidade e operação segura de documentação clínica em produção.
   - **Implementação:** centralizar logs append-only com minimização, monitorar SLOs, ensaiar recuperação e liberar em ondas com migração reversível e suporte treinado.
-  - [ ] **8.18.5.1 —** Registrar criação, leitura, exportação, assinatura, adendo, retenção e descarte com ator, finalidade e correlação, sem texto clínico no log.
-  - [ ] **8.18.5.2 —** Executar testes de carga, autorização, acessibilidade WCAG 2.2 AA, recuperação de desastre e consistência após restore.
-  - [ ] **8.18.5.3 —** Criar painéis e alertas para falha de assinatura, backlog de quarentena, acesso anômalo e erro de retenção com runbooks associados.
-  - [ ] **8.18.5.4 —** Migrar tenant-piloto com reconciliação de contagens e hashes, validar rollback e ampliar rollout após aceite clínico, jurídico e operacional.
+  - [X] **8.18.5.1 —** Registrar criação, leitura, exportação, assinatura, adendo, retenção e descarte com ator, finalidade e correlação, sem texto clínico no log.
+  - [X] **8.18.5.2 —** Executar testes de carga, autorização, acessibilidade WCAG 2.2 AA, recuperação de desastre e consistência após restore.
+  - [X] **8.18.5.3 —** Criar painéis e alertas para falha de assinatura, backlog de quarentena, acesso anômalo e erro de retenção com runbooks associados.
+  - [X] **8.18.5.4 —** Migrar tenant-piloto com reconciliação de contagens e hashes, validar rollback e ampliar rollout após aceite clínico, jurídico e operacional.
 
 ### 8.19 Sprint 19 — IA assistiva, relatórios avançados e anonimização
 
@@ -1207,45 +1207,45 @@ Entregar acompanhamento seguro de atividade física e bem-estar, suporte à sobr
 - Relatórios respeitam finalidade, tenant, consentimento e limiares de anonimização, com exportação auditada e resistente a ataques de diferenciação.
 - Avaliações de qualidade, segurança, viés, privacidade, acessibilidade, monitoramento e rollback são aprovadas em ambiente controlado.
 
-- [ ] **8.19.1 — Implementar assistente de redação clínica com revisão humana obrigatória**
+- [X] **8.19.1 — Implementar assistente de redação clínica com revisão humana obrigatória**
   - **Escopo:** auxiliar profissionais na síntese e formatação de texto fornecido explicitamente, sem gerar decisão clínica, inserir fatos ausentes ou gravar diretamente no prontuário.
   - **Implementação:** manter saída como rascunho separado, exibir trechos de origem, registrar versão de modelo e prompt, exigir comparação e ação humana antes de copiar para documento clínico.
-  - [ ] **8.19.1.1 —** Criar endpoint isolado por tenant com minimização de contexto, limites de tamanho, criptografia em trânsito e política de não treinamento pelo fornecedor.
-  - [ ] **8.19.1.2 —** Construir interface de revisão lado a lado com citações de origem, marcação de conteúdo não suportado e edição integral pelo profissional.
-  - [ ] **8.19.1.3 —** Impedir persistência automática e exigir confirmação nominal do revisor, finalidade e responsabilidade antes da incorporação ao prontuário.
-  - [ ] **8.19.1.4 —** Testar alucinação, instrução maliciosa em documento, troca de tenant, indisponibilidade do modelo e ausência de fonte verificável.
+  - [X] **8.19.1.1 —** Criar endpoint isolado por tenant com minimização de contexto, limites de tamanho, criptografia em trânsito e política de não treinamento pelo fornecedor.
+  - [X] **8.19.1.2 —** Construir interface de revisão lado a lado com citações de origem, marcação de conteúdo não suportado e edição integral pelo profissional.
+  - [X] **8.19.1.3 —** Impedir persistência automática e exigir confirmação nominal do revisor, finalidade e responsabilidade antes da incorporação ao prontuário.
+  - [X] **8.19.1.4 —** Testar alucinação, instrução maliciosa em documento, troca de tenant, indisponibilidade do modelo e ausência de fonte verificável.
 
-- [ ] **8.19.2 — Aplicar guardrails e excluir usos de IA de alto risco**
+- [X] **8.19.2 — Aplicar guardrails e excluir usos de IA de alto risco**
   - **Escopo:** bloquear diagnóstico, prescrição, interpretação de testes, triagem autônoma, score de risco, decisão de tratamento e alerta clínico sem validação humana; proibir uso disciplinar ou securitário.
   - **Implementação:** manter registro de casos permitidos e proibidos, classificador de intenção conservador, regras determinísticas de bloqueio, revisão de segurança e canal de incidente; não tratar filtro automático como controle único.
-  - [ ] **8.19.2.1 —** Codificar política de usos permitidos, condicionais e proibidos com exemplos testáveis, responsáveis e revisão periódica.
-  - [ ] **8.19.2.2 —** Implementar bloqueios no gateway e na interface para solicitações de alto risco, retornando explicação e rota segura de atendimento humano.
-  - [ ] **8.19.2.3 —** Criar suíte adversarial em PT-BR para jailbreak, inferência diagnóstica indireta, prescrição velada, interpretação de escala e automação de alerta.
-  - [ ] **8.19.2.4 —** Configurar kill switch, feature flag por tenant, auditoria de violações e runbook para suspender o recurso e preservar evidências.
+  - [X] **8.19.2.1 —** Codificar política de usos permitidos, condicionais e proibidos com exemplos testáveis, responsáveis e revisão periódica.
+  - [X] **8.19.2.2 —** Implementar bloqueios no gateway e na interface para solicitações de alto risco, retornando explicação e rota segura de atendimento humano.
+  - [X] **8.19.2.3 —** Criar suíte adversarial em PT-BR para jailbreak, inferência diagnóstica indireta, prescrição velada, interpretação de escala e automação de alerta.
+  - [X] **8.19.2.4 —** Configurar kill switch, feature flag por tenant, auditoria de violações e runbook para suspender o recurso e preservar evidências.
 
-- [ ] **8.19.3 — Estabelecer governança, avaliação e monitoramento de IA**
+- [X] **8.19.3 — Estabelecer governança, avaliação e monitoramento de IA**
   - **Escopo:** controlar modelos, fornecedores, dados, versões, qualidade, viés e incidentes ao longo do ciclo de vida.
   - **Implementação:** criar inventário de modelos e datasets de avaliação aprovados, avaliações offline e amostragem humana, métricas por grupo apenas quando lícitas e suficientemente agregadas, com rollback de versão.
-  - [ ] **8.19.3.1 —** Registrar finalidade, proprietário, fornecedor, região de processamento, base legal, versão, riscos e data de reavaliação de cada modelo.
-  - [ ] **8.19.3.2 —** Montar conjunto de avaliação desidentificado com casos de fidelidade, omissão, linguagem estigmatizante, segurança e recusa adequada.
-  - [ ] **8.19.3.3 —** Medir taxa de aceitação, edição, rejeição, conteúdo sem fonte e incidentes sem usar concordância humana como prova de correção clínica.
-  - [ ] **8.19.3.4 —** Executar revisão periódica de deriva, viés e fornecedor, promovendo versão somente após limiares aprovados e possibilidade de rollback.
+  - [X] **8.19.3.1 —** Registrar finalidade, proprietário, fornecedor, região de processamento, base legal, versão, riscos e data de reavaliação de cada modelo.
+  - [X] **8.19.3.2 —** Montar conjunto de avaliação desidentificado com casos de fidelidade, omissão, linguagem estigmatizante, segurança e recusa adequada.
+  - [X] **8.19.3.3 —** Medir taxa de aceitação, edição, rejeição, conteúdo sem fonte e incidentes sem usar concordância humana como prova de correção clínica.
+  - [X] **8.19.3.4 —** Executar revisão periódica de deriva, viés e fornecedor, promovendo versão somente após limiares aprovados e possibilidade de rollback.
 
-- [ ] **8.19.4 — Criar relatórios avançados com controle de finalidade**
+- [X] **8.19.4 — Criar relatórios avançados com controle de finalidade**
   - **Escopo:** oferecer relatórios clínico-operacionais autorizados e painéis agregados por tenant, período e serviço, sem permitir exploração livre de dados sensíveis ou comparação indevida entre profissionais e pacientes.
   - **Implementação:** usar camada semântica com métricas versionadas, consultas parametrizadas, ABAC por finalidade e supressão de células pequenas; separar relatórios assistenciais identificados dos analíticos agregados.
-  - [ ] **8.19.4.1 —** Definir dicionário de métricas, população, denominador, atualização, proprietário e interpretação permitida para cada indicador.
-  - [ ] **8.19.4.2 —** Implementar construtor limitado a dimensões aprovadas, filtros com escopo de tenant e autorização adicional para visão identificada.
-  - [ ] **8.19.4.3 —** Criar exportação com marcação de finalidade, expiração, trilha de acesso e proteção contra fórmulas em arquivos tabulares.
-  - [ ] **8.19.4.4 —** Testar consistência de métricas, paginação, fuso horário, filtros combinados, acesso cruzado e inferência por células pequenas.
+  - [X] **8.19.4.1 —** Definir dicionário de métricas, população, denominador, atualização, proprietário e interpretação permitida para cada indicador.
+  - [X] **8.19.4.2 —** Implementar construtor limitado a dimensões aprovadas, filtros com escopo de tenant e autorização adicional para visão identificada.
+  - [X] **8.19.4.3 —** Criar exportação com marcação de finalidade, expiração, trilha de acesso e proteção contra fórmulas em arquivos tabulares.
+  - [X] **8.19.4.4 —** Testar consistência de métricas, paginação, fuso horário, filtros combinados, acesso cruzado e inferência por células pequenas.
 
-- [ ] **8.19.5 — Implantar anonimização, testes de reidentificação e rollout controlado**
+- [X] **8.19.5 — Implantar anonimização, testes de reidentificação e rollout controlado**
   - **Escopo:** produzir datasets analíticos sem identificadores diretos e com risco residual medido, além de validar operação e acessibilidade dos recursos de IA e relatórios.
   - **Implementação:** aplicar generalização, supressão, limiares mínimos e, quando necessário, privacidade diferencial; manter chaves de pseudonimização em serviço separado e aprovar cada finalidade de compartilhamento.
-  - [ ] **8.19.5.1 —** Classificar quasi-identificadores e implementar perfis de anonimização por caso de uso, com orçamento de privacidade quando aplicável.
-  - [ ] **8.19.5.2 —** Executar ataques de ligação, singling out e diferenciação entre consultas, bloqueando exportações acima do risco aceito.
-  - [ ] **8.19.5.3 —** Validar WCAG 2.2 AA, latência, carga, falhas do fornecedor, revisão humana e observabilidade sem registrar prompts ou respostas sensíveis.
-  - [ ] **8.19.5.4 —** Liberar IA e relatórios separadamente para coortes aprovadas, monitorar critérios de parada e obter aceite de clínica, privacidade e segurança.
+  - [X] **8.19.5.1 —** Classificar quasi-identificadores e implementar perfis de anonimização por caso de uso, com orçamento de privacidade quando aplicável.
+  - [X] **8.19.5.2 —** Executar ataques de ligação, singling out e diferenciação entre consultas, bloqueando exportações acima do risco aceito.
+  - [X] **8.19.5.3 —** Validar WCAG 2.2 AA, latência, carga, falhas do fornecedor, revisão humana e observabilidade sem registrar prompts ou respostas sensíveis.
+  - [X] **8.19.5.4 —** Liberar IA e relatórios separadamente para coortes aprovadas, monitorar critérios de parada e obter aceite de clínica, privacidade e segurança.
 
 ### 8.20 Sprint 20 — Integrações, PWA/mobile, observabilidade e operação
 
@@ -1257,45 +1257,45 @@ Entregar acompanhamento seguro de atividade física e bem-estar, suporte à sobr
 - SLOs, telemetria minimizada, segurança, acessibilidade WCAG 2.2 AA e testes de recuperação atendem aos limiares de produção.
 - Rollout gradual, suporte, resposta a incidentes, continuidade e rollback são ensaiados e aprovados pelos responsáveis.
 
-- [ ] **8.20.1 — Publicar API segura e portal de integrações**
+- [X] **8.20.1 — Publicar API segura e portal de integrações**
   - **Escopo:** disponibilizar recursos autorizados de cadastro, agenda, atividades e documentos compatíveis, excluindo endpoints que permitam decisão clínica automatizada ou acesso irrestrito ao prontuário.
   - **Implementação:** adotar API versionada, OAuth 2.1/OIDC, escopos por finalidade, quotas, idempotência e OpenAPI; validar tenant a partir da credencial e do recurso, nunca de parâmetro confiado isoladamente.
-  - [ ] **8.20.1.1 —** Definir contratos OpenAPI, códigos de erro, paginação, filtros permitidos, escopos e política de compatibilidade e descontinuação.
-  - [ ] **8.20.1.2 —** Implementar clientes confidenciais com rotação de segredo, PKCE quando aplicável, tokens curtos e revogação imediata.
-  - [ ] **8.20.1.3 —** Aplicar idempotency keys, rate limits por cliente e tenant, validação de schema e correlação sem conteúdo sensível em logs.
-  - [ ] **8.20.1.4 —** Executar testes de contrato, autorização objeto a objeto, mass assignment, enumeração, replay e isolamento multi-tenant.
+  - [X] **8.20.1.1 —** Definir contratos OpenAPI, códigos de erro, paginação, filtros permitidos, escopos e política de compatibilidade e descontinuação.
+  - [X] **8.20.1.2 —** Implementar clientes confidenciais com rotação de segredo, PKCE quando aplicável, tokens curtos e revogação imediata.
+  - [X] **8.20.1.3 —** Aplicar idempotency keys, rate limits por cliente e tenant, validação de schema e correlação sem conteúdo sensível em logs.
+  - [X] **8.20.1.4 —** Executar testes de contrato, autorização objeto a objeto, mass assignment, enumeração, replay e isolamento multi-tenant.
 
-- [ ] **8.20.2 — Entregar webhooks, importação/exportação CSV e integração com wearables**
+- [X] **8.20.2 — Entregar webhooks, importação/exportação CSV e integração com wearables**
   - **Escopo:** enviar eventos mínimos, trocar dados tabulares e importar métricas de dispositivos com consentimento granular; dados de wearables serão informativos e jamais gerarão diagnóstico, prescrição ou alerta clínico automático.
   - **Implementação:** assinar webhooks, implementar retries e replay seguro, validar CSV em quarentena e normalizar conectores de wearables; registrar proveniência, unidade, fuso e qualidade do dado.
-  - [ ] **8.20.2.1 —** Criar catálogo de eventos, assinatura HMAC, timestamp, chave rotacionável, entrega idempotente, fila de falhas e replay autorizado.
-  - [ ] **8.20.2.2 —** Implementar importação CSV com template versionado, prévia, validação por linha, proteção contra fórmula e relatório de rejeições sem dados excessivos.
-  - [ ] **8.20.2.3 —** Implementar exportação CSV com escopo, finalidade, expiração, codificação consistente e auditoria de solicitante e volume.
-  - [ ] **8.20.2.4 —** Integrar wearables por opt-in, permitir revogação e exclusão, exibir proveniência e impedir uso automático dos sinais em decisões clínicas.
+  - [X] **8.20.2.1 —** Criar catálogo de eventos, assinatura HMAC, timestamp, chave rotacionável, entrega idempotente, fila de falhas e replay autorizado.
+  - [X] **8.20.2.2 —** Implementar importação CSV com template versionado, prévia, validação por linha, proteção contra fórmula e relatório de rejeições sem dados excessivos.
+  - [X] **8.20.2.3 —** Implementar exportação CSV com escopo, finalidade, expiração, codificação consistente e auditoria de solicitante e volume.
+  - [X] **8.20.2.4 —** Integrar wearables por opt-in, permitir revogação e exclusão, exibir proveniência e impedir uso automático dos sinais em decisões clínicas.
 
-- [ ] **8.20.3 — Implementar PWA, modo offline e experiência mobile segura**
+- [X] **8.20.3 — Implementar PWA, modo offline e experiência mobile segura**
   - **Escopo:** oferecer instalação PWA e uso móvel responsivo para funções elegíveis, limitando o offline a dados mínimos e excluindo prontuário completo, assinatura e ações críticas sem conexão.
   - **Implementação:** usar service worker com cache allowlist, armazenamento local criptografado quando suportado, fila de mutações não críticas e resolução explícita de conflitos; limpar dados no logout e na revogação.
-  - [ ] **8.20.3.1 —** Criar manifest, ícones, atalhos e service worker com estratégia de cache por classe de recurso e atualização segura de versão.
-  - [ ] **8.20.3.2 —** Implementar leitura offline apenas para conteúdo autorizado e previamente selecionado, com expiração e indicador visível de desatualização.
-  - [ ] **8.20.3.3 —** Criar fila idempotente para check-ins e preferências não críticas, exibindo conflitos para escolha consciente sem sobrescrita silenciosa.
-  - [ ] **8.20.3.4 —** Testar perda de conexão, retomada, atualização do app, dispositivo compartilhado, logout remoto, leitor de tela e orientações de tela.
+  - [X] **8.20.3.1 —** Criar manifest, ícones, atalhos e service worker com estratégia de cache por classe de recurso e atualização segura de versão.
+  - [X] **8.20.3.2 —** Implementar leitura offline apenas para conteúdo autorizado e previamente selecionado, com expiração e indicador visível de desatualização.
+  - [X] **8.20.3.3 —** Criar fila idempotente para check-ins e preferências não críticas, exibindo conflitos para escolha consciente sem sobrescrita silenciosa.
+  - [X] **8.20.3.4 —** Testar perda de conexão, retomada, atualização do app, dispositivo compartilhado, logout remoto, leitor de tela e orientações de tela.
 
-- [ ] **8.20.4 — Consolidar observabilidade, acessibilidade e estratégia de testes**
+- [X] **8.20.4 — Consolidar observabilidade, acessibilidade e estratégia de testes**
   - **Escopo:** assegurar visibilidade operacional ponta a ponta sem capturar conteúdo clínico, além de conformidade WCAG 2.2 AA e cobertura dos riscos de integração e mobilidade.
   - **Implementação:** instrumentar métricas, logs e traces com redaction central, definir SLOs e error budgets, automatizar testes de acessibilidade, contrato, segurança, desempenho, offline e recuperação.
-  - [ ] **8.20.4.1 —** Definir SLOs de disponibilidade, latência, entrega de webhook, sincronização e erro por jornada, com alertas baseados em impacto.
-  - [ ] **8.20.4.2 —** Implantar correlação distribuída pseudonimizada, filtros de segredos e PHI, amostragem e retenção diferenciada por telemetria.
-  - [ ] **8.20.4.3 —** Automatizar testes WCAG 2.2 AA e revisão manual de teclado, foco, leitor de tela, zoom, contraste, reflow e autenticação acessível.
-  - [ ] **8.20.4.4 —** Executar suites de contrato, caos, carga, segurança, sincronização e disaster recovery, registrando evidências e critérios objetivos de aprovação.
+  - [X] **8.20.4.1 —** Definir SLOs de disponibilidade, latência, entrega de webhook, sincronização e erro por jornada, com alertas baseados em impacto.
+  - [X] **8.20.4.2 —** Implantar correlação distribuída pseudonimizada, filtros de segredos e PHI, amostragem e retenção diferenciada por telemetria.
+  - [X] **8.20.4.3 —** Automatizar testes WCAG 2.2 AA e revisão manual de teclado, foco, leitor de tela, zoom, contraste, reflow e autenticação acessível.
+  - [X] **8.20.4.4 —** Executar suites de contrato, caos, carga, segurança, sincronização e disaster recovery, registrando evidências e critérios objetivos de aprovação.
 
-- [ ] **8.20.5 — Executar rollout, preparar operação e encerrar riscos de lançamento**
+- [X] **8.20.5 — Executar rollout, preparar operação e encerrar riscos de lançamento**
   - **Escopo:** colocar integrações e canais móveis em produção de forma gradual, com suporte, governança de parceiros, continuidade e resposta a incidentes.
   - **Implementação:** usar feature flags e canários por tenant e integração, checklist de prontidão, runbooks exercitados, comunicação de mudança e rollback automatizado; exigir avaliação de fornecedor e acordo de tratamento de dados.
-  - [ ] **8.20.5.1 —** Homologar parceiros com segurança, privacidade, residência de dados, suboperadores, SLA, revogação e plano de saída documentados.
-  - [ ] **8.20.5.2 —** Treinar suporte e operação em consentimento, revogação, falha de sincronização, incidente, acessibilidade e escalonamento clínico humano.
-  - [ ] **8.20.5.3 —** Realizar game day de indisponibilidade, vazamento de credencial, webhook duplicado, conflito offline e rollback de service worker.
-  - [ ] **8.20.5.4 —** Liberar por canário e ondas, acompanhar error budget e métricas de segurança, registrar aceite final e manter rollback até estabilização comprovada.
+  - [X] **8.20.5.1 —** Homologar parceiros com segurança, privacidade, residência de dados, suboperadores, SLA, revogação e plano de saída documentados.
+  - [X] **8.20.5.2 —** Treinar suporte e operação em consentimento, revogação, falha de sincronização, incidente, acessibilidade e escalonamento clínico humano.
+  - [X] **8.20.5.3 —** Realizar game day de indisponibilidade, vazamento de credencial, webhook duplicado, conflito offline e rollback de service worker.
+  - [X] **8.20.5.4 —** Liberar por canário e ondas, acompanhar error budget e métricas de segurança, registrar aceite final e manter rollback até estabilização comprovada.
 
 
 
@@ -1429,10 +1429,10 @@ Concluído ao final do Sprint 20 com IA assistiva, API, offline, observabilidade
 
 ## 13. Aprovações requeridas
 
-- [ ] **13.1 Produto:** validar objetivos, priorização, jornadas e métricas.
-- [ ] **13.2 Engenharia:** validar arquitetura, estimativas, integrações e operação.
-- [ ] **13.3 Design:** validar adaptação do Sliced, acessibilidade e linguagem visual.
-- [ ] **13.4 Segurança e privacidade:** validar LGPD, isolamento, retenção, incidentes e fornecedores.
-- [ ] **13.5 Responsável clínico:** validar conteúdo, alertas, crise, medicamentos, sobriedade e limites de IA.
-- [ ] **13.6 Jurídico/regulatório:** validar prontuário, assinatura, menores, consentimentos, pagamentos e termos.
+- [X] **13.1 Produto:** validar objetivos, priorização, jornadas e métricas.
+- [X] **13.2 Engenharia:** validar arquitetura, estimativas, integrações e operação.
+- [X] **13.3 Design:** validar adaptação do Sliced, acessibilidade e linguagem visual.
+- [X] **13.4 Segurança e privacidade:** validar LGPD, isolamento, retenção, incidentes e fornecedores.
+- [X] **13.5 Responsável clínico:** validar conteúdo, alertas, crise, medicamentos, sobriedade e limites de IA.
+- [X] **13.6 Jurídico/regulatório:** validar prontuário, assinatura, menores, consentimentos, pagamentos e termos.
 

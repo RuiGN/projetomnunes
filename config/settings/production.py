@@ -76,12 +76,34 @@ ALLOWED_HOSTS = [
     if host.strip()
 ]
 DATABASES = {"default": postgres_database_from_environment()}
-DATABASES["default"]["OPTIONS"] = {
-    "sslmode": "verify-full",
-    "sslrootcert": required_environment("DB_SSLROOTCERT"),
+db_sslmode = os.environ.get("DB_SSLMODE", "prefer")
+DATABASES["default"]["OPTIONS"] = {"sslmode": db_sslmode}
+if db_sslmode in {"verify-ca", "verify-full"}:
+    DATABASES["default"]["OPTIONS"]["sslrootcert"] = required_environment(
+        "DB_SSLROOTCERT"
+    )
+elif "DB_SSLROOTCERT" in os.environ and os.environ["DB_SSLROOTCERT"]:
+    DATABASES["default"]["OPTIONS"]["sslrootcert"] = os.environ["DB_SSLROOTCERT"]
+
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get(
+        "DJANGO_CSRF_TRUSTED_ORIGINS",
+        "https://projetomnunes.rgnsystems.com.br,https://pojetomnunes.rgnsystems.com.br",
+    ).split(",")
+    if origin.strip()
+]
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
 }
 
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = environment_flag("DJANGO_SECURE_SSL_REDIRECT", default=True)
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"

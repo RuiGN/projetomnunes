@@ -1,0 +1,2 @@
+"""Wellness migrations package."""
+

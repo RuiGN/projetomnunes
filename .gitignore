@@ -12,3 +12,6 @@ private_media/
 staticfiles/
 db.sqlite3
 .superpowers/
+.agents/
+.codex/
+.hermes/
