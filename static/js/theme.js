@@ -43,6 +43,17 @@
 
   applyTheme(theme);
 
+  const toggleTheme = () => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    safeStorageSet(storageKey, nextTheme);
+    applyTheme(nextTheme, true);
+  };
+
+  // Delegate so the toggle works regardless of Alpine/CSP or render timing.
+  document.addEventListener("click", (event) => {
+    if (event.target.closest?.("[data-theme-toggle]")) toggleTheme();
+  });
+
   document.addEventListener("alpine:init", () => {
     themeStore = {
       current: theme,
@@ -58,11 +69,6 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     applyTheme(theme);
-    document.querySelector("[data-theme-toggle]")?.addEventListener("click", () => {
-      const nextTheme = theme === "dark" ? "light" : "dark";
-      safeStorageSet(storageKey, nextTheme);
-      applyTheme(nextTheme, true);
-    });
   });
 
   systemQuery.addEventListener("change", (event) => {
