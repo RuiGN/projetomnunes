@@ -27,6 +27,8 @@
     theme = nextTheme;
     if (themeStore) themeStore.current = theme;
     document.documentElement.dataset.theme = theme;
+    // Keep legacy framework utilities in sync with the workspace theme.
+    document.documentElement.dataset.mode = theme;
     document.documentElement.style.colorScheme = theme;
     const status = document.querySelector("[data-theme-status]");
     if (status) {

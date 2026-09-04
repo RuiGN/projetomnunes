@@ -15,9 +15,7 @@ html.workspace-scroll-locked { overflow: hidden; }
   line-height: 1.5;
 }
 
-button,
-select,
-input { font: inherit; }
+button, input, select, textarea { font: inherit; }
 
 a { color: inherit; }
 
@@ -473,6 +471,61 @@ a { color: inherit; }
   font: inherit;
 }
 
+/* Normalize native and legacy framework controls to the active theme. */
+html[data-theme] :is(
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select,
+  .form-input,
+  .form-textarea,
+  .form-select,
+  .form-multiselect
+) {
+  background-color: var(--color-surface);
+  border-color: var(--color-control-border);
+  color: var(--color-text);
+  color-scheme: inherit;
+  caret-color: var(--color-text);
+}
+
+html[data-theme] :is(
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select,
+  .form-input,
+  .form-textarea,
+  .form-select,
+  .form-multiselect
+)::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+html[data-theme] :is(
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select,
+  .form-input,
+  .form-textarea,
+  .form-select,
+  .form-multiselect
+):disabled {
+  background-color: var(--color-canvas);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+html[data-theme] input:-webkit-autofill,
+html[data-theme] input:-webkit-autofill:hover,
+html[data-theme] input:-webkit-autofill:focus,
+html[data-theme] textarea:-webkit-autofill,
+html[data-theme] select:-webkit-autofill {
+  -webkit-text-fill-color: var(--color-text);
+  -webkit-box-shadow: 0 0 0 1000px var(--color-surface) inset;
+  caret-color: var(--color-text);
+}
+
 textarea.form-control { min-height: 120px; resize: vertical; }
 .form-control:focus-visible,
 .choice-control input:focus-visible,
@@ -536,7 +589,7 @@ textarea.form-control { min-height: 120px; resize: vertical; }
   border-color: var(--clinic-primary, var(--color-brand-action));
   background: var(--clinic-primary, var(--color-brand-action));
 }
-.dark .clinic-brand-preview { border-top-color: var(--clinic-secondary, var(--color-brand)); }
+[data-theme="dark"] .clinic-brand-preview { border-top-color: var(--clinic-secondary, var(--color-brand)); }
 
 @media (max-width: 700px) {
   .form-actions { align-items: stretch; flex-direction: column; }
