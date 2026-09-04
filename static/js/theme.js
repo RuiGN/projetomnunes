@@ -58,13 +58,11 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     applyTheme(theme);
-    if (!window.Alpine) {
-      document.querySelector("[data-theme-toggle]")?.addEventListener("click", () => {
-        const nextTheme = theme === "dark" ? "light" : "dark";
-        safeStorageSet("workspace-theme", nextTheme);
-        applyTheme(nextTheme, true);
-      });
-    }
+    document.querySelector("[data-theme-toggle]")?.addEventListener("click", () => {
+      const nextTheme = theme === "dark" ? "light" : "dark";
+      safeStorageSet(storageKey, nextTheme);
+      applyTheme(nextTheme, true);
+    });
   });
 
   systemQuery.addEventListener("change", (event) => {
