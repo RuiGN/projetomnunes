@@ -11,67 +11,71 @@
 
   {% if session %}
     <div class="card">
-      <p role="status">
-        Modo ativo até {{ session.ends_at|date:"d/m/Y \à\s H:i" }} — você está cuidado de si.
-      </p>
-      <p>
-        Notificações não essenciais estão pausadas. Consultas e lembretes essenciais continuam.
-      </p>
-      <h2>Uma ação por vez, no seu ritmo:</h2>
-      <ul>
-        {% for action in ""|center:0 %}{% endfor %}
-        {% if session.action_1 %}<li>1. {{ session.action_1 }}</li>{% endif %}
-        {% if session.action_2 %}<li>2. {{ session.action_2 }}</li>{% endif %}
-        {% if session.action_3 %}<li>3. {{ session.action_3 }}</li>{% endif %}
-      </ul>
-      <form method="post" action="{% url 'low_energy_deactivate' %}">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-outline-secondary">
-          Encerrar modo baixa energia agora
-        </button>
-      </form>
+      <div class="card-body">
+        <p role="status">
+          Modo ativo até {{ session.ends_at|date:"d/m/Y \à\s H:i" }} — você está cuidado de si.
+        </p>
+        <p>
+          Notificações não essenciais estão pausadas. Consultas e lembretes essenciais continuam.
+        </p>
+        <h2>Uma ação por vez, no seu ritmo:</h2>
+        <ul>
+          {% for action in ""|center:0 %}{% endfor %}
+          {% if session.action_1 %}<li>1. {{ session.action_1 }}</li>{% endif %}
+          {% if session.action_2 %}<li>2. {{ session.action_2 }}</li>{% endif %}
+          {% if session.action_3 %}<li>3. {{ session.action_3 }}</li>{% endif %}
+        </ul>
+        <form method="post" action="{% url 'low_energy_deactivate' %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-outline-secondary">
+            Encerrar modo baixa energia agora
+          </button>
+        </form>
+      </div>
     </div>
   {% else %}
     <div class="card">
-      <p>
-        Em dias difíceis, o modo baixa energia mostra apenas algumas ações mínimas que você escolheu antes. Nada de cobrança — pausar é permitido.
-      </p>
+      <div class="card-body">
+        <p>
+          Em dias difíceis, o modo baixa energia mostra apenas algumas ações mínimas que você escolheu antes. Nada de cobrança — pausar é permitido.
+        </p>
 
-      {% if template %}
-        <form method="post" action="{% url 'low_energy_activate' %}">
-          {% csrf_token %}
-          <input type="hidden" name="duration_hours" value="8">
-          <div>
-            <strong>Suas ações configuradas:</strong>
-            {% if template.action_1 %}<span>1. {{ template.action_1 }}</span>{% endif %}
-            {% if template.action_2 %}<span>2. {{ template.action_2 }}</span>{% endif %}
-            {% if template.action_3 %}<span>3. {{ template.action_3 }}</span>{% endif %}
-          </div>
-          <label for="id_le_note">Observação (opcional)</label>
-          <input type="text" name="note" id="id_le_note" class="form-control" maxlength="500" placeholder="Como você está? (opcional)">
-          <button type="submit" class="btn btn-primary">
-            Ativar modo baixa energia
-          </button>
-        </form>
-      {% else %}
-        <form method="post" action="{% url 'low_energy_configure' %}">
-          {% csrf_token %}
-          <h2>Configure até 3 ações mínimas:</h2>
-          <div>
-            <label for="id_action_1">Ação 1</label>
-            <input type="text" name="action_1" id="id_action_1" class="form-control" maxlength="255" placeholder="Beber um copo de água">
-          </div>
-          <div>
-            <label for="id_action_2">Ação 2</label>
-            <input type="text" name="action_2" id="id_action_2" class="form-control" maxlength="255" placeholder="Abrir a janela">
-          </div>
-          <div>
-            <label for="id_action_3">Ação 3</label>
-            <input type="text" name="action_3" id="id_action_3" class="form-control" maxlength="255" placeholder="Realizar uma etapa curta de uma meta">
-          </div>
-          <button type="submit" class="btn btn-primary">Salvar ações</button>
-        </form>
-      {% endif %}
+        {% if template %}
+          <form method="post" action="{% url 'low_energy_activate' %}">
+            {% csrf_token %}
+            <input type="hidden" name="duration_hours" value="8">
+            <div>
+              <strong>Suas ações configuradas:</strong>
+              {% if template.action_1 %}<span>1. {{ template.action_1 }}</span>{% endif %}
+              {% if template.action_2 %}<span>2. {{ template.action_2 }}</span>{% endif %}
+              {% if template.action_3 %}<span>3. {{ template.action_3 }}</span>{% endif %}
+            </div>
+            <label for="id_le_note">Observação (opcional)</label>
+            <input type="text" name="note" id="id_le_note" class="form-control" maxlength="500" placeholder="Como você está? (opcional)">
+            <button type="submit" class="btn btn-primary">
+              Ativar modo baixa energia
+            </button>
+          </form>
+        {% else %}
+          <form method="post" action="{% url 'low_energy_configure' %}">
+            {% csrf_token %}
+            <h2>Configure até 3 ações mínimas:</h2>
+            <div>
+              <label for="id_action_1">Ação 1</label>
+              <input type="text" name="action_1" id="id_action_1" class="form-control" maxlength="255" placeholder="Beber um copo de água">
+            </div>
+            <div>
+              <label for="id_action_2">Ação 2</label>
+              <input type="text" name="action_2" id="id_action_2" class="form-control" maxlength="255" placeholder="Abrir a janela">
+            </div>
+            <div>
+              <label for="id_action_3">Ação 3</label>
+              <input type="text" name="action_3" id="id_action_3" class="form-control" maxlength="255" placeholder="Realizar uma etapa curta de uma meta">
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar ações</button>
+          </form>
+        {% endif %}
+      </div>
     </div>
   {% endif %}
 

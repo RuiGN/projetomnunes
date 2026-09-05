@@ -85,3 +85,67 @@ def test_patient_form_renders_duralux_controls_and_existing_error_targets() -> N
     assert name.get("aria-invalid") == "true"
     assert name.get("aria-describedby")
     assert all(target in ids for target in str(name["aria-describedby"]).split())
+
+
+def test_sprint6_visibility_help_targets_exist_and_enums_are_not_visible() -> None:
+    from django.template.loader import render_to_string
+    from django.utils.html import strip_tags
+
+    from goals.forms import GoalForm
+    from journal.forms import JournalEntryForm
+
+    cases = (
+        ("journal/form.html", JournalEntryForm(), "Novo registro"),
+        ("goals/form.html", GoalForm(data={}), "Nova meta"),
+    )
+    for template_name, form, page_title in cases:
+        html = render_to_string(
+            template_name,
+            {
+                "form": form,
+                "form_id": "review-form",
+                "layout_template": "layouts/vertical.html",
+                "page_title": page_title,
+                "submit_label": "Salvar",
+                "user": {"email": "synthetic@example.test"},
+            },
+        )
+        parser = Elements()
+        parser.feed(html)
+        ids = {attrs.get("id") for _, attrs in parser.elements}
+        described_elements = [
+            attrs
+            for _, attrs in parser.elements
+            if attrs.get("aria-describedby")
+        ]
+        assert described_elements, template_name
+        for field in described_elements:
+            described_by = str(field["aria-describedby"]).split()
+            assert all(target in ids for target in described_by), template_name
+
+        visibility_inputs = [
+            attrs
+            for tag, attrs in parser.elements
+            if tag == "input" and attrs.get("name") == "visibility"
+        ]
+        assert visibility_inputs, template_name
+        for field in visibility_inputs:
+            described_by = str(field.get("aria-describedby") or "").split()
+            assert described_by, template_name
+            assert all(target in ids for target in described_by), template_name
+
+        if template_name == "journal/form.html":
+            for field_name in ("mood", "emotions"):
+                inputs = [
+                    attrs
+                    for tag, attrs in parser.elements
+                    if tag == "input" and attrs.get("name") == field_name
+                ]
+                assert inputs, field_name
+                assert all(
+                    attrs.get("aria-describedby") for attrs in inputs
+                ), field_name
+
+        visible_text = strip_tags(html)
+        for enum_value in ("shareable", "confirmation_required", "private"):
+            assert enum_value not in visible_text, (template_name, enum_value)

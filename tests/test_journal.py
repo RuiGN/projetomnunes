@@ -814,7 +814,11 @@ def test_sharing_traffic_light_yellow_request_grant_and_revoke_flow(
     _force_patient_client(client, clinic, user)
     list_res = client.get(reverse("journal_list"))
     assert list_res.status_code == 200
-    assert "Solicitações de Acesso Pendentes (1)" in list_res.content.decode()
+    list_content = list_res.content.decode()
+    assert "Solicitações de Acesso Pendentes (1)" in list_content
+    assert f'for="id_expires_days_{req.pk}"' in list_content
+    assert f'id="id_expires_days_{req.pk}"' in list_content
+    assert "Validade da autorização" in list_content
 
     # 5. Patient approves request via HTTP POST
     respond_res = client.post(

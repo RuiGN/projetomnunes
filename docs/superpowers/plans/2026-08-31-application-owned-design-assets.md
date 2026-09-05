@@ -1,5 +1,7 @@
 # Application-Owned Design Assets Implementation Plan
 
+Status: superseded by the Duralux migration; retained as historical context
+
 > **For agentic workers:** Execute inline with strict RED-GREEN verification. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Remove all project dependency on the legacy design prototype directories while preserving the active UI.

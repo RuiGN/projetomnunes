@@ -10,50 +10,52 @@
   </header>
 
   <div class="card">
-    {% if assignments %}
-      <div>
-        {% for assignment in assignments %}
-          <div>
+    <div class="card-body">
+      {% if assignments %}
+        <div>
+          {% for assignment in assignments %}
             <div>
               <div>
-                <span class="visibility-badge">{{ assignment.exercise.approach }}</span>
-                <h2>{{ assignment.exercise.title }}</h2>
+                <div>
+                  <span class="visibility-badge">{{ assignment.exercise.approach }}</span>
+                  <h2>{{ assignment.exercise.title }}</h2>
+                </div>
+                <span class="visibility-badge {% if assignment.status == 'completed' %}visibility-green{% else %}visibility-yellow{% endif %}">
+                  {{ assignment.get_status_display }}
+                </span>
               </div>
-              <span class="visibility-badge {% if assignment.status == 'completed' %}visibility-green{% else %}visibility-yellow{% endif %}">
-                {{ assignment.get_status_display }}
-              </span>
-            </div>
-            <p>{{ assignment.exercise.instructions|truncatewords:25 }}</p>
-            {% if assignment.notes %}
-              <p>
-                Nota do terapeuta: {{ assignment.notes }}
-              </p>
-            {% endif %}
-            <div>
-              <span>Frequência: {{ assignment.frequency }}</span>
-              {% if assignment.due_date %}
-                <span>Prazo: {{ assignment.due_date|date:"d/m/Y" }}</span>
+              <p>{{ assignment.exercise.instructions|truncatewords:25 }}</p>
+              {% if assignment.notes %}
+                <p>
+                  Nota do terapeuta: {{ assignment.notes }}
+                </p>
               {% endif %}
               <div>
-                {% if not assignment.confirmed_by_patient %}
-                  <form method="post" action="{% url 'patient_confirm_assignment' assignment.pk %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-outline-secondary">Confirmar recebimento</button>
-                  </form>
+                <span>Frequência: {{ assignment.frequency }}</span>
+                {% if assignment.due_date %}
+                  <span>Prazo: {{ assignment.due_date|date:"d/m/Y" }}</span>
                 {% endif %}
-                <a href="{% url 'patient_exercise_execute' assignment.pk %}" class="btn btn-primary">
-                  {% if assignment.status == 'completed' %}Refazer / Ver{% else %}Realizar exercício{% endif %}
-                </a>
+                <div>
+                  {% if not assignment.confirmed_by_patient %}
+                    <form method="post" action="{% url 'patient_confirm_assignment' assignment.pk %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-outline-secondary">Confirmar recebimento</button>
+                    </form>
+                  {% endif %}
+                  <a href="{% url 'patient_exercise_execute' assignment.pk %}" class="btn btn-primary">
+                    {% if assignment.status == 'completed' %}Refazer / Ver{% else %}Realizar exercício{% endif %}
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
-        {% endfor %}
-      </div>
-    {% else %}
-      <div>
-        <p>Você não possui exercícios atribuídos no momento.</p>
-      </div>
-    {% endif %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <div>
+          <p>Você não possui exercícios atribuídos no momento.</p>
+        </div>
+      {% endif %}
+    </div>
   </div>
 </div>
 {% endblock %}

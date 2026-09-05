@@ -2,17 +2,25 @@
 
 from __future__ import annotations
 
+import re
+import sys
 from base64 import b64decode
 from datetime import timedelta
 from urllib.parse import parse_qs, urlsplit
 
 import pytest
+import segno
+from django.contrib.sessions.middleware import SessionMiddleware
 from django.contrib.sessions.models import Session
 from django.core.exceptions import PermissionDenied
-from django.test import Client, override_settings
+from django.http import HttpResponse
+from django.test import Client, RequestFactory, override_settings
 from django.urls import reverse
 from django.utils import timezone
+from django.views.debug import ExceptionReporter
 
+from accounts import views as account_views
+from accounts.forms import MFACodeForm
 from accounts.models import AccountSession, MFARecoveryCode, User, UserMFA
 from accounts.services import (
     MFAAttemptRateLimitedError,
@@ -226,10 +234,12 @@ def test_totp_enrollment_requires_confirmation_and_recovery_codes_are_single_use
     assert not MFARecoveryCode.objects.filter(code_digest=recovery_codes[0]).exists()
     assert consume_mfa_code(user=user, code=recovery_codes[0]) is True
     assert consume_mfa_code(user=user, code=recovery_codes[0]) is False
-    assert (
-        consume_mfa_code(user=user, code=current_totp_code(secret=challenge.secret))
-        is True
+    assert consume_mfa_code(user=user, code=code) is False
+    next_code = current_totp_code(
+        secret=challenge.secret,
+        at_time=int(timezone.now().timestamp()) + 30,
     )
+    assert consume_mfa_code(user=user, code=next_code) is True
 
 
 def test_totp_key_uri_encodes_label_components_and_rfc6238_parameters() -> None:
@@ -324,6 +334,235 @@ def test_mfa_enroll_post_confirms_factor_once_and_keeps_local_continue_url(
     assert follow_up.status_code == 302
     assert follow_up.headers["Location"] == reverse("mfa_verify")
     assert not getattr(follow_up, "context", None)
+
+
+def test_enrollment_confirmation_consumes_the_totp_step(client: Client) -> None:
+    user, _clinic = authenticated_admin(client)
+    challenge = start_totp_enrollment(user=user)
+    code = current_totp_code(secret=challenge.secret)
+
+    confirm_totp_enrollment(user=user, code=code)
+
+    assert consume_mfa_code(user=user, code=code) is False
+
+
+def test_confirmed_enrollment_cannot_issue_another_recovery_set(
+    client: Client,
+) -> None:
+    user, _clinic = authenticated_admin(client)
+    challenge = start_totp_enrollment(user=user)
+    code = current_totp_code(secret=challenge.secret)
+    first_codes = confirm_totp_enrollment(user=user, code=code)
+
+    with pytest.raises(ValueError, match="already confirmed"):
+        confirm_totp_enrollment(user=user, code=code)
+
+    assert len(first_codes) == 8
+    assert MFARecoveryCode.objects.filter(user=user).count() == 8
+
+
+def test_enrollment_exception_report_redacts_provisioning_material(
+    client: Client,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    user, _clinic = authenticated_admin(client)
+    request = RequestFactory().get(reverse("mfa_enroll"))
+    request.user = user
+    secret = "JBSWY3DPEHPK3PXP"
+
+    def fail_render(*args: object, **kwargs: object) -> None:
+        raise RuntimeError("render failed")
+
+    monkeypatch.setattr(account_views, "TemplateResponse", fail_render)
+
+    try:
+        account_views._mfa_enrollment_response(
+            request,
+            form=MFACodeForm(),
+            secret=secret,
+        )
+    except RuntimeError:
+        reporter = ExceptionReporter(request, *sys.exc_info())
+        frames = reporter.get_traceback_data()["frames"]
+    else:  # pragma: no cover - the monkeypatch always raises
+        raise AssertionError("render failure was not raised")
+
+    target = next(
+        frame
+        for frame in frames
+        if frame["function"] == "_mfa_enrollment_response"
+    )
+    exposed_locals = repr(target["vars"])
+    assert secret not in exposed_locals
+    assert "otpauth://" not in exposed_locals
+
+
+def test_full_enrollment_exception_report_redacts_every_provisioning_frame(
+    client: Client,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    user, _clinic = authenticated_admin(client)
+    request = RequestFactory().get(reverse("mfa_enroll"))
+    request.user = user
+
+    def fail_qr(*args: object, **kwargs: object) -> None:
+        raise RuntimeError("QR generation failed")
+
+    monkeypatch.setattr(segno, "make_qr", fail_qr)
+
+    try:
+        account_views.mfa_enroll(request)
+    except RuntimeError:
+        reporter = ExceptionReporter(request, *sys.exc_info())
+        frames = reporter.get_traceback_data()["frames"]
+    else:  # pragma: no cover - the monkeypatch always raises
+        raise AssertionError("QR generation failure was not raised")
+
+    secret = UserMFA.objects.get(user=user).decrypt_secret()
+    application_frames = [
+        frame for frame in frames if not frame["function"].startswith("test_")
+    ]
+    assert application_frames
+    for frame in application_frames:
+        exposed_locals = repr(frame["vars"])
+        assert secret not in exposed_locals
+        assert "otpauth://" not in exposed_locals
+
+
+def test_key_uri_exception_report_redacts_totp_secret(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    request = RequestFactory().get("/")
+    secret = "JBSWY3DPEHPK3PXP"
+
+    def fail_urlencode(*args: object, **kwargs: object) -> None:
+        raise RuntimeError("URI encoding failed")
+
+    monkeypatch.setattr("accounts.services.urlencode", fail_urlencode)
+    try:
+        build_totp_key_uri(
+            secret=secret,
+            issuer="Plataforma de cuidado",
+            account="usuario@example.test",
+        )
+    except RuntimeError:
+        reporter = ExceptionReporter(request, *sys.exc_info())
+        frames = reporter.get_traceback_data()["frames"]
+    else:  # pragma: no cover - the monkeypatch always raises
+        raise AssertionError("URI encoding failure was not raised")
+
+    target = next(
+        frame for frame in frames if frame["function"] == "build_totp_key_uri"
+    )
+    assert secret not in repr(target["vars"])
+
+
+def test_confirmation_exception_report_redacts_submitted_and_recovery_codes(
+    client: Client,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    user, _clinic = authenticated_admin(client)
+    challenge = start_totp_enrollment(user=user)
+    submitted_code = current_totp_code(secret=challenge.secret)
+    request = RequestFactory().post(reverse("mfa_enroll"), {"code": submitted_code})
+
+    def fail_bulk_create(*args: object, **kwargs: object) -> None:
+        raise RuntimeError("recovery persistence failed")
+
+    monkeypatch.setattr(MFARecoveryCode.objects, "bulk_create", fail_bulk_create)
+    try:
+        confirm_totp_enrollment(user=user, code=submitted_code)
+    except RuntimeError:
+        reporter = ExceptionReporter(request, *sys.exc_info())
+        frames = reporter.get_traceback_data()["frames"]
+    else:  # pragma: no cover - the monkeypatch always raises
+        raise AssertionError("recovery persistence failure was not raised")
+
+    target = next(
+        frame for frame in frames if frame["function"] == "confirm_totp_enrollment"
+    )
+    exposed_locals = repr(target["vars"])
+    assert submitted_code not in exposed_locals
+    assert not re.search(r"['\"][0-9a-f]{10}['\"]", exposed_locals)
+
+
+def test_recovery_page_exception_redacts_codes_from_view_and_post(
+    client: Client,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    user, _clinic = authenticated_admin(client)
+    challenge = start_totp_enrollment(user=user)
+    submitted_code = current_totp_code(secret=challenge.secret)
+    request = RequestFactory().post(reverse("mfa_enroll"), {"code": submitted_code})
+    request.user = user
+    SessionMiddleware(lambda inner_request: HttpResponse()).process_request(request)
+    request.session.save()
+
+    def fail_render(*args: object, **kwargs: object) -> None:
+        raise RuntimeError("recovery page render failed")
+
+    monkeypatch.setattr(account_views, "TemplateResponse", fail_render)
+    try:
+        account_views.mfa_enroll(request)
+    except RuntimeError:
+        reporter = ExceptionReporter(request, *sys.exc_info())
+        data = reporter.get_traceback_data()
+    else:  # pragma: no cover - the monkeypatch always raises
+        raise AssertionError("recovery render failure was not raised")
+
+    application_locals = repr(
+        [
+            frame["vars"]
+            for frame in data["frames"]
+            if not frame["function"].startswith("test_")
+        ]
+    )
+    assert submitted_code not in application_locals
+    assert not re.search(r"['\"][0-9a-f]{10}['\"]", application_locals)
+    assert submitted_code not in repr(data["request_meta"])
+
+
+def test_mfa_verify_exception_report_redacts_submitted_code(
+    client: Client,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    user, _clinic = authenticated_admin(client)
+    challenge = start_totp_enrollment(user=user)
+    confirm_totp_enrollment(
+        user=user,
+        code=current_totp_code(secret=challenge.secret),
+    )
+    submitted_code = current_totp_code(
+        secret=challenge.secret,
+        at_time=int(timezone.now().timestamp()) + 30,
+    )
+    request = RequestFactory().post(reverse("mfa_verify"), {"code": submitted_code})
+    request.user = user
+    SessionMiddleware(lambda inner_request: HttpResponse()).process_request(request)
+    request.session.save()
+
+    def fail_consume(*args: object, **kwargs: object) -> None:
+        raise RuntimeError("verification failed")
+
+    monkeypatch.setattr(account_views, "consume_mfa_code", fail_consume)
+    try:
+        account_views.mfa_verify(request)
+    except RuntimeError:
+        reporter = ExceptionReporter(request, *sys.exc_info())
+        data = reporter.get_traceback_data()
+        safe_post = reporter.filter.get_post_parameters(request)
+    else:  # pragma: no cover - the monkeypatch always raises
+        raise AssertionError("verification failure was not raised")
+
+    application_locals = repr(
+        [
+            frame["vars"]
+            for frame in data["frames"]
+            if not frame["function"].startswith("test_")
+        ]
+    )
+    assert submitted_code not in application_locals
+    assert submitted_code not in repr(safe_post)
 
 
 def test_mfa_enroll_invalid_code_preserves_pending_secret(client: Client) -> None:
@@ -826,7 +1065,12 @@ def test_admin_mfa_challenge_returns_to_original_admin_destination(
 
     verified = client.post(
         reverse("mfa_verify"),
-        {"code": current_totp_code(secret=challenge.secret)},
+        {
+            "code": current_totp_code(
+                secret=challenge.secret,
+                at_time=int(timezone.now().timestamp()) + 30,
+            )
+        },
     )
 
     assert verified.status_code == 302

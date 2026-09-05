@@ -1,7 +1,7 @@
 # Vertical and Detached Layouts Design
 
 Date: 2026-08-31
-Status: approved by PRD task 8.2.2
+Status: superseded by the Duralux migration; retained as historical context
 
 ## Scope
 

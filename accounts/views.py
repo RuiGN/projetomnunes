@@ -15,6 +15,7 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.views.decorators.debug import sensitive_post_parameters, sensitive_variables
 from django.views.decorators.http import require_http_methods, require_POST
 
 from clinics.services import CLINIC_SESSION_KEY
@@ -439,6 +440,24 @@ def _protect_mfa_response(response: HttpResponse) -> HttpResponse:
     return response
 
 
+@sensitive_variables()
+def _render_sensitive_mfa_template(
+    request: HttpRequest,
+    template_name: str,
+    context: dict[str, object],
+    *,
+    status: int = 200,
+) -> HttpResponse:
+    """Render eagerly and suppress descendant tracebacks with MFA material."""
+    try:
+        response = TemplateResponse(request, template_name, context, status=status)
+        response.render()
+    except Exception:
+        raise RuntimeError("Unable to render the MFA response.") from None
+    return response
+
+
+@sensitive_variables("secret", "totp_uri")
 def _mfa_enrollment_response(
     request: HttpRequest,
     *,
@@ -452,7 +471,7 @@ def _mfa_enrollment_response(
         issuer=settings.MFA_TOTP_ISSUER,
         account=_authenticated_user(request).email.strip().lower(),
     )
-    response = TemplateResponse(
+    response = _render_sensitive_mfa_template(
         request,
         "accounts/mfa_enroll.html",
         {
@@ -469,6 +488,8 @@ def _mfa_enrollment_response(
 
 @login_required
 @require_http_methods(["GET", "POST"])
+@sensitive_post_parameters("code")
+@sensitive_variables("secret", "recovery_codes")
 def mfa_enroll(request: HttpRequest) -> HttpResponse:
     """Enroll and confirm TOTP before privileged access is permitted."""
     actor = _authenticated_user(request)
@@ -514,7 +535,7 @@ def mfa_enroll(request: HttpRequest) -> HttpResponse:
                 request,
                 request.session.pop("mfa_next", None),
             ) or reverse("workspace_vertical")
-            response = TemplateResponse(
+            response = _render_sensitive_mfa_template(
                 request,
                 "accounts/mfa_recovery_codes.html",
                 {
@@ -538,6 +559,8 @@ def mfa_enroll(request: HttpRequest) -> HttpResponse:
 
 @login_required
 @require_http_methods(["GET", "POST"])
+@sensitive_post_parameters("code")
+@sensitive_variables()
 def mfa_verify(request: HttpRequest) -> HttpResponse:
     """Verify a fresh TOTP or consume one recovery credential."""
     actor = _authenticated_user(request)
@@ -559,6 +582,8 @@ def mfa_verify(request: HttpRequest) -> HttpResponse:
                 settings.MFA_RATE_LIMIT_WINDOW_SECONDS
             )
             return _protect_mfa_response(response)
+        except Exception:
+            raise RuntimeError("Unable to verify the MFA code.") from None
         if verified:
             request.session["mfa_verified"] = True
             next_url = _safe_local_next(

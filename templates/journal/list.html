@@ -20,43 +20,46 @@
   {# Pending Access Requests from Therapist #}
   {% if pending_access_requests %}
     <section class="card" aria-labelledby="pending-requests-title">
-      <h2 id="pending-requests-title">
-        Solicitações de Acesso Pendentes ({{ pending_access_requests|length }})
-      </h2>
-      <p>
-        Seu terapeuta solicitou permissão para visualizar os registros abaixo. Você decide se autoriza ou recusa cada solicitação.
-      </p>
-      <div>
-        {% for req in pending_access_requests %}
-          <div>
+      <div class="card-body">
+        <h2 id="pending-requests-title">
+          Solicitações de Acesso Pendentes ({{ pending_access_requests|length }})
+        </h2>
+        <p>
+          Seu terapeuta solicitou permissão para visualizar os registros abaixo. Você decide se autoriza ou recusa cada solicitação.
+        </p>
+        <div>
+          {% for req in pending_access_requests %}
             <div>
-              <p>
-                Terapeuta: {{ req.therapist.get_full_name|default:req.therapist.email }}
-              </p>
-              <p>
-                Finalidade declarada: {{ req.purpose }}
-              </p>
-              <p>
-                Registro de {{ req.journal_entry.created_at|date:"d/m/Y \à\s H:i" }} ({{ req.journal_entry.get_mood_display }})
-              </p>
+              <div>
+                <p>
+                  Terapeuta: {{ req.therapist.get_full_name|default:req.therapist.email }}
+                </p>
+                <p>
+                  Finalidade declarada: {{ req.purpose }}
+                </p>
+                <p>
+                  Registro de {{ req.journal_entry.created_at|date:"d/m/Y \à\s H:i" }} ({{ req.journal_entry.get_mood_display }})
+                </p>
+              </div>
+              <form method="post" action="{% url 'journal_respond_access_request' req.pk %}">
+                {% csrf_token %}
+                <label class="form-label" for="id_expires_days_{{ req.pk }}">Validade da autorização</label>
+                <select name="expires_days" id="id_expires_days_{{ req.pk }}" class="form-control">
+                  <option value="7">Válido por 7 dias</option>
+                  <option value="30" selected>Válido por 30 dias</option>
+                  <option value="90">Válido por 90 dias</option>
+                  <option value="">Sem data de expiração</option>
+                </select>
+                <button type="submit" name="decision" value="approve" class="btn btn-primary">
+                  Autorizar
+                </button>
+                <button type="submit" name="decision" value="reject" class="btn btn-outline-secondary">
+                  Recusar
+                </button>
+              </form>
             </div>
-            <form method="post" action="{% url 'journal_respond_access_request' req.pk %}">
-              {% csrf_token %}
-              <select name="expires_days" class="form-control">
-                <option value="7">Válido por 7 dias</option>
-                <option value="30" selected>Válido por 30 dias</option>
-                <option value="90">Válido por 90 dias</option>
-                <option value="">Sem data de expiração</option>
-              </select>
-              <button type="submit" name="decision" value="approve" class="btn btn-primary">
-                Autorizar
-              </button>
-              <button type="submit" name="decision" value="reject" class="btn btn-outline-secondary">
-                Recusar
-              </button>
-            </form>
-          </div>
-        {% endfor %}
+          {% endfor %}
+        </div>
       </div>
     </section>
   {% endif %}

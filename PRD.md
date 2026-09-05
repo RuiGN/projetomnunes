@@ -249,7 +249,7 @@ Usuário administrativo com acesso a agenda, cadastro operacional e cobrança, s
 
 ### 7.1 Fonte de verdade
 
-A referência visual auditada está em `design_system_duralux/`; somente o subconjunto aprovado e mantido pelo aplicativo pode ser publicado em `static/duralux/` e apresentado no inventário interno `/design-system/`. A base usa Duralux com Bootstrap 5, tokens do produto e comportamento progressivo em JavaScript próprio. Novos componentes devem adaptar essa base ao contexto terapêutico sem depender de protótipos externos nem copiar textos, dados de demonstração ou identidade do fornecedor.
+A referência visual é a fundação **Duralux** mantida pelo aplicativo em `static/duralux/css/` e `static/duralux/js/`, apresentada no inventário interno `/design-system/`. A base usa Duralux com Bootstrap 5, tokens do produto e comportamento progressivo em JavaScript próprio. Novos componentes devem adaptar essa base ao contexto terapêutico sem depender de protótipos externos nem copiar textos, dados de demonstração ou identidade do fornecedor.
 
 ### 7.2 Tecnologias e ativos identificados
 

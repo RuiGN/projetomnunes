@@ -15,38 +15,40 @@
   </header>
 
   <div class="card">
-    {% if exercises %}
-      <div>
-        {% for exercise in exercises %}
-          <div>
+    <div class="card-body">
+      {% if exercises %}
+        <div>
+          {% for exercise in exercises %}
             <div>
               <div>
-                <span class="visibility-badge">{{ exercise.approach }}</span>
-                <h2>{{ exercise.title }} (v{{ exercise.version }})</h2>
+                <div>
+                  <span class="visibility-badge">{{ exercise.approach }}</span>
+                  <h2>{{ exercise.title }} (v{{ exercise.version }})</h2>
+                </div>
+                <span class="visibility-badge {% if exercise.status == 'published' %}visibility-green{% else %}visibility-yellow{% endif %}">
+                  {{ exercise.get_status_display }}
+                </span>
               </div>
-              <span class="visibility-badge {% if exercise.status == 'published' %}visibility-green{% else %}visibility-yellow{% endif %}">
-                {{ exercise.get_status_display }}
-              </span>
-            </div>
-            <p>{{ exercise.instructions|truncatewords:30 }}</p>
-            <div>
-              <span>Dur: {{ exercise.estimated_minutes }} min</span>
-              <span>Formato: {{ exercise.get_response_format_display }}</span>
+              <p>{{ exercise.instructions|truncatewords:30 }}</p>
               <div>
-                <a href="{% url 'exercise_edit' exercise.pk %}" class="btn btn-outline-secondary">Editar</a>
-                {% if exercise.status == 'published' %}
-                  <a href="{% url 'exercise_assign' exercise.pk %}" class="btn btn-primary">Atribuir a paciente</a>
-                {% endif %}
+                <span>Dur: {{ exercise.estimated_minutes }} min</span>
+                <span>Formato: {{ exercise.get_response_format_display }}</span>
+                <div>
+                  <a href="{% url 'exercise_edit' exercise.pk %}" class="btn btn-outline-secondary">Editar</a>
+                  {% if exercise.status == 'published' %}
+                    <a href="{% url 'exercise_assign' exercise.pk %}" class="btn btn-primary">Atribuir a paciente</a>
+                  {% endif %}
+                </div>
               </div>
             </div>
-          </div>
-        {% endfor %}
-      </div>
-    {% else %}
-      <div>
-        <p>Nenhum exercício cadastrado no catálogo.</p>
-      </div>
-    {% endif %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <div>
+          <p>Nenhum exercício cadastrado no catálogo.</p>
+        </div>
+      {% endif %}
+    </div>
   </div>
 </div>
 {% endblock %}

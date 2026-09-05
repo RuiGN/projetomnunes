@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from datetime import date
 from typing import TypedDict
 from uuid import uuid4
@@ -423,6 +424,11 @@ def test_checkin_http_flow_submit_and_history(client: Client) -> None:
     assert get_res.status_code == 200
     content = get_res.content.decode()
     assert "Check-in Diário" in content
+    rendered_ids = set(re.findall(r'id="([^"]+)"', content))
+    described_by = re.findall(r'aria-describedby="([^"]+)"', content)
+    assert described_by
+    for targets in described_by:
+        assert set(targets.split()) <= rendered_ids
     assert "Prefiro não responder" in content
     assert 'role="progressbar"' in content
 

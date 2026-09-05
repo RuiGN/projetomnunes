@@ -1,40 +1,42 @@
 {% load i18n %}
 <article class="product-table-card" aria-labelledby="consent-document-{{ row.document.id }}">
-  <h3 id="consent-document-{{ row.document.id }}">{{ row.document.title }}</h3>
-  <p>{% blocktranslate with version=row.document.version purpose=row.purpose_label %}Version {{ version }} · Purpose: {{ purpose }}{% endblocktranslate %}</p>
-  <div class="prose">{{ row.document.content|linebreaks }}</div>
-  <p>{% translate "If you refuse:" %} {{ row.document.refusal_consequence }}</p>
-  <p>{% translate "Alternative:" %} {{ row.document.alternative_instructions }}</p>
-  <p>{% translate "Clinic contact:" %} {{ row.document.clinic_contact_instructions }}</p>
-  {% if row.decision_label %}<p>{% translate "Recorded decision:" %} {{ row.decision_label }}</p>{% endif %}
-  <form method="post" action="{% url 'consent_decide' document_id=row.document.id %}" data-prevent-double-submit>
-    {% csrf_token %}
-    {{ row.form.request_id }}
-    <fieldset>
-      <legend>{% translate "Choose an option" %}</legend>
-      <label for="decision-accept-{{ row.document.id }}">
-        <input id="decision-accept-{{ row.document.id }}" type="radio" name="decision" value="accepted" required>
-        {% translate "I accept for the stated purpose" %}
-      </label>
-      <label for="decision-refuse-{{ row.document.id }}">
-        <input id="decision-refuse-{{ row.document.id }}" type="radio" name="decision" value="refused" required>
-        {% translate "I do not accept" %}
-      </label>
-    </fieldset>
-    <button class="btn btn-primary" type="submit">{% translate "Record decision" %}</button>
-  </form>
-  {% if row.decision == "accepted" and not row.document.is_mandatory %}
-    <form method="post" action="{% url 'consent_revoke' document_id=row.document.id %}" data-prevent-double-submit>
+  <div class="card-body">
+    <h3 id="consent-document-{{ row.document.id }}">{{ row.document.title }}</h3>
+    <p>{% blocktranslate with version=row.document.version purpose=row.purpose_label %}Version {{ version }} · Purpose: {{ purpose }}{% endblocktranslate %}</p>
+    <div>{{ row.document.content|linebreaks }}</div>
+    <p>{% translate "If you refuse:" %} {{ row.document.refusal_consequence }}</p>
+    <p>{% translate "Alternative:" %} {{ row.document.alternative_instructions }}</p>
+    <p>{% translate "Clinic contact:" %} {{ row.document.clinic_contact_instructions }}</p>
+    {% if row.decision_label %}<p>{% translate "Recorded decision:" %} {{ row.decision_label }}</p>{% endif %}
+    <form method="post" action="{% url 'consent_decide' document_id=row.document.id %}" data-prevent-double-submit>
       {% csrf_token %}
-      {{ row.revocation_form.request_id }}
-      <p>{% translate "A revogação interrompe novos usos para esta finalidade, preservando a evidência histórica e obrigações legais aplicáveis." %}</p>
-      <label for="revocation-reason-{{ row.document.id }}">{% translate "Motivo da revogação" %}</label>
-      <textarea id="revocation-reason-{{ row.document.id }}" name="reason" rows="3" maxlength="500" required></textarea>
-      <label for="revocation-confirm-{{ row.document.id }}">
-        <input id="revocation-confirm-{{ row.document.id }}" type="checkbox" name="confirm_scope" required>
-        {% translate "Entendo o escopo e desejo revogar esta autorização." %}
-      </label>
-      <button type="submit">{% translate "Revogar autorização" %}</button>
+      {{ row.form.request_id }}
+      <fieldset>
+        <legend>{% translate "Choose an option" %}</legend>
+        <label for="decision-accept-{{ row.document.id }}">
+          <input id="decision-accept-{{ row.document.id }}" type="radio" name="decision" value="accepted" required>
+          {% translate "I accept for the stated purpose" %}
+        </label>
+        <label for="decision-refuse-{{ row.document.id }}">
+          <input id="decision-refuse-{{ row.document.id }}" type="radio" name="decision" value="refused" required>
+          {% translate "I do not accept" %}
+        </label>
+      </fieldset>
+      <button class="btn btn-primary" type="submit">{% translate "Record decision" %}</button>
     </form>
-  {% endif %}
+    {% if row.decision == "accepted" and not row.document.is_mandatory %}
+      <form method="post" action="{% url 'consent_revoke' document_id=row.document.id %}" data-prevent-double-submit>
+        {% csrf_token %}
+        {{ row.revocation_form.request_id }}
+        <p>{% translate "A revogação interrompe novos usos para esta finalidade, preservando a evidência histórica e obrigações legais aplicáveis." %}</p>
+        <label for="revocation-reason-{{ row.document.id }}">{% translate "Motivo da revogação" %}</label>
+        <textarea id="revocation-reason-{{ row.document.id }}" name="reason" rows="3" maxlength="500" required></textarea>
+        <label for="revocation-confirm-{{ row.document.id }}">
+          <input id="revocation-confirm-{{ row.document.id }}" type="checkbox" name="confirm_scope" required>
+          {% translate "Entendo o escopo e desejo revogar esta autorização." %}
+        </label>
+        <button type="submit">{% translate "Revogar autorização" %}</button>
+      </form>
+    {% endif %}
+  </div>
 </article>

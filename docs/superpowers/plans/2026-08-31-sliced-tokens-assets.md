@@ -1,5 +1,7 @@
 # Sliced Tokens and Assets Implementation Plan
 
+Status: superseded by the Duralux migration; retained as historical context
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Deliver PRD task 8.2.1 with local Sliced assets, application-owned semantic tokens, and an authorized PT-BR reference page.

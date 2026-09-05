@@ -1,5 +1,5 @@
 {% extends layout_template %}
-{% load accessible_forms %}
+{% load accessible_forms static %}
 
 {% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
@@ -24,4 +24,8 @@
     </form>
   </section>
 </div>
+{% endblock %}
+
+{% block page_scripts %}
+<script defer src="{% static 'duralux/js/form-behaviors.js' %}"></script>
 {% endblock %}

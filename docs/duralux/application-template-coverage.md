@@ -63,7 +63,7 @@ Baseline da Sprint 0. A rota é exibida sem parâmetros repetitivos quando o pr�
 | `goals/list.html` | `/goals/` `goal_list` | patient | `layouts/vertical.html` via `layout_template` | `projects`, `apps-tasks` | 6 |
 | `goals/low_energy.html` | `/goals/baixa-energia/` `low_energy_home` | patient | `layouts/vertical.html` via `layout_template` | `apps-tasks`, `apps-notes` | 6 |
 | `goals/patient_exercises.html` | `/goals/exercicios/meus/` `patient_exercise_list` | patient | `layouts/vertical.html` via `layout_template` | `apps-tasks`, `projects` | 6 |
-| `goals/placeholder.html` | nenhum consumidor literal encontrado | nenhum até decisão migrar/remover com prova | `layout_template` se ganhar consumidor | `apps-tasks` | 6 |
+| `goals/placeholder.html` | removido após busca provar ausência de consumidor | nenhum; arquivo removido | não aplicável | descarte justificado: duplicava `goals/list.html` | 6 |
 | `journal/checkin_list.html` | `/journal/checkin/historico/` `checkin_list` | patient | `layouts/vertical.html` via `layout_template` | `apps-notes`, `widgets-lists` | 6 |
 | `journal/checkin_today.html` | `/journal/checkin/` `checkin_today` | patient | `layouts/vertical.html` via `layout_template` | `apps-notes`, `apps-tasks` | 6 |
 | `journal/checkin_unavailable.html` | resposta de `checkin_today` quando indisponível | patient | `layouts/vertical.html` via `layout_template` | `apps-notes`, `widgets-miscellaneous` | 6 |
@@ -102,10 +102,18 @@ Baseline da Sprint 0. A rota é exibida sem parâmetros repetitivos quando o pr�
 
 ## Fechamento da cobertura
 
-- Total esperado e observado: **95 templates Django**.
+- Baseline contabilizada: **95 templates**; 94 permanecem migrados e `goals/placeholder.html` foi removido com guarda de ausência de referência.
+- Templates atuais no disco: **97** = 94 templates retidos da baseline + 3 auxiliares criados pela migração.
 - Distribuição de sprint: Sprint 2 = 11; Sprint 3 = 8; Sprint 4 = 15; Sprint 5 = 15; Sprint 6 = 24; Sprint 7 = 21; Sprint 8 = 1.
-- `goals/placeholder.html` permanece contabilizado, sem consumidor identificado, e exige na Sprint 6 decisão comprovada de migração ou remoção.
 - Layouts/partials/components herdam a autorização do consumidor; a matriz não atribui permissão nova a nenhum template.
+
+### Auxiliares criados pela migração (fora da baseline 95)
+
+| Template Django | Rota / view consumidora | Perfil autorizado | Layout pai | Referência Duralux | Sprint |
+|---|---|---|---|---|---|
+| `accounts/auth_base.html` | base de autenticação, MFA e erros | herda o consumidor público/autenticado | HTML completo | família `auth-*-minimal` | 3 |
+| `accounts/mfa_enroll.html` | `/accounts/mfa/enroll/` `mfa_enroll` | membro autenticado em cadastro/reinício MFA | `accounts/auth_base.html` | `auth-verify-minimal` | 3 |
+| `components/duralux_field.html` | formulários migrados de contas, clínica, agenda, diário e metas | herda o consumidor | partial, sem layout próprio | formulários `settings-*` e `customers-create` | 4–7 |
 
 ## Registro de evidência de migração
 

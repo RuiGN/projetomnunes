@@ -19,12 +19,17 @@ class JournalEntryForm(forms.Form):
         choices=JournalEntry.Mood.choices,
         coerce=int,
         widget=forms.RadioSelect,
+        help_text=(
+            "Selecione como você avalia seu humor geral neste momento "
+            "(1 = Muito mal a 5 = Muito bem)."
+        ),
         required=True,
     )
     emotions = forms.MultipleChoiceField(
         label="Quais emoções você identifica?",
         choices=JournalEntry.Emotion.choices,
         widget=forms.CheckboxSelectMultiple,
+        help_text="Você pode selecionar mais de uma emoção.",
         required=False,
     )
     intensity = forms.IntegerField(

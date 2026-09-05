@@ -10,39 +10,41 @@
   </header>
 
   <div class="card">
-    <form method="post">
-      {% csrf_token %}
-      <div>
-        <label for="id_patient_profile_id">Paciente *</label>
-        <select name="patient_profile_id" id="id_patient_profile_id" class="form-control" required>
-          <option value="">-- Selecione o paciente --</option>
-          {% for patient in patients %}
-            <option value="{{ patient.pk }}">{{ patient.full_name }}</option>
-          {% endfor %}
-        </select>
-      </div>
-
-      <div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
         <div>
-          <label for="id_frequency">Frequência</label>
-          <input type="text" name="frequency" id="id_frequency" class="form-control" value="Pontual" placeholder="Ex.: Diária, Semanal, Pontual">
+          <label for="id_patient_profile_id">Paciente *</label>
+          <select name="patient_profile_id" id="id_patient_profile_id" class="form-control" required>
+            <option value="">-- Selecione o paciente --</option>
+            {% for patient in patients %}
+              <option value="{{ patient.pk }}">{{ patient.full_name }}</option>
+            {% endfor %}
+          </select>
         </div>
+
         <div>
-          <label for="id_due_date">Prazo de conclusão (opcional)</label>
-          <input type="date" name="due_date" id="id_due_date" class="form-control">
+          <div>
+            <label for="id_frequency">Frequência</label>
+            <input type="text" name="frequency" id="id_frequency" class="form-control" value="Pontual" placeholder="Ex.: Diária, Semanal, Pontual">
+          </div>
+          <div>
+            <label for="id_due_date">Prazo de conclusão (opcional)</label>
+            <input type="date" name="due_date" id="id_due_date" class="form-control">
+          </div>
         </div>
-      </div>
 
-      <div>
-        <label for="id_notes">Observações para o paciente (opcional)</label>
-        <textarea name="notes" id="id_notes" class="form-control" rows="3" placeholder="Orientações específicas para a realização deste exercício..."></textarea>
-      </div>
+        <div>
+          <label for="id_notes">Observações para o paciente (opcional)</label>
+          <textarea name="notes" id="id_notes" class="form-control" rows="3" placeholder="Orientações específicas para a realização deste exercício..."></textarea>
+        </div>
 
-      <div>
-        <a href="{% url 'exercise_catalog' %}" class="btn btn-outline-secondary">Cancelar</a>
-        <button type="submit" class="btn btn-primary">Confirmar atribuição</button>
-      </div>
-    </form>
+        <div>
+          <a href="{% url 'exercise_catalog' %}" class="btn btn-outline-secondary">Cancelar</a>
+          <button type="submit" class="btn btn-primary">Confirmar atribuição</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 {% endblock %}

@@ -1,5 +1,5 @@
 {% extends layout_template %}
-{% load accessible_forms %}
+{% load accessible_forms static %}
 
 {% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
@@ -14,8 +14,9 @@
   </header>
 
   <div class="card">
-    <form id="{{ form_id }}" class="d-grid gap-3" method="post" novalidate data-form-guard>
-      {% csrf_token %}
+    <div class="card-body">
+      <form id="{{ form_id }}" class="d-grid gap-3" method="post" novalidate data-form-guard>
+        {% csrf_token %}
 
       {% if form.errors %}
         <div class="alert alert-danger" role="alert" tabindex="-1" data-focus-error-summary aria-labelledby="{{ form_id }}-error-title">
@@ -37,78 +38,77 @@
       <div class="mb-3{% if form.title.errors %} has-error{% endif %}">
         <label for="{{ form.title.id_for_label }}">{{ form.title.label }} <span aria-hidden="true">*</span></label>
         {{ form.title|accessible_widget }}
-        {% if form.title.help_text %}<p class="form-text">{{ form.title.help_text }}</p>{% endif %}
+        {% if form.title.help_text %}<p class="form-text" id="{{ form.title.auto_id }}_helptext">{{ form.title.help_text }}</p>{% endif %}
         {% for error in form.title.errors %}<p class="invalid-feedback d-block" id="{{ form.title.auto_id }}_error_{{ forloop.counter0 }}">{{ error }}</p>{% endfor %}
       </div>
 
       <div class="mb-3{% if form.description.errors %} has-error{% endif %}">
         <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
         {{ form.description|accessible_widget }}
-        {% if form.description.help_text %}<p class="form-text">{{ form.description.help_text }}</p>{% endif %}
+        {% if form.description.help_text %}<p class="form-text" id="{{ form.description.auto_id }}_helptext">{{ form.description.help_text }}</p>{% endif %}
+        {% for error in form.description.errors %}<p class="invalid-feedback d-block" id="{{ form.description.auto_id }}_error_{{ forloop.counter0 }}">{{ error }}</p>{% endfor %}
       </div>
 
-      <div class="mb-3">
-        <fieldset class="d-grid gap-2">
-          <legend>{{ form.horizon.label }}</legend>
-          <div>
-            {% for choice in form.horizon %}
-              <div class="form-check">
-                {{ choice.tag }}
-                <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
-              </div>
-            {% endfor %}
-          </div>
-        </fieldset>
-      </div>
+        <div class="mb-3{% if form.horizon.errors %} has-error{% endif %}">
+          <fieldset class="d-grid gap-2">
+            <legend>{{ form.horizon.label }}</legend>
+            <div>
+              {{ form.horizon|accessible_widget }}
+            </div>
+          </fieldset>
+          {% for error in form.horizon.errors %}<p class="invalid-feedback d-block" id="{{ form.horizon.auto_id }}_error_{{ forloop.counter0 }}">{{ error }}</p>{% endfor %}
+        </div>
 
-      <div class="mb-3">
-        <fieldset class="d-grid gap-2">
-          <legend>{{ form.priority.label }}</legend>
-          <div>
-            {% for choice in form.priority %}
-              <div class="form-check">
-                {{ choice.tag }}
-                <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
-              </div>
-            {% endfor %}
-          </div>
-        </fieldset>
-      </div>
+        <div class="mb-3{% if form.priority.errors %} has-error{% endif %}">
+          <fieldset class="d-grid gap-2">
+            <legend>{{ form.priority.label }}</legend>
+            <div>
+              {{ form.priority|accessible_widget }}
+            </div>
+          </fieldset>
+          {% for error in form.priority.errors %}<p class="invalid-feedback d-block" id="{{ form.priority.auto_id }}_error_{{ forloop.counter0 }}">{{ error }}</p>{% endfor %}
+        </div>
 
       <div class="mb-3{% if form.due_date.errors %} has-error{% endif %}">
         <label for="{{ form.due_date.id_for_label }}">{{ form.due_date.label }}</label>
         {{ form.due_date|accessible_widget }}
-        {% if form.due_date.help_text %}<p class="form-text">{{ form.due_date.help_text }}</p>{% endif %}
-        {% for error in form.due_date.errors %}<p class="invalid-feedback d-block">{{ error }}</p>{% endfor %}
+        {% if form.due_date.help_text %}<p class="form-text" id="{{ form.due_date.auto_id }}_helptext">{{ form.due_date.help_text }}</p>{% endif %}
+        {% for error in form.due_date.errors %}<p class="invalid-feedback d-block" id="{{ form.due_date.auto_id }}_error_{{ forloop.counter0 }}">{{ error }}</p>{% endfor %}
       </div>
 
       <div class="mb-3{% if form.steps_raw.errors %} has-error{% endif %}">
         <label for="{{ form.steps_raw.id_for_label }}">{{ form.steps_raw.label }}</label>
-        {{ form.steps_raw }}
-        {% if form.steps_raw.help_text %}<p class="form-text">{{ form.steps_raw.help_text }}</p>{% endif %}
+        {{ form.steps_raw|accessible_widget }}
+        {% if form.steps_raw.help_text %}<p class="form-text" id="{{ form.steps_raw.auto_id }}_helptext">{{ form.steps_raw.help_text }}</p>{% endif %}
         {% for error in form.steps_raw.errors %}<p class="invalid-feedback d-block" id="{{ form.steps_raw.auto_id }}_error_{{ forloop.counter0 }}">{{ error }}</p>{% endfor %}
       </div>
 
-      <div class="mb-3">
-        <fieldset class="d-grid gap-2">
-          <legend>{{ form.visibility.label }}</legend>
-          <div>
-            {% for choice in form.visibility %}
-              <div class="form-check">
-                {{ choice.tag }}
-                <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
-              </div>
-            {% endfor %}
-          </div>
-          {% if form.visibility.help_text %}<p class="form-text">{{ form.visibility.help_text }}</p>{% endif %}
-        </fieldset>
-      </div>
+        <div class="mb-3{% if form.visibility.errors %} has-error{% endif %}">
+          <fieldset class="d-grid gap-2">
+            <legend>{{ form.visibility.label }}</legend>
+            <div>
+              {{ form.visibility|accessible_widget }}
+            </div>
+            <div class="small text-body-secondary">
+              <p class="product-visibility-status mb-1"><span class="product-visibility-status__icon" aria-hidden="true">✓</span> <span>Compartilhável<span class="product-visibility-status__description">Pode compartilhar com o profissional.</span></span></p>
+              <p class="product-visibility-status mb-1"><span class="product-visibility-status__icon" aria-hidden="true">!</span> <span>Confirmar antes<span class="product-visibility-status__description">Confirme antes de compartilhar com o profissional.</span></span></p>
+              <p class="product-visibility-status mb-0"><span class="product-visibility-status__icon" aria-hidden="true">🔒</span> <span>Privado<span class="product-visibility-status__description">Somente você pode ver este registro.</span></span></p>
+            </div>
+            {% if form.visibility.help_text %}<p class="form-text" id="id_visibility_helptext">{{ form.visibility.help_text }}</p>{% endif %}
+          </fieldset>
+          {% for error in form.visibility.errors %}<p class="invalid-feedback d-block" id="{{ form.visibility.auto_id }}_error_{{ forloop.counter0 }}">{{ error }}</p>{% endfor %}
+        </div>
 
-      <div class="d-flex flex-wrap gap-2">
-        <button type="submit" class="btn btn-primary" data-submit-button>{{ submit_label }}</button>
-        <a href="{% url 'goal_list' %}" class="btn btn-outline-secondary">Cancelar</a>
-      </div>
-    </form>
+        <div class="d-flex flex-wrap gap-2">
+          <button type="submit" class="btn btn-primary" data-submit-button>{{ submit_label }}</button>
+          <a href="{% url 'goal_list' %}" class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
+{% endblock %}
+
+{% block page_scripts %}
+<script defer src="{% static 'duralux/js/form-behaviors.js' %}"></script>
 {% endblock %}

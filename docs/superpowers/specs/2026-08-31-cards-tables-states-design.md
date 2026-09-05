@@ -1,7 +1,7 @@
 # Cards, Tables, and Content States Design
 
 Date: 2026-08-31
-Status: approved in conversation for PRD task 8.2.3
+Status: superseded by the Duralux migration; retained as historical context
 
 ## Scope
 

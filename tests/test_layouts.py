@@ -171,9 +171,9 @@ def test_workspace_shell_uses_only_the_duralux_runtime(
         "/static/duralux/images/logo_header.webp",
         "/static/duralux/js/bootstrap.bundle.min.js",
         "/static/duralux/js/product-shell.js",
-        "/static/duralux/js/form-behaviors.js",
     ):
         assert asset in content
+    assert "/static/duralux/js/form-behaviors.js" not in content
     for transitional_asset in (
         "/static/css/framework.css",
         "/static/css/tokens.css",

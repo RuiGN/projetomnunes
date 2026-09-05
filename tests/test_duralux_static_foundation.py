@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import tempfile
@@ -273,3 +274,26 @@ def test_all_static_css_supports_manifest_hashing_without_missing_local_urls() -
             hashed_path = manifest["paths"][relative_path]
             assert hashed_path != relative_path
             assert (collected_root / hashed_path).is_file()
+
+
+def test_documented_runtime_hashes_match_the_published_assets() -> None:
+    manifest_path = (
+        Path(settings.BASE_DIR)
+        / "docs"
+        / "duralux"
+        / "runtime-asset-manifest.md"
+    )
+    manifest = manifest_path.read_text(encoding="utf-8")
+    documented = dict(
+        re.findall(r"\| `([^`]+)` \| `([0-9a-f]{64})` \|", manifest)
+    )
+    runtime_root = Path(settings.BASE_DIR) / "static" / "duralux"
+
+    assert documented
+    for relative_path, expected_hash in documented.items():
+        asset = runtime_root / relative_path
+        if not asset.is_file():
+            continue
+        assert hashlib.sha256(asset.read_bytes()).hexdigest() == expected_hash, (
+            relative_path
+        )

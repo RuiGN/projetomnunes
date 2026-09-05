@@ -1,5 +1,5 @@
 {% extends layout_template %}
-{% load accessible_forms %}
+{% load accessible_forms static %}
 
 {% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
@@ -16,4 +16,8 @@
     <div class="d-flex flex-wrap gap-2"><button type="submit" class="btn btn-primary" data-submit-button>{{ submit_label }}</button><a href="{% url 'conversation_list' %}" class="btn btn-outline-secondary">Cancelar nova conversa</a></div>
   </form>
 </div>
+{% endblock %}
+
+{% block page_scripts %}
+<script defer src="{% static 'duralux/js/form-behaviors.js' %}"></script>
 {% endblock %}

@@ -10,47 +10,58 @@
   </header>
 
   <div class="card">
-    <div>
-      <span class="journal-entry-date">Concluído em: {{ execution.completed_at|date:"d/m/Y \à\s H:i" }}</span>
-      <span class="visibility-badge {% if execution.visibility == 'shareable' %}visibility-green{% elif execution.visibility == 'confirmation_required' %}visibility-yellow{% else %}visibility-red{% endif %}">
-        {{ execution.get_visibility_display }}
-      </span>
-    </div>
+    <div class="card-body">
+      <div>
+        <span class="journal-entry-date">Concluído em: {{ execution.completed_at|date:"d/m/Y \à\s H:i" }}</span>
+        <span class="visibility-badge product-visibility-status {% if execution.visibility == 'shareable' %}visibility-green{% elif execution.visibility == 'confirmation_required' %}visibility-yellow{% else %}visibility-red{% endif %}">
+          {% if execution.visibility == "shareable" %}
+            <span class="product-visibility-status__icon" aria-hidden="true">✓</span>
+            <span>{{ execution.get_visibility_display }}<span class="product-visibility-status__description">Pode compartilhar com o profissional.</span></span>
+          {% elif execution.visibility == "confirmation_required" %}
+            <span class="product-visibility-status__icon" aria-hidden="true">!</span>
+            <span>{{ execution.get_visibility_display }}<span class="product-visibility-status__description">Confirme antes de compartilhar com o profissional.</span></span>
+          {% else %}
+            <span class="product-visibility-status__icon" aria-hidden="true">🔒</span>
+            <span>{{ execution.get_visibility_display }}<span class="product-visibility-status__description">Somente você pode ver este registro.</span></span>
+          {% endif %}
+        </span>
+      </div>
 
-    <div>
-      <h2>Resposta registrada:</h2>
-      <p>{{ execution.response_data.text|default:'Sem resposta em texto.' }}</p>
-    </div>
+      <div>
+        <h2>Resposta registrada:</h2>
+        <p>{{ execution.response_data.text|default:'Sem resposta em texto.' }}</p>
+      </div>
 
-    <!-- Async Therapist Comments -->
-    <div>
-      <h2>Comentários do profissional</h2>
-      {% if comments %}
-        <div>
-          {% for comment in comments %}
-            <div>
-              <div>
-                <strong>{{ comment.author.get_full_name|default:comment.author.email }}</strong>
-                <span>{{ comment.created_at|date:"d/m/Y H:i" }}</span>
-              </div>
-              <p>{{ comment.content }}</p>
-            </div>
-          {% endfor %}
-        </div>
-      {% else %}
-        <p>Nenhum comentário registrado ainda.</p>
-      {% endif %}
-
-      {% if not is_patient %}
-        <form method="post">
-          {% csrf_token %}
-          <label for="id_content">Adicionar comentário profissional (assíncrono)</label>
-          <textarea name="content" id="id_content" class="form-control" rows="3" required placeholder="Ecreva uma orientação ou comentário de apoio..."></textarea>
+      <!-- Async Therapist Comments -->
+      <div>
+        <h2>Comentários do profissional</h2>
+        {% if comments %}
           <div>
-            <button type="submit" class="btn btn-primary">Enviar comentário</button>
+            {% for comment in comments %}
+              <div>
+                <div>
+                  <strong>{{ comment.author.get_full_name|default:comment.author.email }}</strong>
+                  <span>{{ comment.created_at|date:"d/m/Y H:i" }}</span>
+                </div>
+                <p>{{ comment.content }}</p>
+              </div>
+            {% endfor %}
           </div>
-        </form>
-      {% endif %}
+        {% else %}
+          <p>Nenhum comentário registrado ainda.</p>
+        {% endif %}
+
+        {% if not is_patient %}
+          <form method="post">
+            {% csrf_token %}
+            <label for="id_content">Adicionar comentário profissional (assíncrono)</label>
+            <textarea name="content" id="id_content" class="form-control" rows="3" required placeholder="Ecreva uma orientação ou comentário de apoio..."></textarea>
+            <div>
+              <button type="submit" class="btn btn-primary">Enviar comentário</button>
+            </div>
+          </form>
+        {% endif %}
+      </div>
     </div>
   </div>
 </div>

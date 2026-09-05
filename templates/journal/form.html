@@ -1,5 +1,5 @@
 {% extends layout_template %}
-{% load accessible_forms %}
+{% load accessible_forms static %}
 
 {% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
@@ -16,14 +16,15 @@
   </header>
 
   <div class="card">
-    <form id="{{ form_id }}"
-      class="d-grid gap-3"
-      method="post"
-      novalidate
-      data-form-guard
-      data-dirty-message="Há alterações não salvas no registro."
-    >
-      {% csrf_token %}
+    <div class="card-body">
+      <form id="{{ form_id }}"
+        class="d-grid gap-3"
+        method="post"
+        novalidate
+        data-form-guard
+        data-dirty-message="Há alterações não salvas no registro."
+      >
+        {% csrf_token %}
 
       {# Error Summary #}
       {% if form.errors %}
@@ -49,49 +50,35 @@
         </div>
       {% endif %}
 
-      {# Mood Scale #}
-      <div class="mb-3{% if form.mood.errors %} has-error{% endif %}">
-        <fieldset class="d-grid gap-2">
-          <legend>
-            {{ form.mood.label }} <span aria-hidden="true">*</span>
-          </legend>
-          <p class="form-text" id="id_mood_help">Selecione como você avalia seu humor geral neste momento (1 = Muito mal a 5 = Muito bem).</p>
-          <div>
-            {% for choice in form.mood %}
-              <div class="form-check">
-                {{ choice.tag }}
-                <label for="{{ choice.id_for_label }}">
-                  {{ choice.choice_label }}
-                </label>
-              </div>
+        {# Mood Scale #}
+        <div class="mb-3{% if form.mood.errors %} has-error{% endif %}">
+          <fieldset class="d-grid gap-2">
+            <legend>
+              {{ form.mood.label }} <span aria-hidden="true">*</span>
+            </legend>
+            <p class="form-text" id="id_mood_helptext">{{ form.mood.help_text }}</p>
+            <div>
+              {{ form.mood|accessible_widget }}
+            </div>
+            {% for error in form.mood.errors %}
+              <p class="invalid-feedback d-block" id="id_mood_error_{{ forloop.counter0 }}">{{ error }}</p>
             {% endfor %}
-          </div>
-          {% for error in form.mood.errors %}
-            <p class="invalid-feedback d-block" id="id_mood_error_{{ forloop.counter0 }}">{{ error }}</p>
-          {% endfor %}
-        </fieldset>
-      </div>
+          </fieldset>
+        </div>
 
-      {# Emotions Multiple Choice #}
-      <div class="mb-3{% if form.emotions.errors %} has-error{% endif %}">
-        <fieldset class="d-grid gap-2">
-          <legend>{{ form.emotions.label }}</legend>
-          <p class="form-text" id="id_emotions_help">Você pode selecionar mais de uma emoção.</p>
-          <div>
-            {% for choice in form.emotions %}
-              <div class="form-check">
-                {{ choice.tag }}
-                <label for="{{ choice.id_for_label }}">
-                  {{ choice.choice_label }}
-                </label>
-              </div>
+        {# Emotions Multiple Choice #}
+        <div class="mb-3{% if form.emotions.errors %} has-error{% endif %}">
+          <fieldset class="d-grid gap-2">
+            <legend>{{ form.emotions.label }}</legend>
+            <p class="form-text" id="id_emotions_helptext">{{ form.emotions.help_text }}</p>
+            <div>
+              {{ form.emotions|accessible_widget }}
+            </div>
+            {% for error in form.emotions.errors %}
+              <p class="invalid-feedback d-block" id="id_emotions_error_{{ forloop.counter0 }}">{{ error }}</p>
             {% endfor %}
-          </div>
-          {% for error in form.emotions.errors %}
-            <p class="invalid-feedback d-block" id="id_emotions_error_{{ forloop.counter0 }}">{{ error }}</p>
-          {% endfor %}
-        </fieldset>
-      </div>
+          </fieldset>
+        </div>
 
       {# Intensity #}
       <div class="mb-3{% if form.intensity.errors %} has-error{% endif %}">
@@ -163,45 +150,42 @@
         {% endfor %}
       </div>
 
-      {# Visibility Traffic Light #}
-      <div class="mb-3{% if form.visibility.errors %} has-error{% endif %}">
-        <fieldset class="d-grid gap-2">
-          <legend>{{ form.visibility.label }} <span aria-hidden="true">*</span></legend>
-          <p class="form-text" id="id_visibility_help">
-            Você tem controle total sobre o compartilhamento de cada registro:
-          </p>
-          <div>
-            {% for choice in form.visibility %}
-              <div class="form-check">
-                {{ choice.tag }}
-                <label for="{{ choice.id_for_label }}">
-                  {% if choice.data.value == "shareable" %}
-                    <strong>● Verde — Compartilhável:</strong> O terapeuta vinculado poderá ver este registro.
-                  {% elif choice.data.value == "confirmation_required" %}
-                    <strong>● Amarelo — Confirmar antes:</strong> O terapeuta sabe que existe um registro, mas só terá acesso se você autorizar explicitamente.
-                  {% else %}
-                    <strong>● Vermelho — Privado:</strong> Somente você tem acesso. O terapeuta não vê e não é notificado.
-                  {% endif %}
-                </label>
-              </div>
+        {# Visibility Traffic Light #}
+        <div class="mb-3{% if form.visibility.errors %} has-error{% endif %}">
+          <fieldset class="d-grid gap-2">
+            <legend>{{ form.visibility.label }} <span aria-hidden="true">*</span></legend>
+            <p class="form-text" id="id_visibility_helptext">
+              Você tem controle total sobre o compartilhamento de cada registro:
+            </p>
+            <div>
+              {{ form.visibility|accessible_widget }}
+            </div>
+            <div class="small text-body-secondary">
+              <p class="mb-1"><span class="product-visibility-status__icon" aria-hidden="true">●</span> <span>Verde — Compartilhável: o terapeuta vinculado poderá ver este registro.</span></p>
+              <p class="mb-1"><span class="product-visibility-status__icon" aria-hidden="true">●</span> <span>Amarelo — Confirmação necessária: o terapeuta sabe que existe um registro, mas só terá acesso se você autorizar explicitamente.</span></p>
+              <p class="mb-0"><span class="product-visibility-status__icon" aria-hidden="true">●</span> <span>Vermelho — Privado: somente você tem acesso. O terapeuta não vê e não é notificado.</span></p>
+            </div>
+            {% for error in form.visibility.errors %}
+              <p class="invalid-feedback d-block" id="id_visibility_error_{{ forloop.counter0 }}">{{ error }}</p>
             {% endfor %}
-          </div>
-          {% for error in form.visibility.errors %}
-            <p class="invalid-feedback d-block" id="id_visibility_error_{{ forloop.counter0 }}">{{ error }}</p>
-          {% endfor %}
-        </fieldset>
-      </div>
+          </fieldset>
+        </div>
 
-      {# Actions #}
-      <div class="d-flex flex-wrap gap-2">
-        <button class="btn btn-primary" type="submit" data-submit-button>
-          {{ submit_label }}
-        </button>
-        <a href="{% url 'journal_list' %}" class="btn btn-outline-secondary">
-          Cancelar
-        </a>
-      </div>
-    </form>
+        {# Actions #}
+        <div class="d-flex flex-wrap gap-2">
+          <button class="btn btn-primary" type="submit" data-submit-button>
+            {{ submit_label }}
+          </button>
+          <a href="{% url 'journal_list' %}" class="btn btn-outline-secondary">
+            Cancelar
+          </a>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
+{% endblock %}
+
+{% block page_scripts %}
+<script defer src="{% static 'duralux/js/form-behaviors.js' %}"></script>
 {% endblock %}

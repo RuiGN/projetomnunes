@@ -1,5 +1,5 @@
 {% extends "accounts/auth_base.html" %}
-{% load accessible_forms %}
+{% load accessible_forms static %}
 
 {% block auth_content %}
 <section class="product-auth-card card border-0 shadow-sm p-4 p-md-5" aria-labelledby="auth-title">
@@ -46,4 +46,8 @@
     <a class="btn btn-link mt-3 px-0" href="{{ secondary_url }}">{{ secondary_label }}</a>
   {% endif %}
 </section>
+{% endblock %}
+
+{% block page_scripts %}
+<script defer src="{% static 'duralux/js/form-behaviors.js' %}"></script>
 {% endblock %}

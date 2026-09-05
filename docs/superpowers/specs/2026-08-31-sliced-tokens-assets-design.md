@@ -1,7 +1,7 @@
 # Sliced Tokens and Assets Design
 
 Date: 2026-08-31
-Status: approved by the existing PRD and repeated instruction to continue
+Status: superseded by the Duralux migration; retained as historical context
 Scope: PRD task 8.2.1 only
 
 ## Purpose

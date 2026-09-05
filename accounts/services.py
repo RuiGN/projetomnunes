@@ -34,6 +34,7 @@ from django.utils import timezone
 from django.utils.crypto import salted_hmac
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.views.decorators.debug import sensitive_variables
 
 from clinics.selectors import active_clinic_ids_for_actor, active_clinics_for_actor
 from clinics.services import (
@@ -827,6 +828,7 @@ def _totp_step(at_time: int | None = None) -> int:
     return int(time.time() if at_time is None else at_time) // 30
 
 
+@sensitive_variables("secret", "key", "digest")
 def current_totp_code(*, secret: str, at_time: int | None = None) -> str:
     """Generate an RFC 6238 SHA-1 six-digit code for one time step."""
     step = _totp_step(at_time)
@@ -837,6 +839,7 @@ def current_totp_code(*, secret: str, at_time: int | None = None) -> str:
     return f"{value % 1_000_000:06d}"
 
 
+@sensitive_variables("secret", "query")
 def build_totp_key_uri(*, secret: str, issuer: str, account: str) -> str:
     """Build a standards-compatible TOTP provisioning URI without side effects."""
     encoded_issuer = quote(issuer, safe="")
@@ -854,20 +857,25 @@ def build_totp_key_uri(*, secret: str, issuer: str, account: str) -> str:
     return f"otpauth://totp/{encoded_issuer}:{encoded_account}?{query}"
 
 
+@sensitive_variables("uri")
 def build_totp_qr_data_uri(*, uri: str) -> str:
     """Generate a local SVG QR image without disclosing its payload externally."""
-    output = BytesIO()
-    segno.make_qr(uri, error="m").save(
-        output,
-        kind="svg",
-        scale=6,
-        border=4,
-        xmldecl=False,
-    )
+    try:
+        output = BytesIO()
+        segno.make_qr(uri, error="m").save(
+            output,
+            kind="svg",
+            scale=6,
+            border=4,
+            xmldecl=False,
+        )
+    except Exception:
+        raise RuntimeError("Unable to generate the MFA QR code.") from None
     encoded = b64encode(output.getvalue()).decode("ascii")
     return f"data:image/svg+xml;base64,{encoded}"
 
 
+@sensitive_variables("code")
 def _recovery_digest(*, user: User, code: str) -> str:
     return salted_hmac(
         "accounts.mfa-recovery",
@@ -878,6 +886,7 @@ def _recovery_digest(*, user: User, code: str) -> str:
 
 
 @transaction.atomic
+@sensitive_variables("secret")
 def start_totp_enrollment(*, user: User) -> TOTPEnrollmentChallenge:
     """Replace any unconfirmed challenge and display its secret once."""
     secret = b32encode(secrets.token_bytes(20)).decode("ascii").rstrip("=")
@@ -894,6 +903,7 @@ def start_totp_enrollment(*, user: User) -> TOTPEnrollmentChallenge:
     return TOTPEnrollmentChallenge(secret=secret)
 
 
+@sensitive_variables("secret", "code")
 def _matching_totp_step(*, secret: str, code: str) -> int | None:
     current_step = _totp_step()
     for candidate_step in range(current_step - 1, current_step + 2):
@@ -907,6 +917,7 @@ def _matching_totp_step(*, secret: str, code: str) -> int | None:
 
 
 @transaction.atomic
+@sensitive_variables("code", "raw_codes")
 def confirm_totp_enrollment(*, user: User, code: str) -> tuple[str, ...]:
     """Confirm a challenge and return newly generated recovery codes once."""
     rate_limit_key, _attempts, _rate_limit_window = _mfa_rate_limit(
@@ -915,13 +926,15 @@ def confirm_totp_enrollment(*, user: User, code: str) -> tuple[str, ...]:
     mfa = UserMFA.objects.select_for_update().filter(user=user).first()
     if mfa is None:
         raise ValueError("MFA enrollment was not started.")
+    if mfa.is_confirmed:
+        raise ValueError("MFA enrollment is already confirmed.")
     matched_step = _matching_totp_step(secret=mfa.decrypt_secret(), code=code)
     if matched_step is None:
         raise ValueError("Código inválido.")
     mfa.is_confirmed = True
     mfa.confirmed_at = timezone.now()
-    # Confirmation activates the factor; verification consumes a TOTP step.
-    mfa.last_used_step = -1
+    # The enrollment code is authentication material and cannot be replayed.
+    mfa.last_used_step = matched_step
     mfa.save(
         update_fields=(
             "is_confirmed",
@@ -940,6 +953,7 @@ def confirm_totp_enrollment(*, user: User, code: str) -> tuple[str, ...]:
 
 
 @transaction.atomic
+@sensitive_variables("code")
 def consume_mfa_code(*, user: User, code: str) -> bool:
     """Consume one fresh TOTP step or one unused recovery credential."""
     rate_limit_key, _attempts, _rate_limit_window = _mfa_rate_limit(

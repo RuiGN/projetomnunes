@@ -140,7 +140,7 @@ Allowlist inicial, deliberadamente pequena. Somente os itens abaixo podem ser pr
 | `assets/images/logo_header.webp` | `static/duralux/images/logo_header.webp` | fallback obrigatório do header/sidebar |
 | `assets/images/favicon.svg` | `static/duralux/images/favicon.svg` | favicon obrigatório das bases completas |
 
-Os CSS/JS de integração em `static/duralux/` são autoria do projeto, não cópias do pacote, e permanecem testados. Estão expressamente fora da allowlist: `vendors.min.css/js`, `theme-customizer-init.min.js`, inicializadores de páginas demo, sourcemaps, SCSS, flags, uploads, avatares/banners, `logo-full.png`, `logo-abbr.png`, `favicon.ico`, documentação e plugins sem consumidor. ApexCharts foi readmitido na Sprint 8 após confirmar versão/licença, consumidores restritos e alternativas textuais.
+Os CSS/JS de integração em `static/duralux/` são autoria do projeto, não cópias do pacote, e permanecem testados. A base global carrega somente Bootstrap e `product-shell`; `form-behaviors`, `lesson-player` e ApexCharts são declarados pelos seus consumidores. Estão expressamente fora da allowlist: `vendors.min.css/js`, `theme-customizer-init.min.js`, inicializadores de páginas demo, sourcemaps, SCSS, flags, uploads, avatares/banners, `logo-full.png`, `logo-abbr.png`, `favicon.ico`, documentação e plugins sem consumidor. ApexCharts foi readmitido na Sprint 8 após confirmar versão/licença, consumidores restritos e alternativas textuais.
 
 ### Runtime selection installed in Sprint 1
 
@@ -152,7 +152,7 @@ Recorded SHA-256 values:
 |---|---|
 | `css/bootstrap.min.css` | `26db49828d6701fcfce37a96da6ec3f0ed481abae49c8c9969a575b064413cad` |
 | `css/theme.min.css` | `71257c55b10217bf94a0f71c3fda141545ad500a6bebec5bbeb29ee65c5d0be9` |
-| `css/product-integration.css` | `5ee8979e749638ac2b188f5f5ce18547ea9a1c85d6c936e2968d0b0156056bdf` |
+| `css/product-integration.css` | `26766b92714ab9c1306d4c7c9c325ced6ed6ab34bc864acfeb67713723d17c47` |
 | `js/bootstrap.bundle.min.js` | `073254afbfc06331b8b548b7fc0532b4ffe2cfdd588368dcc338e7abd50810e1` |
 | `js/dashboard-charts.js` | `773ba64d6e553379af0f422633bd76fc3e3727a6ec5e770bdf41bb9601135fd2` |
 | `js/form-behaviors.js` | `2aa3ea86ef5e59ba1b0091e3fc2a30d6e942a5a301eca4a63e0323a98336665f` |

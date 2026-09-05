@@ -314,7 +314,8 @@ def test_editorial_http_surface_supports_complete_versioned_workflow(
     assert "Versão um" in preview_html
     assert "<script>alert(1)</script>" not in preview_html
     assert 'onclick="evil()"' not in preview_html
-    assert 'class="editorial-preview"' in preview_html
+    assert 'class="product-page editorial-preview"' in preview_html
+    assert 'class="product-table-card content-body"' in preview_html
 
     comment_one = client.post(
         _editorial_url("content_editorial_comment", content_id=content.pk, version=1),

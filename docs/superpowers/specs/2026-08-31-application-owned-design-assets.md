@@ -1,7 +1,7 @@
 # Application-Owned Design Assets
 
 Date: 2026-08-31
-Status: approved
+Status: superseded by the Duralux migration; retained as historical context
 
 ## Goal
 

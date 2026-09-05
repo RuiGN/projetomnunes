@@ -1,42 +1,44 @@
 # Progresso da migração Duralux
 
-Atualizado em 2026-09-04. Este ledger complementa `MUDANCALAYOUT.prd`; o PRD é a
+Atualizado em 2026-09-05. Este ledger complementa `MUDANCALAYOUT.prd`; o PRD é a
 fonte dos critérios e somente recebe `[X]` quando a evidência correspondente foi
 verificada.
 
 | Escopo | Estado | Evidência | Próximo gate |
 |---|---|---|---|
-| Sprint 0 — matrizes e inventário | complete | comparação programática 77/77 HTMLs Duralux e 95/95 templates Django, sem ausentes ou extras; 1.174/1.059 arquivos; 660/661 estilos e 62 templates registrados | nenhum |
-| Sprint 0 — baseline visual | complete | 43 PNGs válidos e sem duplicatas: 22 desktop e 21 mobile; revisão visual independente confirmou jornadas substantivas | comparar diferenças intencionais na Sprint 9 |
-| Sprint 0 — referências quebradas da demo | in_progress | ocorrências conhecidas estão registradas em `runtime-asset-manifest.md` e nenhuma foi promovida aos sete assets atuais | corrigir ou descartar durante as adaptações das Sprints 4, 7 e 8; depois marcar o item misto no PRD |
-| Sprint 0 — gate técnico corrente | complete | 1101 testes passaram, 1 ignorado; Ruff e Mypy sem erros; `manage.py check` e `collectstatic --dry-run` passaram com settings de teste | repetir após cada sprint |
-| Sprint 1 — static foundation | complete | seven local assets; sanitized theme; Bootstrap 5.3.3 bundle with Popper 2.11.8; clinical integration tokens; browser verification at 375/1440 px; production manifest storage probe passed with 154 copied and 446 post-processed files; independent re-review approved with no Critical/Important findings | none |
-| Sprint 2 — shell e componentes | in_progress | shell e cinco componentes Duralux implementados; 72 testes focados e gate completo aprovados; browser validou 320, 375, 768, 1024, 1280 e 1440 px; re-revisão independente aprovou a ponte transitória | migrar os 84 templates de domínio e remover a ponte legada antes de concluir a sprint |
-| Sprint 3 — autenticação, MFA e erros | in_progress | base e templates Duralux implementados; cadastro MFA usa URI `otpauth`, QR SVG local, chave manual, reinício explícito e respostas protegidas; 51 testes focados e gate global com 1109 testes passaram; browser validou login, MFA, sessões e 404 em desktop/mobile; re-revisão de segurança aprovada | concluir jornadas visuais restantes e scan em dispositivo físico antes de encerrar |
-| Sprint 4 — workspace e gestão | in_progress / gate_blocked | corrective shell, landmarks, widgets, label contrast and focus reviewed; 94 focused tests plus final 9 corrective tests passed; see `sprint4-corrective-verification.md` | existing OAuth parser intermittently fails full gate; exhaustive route/screen-reader acceptance remains pending |
-| Sprints 5–8 — migração de domínio e remoção do legado | implementation_complete | templates de agenda, financeiro, consentimentos, diário, metas, conteúdo e referência migrados; runtime legado removido; gate global de 1.131 testes aprovado | concluir revisão visual integrada |
-| Sprint 9 — encerramento | in_progress | Ruff, mypy, Django check, migrations check, JavaScript, collectstatic e diff aprovados em 2026-09-05 | validar imagem e produção, registrar evidência do deploy |
+| Sprint 0 — matrizes, inventário e baseline | complete | catálogo 77/77; baseline 95/95 reconciliada como 94 templates retidos, um órfão removido e três auxiliares Duralux; 97 HTML atuais; baseline visual registrada | nenhum |
+| Sprint 1 — static foundation | complete | 13 assets locais no manifesto atual; hashes verificados; Staticfiles e `collectstatic` aprovados; sem CDN | nenhum |
+| Sprint 2 — shell e componentes | complete | seis layouts/partials e cinco componentes migrados; ponte visual legada removida; menu móvel validado com Escape, foco e retorno ao acionador | leitor de tela permanece no gate transversal |
+| Sprint 3 — autenticação, MFA e erros | implementation_complete / external_gate_pending | oito templates migrados; QR/URI locais; proteção de cache, replay, recovery codes e tracebacks revisada e aprovada | scan físico no Google Authenticator e leitor de tela |
+| Sprint 4 — workspace e gestão | complete | 15 templates migrados; blocker OAuth superado pelo gate global atual; revisão visual e contratos aprovados | nenhum específico |
+| Sprint 5 — agenda, comunicação e financeiro | implementation_complete | 15 templates migrados; autorização e comportamento preservados; gates focados/globais aprovados | validação manual específica do calendário por teclado |
+| Sprint 6 — consentimentos, diário e metas | implementation_complete / external_gate_pending | baseline 24/24 reconciliada; 23 templates retidos e placeholder órfão removido; 130 testes clínicos, evidência visual corretiva e revisão independente aprovados | leitor de tela físico |
+| Sprint 7 — conteúdo e aprendizagem | implementation_complete / external_gate_pending | 21 templates migrados; certificado público, sanitização, player e assets por página cobertos por testes e evidência visual | leitor de tela físico do player/questionários |
+| Sprint 8 — catálogo, legado e documentação | complete | catálogo visual migrado; runtime legado removido; matrizes/documentos reconciliados; revisão independente 95/95 aprovada | nenhum |
+| Sprint 9 — validação integrada | technical_complete / external_gates_pending | `final-verification.md`; gate completo, 168 verificações visuais acumuladas e revisões independentes aprovados | scan físico, leitor de tela e percurso exaustivo de rotas/perfis |
 
 ## Gate integrado de 2026-09-05
 
-- `uv run pytest -q`: **1.131 passed, 1 skipped** em 238,89 s.
+- `uv run pytest`: **1.150 passed, 1 skipped** em 182,56 s; cobertura total de **86%**.
 - `uv run ruff check .`: aprovado.
 - `uv run mypy .`: nenhum problema em 565 arquivos-fonte.
 - `DJANGO_SETTINGS_MODULE=config.settings.test uv run python manage.py check`:
   nenhum problema identificado.
 - `DJANGO_SETTINGS_MODULE=config.settings.test uv run python manage.py
-  makemigrations --check --dry-run`: nenhuma alteração detectada.
-- `collectstatic --noinput --dry-run`, `node --check` em todos os adaptadores
-  Duralux e `git diff --check`: aprovados.
-- O runtime publicável tem treze arquivos, não contém os CSS, fontes, Alpine ou
+  collectstatic --noinput --dry-run`: aprovado.
+- `uv run python -m py_compile accounts/services.py accounts/views.py
+  journal/forms.py`, `node --check` em todos os adaptadores Duralux e
+  `git diff --check`: aprovados.
+- Gate focado de legado/templates/staticfiles/formulários/layouts: **64 passed**.
+- Suíte clínica da Sprint 6: **130 passed, 1 skipped**; suíte MFA: **40 passed**.
+- O runtime publicável tem treze arquivos, não contém CSS, fontes, Alpine ou
   caminhos JavaScript legados e limita ApexCharts aos consumidores documentados.
-- `docker compose build web` produziu a imagem candidata; uma inspeção isolada,
-  sem rede, confirmou Gunicorn, imports de WhiteNoise/Segno, entrypoint
-  executável, `manage.py check`, ausência da fonte Duralux demonstrativa e os
-  treze assets promovidos.
-- A revisão visual integrada e a prova da promoção em produção permanecem
-  abertas neste ponto do ledger; os gates automatizados e da imagem não as
-  substituem.
+- Evidência visual: 120 verificações integradas mais 48 corretivas, zero falhas;
+  caminhos em `evidence/integrated-final/` e `evidence/final-rereview/`.
+- Revisões independentes finais de segurança MFA, cobertura 95/95, remoção de
+  legado e Sprint 6 foram aprovadas sem Critical/Important.
+- Permanecem abertos somente os gates manuais/externos registrados em
+  `final-verification.md`; eles não são substituídos pelos testes automatizados.
 
 ## Roteamento de modelos
 

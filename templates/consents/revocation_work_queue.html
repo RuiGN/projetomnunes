@@ -10,21 +10,23 @@
 
 <section class="product-table-card" aria-label="Fila operacional de revogações">
   {% if work_rows %}
-    <ul class="space-y-4" role="list">
+    <ul class="d-grid gap-3 list-unstyled" role="list">
       {% for row in work_rows %}
         {% with item=row.work_item %}
-        <li class="rounded-lg border p-4">
-          <p><strong>Titular:</strong> {{ row.subject_reference }}</p>
-          <p><strong>Finalidade:</strong> {{ item.dispatch.manifestation.purpose }}</p>
-          <p><strong>Documento:</strong> {{ item.dispatch.manifestation.document.title }} — versão {{ item.dispatch.manifestation.document.version }}</p>
-          <p><strong>Despacho:</strong> <code>{{ item.dispatch.pk }}</code></p>
-          <p><strong>Criada em:</strong> {{ item.created_at|date:"SHORT_DATETIME_FORMAT" }}</p>
-          <form method="post" action="{% url 'consent_revocation_work_acknowledge' item.pk %}">
-            {% csrf_token %}
-            <label for="reference-{{ item.pk }}">Referência do atendimento operacional</label>
-            <input id="reference-{{ item.pk }}" name="acknowledgement_reference" type="text" required maxlength="255" autocomplete="off">
-            <button type="submit">Confirmar atendimento</button>
-          </form>
+        <li class="card">
+          <div class="card-body">
+            <p><strong>Titular:</strong> {{ row.subject_reference }}</p>
+            <p><strong>Finalidade:</strong> {{ item.dispatch.manifestation.purpose }}</p>
+            <p><strong>Documento:</strong> {{ item.dispatch.manifestation.document.title }} — versão {{ item.dispatch.manifestation.document.version }}</p>
+            <p><strong>Despacho:</strong> <code>{{ item.dispatch.pk }}</code></p>
+            <p><strong>Criada em:</strong> {{ item.created_at|date:"SHORT_DATETIME_FORMAT" }}</p>
+            <form method="post" action="{% url 'consent_revocation_work_acknowledge' item.pk %}">
+              {% csrf_token %}
+              <label for="reference-{{ item.pk }}">Referência do atendimento operacional</label>
+              <input id="reference-{{ item.pk }}" name="acknowledgement_reference" type="text" required maxlength="255" autocomplete="off">
+              <button type="submit">Confirmar atendimento</button>
+            </form>
+          </div>
         </li>
         {% endwith %}
       {% endfor %}
