@@ -1,13 +1,15 @@
 {% extends "layouts/vertical.html" %}
 {% load i18n %}
 
+{% block title %}{% translate "Terms and consents" %}{% endblock %}
+
 {% block content %}
-<section class="content-card" aria-labelledby="consent-center-title">
+<section class="product-table-card" aria-labelledby="consent-center-title">
   <h1 id="consent-center-title">{% translate "Terms and consents" %}</h1>
   <p>{% translate "Read each document and record your decision. Optional authorizations are not preselected and may be refused without blocking your basic rights." %}</p>
 </section>
 
-<section class="content-card" aria-labelledby="mandatory-consents-title">
+<section class="product-table-card" aria-labelledby="mandatory-consents-title">
   <h2 id="mandatory-consents-title">{% translate "Required acceptances" %}</h2>
   {% if mandatory_rows %}
     {% for row in mandatory_rows %}
@@ -18,7 +20,7 @@
   {% endif %}
 </section>
 
-<section class="content-card" aria-labelledby="optional-consents-title">
+<section class="product-table-card" aria-labelledby="optional-consents-title">
   <h2 id="optional-consents-title">{% translate "Optional authorizations" %}</h2>
   {% if optional_rows %}
     {% for row in optional_rows %}

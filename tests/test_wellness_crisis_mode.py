@@ -7,6 +7,7 @@ from datetime import date
 import pytest
 from django.core.exceptions import ValidationError
 
+from accounts.models import User
 from audit.models import AuditEvent
 from clinics.models import Clinic, ClinicMembership
 from people.models import PatientProfile
@@ -35,7 +36,7 @@ def test_clinic() -> Clinic:
 
 
 @pytest.fixture
-def patient_user(test_clinic: Clinic):
+def patient_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="paciente.crise@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -47,7 +48,7 @@ def patient_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def patient_profile(test_clinic: Clinic, patient_user) -> PatientProfile:
+def patient_profile(test_clinic: Clinic, patient_user: User) -> PatientProfile:
     return PatientProfile.infrastructure_objects.create(
         clinic=test_clinic,
         user=patient_user,
@@ -124,7 +125,7 @@ def test_crisis_mode_displays_mandatory_disclaimer_and_numbers(
 
 @pytest.mark.django_db
 def test_emergency_touch_action_requires_explicit_confirmation(
-    test_clinic: Clinic, patient_profile: PatientProfile, patient_user
+    test_clinic: Clinic, patient_profile: PatientProfile, patient_user: User
 ) -> None:
     """Emergency touch actions strictly block initiation without user confirmation."""
     # Attempt without confirmation fails
@@ -162,7 +163,7 @@ def test_emergency_touch_action_requires_explicit_confirmation(
 
 @pytest.mark.django_db
 def test_crisis_mode_offline_access_and_zero_clinical_promises(
-    test_clinic: Clinic, patient_profile: PatientProfile, patient_user
+    test_clinic: Clinic, patient_profile: PatientProfile, patient_user: User
 ) -> None:
     """Crisis mode operates offline and makes no clinical diagnostic promises."""
     # Patient accesses crisis mode under network disconnection

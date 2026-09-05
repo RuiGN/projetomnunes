@@ -1,14 +1,17 @@
 {% extends layout_template %}
 
+{% block title %}Paciente{% endblock %}
+
 {% block content %}
-<section class="welcome-panel" aria-labelledby="patient-detail-title">
-  <div><p class="workspace-eyebrow">Cadastro mínimo</p><h1 id="patient-detail-title">{{ patient.full_name }}{% if patient.social_name %} <small>({{ patient.social_name }})</small>{% endif %}</h1><p class="workspace-intro">Dados cadastrais autorizados da clínica ativa.</p></div>
-  <a class="primary-action" href="{% url 'patient_list' %}">Voltar à lista</a>
+<div class="product-page" aria-labelledby="patient-detail-title">
+<section class="product-page-header d-flex flex-column flex-lg-row align-items-lg-end justify-content-between gap-3" aria-labelledby="patient-detail-title">
+  <div><p class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Cadastro mínimo</p><h1 id="patient-detail-title">{{ patient.full_name }}{% if patient.social_name %} <small>({{ patient.social_name }})</small>{% endif %}</h1><p class="lead mb-0">Dados cadastrais autorizados da clínica ativa.</p></div>
+  <a class="btn btn-primary" href="{% url 'patient_list' %}">Voltar à lista</a>
 </section>
 
-<section class="component-section" aria-labelledby="detail-identity-title">
+<section class="d-grid gap-3" aria-labelledby="detail-identity-title">
   <h2 id="detail-identity-title">Identificação</h2>
-  <dl class="detail-list">
+  <dl class="product-data-grid">
     <div><dt>Nome completo</dt><dd>{{ patient.full_name }}</dd></div>
     <div><dt>Nome social</dt><dd>{{ patient.social_name|default:"—" }}</dd></div>
     <div><dt>Data de nascimento</dt><dd>{{ patient.birth_date|date:"d/m/Y" }}</dd></div>
@@ -21,16 +24,16 @@
 </section>
 
 {% if patient.accessibility_preferences %}
-<section class="component-section" aria-labelledby="detail-accessibility-title">
+<section class="d-grid gap-3" aria-labelledby="detail-accessibility-title">
   <h2 id="detail-accessibility-title">Acessibilidade</h2>
   <p>{{ patient.accessibility_preferences }}</p>
 </section>
 {% endif %}
 
 {% if patient.address %}
-<section class="component-section" aria-labelledby="detail-address-title">
+<section class="d-grid gap-3" aria-labelledby="detail-address-title">
   <h2 id="detail-address-title">Endereço</h2>
-  <dl class="detail-list">
+  <dl class="product-data-grid">
     <div><dt>Finalidade</dt><dd>{{ patient.address_purpose|default:"—" }}</dd></div>
     <div><dt>Endereço</dt><dd>{{ patient.address.line }}</dd></div>
     <div><dt>Cidade</dt><dd>{{ patient.address.city }}</dd></div>
@@ -41,13 +44,14 @@
 {% endif %}
 
 {% if patient.emergency_contact %}
-<section class="component-section" aria-labelledby="detail-emergency-title">
+<section class="d-grid gap-3" aria-labelledby="detail-emergency-title">
   <h2 id="detail-emergency-title">Contato de emergência</h2>
-  <dl class="detail-list">
+  <dl class="product-data-grid">
     <div><dt>Finalidade</dt><dd>{{ patient.emergency_contact_purpose|default:"—" }}</dd></div>
     <div><dt>Nome</dt><dd>{{ patient.emergency_contact.name }}</dd></div>
     <div><dt>Telefone</dt><dd>{{ patient.emergency_contact.phone }}</dd></div>
   </dl>
 </section>
 {% endif %}
+ </div>
 {% endblock %}

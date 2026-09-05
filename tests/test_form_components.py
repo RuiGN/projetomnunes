@@ -82,6 +82,26 @@ def test_form_component_renders_labels_help_and_supported_widgets() -> None:
     assert ">Salvar alterações<" in content
 
 
+def test_form_component_uses_duralux_bootstrap_classes() -> None:
+    content = _render_form(ComponentExampleForm())
+
+    assert 'class="d-grid gap-3"' in content
+    assert 'class="mb-3"' in content
+    assert 'class="form-label"' in content
+    assert 'class="form-check-input"' in content
+    assert 'class="form-check form-switch"' in content
+    assert 'class="btn btn-primary"' in content
+    for legacy_class in (
+        "form-stack",
+        "form-field",
+        "choice-group",
+        "switch-control",
+        "choice-control",
+        "primary-action",
+    ):
+        assert legacy_class not in content
+
+
 def test_unbound_date_initial_uses_html_date_canonical_value() -> None:
     content = _render_form(
         ComponentExampleForm(initial={"start_date": date(2026, 8, 31)})
@@ -99,7 +119,7 @@ def test_invalid_form_has_error_summary_focus_target_and_field_connections() -> 
 
     content = _render_form(form)
 
-    assert 'class="form-error-summary"' in content
+    assert 'class="alert alert-danger"' in content
     assert 'role="alert"' in content
     assert 'tabindex="-1"' in content
     assert "data-focus-error-summary" in content
@@ -163,7 +183,11 @@ def test_form_guards_duplicate_unsaved_and_destructive_actions() -> None:
         },
     )
     script = (
-        Path(settings.BASE_DIR) / "static" / "js" / "form-behaviors.js"
+        Path(settings.BASE_DIR)
+        / "static"
+        / "duralux"
+        / "js"
+        / "form-behaviors.js"
     ).read_text(encoding="utf-8")
 
     assert "data-form-guard" in content
@@ -182,25 +206,31 @@ def test_form_guards_duplicate_unsaved_and_destructive_actions() -> None:
 
 
 def test_form_css_supports_focus_errors_switches_and_mobile_layout() -> None:
-    css = (Path(settings.BASE_DIR) / "static" / "css" / "workspace.css").read_text(
-        encoding="utf-8"
-    )
+    css = (
+        Path(settings.BASE_DIR)
+        / "static"
+        / "duralux"
+        / "css"
+        / "product-integration.css"
+    ).read_text(encoding="utf-8")
 
     for selector in (
-        ".form-stack",
-        ".form-field",
+        ".product-form-card",
+        ".product-workspace-body",
         ".form-control",
-        ".form-error-summary",
-        ".field-error",
-        ".choice-group",
-        ".switch-control",
+        ".alert-danger",
+        ".invalid-feedback",
+        ".form-check-input",
+        ".form-switch",
         ".form-actions",
+        ".btn-primary",
+        ".btn-outline-primary",
     ):
         assert selector in css
     assert ":focus-visible" in css
-    assert "var(--color-danger)" in css
+    assert "var(--bs-danger)" in css
     assert "min-height: 44px" in css
-    assert "@media (max-width: 700px)" in css
+    assert "@media (max-width: 767.98px)" in css
 
 
 @pytest.mark.parametrize("unsafe", ("<script>alert(1)</script>", '" onfocus="alert(1)'))
@@ -291,7 +321,11 @@ def test_visual_reference_reports_a_valid_server_submission(client: Client) -> N
 
 def test_form_script_focuses_first_invalid_field_and_recovers_from_bfcache() -> None:
     script = (
-        Path(settings.BASE_DIR) / "static" / "js" / "form-behaviors.js"
+        Path(settings.BASE_DIR)
+        / "static"
+        / "duralux"
+        / "js"
+        / "form-behaviors.js"
     ).read_text(encoding="utf-8")
 
     assert 'document.querySelector("[aria-invalid=\\"true\\"]")?.focus()' in script

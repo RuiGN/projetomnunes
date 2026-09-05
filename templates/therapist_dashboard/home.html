@@ -1,47 +1,38 @@
 {% extends layout_template %}
+{% load static %}
+
+{% block title %}Painel do terapeuta{% endblock %}
 
 {% block content %}
-<section class="welcome-panel" aria-labelledby="therapist-dashboard-title">
+<section class="product-page-header d-flex flex-column flex-lg-row align-items-lg-end justify-content-between gap-3" aria-labelledby="therapist-dashboard-title">
   <div>
-    <p class="workspace-eyebrow">Área inicial</p>
+    <p class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Área inicial</p>
     <h1 id="therapist-dashboard-title">Pacientes vinculados</h1>
-    <p class="workspace-intro">Indicadores factuais, sem classificação ou diagnóstico automatizado.</p>
+    <p class="lead mb-0">Indicadores factuais, sem classificação ou diagnóstico automatizado.</p>
   </div>
-  <div class="shortcut-row">
-    <a class="primary-action" href="{% url 'patient_create' %}">Cadastrar paciente</a>
-    <a class="link-action" href="{% url 'patient_list' %}">Enviar convite</a>
-    <a class="link-action" href="{% url 'clinic_onboarding' %}">Revisar pendências</a>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-primary" href="{% url 'patient_create' %}">Cadastrar paciente</a>
+    <a class="btn btn-outline-primary" href="{% url 'patient_list' %}">Enviar convite</a>
+    <a class="btn btn-outline-primary" href="{% url 'clinic_onboarding' %}">Revisar pendências</a>
   </div>
 </section>
 
-<section class="summary-card-grid" aria-label="Indicadores factuais">
-  <article class="summary-card tone-neutral" aria-labelledby="metric-active-title">
-    <div class="summary-card-heading"><h2 id="metric-active-title">Pacientes ativos vinculados</h2><p>Vínculos terapêuticos vigentes.</p></div>
-    <data value="{{ snapshot.active_patients }}">{{ snapshot.active_patients }}</data>
-  </article>
-  <article class="summary-card tone-info" aria-labelledby="metric-new-title">
-    <div class="summary-card-heading"><h2 id="metric-new-title">Novos vínculos</h2><p>Criados nos últimos 30 dias.</p></div>
-    <data value="{{ snapshot.new_links }}">{{ snapshot.new_links }}</data>
-  </article>
-  <article class="summary-card tone-warning" aria-labelledby="metric-incomplete-title">
-    <div class="summary-card-heading"><h2 id="metric-incomplete-title">Cadastros incompletos</h2><p>Sem telefone registrado.</p></div>
-    <data value="{{ snapshot.incomplete_registrations }}">{{ snapshot.incomplete_registrations }}</data>
-  </article>
-  <article class="summary-card tone-warning" aria-labelledby="metric-consent-title">
-    <div class="summary-card-heading"><h2 id="metric-consent-title">Consentimentos pendentes</h2><p>Pacientes vinculados sem aceite registrado.</p></div>
-    <data value="{{ snapshot.pending_consents }}">{{ snapshot.pending_consents }}</data>
-  </article>
+<section class="row g-3" aria-label="Indicadores factuais">
+  <div class="col-12 col-sm-6 col-xl-3"><article class="card h-100 product-metric-card border-start border-secondary border-4" aria-labelledby="metric-active-title"><div class="card-body"><h2 class="h5" id="metric-active-title">Pacientes ativos vinculados</h2><p class="product-muted">Vínculos terapêuticos vigentes.</p><data class="product-metric-value" value="{{ snapshot.active_patients }}">{{ snapshot.active_patients }}</data></div></article></div>
+  <div class="col-12 col-sm-6 col-xl-3"><article class="card h-100 product-metric-card border-start border-info border-4" aria-labelledby="metric-new-title"><div class="card-body"><h2 class="h5" id="metric-new-title">Novos vínculos</h2><p class="product-muted">Criados nos últimos 30 dias.</p><data class="product-metric-value" value="{{ snapshot.new_links }}">{{ snapshot.new_links }}</data></div></article></div>
+  <div class="col-12 col-sm-6 col-xl-3"><article class="card h-100 product-metric-card border-start border-warning border-4" aria-labelledby="metric-incomplete-title"><div class="card-body"><h2 class="h5" id="metric-incomplete-title">Cadastros incompletos</h2><p class="product-muted">Sem telefone registrado.</p><data class="product-metric-value" value="{{ snapshot.incomplete_registrations }}">{{ snapshot.incomplete_registrations }}</data></div></article></div>
+  <div class="col-12 col-sm-6 col-xl-3"><article class="card h-100 product-metric-card border-start border-warning border-4" aria-labelledby="metric-consent-title"><div class="card-body"><h2 class="h5" id="metric-consent-title">Consentimentos pendentes</h2><p class="product-muted">Pacientes vinculados sem aceite registrado.</p><data class="product-metric-value" value="{{ snapshot.pending_consents }}">{{ snapshot.pending_consents }}</data></div></article></div>
 </section>
 
-<section class="component-section" aria-labelledby="registrations-title">
+<section class="d-grid gap-3" aria-labelledby="registrations-title">
   <h2 id="registrations-title">Cadastros por período</h2>
-  <p class="workspace-intro">Registros de pacientes vinculados, por mês. A tabela abaixo é o equivalente acessível do gráfico.</p>
+  <p class="lead mb-0">Registros de pacientes vinculados, por mês. A tabela abaixo é o equivalente acessível do gráfico.</p>
   {{ snapshot.registration_series|json_script:"registration-series" }}
-  <div class="chart-container">
+  <div class="product-chart-summary">
     <div id="registrations-chart" role="img" aria-label="Gráfico de cadastros por mês"></div>
   </div>
-  <div class="responsive-table-wrapper">
-    <table class="responsive-table">
+  <div class="product-table-card product-table-scroll">
+    <table class="table product-table">
       <caption>Cadastros por mês</caption>
       <thead><tr><th scope="col">Mês</th><th scope="col">Cadastros</th></tr></thead>
       <tbody>
@@ -51,17 +42,17 @@
   </div>
 </section>
 
-<section class="component-section" aria-labelledby="patients-title">
-  <div class="section-heading"><div><h2 id="patients-title">Pacientes</h2></div>
-    <form class="table-filter" method="get">
+<section class="d-grid gap-3" aria-labelledby="patients-title">
+  <div class="product-section-heading d-flex flex-column flex-lg-row align-items-lg-end justify-content-between gap-3"><div><h2 id="patients-title">Pacientes</h2></div>
+    <form class="d-flex flex-wrap align-items-end gap-2" method="get">
       <label for="patient-search">Buscar</label>
-      <input id="patient-search" name="q" type="search" value="{{ query }}">
-      <button type="submit">Buscar</button>
+      <input class="form-control" id="patient-search" name="q" type="search" value="{{ query }}">
+      <button class="btn btn-outline-primary" type="submit">Buscar</button>
     </form>
   </div>
   {% if patients %}
-  <div class="table-scroll" role="region" aria-label="Pacientes vinculados" tabindex="0">
-    <table class="responsive-table">
+  <div class="product-table-card product-table-scroll" role="region" aria-label="Pacientes vinculados" tabindex="0">
+    <table class="table product-table">
       <thead><tr><th scope="col">Nome</th><th scope="col">Contato</th><th scope="col">Última atividade</th><th scope="col">Ações</th></tr></thead>
       <tbody>
         {% for row in patients %}
@@ -69,36 +60,27 @@
           <th scope="row">{{ row.full_name }}{% if row.social_name %}<br><small>Nome social: {{ row.social_name }}</small>{% endif %}</th>
           <td>{{ row.email }}<br>{{ row.phone|default:"Telefone não informado" }}</td>
           <td>{{ row.updated_at|date:"d/m/Y" }}</td>
-          <td class="table-actions"><a href="{% url 'patient_detail' row.patient_profile_id %}">Abrir ficha</a></td>
+          <td><div class="d-flex flex-wrap gap-2"><a class="btn btn-sm btn-outline-primary" href="{% url 'patient_detail' row.patient_profile_id %}">Abrir ficha</a></div></td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
   {% if patients.has_other_pages %}
-  <nav class="pagination" aria-label="Paginação de pacientes">
-    <p class="pagination-status">Página {{ patients.number }} de {{ patients.paginator.num_pages }}</p>
-    <div class="pagination-links">
-      {% if patients.has_previous %}<a href="?q={{ query }}&page={{ patients.previous_page_number }}">Anterior</a>{% endif %}
-      {% if patients.has_next %}<a href="?q={{ query }}&page={{ patients.next_page_number }}">Próxima</a>{% endif %}
-    </div>
+  <nav class="d-flex flex-wrap align-items-center justify-content-between gap-2" aria-label="Paginação de pacientes">
+    <p class="small text-body-secondary mb-0">Página {{ patients.number }} de {{ patients.paginator.num_pages }}</p>
+    <ul class="pagination mb-0">
+      {% if patients.has_previous %}<li class="page-item"><a class="page-link" href="?q={{ query }}&page={{ patients.previous_page_number }}">Anterior</a></li>{% endif %}
+      {% if patients.has_next %}<li class="page-item"><a class="page-link" href="?q={{ query }}&page={{ patients.next_page_number }}">Próxima</a></li>{% endif %}
+    </ul>
   </nav>
   {% endif %}
-  {% else %}<div class="content-card" role="status"><h3>Nenhum paciente vinculado</h3><p>Cadastre um paciente ou aguarde novos vínculos.</p></div>{% endif %}
+  {% else %}<div class="product-empty-state" role="status"><h3>Nenhum paciente vinculado</h3><p>Cadastre um paciente ou aguarde novos vínculos.</p></div>{% endif %}
 </section>
 
-<script src="/static/vendor/apexcharts/apexcharts.min.js" defer></script>
-<script defer>
-  (function () {
-    var data = JSON.parse(document.getElementById("registration-series").textContent);
-    var container = document.getElementById("registrations-chart");
-    if (!container || typeof ApexCharts === "undefined") { return; }
-    new ApexCharts(container, {
-      chart: { type: "bar", height: 240 },
-      series: [{ name: "Cadastros", data: data.map(function (d) { return d.count; }) }],
-      xaxis: { categories: data.map(function (d) { return d.label; }) },
-      colors: ["#6A69F5"],
-    }).render();
-  })();
-</script>
+{% endblock %}
+
+{% block page_scripts %}
+<script defer src="{% static 'duralux/vendors/apexcharts/apexcharts.min.js' %}"></script>
+<script defer src="{% static 'duralux/js/dashboard-charts.js' %}"></script>
 {% endblock %}

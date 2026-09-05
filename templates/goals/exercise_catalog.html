@@ -3,39 +3,39 @@
 {% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
 {% block content %}
-<div style="max-width: 900px; margin: 0 auto; display: grid; gap: 20px;">
-  <header style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+<div>
+  <header>
     <div>
-      <span class="workspace-eyebrow">Prática terapêutica</span>
-      <h1 class="page-title" style="margin: 0;">Catálogo de exercícios</h1>
+      <span class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Prática terapêutica</span>
+      <h1 class="mb-0">Catálogo de exercícios</h1>
     </div>
-    <a href="{% url 'exercise_create' %}" class="primary-action">
+    <a href="{% url 'exercise_create' %}" class="btn btn-primary">
       + Novo exercício
     </a>
   </header>
 
-  <div class="card" style="padding: 20px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-surface);">
+  <div class="card">
     {% if exercises %}
-      <div style="display: grid; gap: 16px;">
+      <div>
         {% for exercise in exercises %}
-          <div style="padding: 16px; border: 1px solid var(--color-border); border-radius: 12px; background: var(--color-canvas); display: grid; gap: 8px;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <div>
               <div>
-                <span class="visibility-badge" style="font-size: 11px;">{{ exercise.approach }}</span>
-                <h2 style="font-size: 18px; font-weight: 700; margin: 4px 0 0;">{{ exercise.title }} (v{{ exercise.version }})</h2>
+                <span class="visibility-badge">{{ exercise.approach }}</span>
+                <h2>{{ exercise.title }} (v{{ exercise.version }})</h2>
               </div>
               <span class="visibility-badge {% if exercise.status == 'published' %}visibility-green{% else %}visibility-yellow{% endif %}">
                 {{ exercise.get_status_display }}
               </span>
             </div>
-            <p style="margin: 0; color: var(--color-text-muted); font-size: 14px; white-space: pre-line;">{{ exercise.instructions|truncatewords:30 }}</p>
-            <div style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
-              <span style="font-size: 12px; color: var(--color-text-muted);">Dur: {{ exercise.estimated_minutes }} min</span>
-              <span style="font-size: 12px; color: var(--color-text-muted);">Formato: {{ exercise.get_response_format_display }}</span>
-              <div style="margin-left: auto; display: flex; gap: 8px;">
-                <a href="{% url 'exercise_edit' exercise.pk %}" class="calendar-nav-btn" style="font-size: 13px;">Editar</a>
+            <p>{{ exercise.instructions|truncatewords:30 }}</p>
+            <div>
+              <span>Dur: {{ exercise.estimated_minutes }} min</span>
+              <span>Formato: {{ exercise.get_response_format_display }}</span>
+              <div>
+                <a href="{% url 'exercise_edit' exercise.pk %}" class="btn btn-outline-secondary">Editar</a>
                 {% if exercise.status == 'published' %}
-                  <a href="{% url 'exercise_assign' exercise.pk %}" class="primary-action" style="font-size: 13px; padding: 6px 12px;">Atribuir a paciente</a>
+                  <a href="{% url 'exercise_assign' exercise.pk %}" class="btn btn-primary">Atribuir a paciente</a>
                 {% endif %}
               </div>
             </div>
@@ -43,8 +43,8 @@
         {% endfor %}
       </div>
     {% else %}
-      <div style="text-align: center; padding: 32px 16px; color: var(--color-text-muted);">
-        <p style="margin: 0;">Nenhum exercício cadastrado no catálogo.</p>
+      <div>
+        <p>Nenhum exercício cadastrado no catálogo.</p>
       </div>
     {% endif %}
   </div>

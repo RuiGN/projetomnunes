@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 from datetime import date
+from typing import Any
 from uuid import uuid4
 
 import pytest
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
+from accounts.models import User
 from audit.models import AuditEvent
 from clinics.models import Clinic, ClinicMembership
 from integrations import services
@@ -32,7 +34,7 @@ def clinic_alpha() -> Clinic:
 
 
 @pytest.fixture
-def admin_user(clinic_alpha: Clinic):
+def admin_user(clinic_alpha: Clinic) -> User:
     user = UserFactory.create(email="admin.webhook@test.org")
     ClinicMembershipFactory.create(
         clinic=clinic_alpha,
@@ -44,7 +46,7 @@ def admin_user(clinic_alpha: Clinic):
 
 
 @pytest.fixture
-def patient_profile(clinic_alpha: Clinic):
+def patient_profile(clinic_alpha: Clinic) -> PatientProfile:
     user = UserFactory.create(email="paciente.wearable@test.org")
     profile = PatientProfile.infrastructure_objects.create(
         clinic=clinic_alpha,
@@ -60,7 +62,9 @@ def patient_profile(clinic_alpha: Clinic):
 
 
 @pytest.mark.django_db
-def test_webhook_catalog_and_forbidden_events(clinic_alpha: Clinic, admin_user) -> None:
+def test_webhook_catalog_and_forbidden_events(
+    clinic_alpha: Clinic, admin_user: User
+) -> None:
     """Outbound webhooks reject forbidden medical records and allow business events."""
     # Reject forbidden events
     for forbidden in WEBHOOK_FORBIDDEN_EVENTS:
@@ -96,7 +100,7 @@ def test_webhook_catalog_and_forbidden_events(clinic_alpha: Clinic, admin_user) 
 
 @pytest.mark.django_db
 def test_webhook_dispatch_hmac_signing_and_dead_letter_replay(
-    clinic_alpha: Clinic, admin_user
+    clinic_alpha: Clinic, admin_user: User
 ) -> None:
     """Webhooks sign with HMAC-SHA256, retry, DLQ, and support authorized replay."""
     sub, _ = services.create_webhook_subscription(
@@ -118,7 +122,9 @@ def test_webhook_dispatch_hmac_signing_and_dead_letter_replay(
     assert "v1=" in attempt_success.signature_header
 
     # 2. Failed dispatch with sender error
-    def failing_sender(url, headers, body):
+    def failing_sender(
+        url: str, headers: dict[str, str], body: dict[str, Any]
+    ) -> tuple[int, str]:
         return 503, "Partner server temporary unavailable"
 
     sub.max_retries = 1  # test DLQ immediately on retry limit
@@ -152,7 +158,7 @@ def test_webhook_dispatch_hmac_signing_and_dead_letter_replay(
 
 @pytest.mark.django_db
 def test_csv_import_formula_defense_and_line_validation(
-    clinic_alpha: Clinic, admin_user
+    clinic_alpha: Clinic, admin_user: User
 ) -> None:
     """CSV ingestion neutralizes formula injection and reports line-by-line errors."""
     raw_rows = [
@@ -193,7 +199,7 @@ def test_csv_import_formula_defense_and_line_validation(
 
 @pytest.mark.django_db
 def test_csv_export_audit_purpose_and_formula_neutralization(
-    clinic_alpha: Clinic, admin_user
+    clinic_alpha: Clinic, admin_user: User
 ) -> None:
     """CSV export requires purpose, neutralizes formula chars, and audits event."""
     data = [

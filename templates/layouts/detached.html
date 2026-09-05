@@ -1,45 +1,43 @@
 {% extends "layouts/base.html" %}
+{% load static %}
 
 {% block workspace %}
-<div
-  class="layout-detached workspace-shell"
-  x-data="workspaceNavigation"
-  x-effect="syncScrollLock"
-  @keydown.escape.window="closeSidebar"
->
-  <div class="detached-frame">
-    <div class="detached-brand-row">
-      <a class="brand-mark" href="{% url 'workspace_vertical' %}" aria-label="Início da plataforma">
-        <span aria-hidden="true">◒</span><span>Cuidado contínuo</span>
-      </a>
-      {% include "layouts/partials/navigation.html" with navigation_label="Navegação destacada" %}
+<div class="layout-detached product-shell product-shell--detached">
+  <nav class="nxl-navigation">
+    <div class="navbar-wrapper">
+      <div class="m-header">
+        <a class="b-brand" href="{% url 'workspace_vertical' %}" aria-label="Início da plataforma">
+          {% if active_clinic_branding.logo %}
+            <img src="{{ active_clinic_branding.logo.url }}" alt="{{ active_clinic_branding.display_name }}" class="product-brand-logo" width="140" height="30">
+          {% else %}
+            <img src="{% static 'duralux/images/logo_header.webp' %}" alt="RGN Terapêutica" class="product-brand-logo" width="140" height="30">
+          {% endif %}
+        </a>
+      </div>
+      <div class="navbar-content">
+        {% include "layouts/partials/navigation.html" with navigation_label="Navegação destacada" %}
+      </div>
     </div>
-    {% include "layouts/partials/header.html" %}
-    <nav aria-label="Caminho de navegação" class="breadcrumbs">
-      <ol><li><a href="{% url 'workspace_vertical' %}">Início</a></li><li aria-current="page">Área de trabalho</li></ol>
-    </nav>
-    {% include "layouts/partials/messages.html" %}
-    <main id="main-content" class="workspace-main detached-main" tabindex="-1">
-      {% block content %}{% endblock %}
-    </main>
-  </div>
+  </nav>
 
-  <div class="drawer-overlay" x-cloak x-show="sidebarOpen" @click="closeSidebar" aria-hidden="true"></div>
-  <aside
-    id="mobile-sidebar"
-    class="mobile-sidebar"
-    x-cloak
-    x-show="sidebarOpen"
-    x-transition
-    role="dialog"
-    aria-modal="true"
-    aria-label="Menu principal"
-    x-ref="mobileSidebar"
-    @keydown.tab="trapFocus"
-  >
-    <div class="mobile-sidebar-heading">
+  {% include "layouts/partials/header.html" %}
+  <main class="nxl-container">
+    <div class="nxl-content">
+      <nav aria-label="Caminho de navegação" class="page-header product-breadcrumbs">
+        <ol class="breadcrumb mb-0"><li class="breadcrumb-item"><a href="{% url 'workspace_vertical' %}">Início</a></li><li class="breadcrumb-item active" aria-current="page">Área de trabalho</li></ol>
+      </nav>
+      {% include "layouts/partials/messages.html" %}
+      <div id="main-content" class="main-content" tabindex="-1">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </main>
+
+  <button class="product-drawer-overlay" type="button" data-sidebar-overlay hidden tabindex="-1" aria-label="Fechar menu"></button>
+  <aside id="mobile-sidebar" class="product-mobile-sidebar" data-mobile-sidebar hidden role="dialog" aria-modal="true" aria-label="Menu principal">
+    <div class="product-mobile-sidebar__heading">
       <strong>Menu</strong>
-      <button type="button" x-ref="sidebarClose" @click="closeSidebar">Fechar menu</button>
+      <button class="btn btn-sm btn-outline-secondary" type="button" data-sidebar-close>Fechar menu</button>
     </div>
     {% include "layouts/partials/navigation.html" with navigation_label="Navegação destacada" %}
   </aside>

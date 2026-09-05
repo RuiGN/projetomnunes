@@ -1,15 +1,16 @@
 {% extends layout_template %}
+{% load static %}
 
 {% block title %}Aula: {{ lesson.title }}{% endblock %}
 
 {% block content %}
-<main style="max-width:1080px;margin:0 auto;display:grid;gap:24px;">
-  <header>
-    <span class="workspace-eyebrow">Curso: {{ course.title }}</span>
-    <h1 class="page-title">{{ lesson.title }}</h1>
+<div class="product-page" aria-labelledby="lesson-title">
+  <header class="product-page-header">
+    <span class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Curso: {{ course.title }}</span>
+    <h1 id="lesson-title" class="mb-0">{{ lesson.title }}</h1>
   </header>
   {% include "content/lesson_player.html" with player=player only %}
-  <section class="card" style="padding:24px;display:grid;gap:12px;" aria-labelledby="complete-title">
+  <section class="product-form-card" aria-labelledby="complete-title">
     <h2 id="complete-title">Concluir aula</h2>
     <form method="post" action="{% url 'content_lesson_event' course.pk lesson.pk %}">
       {% csrf_token %}
@@ -18,8 +19,12 @@
       <input type="hidden" name="position_seconds" value="0">
       <input type="hidden" name="active_seconds" value="0">
       <input type="hidden" name="user_initiated" value="true">
-      <button type="submit">Marcar como concluída</button>
+      <button class="btn btn-primary" type="submit">Marcar como concluída</button>
     </form>
   </section>
-</main>
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script defer src="{% static 'duralux/js/lesson-player.js' %}"></script>
 {% endblock %}

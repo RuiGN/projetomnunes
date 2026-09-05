@@ -5,20 +5,25 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Verificação de certificado</title>
-  <link rel="stylesheet" href="{% static 'css/framework.css' %}">
-  <link rel="stylesheet" href="{% static 'css/tokens.css' %}">
+  <link rel="icon" href="{% static 'duralux/images/favicon.svg' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'duralux/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'duralux/css/theme.min.css' %}">
+  <link rel="stylesheet" href="{% static 'duralux/css/product-integration.css' %}">
 </head>
-<body class="workspace-body">
-  <main style="max-width:720px;margin:0 auto;padding:24px;display:grid;gap:16px;">
-    <h1 class="page-title">Verificação de certificado</h1>
+<body class="product-workspace-body">
+  <main class="container py-5 product-page product-page--narrow" aria-labelledby="certificate-verification-title">
+    <img src="{% static 'duralux/images/logo_header.webp' %}" alt="Plataforma de cuidado" class="product-brand-logo" width="140" height="30">
+    <section class="product-table-card mt-4">
+    <h1 id="certificate-verification-title" class="mb-3">Verificação de certificado</h1>
     {% if status == "valid" %}
-    <p role="status" aria-live="polite">Certificado válido</p>
-    <p>Curso: {{ course_title }}</p>
+    <p class="alert alert-success" role="status" aria-live="polite">Certificado válido</p>
+    <p class="mb-0">Curso: {{ course_title }}</p>
     {% elif status == "revoked" %}
-    <p role="status" aria-live="polite">Certificado revogado</p>
+    <p class="alert alert-warning" role="status" aria-live="polite">Certificado revogado</p>
     {% else %}
-    <p role="status" aria-live="polite">Certificado não encontrado</p>
+    <p class="alert alert-danger" role="status" aria-live="polite">Certificado não encontrado</p>
     {% endif %}
+    </section>
   </main>
 </body>
 </html>

@@ -3,13 +3,13 @@
 {% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
 {% block content %}
-<div style="max-width: 640px; margin: 0 auto; text-align: center; display: grid; gap: 16px; padding: 48px 0;">
-  <h1 class="page-title" style="margin: 0;">Check-in indisponível</h1>
-  <p style="margin: 0; color: var(--color-text-muted);">
+<div>
+  <h1 class="mb-0">Check-in indisponível</h1>
+  <p>
     No momento não há nenhum questionário de check-in ativo nesta clínica.
     Fale com sua equipe de atendimento se precisar de ajuda.
   </p>
-  <a href="{% url 'journal_list' %}" class="calendar-nav-btn" style="text-decoration: none; display: inline-flex;">
+  <a href="{% url 'journal_list' %}" class="btn btn-outline-secondary">
     Voltar ao diário
   </a>
 </div>

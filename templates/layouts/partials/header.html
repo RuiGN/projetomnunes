@@ -1,60 +1,55 @@
-<header class="workspace-header">
-  <button
-    class="mobile-menu-button"
-    type="button"
-    x-ref="sidebarToggle"
-    @click="openSidebar"
-    :aria-expanded="sidebarOpen.toString()"
-    aria-controls="mobile-sidebar"
-  >
-    <span aria-hidden="true">☰</span>
-    <span>Abrir menu</span>
-  </button>
+<header class="nxl-header">
+  <div class="header-wrapper">
+    <div class="header-left d-flex align-items-center gap-3">
+      <button class="btn btn-outline-secondary d-xl-none" type="button" data-sidebar-open aria-expanded="false" aria-controls="mobile-sidebar">
+        <span aria-hidden="true">☰</span>
+        <span>Abrir menu</span>
+      </button>
+      <div class="clinic-context">
+        <span class="text-muted d-block">Clínica ativa</span>
+        <strong>{{ active_clinic.name }}</strong>
+      </div>
+    </div>
 
-  <div class="clinic-context">
-    <span class="context-label">Clínica ativa</span>
-    <strong>{{ active_clinic.name }}</strong>
+    <div class="header-right ms-auto d-flex align-items-center gap-3 flex-wrap">
+      {% if available_clinics|length > 1 %}
+        <form class="d-flex align-items-end gap-2" method="get" action="{% url 'clinic_switch_review' %}">
+          <div>
+            <label class="form-label mb-1" for="clinic-id">Trocar clínica</label>
+            <select class="form-select form-select-sm" id="clinic-id" name="clinic_id">
+              {% for clinic in available_clinics %}
+                <option value="{{ clinic.pk }}"{% if clinic.pk == active_clinic.pk %} selected{% endif %}>{{ clinic.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <input type="hidden" name="next" value="{{ request.path }}">
+          <button class="btn btn-sm btn-outline-primary" type="submit">Revisar troca</button>
+        </form>
+      {% endif %}
+
+      <div class="d-flex align-items-center gap-2">
+        <span class="avatar-text avatar-sm bg-primary text-white" aria-hidden="true">{{ user.first_name|first|default:"U" }}</span>
+        <span><span class="text-muted d-block">Sessão de</span><strong>{{ user.get_full_name|default:user.email }}</strong></span>
+      </div>
+
+      <button class="btn btn-sm btn-outline-secondary" type="button" data-theme-toggle aria-label="Alternar tema claro e escuro">
+        <span aria-hidden="true" data-theme-icon>◐</span>
+        <span>Tema</span>
+        <span class="visually-hidden" data-theme-status aria-live="polite">Tema do sistema</span>
+      </button>
+
+      <form class="d-flex align-items-end gap-2" method="post" action="{% url 'workspace_layout_preference' %}">
+        {% csrf_token %}
+        <div>
+          <label class="form-label mb-1" for="preferred-layout">Layout</label>
+          <select class="form-select form-select-sm" id="preferred-layout" name="layout">
+            <option value="vertical"{% if user.preferred_layout == 'vertical' %} selected{% endif %}>Vertical</option>
+            <option value="detached"{% if user.preferred_layout == 'detached' %} selected{% endif %}>Destacado</option>
+          </select>
+        </div>
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <button class="btn btn-sm btn-primary" type="submit">Aplicar</button>
+      </form>
+    </div>
   </div>
-
-  {% if available_clinics|length > 1 %}
-    <form class="clinic-switcher" method="get" action="{% url 'clinic_switch_review' %}">
-      <label for="clinic-id">Trocar clínica</label>
-      <select id="clinic-id" name="clinic_id">
-        {% for clinic in available_clinics %}
-          <option value="{{ clinic.pk }}"{% if clinic.pk == active_clinic.pk %} selected{% endif %}>{{ clinic.name }}</option>
-        {% endfor %}
-      </select>
-      <input type="hidden" name="next" value="{{ request.path }}">
-      <button type="submit">Revisar troca</button>
-    </form>
-  {% endif %}
-
-  <div class="user-identity">
-    <span class="user-avatar" aria-hidden="true">{{ user.first_name|first|default:"U" }}</span>
-    <span>
-      <span class="context-label">Sessão de</span>
-      <strong>{{ user.get_full_name|default:user.email }}</strong>
-    </span>
-  </div>
-
-  <button
-    class="theme-toggle"
-    type="button"
-    data-theme-toggle
-    aria-label="Alternar tema claro e escuro"
-  >
-    <span aria-hidden="true" data-theme-icon>◐</span>
-    <span class="sr-only" data-theme-status aria-live="polite">Tema do sistema</span>
-  </button>
-
-  <form class="layout-preference" method="post" action="{% url 'workspace_layout_preference' %}">
-    {% csrf_token %}
-    <label for="preferred-layout">Layout</label>
-    <select id="preferred-layout" name="layout">
-      <option value="vertical"{% if user.preferred_layout == 'vertical' %} selected{% endif %}>Vertical</option>
-      <option value="detached"{% if user.preferred_layout == 'detached' %} selected{% endif %}>Destacado</option>
-    </select>
-    <input type="hidden" name="next" value="{{ request.path }}">
-    <button type="submit">Aplicar</button>
-  </form>
 </header>

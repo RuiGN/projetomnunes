@@ -1,20 +1,22 @@
 {% extends "layouts/base.html" %}
 
+{% block title %}Confirmar troca de clínica{% endblock %}
+
 {% block workspace %}
-<main id="main-content" class="confirmation-shell">
-  <section class="confirmation-card" aria-labelledby="confirmation-title">
-    <p class="workspace-eyebrow">Confirmação de contexto</p>
+<main id="main-content" class="product-page product-page--narrow">
+  <section class="product-form-card" aria-labelledby="confirmation-title">
+    <p class="text-primary-emphasis fw-semibold text-uppercase small">Confirmação de contexto</p>
     <h1 id="confirmation-title">Trocar clínica ativa?</h1>
     <p>Você está em <strong>{{ current_clinic.name }}</strong> e solicitou acesso a <strong>{{ target_clinic.name }}</strong>.</p>
     <p>A troca atualiza o contexto das próximas páginas. Nenhum dado é copiado entre clínicas.</p>
-    <div class="confirmation-actions">
+    <div class="d-flex flex-wrap align-items-center gap-2">
       <form method="post" action="{% url 'clinic_switch_confirm' %}">
         {% csrf_token %}
         <input type="hidden" name="clinic_id" value="{{ target_clinic.pk }}">
         <input type="hidden" name="next" value="{{ next_url }}">
-        <button class="primary-action" type="submit">Confirmar troca</button>
+        <button class="btn btn-primary" type="submit">Confirmar troca</button>
       </form>
-      <a class="secondary-action" href="{{ next_url }}">Manter clínica atual</a>
+      <a class="btn btn-outline-secondary" href="{{ next_url }}">Manter clínica atual</a>
     </div>
   </section>
 </main>

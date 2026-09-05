@@ -1,42 +1,46 @@
 {% extends "layouts/vertical.html" %}
 
+{% block title %}Sessões e dispositivos{% endblock %}
+
 {% block content %}
-<section class="content-card" aria-labelledby="sessions-title">
-  <h1 id="sessions-title">Sessões e dispositivos</h1>
-  <p>Revise os acessos à sua conta e encerre os que não reconhecer.</p>
-  {% if account_sessions %}
-    <ul class="content-list">
-      {% for device in account_sessions %}
-        <li>
-          <strong>{{ device.client_label }}</strong>
-          <span>Última atividade: {{ device.last_seen_at }}</span>
-          {% if device.revoked_at %}
-            <span>Encerrada</span>
-          {% elif current_session and device.pk == current_session.pk %}
-            <span>Sessão atual</span>
-          {% else %}
-            <form method="post">
-              {% csrf_token %}
-              <input type="hidden" name="action" value="revoke">
-              <input type="hidden" name="session_id" value="{{ device.pk }}">
-              <button type="submit">Encerrar sessão</button>
-            </form>
-          {% endif %}
-        </li>
-      {% endfor %}
-    </ul>
-    <form method="post">
-      {% csrf_token %}
-      <input type="hidden" name="action" value="revoke_others">
-      {{ reauthentication_form.password.label_tag }}
-      {{ reauthentication_form.password }}
-      {% for error in reauthentication_form.password.errors %}
-        <p role="alert">{{ error }}</p>
-      {% endfor %}
-      <button type="submit">Encerrar todas as outras sessões</button>
-    </form>
-  {% else %}
-    <p role="status">Nenhuma sessão registrada.</p>
-  {% endif %}
+<section class="card border-0 shadow-sm" aria-labelledby="sessions-title">
+  <div class="card-body p-4">
+    <div class="mb-4">
+      <h1 id="sessions-title" class="h3 mb-2">Sessões e dispositivos</h1>
+      <p class="text-body-secondary mb-0">Revise os acessos à sua conta e encerre os que não reconhecer.</p>
+    </div>
+    {% if account_sessions %}
+      <ul class="list-group mb-4">
+        {% for device in account_sessions %}
+          <li class="list-group-item d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+            <div>
+              <strong class="d-block">{{ device.client_label }}</strong>
+              <span class="text-body-secondary">Última atividade: {{ device.last_seen_at }}</span>
+              {% if device.revoked_at %}<span class="badge text-bg-secondary ms-2">Encerrada</span>{% endif %}
+              {% if current_session and device.pk == current_session.pk %}<span class="badge text-bg-success ms-2">Sessão atual</span>{% endif %}
+            </div>
+            {% if not device.revoked_at and not current_session or not device.revoked_at and device.pk != current_session.pk %}
+              <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="revoke">
+                <input type="hidden" name="session_id" value="{{ device.pk }}">
+                <button class="btn btn-outline-danger" type="submit">Encerrar sessão</button>
+              </form>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+      <form class="border rounded p-3" method="post" data-form-guard>
+        {% csrf_token %}
+        <input type="hidden" name="action" value="revoke_others">
+        <label class="form-label" for="{{ reauthentication_form.password.id_for_label }}">{{ reauthentication_form.password.label }}</label>
+        {{ reauthentication_form.password }}
+        {% for error in reauthentication_form.password.errors %}<p class="invalid-feedback d-block">{{ error }}</p>{% endfor %}
+        <button class="btn btn-danger mt-3" type="submit">Encerrar todas as outras sessões</button>
+      </form>
+    {% else %}
+      <div class="alert alert-info mb-0" role="status">Nenhuma sessão registrada.</div>
+    {% endif %}
+  </div>
 </section>
 {% endblock %}

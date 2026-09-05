@@ -1,5 +1,5 @@
 {% load i18n %}
-<article class="content-card" aria-labelledby="consent-document-{{ row.document.id }}">
+<article class="product-table-card" aria-labelledby="consent-document-{{ row.document.id }}">
   <h3 id="consent-document-{{ row.document.id }}">{{ row.document.title }}</h3>
   <p>{% blocktranslate with version=row.document.version purpose=row.purpose_label %}Version {{ version }} · Purpose: {{ purpose }}{% endblocktranslate %}</p>
   <div class="prose">{{ row.document.content|linebreaks }}</div>
@@ -21,7 +21,7 @@
         {% translate "I do not accept" %}
       </label>
     </fieldset>
-    <button class="primary-action" type="submit">{% translate "Record decision" %}</button>
+    <button class="btn btn-primary" type="submit">{% translate "Record decision" %}</button>
   </form>
   {% if row.decision == "accepted" and not row.document.is_mandatory %}
     <form method="post" action="{% url 'consent_revoke' document_id=row.document.id %}" data-prevent-double-submit>

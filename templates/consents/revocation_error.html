@@ -1,8 +1,10 @@
 {% extends "layouts/vertical.html" %}
 {% load i18n %}
 
+{% block title %}{% translate "Não foi possível revogar a autorização" %}{% endblock %}
+
 {% block content %}
-<section class="content-card" aria-labelledby="revocation-error-title">
+<section class="product-table-card" aria-labelledby="revocation-error-title">
   <h1 id="revocation-error-title">{% translate "Não foi possível revogar a autorização" %}</h1>
   <p>{{ document.title }}</p>
   {% if form.non_field_errors %}<div role="alert">{{ form.non_field_errors }}</div>{% endif %}

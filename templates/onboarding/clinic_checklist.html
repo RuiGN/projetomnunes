@@ -1,22 +1,26 @@
 {% extends layout_template %}
 
+{% block title %}Onboarding da clínica{% endblock %}
+
 {% block content %}
-<section class="welcome-panel" aria-labelledby="clinic-onboarding-title">
-  <div><p class="workspace-eyebrow">Preparação operacional</p><h1 id="clinic-onboarding-title">Onboarding da clínica</h1><p class="workspace-intro">Pendências factuais para liberar a operação inicial.</p></div>
+<div class="product-page" aria-labelledby="clinic-onboarding-title">
+<section class="product-page-header" aria-labelledby="clinic-onboarding-title">
+  <div><p class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Preparação operacional</p><h1 id="clinic-onboarding-title">Onboarding da clínica</h1><p class="lead mb-0">Pendências factuais para liberar a operação inicial.</p></div>
 </section>
-<section class="component-section" aria-labelledby="checklist-title">
+<section class="d-grid gap-3" aria-labelledby="checklist-title">
   <h2 id="checklist-title">Checklist de preparação</h2>
-  <ul class="checklist">
+  <ul class="list-group list-group-flush">
     {% for item in items %}
-    <li class="checklist-item{% if item.is_complete %} is-complete{% endif %}">
-      <span class="checklist-mark" aria-hidden="true">{% if item.is_complete %}✓{% else %}○{% endif %}</span>
+    <li class="list-group-item d-flex align-items-start gap-3{% if item.is_complete %} bg-success-subtle{% endif %}">
+      <span class="badge rounded-pill {% if item.is_complete %}text-bg-success{% else %}text-bg-secondary{% endif %}" aria-hidden="true">{% if item.is_complete %}✓{% else %}○{% endif %}</span>
       <div>
         <strong>{{ item.label }}</strong>
         <p>{{ item.detail }}</p>
       </div>
-      <span class="sr-only">{% if item.is_complete %}concluído{% else %}pendente{% endif %}</span>
+      <span class="visually-hidden">{% if item.is_complete %}concluído{% else %}pendente{% endif %}</span>
     </li>
     {% endfor %}
   </ul>
 </section>
+</div>
 {% endblock %}

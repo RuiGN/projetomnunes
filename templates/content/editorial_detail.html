@@ -3,86 +3,86 @@
 {% block title %}Editor: {{ content.title }}{% endblock %}
 
 {% block content %}
-<main style="max-width:1080px;margin:0 auto;display:grid;gap:24px;">
-  <header style="display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;">
-    <div><span class="workspace-eyebrow">{{ content.get_status_display }} · versão {{ content.current_version }}</span><h1 class="page-title">{{ content.title }}</h1></div>
-    {% if current %}<a href="{% url 'content_editorial_preview' content_id=content.pk version=current.version %}">Pré-visualizar</a>{% endif %}
+<div class="product-page" aria-labelledby="editor-title-page">
+  <header class="product-page-header d-flex flex-column flex-md-row align-items-md-end justify-content-between gap-3">
+    <div><span class="text-primary-emphasis fw-semibold text-uppercase small mb-0">{{ content.get_status_display }} · versão {{ content.current_version }}</span><h1 id="editor-title-page" class="mb-0">{{ content.title }}</h1></div>
+    {% if current %}<a class="btn btn-outline-primary" href="{% url 'content_editorial_preview' content_id=content.pk version=current.version %}">Pré-visualizar</a>{% endif %}
   </header>
 
-  <section class="card" aria-labelledby="editor-title" style="padding:24px;display:grid;gap:16px;">
+  <section class="product-form-card" aria-labelledby="editor-title">
     <h2 id="editor-title">Editor de blocos</h2>
-    <form method="post" action="{% url 'content_editorial_version' content_id=content.pk %}" style="display:grid;gap:12px;">
+    <form class="product-stack" method="post" action="{% url 'content_editorial_version' content_id=content.pk %}">
       {% csrf_token %}
-      <fieldset id="block-editor" style="display:grid;gap:12px;padding:16px;">
+      <fieldset id="block-editor" class="product-stack border rounded p-3">
         <legend>Novos blocos</legend>
         <p id="editor-help">Use títulos, parágrafos e listas. Uma nova versão preserva todo o histórico.</p>
-        <div id="block-list" style="display:grid;gap:12px;">
-          <div class="block-row" style="display:grid;gap:6px;">
+        <div id="block-list" class="product-stack">
+          <div class="block-row product-stack border rounded p-3">
             <label for="id_block_type_0">Tipo do bloco 1</label>
-            <select id="id_block_type_0" name="block_type" aria-label="Tipo do bloco 1">
+            <select class="form-select" id="id_block_type_0" name="block_type" aria-label="Tipo do bloco 1">
               <option value="paragraph">Parágrafo</option>
               <option value="heading">Título</option>
               <option value="list_item">Item de lista</option>
             </select>
             <label for="id_block_text_0">Texto do bloco 1</label>
-            <textarea id="id_block_text_0" name="block_text" rows="3" aria-label="Texto do bloco 1"></textarea>
-            <div style="display:flex;gap:8px;">
-              <button type="button" data-block-move="up" aria-label="Mover bloco 1 para cima">Mover para cima</button>
-              <button type="button" data-block-move="down" aria-label="Mover bloco 1 para baixo">Mover para baixo</button>
-              <button type="button" data-block-remove aria-label="Remover bloco 1">Remover bloco</button>
+            <textarea class="form-control" id="id_block_text_0" name="block_text" rows="3" aria-label="Texto do bloco 1"></textarea>
+            <div class="d-flex flex-wrap gap-2">
+              <button class="btn btn-outline-secondary" type="button" data-block-move="up" aria-label="Mover bloco 1 para cima">Mover para cima</button>
+              <button class="btn btn-outline-secondary" type="button" data-block-move="down" aria-label="Mover bloco 1 para baixo">Mover para baixo</button>
+              <button class="btn btn-outline-danger" type="button" data-block-remove aria-label="Remover bloco 1">Remover bloco</button>
             </div>
           </div>
-          <div class="block-row" style="display:grid;gap:6px;">
+          <div class="block-row product-stack border rounded p-3">
             <label for="id_block_type_1">Tipo do bloco 2</label>
-            <select id="id_block_type_1" name="block_type" aria-label="Tipo do bloco 2">
+            <select class="form-select" id="id_block_type_1" name="block_type" aria-label="Tipo do bloco 2">
               <option value="paragraph">Parágrafo</option>
               <option value="heading">Título</option>
               <option value="list_item">Item de lista</option>
             </select>
             <label for="id_block_text_1">Texto do bloco 2</label>
-            <textarea id="id_block_text_1" name="block_text" rows="3" aria-label="Texto do bloco 2"></textarea>
-            <div style="display:flex;gap:8px;">
-              <button type="button" data-block-move="up" aria-label="Mover bloco 2 para cima">Mover para cima</button>
-              <button type="button" data-block-move="down" aria-label="Mover bloco 2 para baixo">Mover para baixo</button>
-              <button type="button" data-block-remove aria-label="Remover bloco 2">Remover bloco</button>
+            <textarea class="form-control" id="id_block_text_1" name="block_text" rows="3" aria-label="Texto do bloco 2"></textarea>
+            <div class="d-flex flex-wrap gap-2">
+              <button class="btn btn-outline-secondary" type="button" data-block-move="up" aria-label="Mover bloco 2 para cima">Mover para cima</button>
+              <button class="btn btn-outline-secondary" type="button" data-block-move="down" aria-label="Mover bloco 2 para baixo">Mover para baixo</button>
+              <button class="btn btn-outline-danger" type="button" data-block-remove aria-label="Remover bloco 2">Remover bloco</button>
             </div>
           </div>
         </div>
-        <button type="button" data-block-add aria-label="Adicionar bloco">Adicionar bloco</button>
-        <details>
+        <button class="btn btn-outline-primary" type="button" data-block-add aria-label="Adicionar bloco">Adicionar bloco</button>
+        <details class="border rounded p-3">
           <summary>Editar HTML bruto (fallback)</summary>
-          {% for field in version_form %}<div style="display:grid;gap:6px;"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}</div>{% endfor %}
+          {% for field in version_form %}<div><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}</div>{% endfor %}
         </details>
       </fieldset>
-      <button type="submit" class="primary-action">Criar nova versão</button>
+      <button type="submit" class="btn btn-primary">Criar nova versão</button>
     </form>
   </section>
 
-  <section class="card" aria-labelledby="workflow-title" style="padding:24px;display:grid;gap:16px;">
+  <section class="product-form-card product-stack" aria-labelledby="workflow-title">
     <h2 id="workflow-title">Fluxo editorial</h2>
-    <div style="display:flex;flex-wrap:wrap;gap:12px;">
-      <form method="post" action="{% url 'content_editorial_submit' content_id=content.pk %}">{% csrf_token %}<button type="submit">Enviar para revisão</button></form>
-      <form method="post" action="{% url 'content_publish' content_id=content.pk %}">{% csrf_token %}<button type="submit">Publicar</button></form>
-      <form method="post" action="{% url 'content_editorial_archive' content_id=content.pk %}">{% csrf_token %}<button type="submit">Arquivar</button></form>
+    <div class="d-flex flex-wrap gap-2">
+      <form method="post" action="{% url 'content_editorial_submit' content_id=content.pk %}">{% csrf_token %}<button class="btn btn-outline-primary" type="submit">Enviar para revisão</button></form>
+      <form method="post" action="{% url 'content_publish' content_id=content.pk %}">{% csrf_token %}<button class="btn btn-primary" type="submit">Publicar</button></form>
+      <form method="post" action="{% url 'content_editorial_archive' content_id=content.pk %}">{% csrf_token %}<button class="btn btn-outline-secondary" type="submit">Arquivar</button></form>
     </div>
-    <form method="post" action="{% url 'content_editorial_approve' content_id=content.pk %}" style="display:grid;gap:8px;">{% csrf_token %}{{ approval_form.as_div }}<button type="submit">Aprovar versão</button></form>
-    <form method="post" action="{% url 'content_editorial_metadata' content_id=content.pk %}" style="display:grid;gap:8px;">{% csrf_token %}{{ metadata_form.as_div }}<button type="submit">Atualizar metadados</button></form>
-    <form method="post" action="{% url 'content_editorial_rollback' content_id=content.pk %}" style="display:grid;gap:8px;">{% csrf_token %}{{ rollback_form.as_div }}<button type="submit">Reverter versão</button></form>
-    <form method="post" enctype="multipart/form-data" action="{% url 'content_editorial_media' content_id=content.pk %}" style="display:grid;gap:8px;">{% csrf_token %}{{ media_form.as_div }}<button type="submit">Anexar mídia</button></form>
+    <form class="product-stack" method="post" action="{% url 'content_editorial_approve' content_id=content.pk %}">{% csrf_token %}{{ approval_form.as_div }}<button class="btn btn-outline-primary" type="submit">Aprovar versão</button></form>
+    <form class="product-stack" method="post" action="{% url 'content_editorial_metadata' content_id=content.pk %}">{% csrf_token %}{{ metadata_form.as_div }}<button class="btn btn-outline-primary" type="submit">Atualizar metadados</button></form>
+    <form class="product-stack" method="post" action="{% url 'content_editorial_rollback' content_id=content.pk %}">{% csrf_token %}{{ rollback_form.as_div }}<button class="btn btn-outline-secondary" type="submit">Reverter versão</button></form>
+    <form class="product-stack" method="post" enctype="multipart/form-data" action="{% url 'content_editorial_media' content_id=content.pk %}">{% csrf_token %}{{ media_form.as_div }}<button class="btn btn-outline-primary" type="submit">Anexar mídia</button></form>
   </section>
 
-  <section class="card" aria-labelledby="history-title" style="padding:24px;overflow-x:auto;">
+  <section class="product-table-card" aria-labelledby="history-title">
     <h2 id="history-title">Histórico de versões</h2>
     <ul>{% for version in versions %}<li>Versão {{ version.version }} · {{ version.get_status_display }} · <a href="{% url 'content_editorial_preview' content_id=content.pk version=version.version %}">Pré-visualizar</a></li>{% endfor %}</ul>
     {% if versions|length > 1 %}<a href="{% url 'content_editorial_compare' content_id=content.pk %}?from={{ versions.0.version }}&amp;to={{ current.version }}">Comparar primeira e atual</a>{% endif %}
   </section>
 
-  {% if current %}<section class="card" aria-labelledby="comments-title" style="padding:24px;display:grid;gap:16px;">
+  {% if current %}<section class="product-form-card" aria-labelledby="comments-title">
     <h2 id="comments-title">Comentários da versão {{ current.version }}</h2>
     <ol>{% for comment in comments %}<li><strong>{{ comment.author }}</strong> — {{ comment.body }} <time datetime="{{ comment.created_at|date:'c' }}">{{ comment.created_at }}</time></li>{% empty %}<li>Nenhum comentário.</li>{% endfor %}</ol>
-    <form method="post" action="{% url 'content_editorial_comment' content_id=content.pk version=current.version %}" style="display:grid;gap:8px;">{% csrf_token %}{{ comment_form.as_div }}<p>Comentários são permanentes e não podem ser editados ou removidos.</p><button type="submit">Adicionar comentário</button></form>
+    <form class="product-stack" method="post" action="{% url 'content_editorial_comment' content_id=content.pk version=current.version %}">{% csrf_token %}{{ comment_form.as_div }}<p>Comentários são permanentes e não podem ser editados ou removidos.</p><button class="btn btn-primary" type="submit">Adicionar comentário</button></form>
   </section>{% endif %}
 
-  <a href="{% url 'content_editorial_index' %}">Voltar à gestão editorial</a>
-</main>
+  <a class="btn btn-outline-secondary align-self-start" href="{% url 'content_editorial_index' %}">Voltar à gestão editorial</a>
+</div>
 {% endblock %}

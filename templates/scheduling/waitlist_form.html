@@ -1,14 +1,16 @@
 {% extends layout_template %}
+{% load accessible_forms %}
 
 {% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
 {% block content %}
-<div style="max-width: 640px; margin: 0 auto;">
-  <h1>Adicionar à lista de espera</h1>
-  <form method="post">
+<div class="product-page product-page--narrow" aria-labelledby="waitlist-form-title">
+  <header class="product-page-header"><p class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Agenda</p><h1 id="waitlist-form-title">Adicionar à lista de espera</h1><p class="product-page-meta">Registre a preferência para que a equipe possa oferecer uma vaga compatível.</p></header>
+  <form method="post" class="product-form-card d-grid gap-3" novalidate>
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="button button-primary">{{ submit_label }}</button>
+    {% if form.non_field_errors %}<div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+    {% for field in form %}{% include "components/duralux_field.html" with field=field only %}{% endfor %}
+    <div class="d-flex flex-wrap gap-2"><button type="submit" class="btn btn-primary">{{ submit_label }}</button><a href="{% url 'waitlist_list' %}" class="btn btn-outline-secondary">Cancelar inclusão</a></div>
   </form>
 </div>
 {% endblock %}

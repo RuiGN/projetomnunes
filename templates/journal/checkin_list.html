@@ -3,30 +3,32 @@
 {% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
 {% block content %}
-<div style="max-width: 900px; margin: 0 auto; display: grid; gap: 20px;">
+<div>
   <header class="journal-header">
     <div>
-      <span class="workspace-eyebrow">Acompanhamento pessoal</span>
-      <h1 class="page-title" style="margin: 0;">Histórico de Check-ins</h1>
+      <span class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Acompanhamento pessoal</span>
+      <h1 class="mb-0">Histórico de Check-ins</h1>
       {% if total_checkins_count %}
-        <p style="margin: 4px 0 0; color: var(--color-text-muted); font-size: 14px;">
+        <p>
           {{ total_checkins_count }} registro{{ total_checkins_count|pluralize:"s" }} no total
         </p>
       {% endif %}
     </div>
-    <div style="display: flex; gap: 8px;">
-      <a href="{% url 'checkin_today' %}" class="primary-action" style="text-decoration: none; padding: 10px 16px; border-radius: 9px; font-weight: 600;">
+    <div>
+      <a href="{% url 'checkin_today' %}" class="btn btn-primary">
         Fazer check-in de hoje
       </a>
-      <a href="{% url 'journal_list' %}" class="calendar-nav-btn" style="text-decoration: none;">
+      <a href="{% url 'journal_list' %}" class="btn btn-outline-secondary">
         Voltar ao diário
       </a>
     </div>
   </header>
 
   {% if checkins.object_list %}
-    <div class="responsive-table-wrapper">
-      <table class="responsive-table">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+      <div class="table-responsive">
+      <table class="table product-table">
         <caption>Respostas enviadas por dia</caption>
         <thead>
           <tr>
@@ -57,6 +59,8 @@
           {% endfor %}
         </tbody>
       </table>
+      </div>
+      </div>
     </div>
 
     <div class="mobile-row-list">
@@ -79,24 +83,24 @@
 
     {% if checkins.paginator.num_pages > 1 %}
       <nav class="pagination" aria-label="Paginação do histórico de check-ins">
-        <p class="pagination-status">Página {{ checkins.number }} de {{ checkins.paginator.num_pages }}</p>
-        <div class="pagination-links">
+        <p class="product-muted">Página {{ checkins.number }} de {{ checkins.paginator.num_pages }}</p>
+        <div class="d-flex flex-wrap gap-2">
           {% if checkins.has_previous %}
-            <a href="?page={{ checkins.previous_page_number }}" class="calendar-nav-btn" aria-label="Página anterior">Anterior</a>
+            <a href="?page={{ checkins.previous_page_number }}" class="btn btn-outline-secondary" aria-label="Página anterior">Anterior</a>
           {% endif %}
           {% if checkins.has_next %}
-            <a href="?page={{ checkins.next_page_number }}" class="calendar-nav-btn" aria-label="Próxima página">Próxima</a>
+            <a href="?page={{ checkins.next_page_number }}" class="btn btn-outline-secondary" aria-label="Próxima página">Próxima</a>
           {% endif %}
         </div>
       </nav>
     {% endif %}
   {% else %}
-    <div class="content-state" style="padding: 40px 24px; text-align: center; border: 1px dashed var(--color-border); border-radius: 14px; background: var(--color-surface);">
-      <p style="margin: 0 0 12px; font-size: 17px; font-weight: 600;">Nenhum check-in registrado ainda</p>
-      <p style="margin: 0 0 20px; color: var(--color-text-muted);">
+    <div class="product-empty-state">
+      <p>Nenhum check-in registrado ainda</p>
+      <p>
         O check-in diário é rápido e ajuda você a acompanhar seu dia a dia. Comece agora.
       </p>
-      <a href="{% url 'checkin_today' %}" class="primary-action" style="display: inline-flex; padding: 10px 18px; border-radius: 9px; text-decoration: none; font-weight: 600;">
+      <a href="{% url 'checkin_today' %}" class="btn btn-primary">
         Fazer meu primeiro check-in
       </a>
     </div>

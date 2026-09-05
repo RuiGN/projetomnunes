@@ -1,41 +1,44 @@
 {% extends layout_template %}
 
+{% block title %}Área de trabalho{% endblock %}
+
 {% block content %}
-<section class="welcome-panel" aria-labelledby="workspace-title">
+<div class="product-page" aria-labelledby="workspace-title">
+<section class="product-page-header d-flex flex-column flex-lg-row align-items-lg-end justify-content-between gap-3" aria-labelledby="workspace-title">
   <div>
-    <p class="workspace-eyebrow">Contexto operacional</p>
+    <p class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Contexto operacional</p>
     <h1 id="workspace-title">Área de trabalho</h1>
-    <p class="workspace-intro">Acesse as funções autorizadas da clínica ativa. Novos módulos aparecerão aqui conforme forem disponibilizados.</p>
+    <p class="lead mb-0">Acesse as funções autorizadas da clínica ativa. Novos módulos aparecerão aqui conforme forem disponibilizados.</p>
   </div>
-  <div class="context-chip">
+  <div class="card card-body py-2 px-3 flex-shrink-0">
     <span>Ambiente atual</span>
     <strong>{{ active_clinic.name }}</strong>
   </div>
 </section>
-<section class="component-section" aria-labelledby="operational-summary-title">
-  <div class="section-heading">
+<section class="d-grid gap-3" aria-labelledby="operational-summary-title">
+  <div class="product-section-heading">
     <div>
-      <p class="workspace-eyebrow">Resumo factual</p>
+      <p class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Resumo factual</p>
       <h2 id="operational-summary-title">Visão operacional</h2>
     </div>
   </div>
-  <div class="summary-card-grid">
+  <div class="row g-3">
     {% for card in summary_cards|slice:":2" %}
-      {% include "components/summary_card.html" with card=card only %}
+      <div class="col-12 col-md-6">{% include "components/summary_card.html" with card=card only %}</div>
     {% endfor %}
   </div>
 </section>
-<section class="component-section" id="activity-list" aria-labelledby="activity-title">
-  <div class="section-heading">
+<section class="d-grid gap-3" id="activity-list" aria-labelledby="activity-title">
+  <div class="product-section-heading d-flex flex-column flex-lg-row align-items-lg-end justify-content-between gap-3">
     <div>
-      <p class="workspace-eyebrow">Registros sintéticos</p>
+      <p class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Registros sintéticos</p>
       <h2 id="activity-title">Atividades da plataforma</h2>
     </div>
-    <form class="table-filter" method="get">
+    <form class="d-flex flex-wrap align-items-end gap-2" method="get">
       <label for="activity-search">Buscar atividade</label>
       <input type="hidden" name="order" value="{{ current_order }}">
-      <input id="activity-search" name="q" type="search" value="{{ search_query }}">
-      <button type="submit">Buscar</button>
+      <input class="form-control" id="activity-search" name="q" type="search" value="{{ search_query }}">
+      <button class="btn btn-outline-primary" type="submit">Buscar</button>
     </form>
   </div>
   {% if activity_table.rows %}
@@ -45,4 +48,5 @@
     {% include "components/content_state.html" with state=content_states.2 only %}
   {% endif %}
 </section>
+ </div>
 {% endblock %}

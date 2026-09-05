@@ -1,170 +1,334 @@
 {% load static %}
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-bs-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Referência do sistema visual</title>
-  <script src="{% static 'js/theme.js' %}"></script>
-  <link rel="stylesheet" href="{% static 'css/framework.css' %}">
-  <link rel="stylesheet" href="{% static 'css/tokens.css' %}">
-  <link rel="stylesheet" href="{% static 'css/workspace.css' %}">
-  <script defer src="{% static 'js/form-behaviors.js' %}"></script>
-  <script defer src="{% static 'vendor/apexcharts/apexcharts.min.js' %}"></script>
-  <script defer src="{% static 'js/charts.js' %}"></script>
+  <title>Referência do sistema visual — Catálogo Duralux</title>
+  <link rel="icon" href="{% static 'duralux/images/favicon.svg' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'duralux/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'duralux/css/theme.min.css' %}">
+  <link rel="stylesheet" href="{% static 'duralux/css/product-integration.css' %}">
 </head>
-<body class="ds-page">
-  <main class="ds-shell">
-    <header class="ds-header">
-      <p class="ds-kicker">Uso interno</p>
-      <h1 class="ds-title">Referência do sistema visual</h1>
-      <p class="ds-muted">
-        Tokens e padrões acessíveis da plataforma. Estados sempre combinam cor,
-        texto e contexto; a comunicação não depende apenas da cor.
-      </p>
-    </header>
+<body class="product-workspace-body">
+  <a class="skip-link" href="#conteudo-principal">Ir para o conteúdo principal</a>
 
-    <section class="ds-section" aria-labelledby="colors-title">
-      <h2 class="ds-heading" id="colors-title">Cores semânticas</h2>
-      <p class="ds-muted">Valores aprovados para tema claro, com foco em contraste AA.</p>
-      <div class="ds-grid">
-        <article class="ds-swatch">
-          <div class="ds-swatch-color ds-color-brand" aria-hidden="true"></div>
-          <div class="ds-swatch-copy"><strong>Marca</strong><code>#6A69F5</code></div>
-        </article>
-        <article class="ds-swatch">
-          <div class="ds-swatch-color ds-color-success" aria-hidden="true"></div>
-          <div class="ds-swatch-copy"><strong>Sucesso</strong><code>#50CD89</code></div>
-        </article>
-        <article class="ds-swatch">
-          <div class="ds-swatch-color ds-color-warning" aria-hidden="true"></div>
-          <div class="ds-swatch-copy"><strong>Atenção</strong><code>#FFC700</code></div>
-        </article>
-        <article class="ds-swatch">
-          <div class="ds-swatch-color ds-color-danger" aria-hidden="true"></div>
-          <div class="ds-swatch-copy"><strong>Erro</strong><code>#F1416C</code></div>
-        </article>
-        <article class="ds-swatch">
-          <div class="ds-swatch-color ds-color-info" aria-hidden="true"></div>
-          <div class="ds-swatch-copy"><strong>Informação</strong><code>#009EF7</code></div>
-        </article>
-        <article class="ds-swatch">
-          <div class="ds-swatch-color ds-color-text" aria-hidden="true"></div>
-          <div class="ds-swatch-copy"><strong>Texto</strong><code>#151515</code></div>
-        </article>
-      </div>
-    </section>
-
-    <section class="ds-section" aria-labelledby="themes-title">
-      <h2 class="ds-heading" id="themes-title">Superfícies</h2>
-      <div class="ds-themes">
-        <article class="ds-theme-panel" data-theme="light">
-          <h3 class="ds-subheading">Tema claro</h3>
-          <p>Fundo principal <code>#F9FBFD</code> e superfície <code>#FFFFFF</code>.</p>
-        </article>
-        <article class="ds-theme-panel" data-theme="dark">
-          <h3 class="ds-subheading">Tema escuro</h3>
-          <p>Fundo <code>#151515</code>, superfície <code>#1F1F1F</code> e borda <code>#323A46</code>.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="ds-section" aria-labelledby="type-title">
-      <h2 class="ds-heading" id="type-title">Tipografia</h2>
-      <p class="ds-type-regular">Cerebri Sans regular 400 para leitura contínua.</p>
-      <p class="ds-type-medium">Cerebri Sans medium 500 para ações e rótulos.</p>
-      <p class="ds-type-semibold">Cerebri Sans semibold 600 para subtítulos.</p>
-      <p class="ds-type-bold">Cerebri Sans bold 700 para títulos principais.</p>
-    </section>
-
-    <section class="ds-section" aria-labelledby="icons-title">
-      <h2 class="ds-heading" id="icons-title">Ícones Remix Icon</h2>
-      <p class="ds-muted">
-        Ícones decorativos ficam ocultos para leitores de tela. Ações ambíguas
-        recebem texto visível ou nome acessível.
-      </p>
-      <div class="ds-icon-row">
-        <span class="ds-icon-example">
-          <i class="ri ri-information-line" aria-hidden="true"></i>
-          Informação complementar
-        </span>
-        <button class="ds-icon-example" type="button" aria-label="Confirmar exemplo">
-          <i class="ri ri-check-line" aria-hidden="true"></i>
-          <span>Confirmar</span>
-        </button>
-      </div>
-    </section>
-
-    <section class="ds-section" aria-labelledby="cards-title">
-      <h2 class="ds-heading" id="cards-title">Cards de resumo</h2>
-      <p class="ds-muted">Indicadores factuais combinam texto, valor e contexto sem conclusão clínica.</p>
-      <div class="summary-card-grid">
-        {% for card in summary_cards %}
-          {% include "components/summary_card.html" with card=card only %}
-        {% endfor %}
-      </div>
-    </section>
-
-    <section class="ds-section" aria-labelledby="tables-title">
-      <h2 class="ds-heading" id="tables-title">Tabela responsiva e paginação</h2>
-      {% include "components/responsive_table.html" with table=activity_table only %}
-      {% include "components/pagination.html" with pagination=activity_pagination only %}
-    </section>
-
-    <section class="ds-section" aria-labelledby="states-title">
-      <h2 class="ds-heading" id="states-title">Estados de conteúdo</h2>
-      <div class="content-state-grid">
-        {% for state in content_states %}
-          {% include "components/content_state.html" with state=state only %}
-        {% endfor %}
-      </div>
-    </section>
-
-    <section class="ds-section" aria-labelledby="formatting-title">
-      <h2 class="ds-heading" id="formatting-title">Formatação e privacidade</h2>
-      <ul class="formatting-guidance">
-        <li><strong>Fuso horário efetivo:</strong> datas exibem o contexto temporal aplicável.</li>
-        <li><strong>Identificadores pessoais:</strong> valores chegam mascarados pelo backend.</li>
-        <li><strong>Truncamento:</strong> o valor integral permanece acessível ou disponível no detalhe autorizado.</li>
-        <li><strong>Ausência de dados:</strong> zero, dado ausente e indisponibilidade são estados diferentes.</li>
-        <li><strong>Densidade:</strong> a apresentação compacta é reservada a telas amplas e não reduz os alvos de interação.</li>
+  <header class="border-bottom bg-body" aria-labelledby="titulo-pagina">
+    <div class="container py-3 d-flex flex-wrap align-items-center justify-content-between gap-3">
+      <img
+        src="{% static 'duralux/images/logo_header.webp' %}"
+        alt="RGN Terapêutica"
+        class="product-brand-logo"
+        width="140"
+        height="30"
+      >
+      <p class="mb-0 text-body-secondary">Referência interna de interface</p>
+    </div>
+    <nav class="container pb-3" aria-label="Seções do catálogo">
+      <ul class="nav nav-pills gap-1">
+        <li class="nav-item"><a class="nav-link" href="#acoes">Ações</a></li>
+        <li class="nav-item"><a class="nav-link" href="#formularios">Formulários</a></li>
+        <li class="nav-item"><a class="nav-link" href="#conteudo">Conteúdo</a></li>
+        <li class="nav-item"><a class="nav-link" href="#sobreposicoes">Sobreposições</a></li>
       </ul>
-    </section>
+    </nav>
+  </header>
 
-    <section class="ds-section" aria-labelledby="forms-title">
-      <h2 class="ds-heading" id="forms-title">Formulário acessível</h2>
-      <p class="ds-muted">Validação do servidor é a fonte de verdade; máscaras apenas auxiliam a entrada.</p>
-      {% if reference_form_validated %}
-        <p class="form-success" role="status">Exemplo validado pelo servidor. Nenhum dado foi armazenado.</p>
-      {% endif %}
-      {% include "components/form.html" with form=reference_form form_id="reference-form" submit_label="Salvar exemplo" only %}
-    </section>
+  <main id="conteudo-principal" class="container py-4" tabindex="-1">
+    <div class="product-page">
+      <section class="product-page-header" aria-labelledby="titulo-pagina">
+        <p class="product-page-meta">Fundação Duralux</p>
+          <h1 id="titulo-pagina">Referência do sistema visual</h1>
+        <p class="mb-0">
+          Exemplos baseados em Bootstrap e nas integrações do produto, com estrutura semântica,
+          rótulos visíveis e estados que não dependem apenas de cor.
+        </p>
+      </section>
 
-    <section class="ds-section chart-block" data-chart-block aria-labelledby="chart-title">
-      <h2 class="ds-heading" id="chart-title">Gráfico de registros operacionais</h2>
-      <p id="chart-summary" data-chart-summary>
-        Registros por semana: 4 na Semana 1, 7 na Semana 2 e 5 na Semana 3.
-        Apenas registros agregados autorizados; não representa diagnóstico ou causalidade.
-      </p>
-      <div
-        class="accessible-chart"
-        data-apex-chart
-        data-chart-label="Registros operacionais por semana"
-        data-series-label="Registros"
-        data-value-label="Quantidade de registros"
-        data-categories='["Semana 1", "Semana 2", "Semana 3"]'
-        data-series="[4, 7, 5]"
-      ></div>
-      <table id="chart-table" class="chart-data-table" data-chart-table>
-        <caption>Registros por semana</caption>
-        <thead><tr><th scope="col">Período</th><th scope="col">Registros</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">Semana 1</th><td>4</td></tr>
-          <tr><th scope="row">Semana 2</th><td>7</td></tr>
-          <tr><th scope="row">Semana 3</th><td>5</td></tr>
-        </tbody>
-      </table>
-    </section>
+      <section id="acoes" aria-labelledby="titulo-acoes">
+        <div class="product-section-heading mb-3">
+          <h2 id="titulo-acoes">Botões e ações</h2>
+          <p class="product-muted">Use o texto da ação para comunicar seu resultado.</p>
+        </div>
+        <div class="card">
+          <div class="card-body d-flex flex-wrap gap-2">
+            <button class="btn btn-primary" type="button">Ação principal</button>
+            <button class="btn btn-secondary" type="button">Ação secundária</button>
+            <button class="btn btn-outline-primary" type="button">Ação alternativa</button>
+            <button class="btn btn-outline-secondary" type="button">Cancelar</button>
+            <button class="btn btn-danger" type="button">Excluir</button>
+            <button class="btn btn-primary" type="button" disabled>Ação indisponível</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="formularios" aria-labelledby="titulo-formularios">
+        <div class="product-section-heading mb-3">
+          <h2 id="titulo-formularios">Formulário acessível</h2>
+          <p class="product-muted">
+            Cada campo possui um rótulo associado; a validação do servidor é a fonte de verdade.
+          </p>
+        </div>
+        <div class="product-form-card">
+          {% if reference_form_validated %}
+            <p class="alert alert-success" role="status">
+              Exemplo validado pelo servidor. Nenhum dado foi armazenado.
+            </p>
+          {% endif %}
+          {% include "components/form.html" with form=reference_form form_id="reference-form" submit_label="Salvar exemplo" only %}
+        </div>
+      </section>
+
+      <section id="conteudo" aria-labelledby="titulo-conteudo">
+        <div class="product-section-heading mb-3">
+          <h2 id="titulo-conteudo">Cards, alertas e badges</h2>
+          <p class="product-muted">Componentes de conteúdo combinam hierarquia, texto e contexto.</p>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <article class="card h-100">
+              <div class="card-body">
+                <span class="badge text-bg-primary mb-2">Informativo</span>
+                <h3 class="card-title h5">Card básico</h3>
+                <p class="card-text">Agrupa informações relacionadas e uma ação contextual.</p>
+                <a class="btn btn-sm btn-outline-primary" href="#tabela-componentes">Ver inventário</a>
+              </div>
+            </article>
+          </div>
+          <div class="col-md-6">
+            <article class="card h-100">
+              <div class="card-body">
+                <span class="badge text-bg-success mb-2">Disponível</span>
+                <h3 class="card-title h5">Card com rodapé</h3>
+                <p class="card-text">O rodapé pode separar metadados do conteúdo principal.</p>
+              </div>
+              <footer class="card-footer text-body-secondary">Atualizado pelo próprio sistema</footer>
+            </article>
+          </div>
+        </div>
+
+        <div class="product-stack mb-4" aria-label="Exemplos de alertas">
+          <div class="alert alert-success mb-0" role="status"><strong>Sucesso:</strong> operação concluída.</div>
+          <div class="alert alert-warning mb-0" role="alert"><strong>Atenção:</strong> revise os campos antes de continuar.</div>
+          <div class="alert alert-danger mb-0" role="alert"><strong>Erro:</strong> não foi possível concluir a operação.</div>
+          <div class="alert alert-info mb-0" role="status"><strong>Informação:</strong> há orientações adicionais disponíveis.</div>
+        </div>
+
+        <div class="product-table-card mb-4">
+          <h3 class="h5">Tabela responsiva</h3>
+          <div class="table-responsive" id="tabela-componentes">
+            <table class="table table-hover align-middle mb-0">
+              <caption>Disponibilidade dos componentes apresentados neste catálogo</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Componente</th>
+                  <th scope="col">Fundação</th>
+                  <th scope="col">Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Botões</th>
+                  <td>Bootstrap</td>
+                  <td><span class="badge text-bg-success">Suportado</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">Formulários</th>
+                  <td>Bootstrap</td>
+                  <td><span class="badge text-bg-success">Suportado</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">Estados de conteúdo</th>
+                  <td>Integração do produto</td>
+                  <td><span class="badge text-bg-success">Suportado</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <nav aria-label="Paginação do catálogo">
+          <ul class="pagination justify-content-center mb-0">
+            <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+            <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+            <li class="page-item"><a class="page-link" href="#conteudo">2</a></li>
+            <li class="page-item"><a class="page-link" href="#conteudo">Próxima</a></li>
+          </ul>
+        </nav>
+      </section>
+
+      <section aria-labelledby="titulo-estados">
+        <div class="product-section-heading mb-3">
+          <h2 id="titulo-estados">Estados de conteúdo</h2>
+          <p class="product-muted">O nome do estado e a orientação permanecem disponíveis em texto.</p>
+        </div>
+        <div class="row g-3">
+          <div class="col-lg-4">
+            <article class="product-empty-state h-100" aria-labelledby="estado-vazio">
+              <h3 class="h5" id="estado-vazio">Nenhum item encontrado</h3>
+              <p>Altere os filtros ou crie o primeiro item.</p>
+              <button class="btn btn-primary btn-sm" type="button">Criar item</button>
+            </article>
+          </div>
+          <div class="col-lg-4">
+            <article class="alert alert-danger h-100 mb-0" role="alert" aria-labelledby="estado-erro">
+              <h3 class="alert-heading h5" id="estado-erro">Falha ao carregar</h3>
+              <p>Verifique sua conexão e tente novamente.</p>
+              <button class="btn btn-outline-danger btn-sm" type="button">Tentar novamente</button>
+            </article>
+          </div>
+          <div class="col-lg-4">
+            <article class="card h-100" aria-labelledby="estado-carregando" aria-busy="true">
+              <div class="card-body text-center">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Carregando</span>
+                </div>
+                <h3 class="h5 mt-3" id="estado-carregando">Carregando conteúdo</h3>
+                <p class="mb-0 text-body-secondary">Aguarde enquanto as informações são preparadas.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="titulo-resumos">
+        <div class="product-section-heading mb-3">
+          <h2 id="titulo-resumos">Cards de resumo</h2>
+          <p class="product-muted">
+            Indicadores factuais combinam texto, valor e contexto sem conclusão clínica.
+          </p>
+        </div>
+        <div class="row g-3">
+          {% for card in summary_cards %}
+            <div class="col-md-6 col-xl-4">
+              {% include "components/summary_card.html" with card=card only %}
+            </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section aria-labelledby="titulo-tabela-operacional">
+        <div class="product-section-heading mb-3">
+          <h2 id="titulo-tabela-operacional">Tabela responsiva e paginação</h2>
+          <p class="product-muted">
+            A mesma informação permanece disponível em tabela no desktop e em cards no celular.
+          </p>
+        </div>
+        {% include "components/responsive_table.html" with table=activity_table only %}
+        {% include "components/pagination.html" with pagination=activity_pagination only %}
+      </section>
+
+      <section aria-labelledby="titulo-estados-servidor">
+        <div class="product-section-heading mb-3">
+          <h2 id="titulo-estados-servidor">Estados gerados pelo produto</h2>
+          <p class="product-muted">Cada estado combina texto, contexto e semântica; não depende apenas da cor.</p>
+        </div>
+        <div class="d-grid gap-3">
+          {% for state in content_states %}
+            {% include "components/content_state.html" with state=state only %}
+          {% endfor %}
+        </div>
+      </section>
+
+      <section aria-labelledby="titulo-formatacao">
+        <div class="product-section-heading mb-3">
+          <h2 id="titulo-formatacao">Formatação e privacidade</h2>
+          <p class="product-muted">A densidade nunca reduz os alvos de interação nem oculta o contexto.</p>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item"><strong>Fuso horário efetivo:</strong> datas exibem o contexto temporal aplicável.</li>
+          <li class="list-group-item"><strong>Identificadores pessoais:</strong> valores chegam mascarados pelo backend.</li>
+          <li class="list-group-item"><strong>Truncamento:</strong> o valor integral permanece disponível no detalhe autorizado.</li>
+          <li class="list-group-item"><strong>Ausência de dados:</strong> zero, dado ausente e indisponibilidade são estados diferentes.</li>
+        </ul>
+      </section>
+
+      <section data-chart-block aria-labelledby="titulo-grafico">
+        <div class="product-section-heading mb-3">
+          <h2 id="titulo-grafico">Gráfico de registros operacionais</h2>
+          <p id="chart-summary" data-chart-summary>
+            Registros por semana: 4 na Semana 1, 7 na Semana 2 e 5 na Semana 3.
+            Apenas registros agregados autorizados; não representa diagnóstico ou causalidade.
+          </p>
+        </div>
+        <div
+          class="product-chart-summary"
+          data-apex-chart
+          data-chart-label="Registros operacionais por semana"
+          data-series-label="Registros"
+          data-value-label="Quantidade de registros"
+          data-categories='["Semana 1", "Semana 2", "Semana 3"]'
+          data-series="[4, 7, 5]"
+        ></div>
+        <div class="product-table-card product-table-scroll mt-3">
+          <table id="chart-table" class="table product-table" data-chart-table>
+            <caption>Registros por semana</caption>
+            <thead><tr><th scope="col">Período</th><th scope="col">Registros</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Semana 1</th><td>4</td></tr>
+              <tr><th scope="row">Semana 2</th><td>7</td></tr>
+              <tr><th scope="row">Semana 3</th><td>5</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="sobreposicoes" aria-labelledby="titulo-sobreposicoes">
+        <div class="product-section-heading mb-3">
+          <h2 id="titulo-sobreposicoes">Modal e painel lateral</h2>
+          <p class="product-muted">Os controles usam o comportamento acessível fornecido pelo Bootstrap.</p>
+        </div>
+        <div class="card">
+          <div class="card-body d-flex flex-wrap gap-2">
+            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#modal-exemplo">
+              Abrir modal
+            </button>
+            <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#painel-exemplo" aria-controls="painel-exemplo">
+              Abrir painel lateral
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
+
+  <footer class="border-top bg-body mt-4">
+    <div class="container py-3">
+      <p class="mb-0 text-body-secondary">Catálogo interno dos componentes disponíveis na fundação visual do produto.</p>
+    </div>
+  </footer>
+
+  <div class="modal fade" id="modal-exemplo" tabindex="-1" aria-labelledby="titulo-modal" aria-describedby="descricao-modal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title fs-5" id="titulo-modal">Confirmar ação</h2>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body" id="descricao-modal">Revise as informações antes de confirmar.</div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
+          <button class="btn btn-primary" type="button">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="offcanvas offcanvas-end" tabindex="-1" id="painel-exemplo" aria-labelledby="titulo-painel">
+    <div class="offcanvas-header">
+      <h2 class="offcanvas-title fs-5" id="titulo-painel">Detalhes do componente</h2>
+      <button class="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+    </div>
+    <div class="offcanvas-body">
+      <p>O painel lateral mantém o contexto da página enquanto apresenta informações complementares.</p>
+      <button class="btn btn-secondary" type="button" data-bs-dismiss="offcanvas">Concluir</button>
+    </div>
+  </aside>
+
+  <script defer src="{% static 'duralux/js/bootstrap.bundle.min.js' %}"></script>
+  <script defer src="{% static 'duralux/js/form-behaviors.js' %}"></script>
+  <script defer src="{% static 'duralux/vendors/apexcharts/apexcharts.min.js' %}"></script>
+  <script defer src="{% static 'duralux/js/visual-reference-charts.js' %}"></script>
 </body>
 </html>

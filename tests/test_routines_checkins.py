@@ -6,6 +6,7 @@ from datetime import date
 
 import pytest
 
+from accounts.models import User
 from audit.models import AuditEvent
 from clinics.models import Clinic, ClinicMembership
 from people.models import PatientProfile
@@ -24,7 +25,7 @@ def test_clinic() -> Clinic:
 
 
 @pytest.fixture
-def patient_user(test_clinic: Clinic):
+def patient_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="paciente.checkin@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -36,7 +37,7 @@ def patient_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def patient_profile(test_clinic: Clinic, patient_user) -> PatientProfile:
+def patient_profile(test_clinic: Clinic, patient_user: User) -> PatientProfile:
     return PatientProfile.infrastructure_objects.create(
         clinic=test_clinic,
         user=patient_user,
@@ -47,7 +48,7 @@ def patient_profile(test_clinic: Clinic, patient_user) -> PatientProfile:
 
 @pytest.mark.django_db
 def test_record_habit_checkin_and_audit_history(
-    test_clinic: Clinic, patient_profile: PatientProfile, patient_user
+    test_clinic: Clinic, patient_profile: PatientProfile, patient_user: User
 ) -> None:
     """Check-ins record one effective status and maintain edit history."""
     habit = services.create_habit(
@@ -162,7 +163,7 @@ def test_habit_trends_without_punitive_streak_language(
 
 @pytest.mark.django_db
 def test_export_and_delete_patient_routine_data_under_lgpd(
-    test_clinic: Clinic, patient_profile: PatientProfile, patient_user
+    test_clinic: Clinic, patient_profile: PatientProfile, patient_user: User
 ) -> None:
     """Patients can export and erase their routine records with audit trail."""
     habit = services.create_habit(

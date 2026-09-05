@@ -3,62 +3,57 @@
 {% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
 {% block content %}
-<div style="max-width: 1100px; margin: 0 auto; display: grid; gap: 20px;">
-  <header class="journal-header">
+<div class="product-page" aria-labelledby="appointment-calendar-title">
+  <header class="product-page-header d-flex flex-column flex-lg-row align-items-lg-end justify-content-between gap-3">
     <div>
-      <span class="workspace-eyebrow">Coordenação de consultas</span>
-      <h1 class="page-title" style="margin: 0;">Agenda semanal</h1>
-      <p style="margin: 4px 0 0; color: var(--color-text-muted); font-size: 14px;">
-        Semana de {{ week_start|date:"d/m/Y" }}. A lista textual abaixo é equivalente à grade.
-      </p>
+      <p class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Coordenação de consultas</p>
+      <h1 id="appointment-calendar-title">Agenda semanal</h1>
+      <p class="product-page-meta">Semana de {{ week_start|date:"d/m/Y" }}. A lista textual abaixo é equivalente à grade.</p>
     </div>
-    <div style="display: flex; gap: 8px;">
-      <a href="?date={{ prev_week }}" class="calendar-nav-btn" style="text-decoration: none;">‹ Semana anterior</a>
-      <a href="{% url 'appointment_list' %}" class="calendar-nav-btn" style="text-decoration: none;">Lista</a>
-      <a href="?date={{ next_week }}" class="calendar-nav-btn" style="text-decoration: none;">Próxima semana ›</a>
-    </div>
+    <nav class="d-flex flex-wrap gap-2" aria-label="Navegação da agenda semanal">
+      <a href="?date={{ prev_week }}" class="btn btn-outline-secondary">‹ Semana anterior</a>
+      <a href="{% url 'appointment_list' %}" class="btn btn-outline-secondary">Ver como lista</a>
+      <a href="?date={{ next_week }}" class="btn btn-outline-secondary">Próxima semana ›</a>
+    </nav>
   </header>
 
-  <div class="calendar-grid" style="display: grid; grid-template-columns: repeat(7, minmax(120px, 1fr)); gap: 8px; overflow-x: auto;" role="grid" aria-label="Agenda semanal">
-    {% for day, day_appointments in week_days %}
-      <section class="calendar-day" style="border: 1px solid var(--color-border); border-radius: 12px; background: var(--color-surface); padding: 10px; min-height: 120px;" role="gridcell" aria-label="{{ day|date:'l, d \d\e F' }}">
-        <h2 style="margin: 0; font-size: 13px; font-weight: 700;">
-          {{ day|date:"D" }}
-        </h2>
-        <p style="margin: 2px 0 8px; font-size: 12px; color: var(--color-text-muted);">{{ day|date:"d/m" }}</p>
-        {% for appointment in day_appointments %}
-          <a href="{% url 'appointment_list' %}" style="display: block; margin-bottom: 6px; padding: 6px 8px; border-radius: 8px; background: var(--color-canvas); text-decoration: none; color: inherit; font-size: 12px;">
-            {{ appointment.start_at|date:"H:i" }} — {{ appointment.service.name }}
-          </a>
-        {% empty %}
-          <p style="margin: 0; font-size: 12px; color: var(--color-text-muted);">—</p>
-        {% endfor %}
-      </section>
-    {% endfor %}
-  </div>
-
-  <h2 style="margin: 8px 0 0; font-size: 16px; font-weight: 700;">Lista textual equivalente</h2>
-  {% if appointments %}
-    <div style="display: grid; gap: 10px;">
-      {% for appointment in appointments %}
-        <article class="journal-entry-card">
-          <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between;">
-            <div>
-              <strong>{{ appointment.service.name }}</strong>
-              <span class="mood-badge mood-neutral">{{ appointment.start_at|date:"d/m/Y H:i" }} – {{ appointment.end_at|date:"H:i" }}</span>
-              <span class="visibility-badge {% if appointment.status == 'confirmed' %}visibility-shareable{% elif appointment.status == 'canceled' %}visibility-private{% else %}visibility-confirmation{% endif %}">{{ appointment.get_status_display }}</span>
-            </div>
-            {% if can_manage and appointment.status == 'requested' %}
-              <form method="post" action="{% url 'appointment_confirm' appointment.pk %}">{% csrf_token %}<button type="submit" class="calendar-nav-btn">Confirmar</button></form>
-            {% endif %}
-          </div>
-        </article>
+  <section class="product-table-card product-calendar-scroll" aria-labelledby="calendar-grid-title" tabindex="0">
+    <h2 id="calendar-grid-title" class="visually-hidden">Grade da agenda semanal</h2>
+    <div class="product-calendar-grid" role="grid" aria-label="Consultas por dia da semana">
+      {% for day, day_appointments in week_days %}
+        <section class="product-calendar-day" role="gridcell" aria-label="{{ day|date:'l, d \d\e F' }}">
+          <h3 class="h6 mb-0">{{ day|date:"D" }}</h3>
+          <p class="product-muted mb-2">{{ day|date:"d/m" }}</p>
+          {% for appointment in day_appointments %}
+            <a href="{% url 'appointment_list' %}" class="product-calendar-event">
+              <time datetime="{{ appointment.start_at|date:'c' }}">{{ appointment.start_at|date:"H:i" }}</time> — {{ appointment.service.name }}
+            </a>
+          {% empty %}
+            <p class="product-muted mb-0" aria-label="Sem consultas">—</p>
+          {% endfor %}
+        </section>
       {% endfor %}
     </div>
-  {% else %}
-    <div class="content-state" style="padding: 32px 24px; text-align: center; border: 1px dashed var(--color-border); border-radius: 14px; background: var(--color-surface);">
-      <p style="margin: 0; color: var(--color-text-muted);">Nenhuma consulta nesta semana.</p>
-    </div>
-  {% endif %}
+  </section>
+
+  <section class="product-stack" aria-labelledby="calendar-list-title">
+    <h2 id="calendar-list-title" class="h5 mb-0">Lista textual equivalente</h2>
+    {% if appointments %}
+      {% for appointment in appointments %}
+        <article class="product-table-card product-list-item">
+          <div>
+            <strong>{{ appointment.service.name }}</strong>
+            <p class="product-muted"><time datetime="{{ appointment.start_at|date:'c' }}">{{ appointment.start_at|date:"d/m/Y H:i" }}</time> – {{ appointment.end_at|date:"H:i" }}</p>
+            <span class="badge {% if appointment.status == 'confirmed' %}text-bg-success{% elif appointment.status == 'canceled' %}text-bg-danger{% else %}text-bg-secondary{% endif %}">{{ appointment.get_status_display }}</span>
+          </div>
+          {% if can_manage and appointment.status == 'requested' %}
+            <form method="post" action="{% url 'appointment_confirm' appointment.pk %}">{% csrf_token %}<button type="submit" class="btn btn-primary">Confirmar consulta</button></form>
+          {% endif %}
+        </article>
+      {% endfor %}
+    {% else %}
+      <div class="product-empty-state" role="status"><p>Nenhuma consulta nesta semana.</p></div>
+    {% endif %}
+  </section>
 </div>
 {% endblock %}

@@ -48,6 +48,57 @@ def _main_text(content: str) -> str:
     return " ".join(parser.text)
 
 
+def test_shared_components_use_duralux_bootstrap_contracts() -> None:
+    summary = _render(
+        "components/summary_card.html",
+        card={
+            "id": "migration-summary",
+            "title": "Resumo",
+            "description": "Descrição",
+            "value": "1",
+            "raw_value": 1,
+            "trend_label": None,
+            "tone": "info",
+            "action": None,
+        },
+    )
+    state = _render(
+        "components/content_state.html",
+        state={
+            "kind": "empty",
+            "title": "Sem itens",
+            "message": "Cadastre o primeiro item.",
+            "announce": False,
+            "action": None,
+        },
+    )
+    table = _render("components/responsive_table.html", **_table_context())
+    pagination = _render(
+        "components/pagination.html",
+        pagination={
+            "current_label": "Página 1 de 1",
+            "first": None,
+            "previous": None,
+            "pages": [{"number": 1, "url": "?page=1", "current": True}],
+            "next": None,
+            "last": None,
+        },
+    )
+    messages_source = (
+        Path(settings.BASE_DIR) / "templates" / "layouts" / "partials" / "messages.html"
+    ).read_text(encoding="utf-8")
+
+    assert 'class="card h-100' in summary
+    assert 'data-tone="info"' in summary
+    assert 'class="alert ' in state
+    assert 'data-state-kind="empty"' in state
+    assert 'class="table-responsive' in table
+    assert 'class="table table-hover align-middle"' in table
+    assert 'class="pagination"' in pagination
+    assert "workspace-message" not in messages_source
+    assert "alert alert-" in messages_source
+
+
 def test_summary_card_renders_semantics_trend_and_action() -> None:
     content = _render(
         "components/summary_card.html",
@@ -63,7 +114,8 @@ def test_summary_card_renders_semantics_trend_and_action() -> None:
         },
     )
 
-    assert '<article class="summary-card tone-info"' in content
+    assert '<article class="card h-100' in content
+    assert 'data-tone="info"' in content
     assert 'aria-labelledby="summary-active-title"' in content
     assert '<h2 id="summary-active-title">Cadastros ativos</h2>' in content
     assert '<data value="12">12</data>' in content
@@ -91,7 +143,8 @@ def test_summary_card_escapes_values_and_allowlists_tone() -> None:
     assert "<img" not in content
     assert "&lt;script&gt;" in content
     assert "&lt;strong&gt;" in content
-    assert 'class="summary-card tone-neutral"' in content
+    assert '<article class="card h-100' in content
+    assert 'data-tone="neutral"' in content
     assert "javascript:alert(1)" not in content
 
 
@@ -118,7 +171,8 @@ def test_content_state_supports_every_allowlisted_kind(kind: str, title: str) ->
         },
     )
 
-    assert f'class="content-state state-{kind}"' in content
+    assert 'class="alert ' in content
+    assert f'data-state-kind="{kind}"' in content
     assert f"<h2>{title}</h2>" in content
     assert 'aria-hidden="true"' in content
     assert 'aria-live="polite"' not in content
@@ -235,14 +289,14 @@ def _table_context() -> dict[str, Any]:
 def test_responsive_table_preserves_native_and_mobile_semantics() -> None:
     content = _render("components/responsive_table.html", **_table_context())
 
-    assert '<div class="responsive-table-wrapper">' in content
-    assert '<table class="responsive-table">' in content
+    assert '<div class="table-responsive' in content
+    assert '<table class="table table-hover align-middle">' in content
     assert "<caption>Atividades operacionais recentes</caption>" in content
     assert content.count('scope="col"') == 3
     assert 'aria-sort="ascending"' in content
     assert '<th scope="row">Configuração inicial</th>' in content
-    assert '<section class="mobile-row-list"' in content
-    assert '<article class="mobile-row-card"' in content
+    assert 'product-mobile-row-list' in content
+    assert '<article class="card border-0 shadow-sm"' in content
     assert "<dt>Atividade</dt>" in content
     assert "<dd>Configuração inicial</dd>" in content
     assert "aria-hidden" not in content
@@ -281,7 +335,8 @@ def test_pagination_renders_middle_page_and_boundaries() -> None:
         },
     )
 
-    assert '<nav class="pagination" aria-label="Paginação">' in content
+    assert '<nav aria-label="Paginação">' in content
+    assert '<ul class="pagination">' in content
     assert "Página 2 de 3" in content
     assert 'aria-current="page">2</span>' in content
     assert 'href="?page=1"' in content
@@ -336,7 +391,7 @@ def test_visual_reference_catalogs_all_component_variants(client: Client) -> Non
 
     assert response.status_code == 200
     for tone in ("neutral", "info", "success", "warning", "danger"):
-        assert f"tone-{tone}" in content
+        assert f'data-tone="{tone}"' in content
     for kind in (
         "loading",
         "empty",
@@ -345,7 +400,7 @@ def test_visual_reference_catalogs_all_component_variants(client: Client) -> Non
         "error",
         "restricted",
     ):
-        assert f"state-{kind}" in content
+        assert f'data-state-kind="{kind}"' in content
     assert "Atividades operacionais recentes" in content
     assert "Página 1 de 3" in content
     assert "Fuso horário efetivo" in content
@@ -367,7 +422,7 @@ def test_workspace_integrates_components_without_clinical_demo_data(
     assert "Módulos disponíveis" in content
     assert "Configurações pendentes" in content
     assert "Atividades da plataforma" in content
-    assert '<table class="responsive-table">' in content
+    assert '<table class="table table-hover align-middle">' in content
     assert "paciente" not in operational_content
     assert "diagnóstico" not in operational_content
     assert "john doe" not in operational_content
@@ -405,30 +460,30 @@ def test_visual_reference_pagination_matches_the_rendered_table(client: Client) 
 
 
 def test_component_css_has_accessible_responsive_contracts() -> None:
-    css = (Path(settings.BASE_DIR) / "static" / "css" / "workspace.css").read_text(
-        encoding="utf-8"
-    )
-    compact = " ".join(css.split())
+    css = (
+        Path(settings.BASE_DIR)
+        / "static"
+        / "duralux"
+        / "css"
+        / "product-integration.css"
+    ).read_text(encoding="utf-8")
 
     for selector in (
-        ".summary-card-grid",
-        ".summary-card",
-        ".content-state",
-        ".responsive-table",
-        ".mobile-row-list",
+        ".product-metric-grid",
+        ".product-summary-card",
+        ".product-content-state",
+        ".product-table-desktop",
+        ".product-mobile-row-list",
         ".pagination",
     ):
         assert selector in css
     assert "min-height: 44px" in css
-    assert "border-radius: 14px" in css
-    assert "var(--color-surface)" in css
-    assert "var(--color-border)" in css
-    assert "var(--color-text-muted)" in css
-    assert ".mobile-row-list { display: none; }" in compact
-    assert "@media (max-width: 700px)" in css
-    assert ".responsive-table-wrapper { display: none; }" in compact
-    assert ".mobile-row-list { display: grid; }" in compact
-    assert "overflow-x: auto" not in css
+    assert "var(--bs-border-radius-lg)" in css
+    assert "var(--bs-body-bg)" in css
+    assert "var(--bs-border-color)" in css
+    assert "var(--bs-secondary-color)" in css
+    assert "@media (max-width: 767.98px)" in css
+    assert "overflow-x: auto" in css
     assert "@media (prefers-reduced-motion: reduce)" in css
 
 

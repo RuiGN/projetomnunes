@@ -249,15 +249,15 @@ Usuário administrativo com acesso a agenda, cadastro operacional e cobrança, s
 
 ### 7.1 Fonte de verdade
 
-A implementação visual deve usar exclusivamente os ativos mantidos pelo próprio aplicativo em `static/css/`, `static/js/`, `static/fonts/` e o inventário interno em `/design-system/`. A base visual foi consolidada a partir do template administrativo **Sliced**, com utilitários compatíveis com Tailwind CSS e comportamento progressivo em Alpine.js. Novos componentes devem adaptar essa base ao contexto terapêutico sem depender de protótipos externos nem copiar textos, dados de demonstração ou identidade do fornecedor.
+A referência visual auditada está em `design_system_duralux/`; somente o subconjunto aprovado e mantido pelo aplicativo pode ser publicado em `static/duralux/` e apresentado no inventário interno `/design-system/`. A base usa Duralux com Bootstrap 5, tokens do produto e comportamento progressivo em JavaScript próprio. Novos componentes devem adaptar essa base ao contexto terapêutico sem depender de protótipos externos nem copiar textos, dados de demonstração ou identidade do fornecedor.
 
 ### 7.2 Tecnologias e ativos identificados
 
-1. **Camada de utilitários:** responsividade, temas e estados visuais consolidados em `static/css/framework.css`.
-2. **Alpine.js:** sidebar, dropdowns, modais, configurações de layout, direção e tema.
+1. **Camada de utilitários:** responsividade, temas e estados visuais consolidados em `static/duralux/css/product-integration.css`.
+2. **JavaScript próprio:** sidebar, dropdowns, modais, configurações de layout, direção e tema.
 3. **ApexCharts:** gráficos dos painéis e relatórios.
-4. **Cerebri Sans:** pesos 400, 500, 600 e 700 mantidos localmente em `static/fonts/`.
-5. **Remix Icon:** catálogo servido pela fonte local mantida em `static/fonts/`.
+4. **Fontes:** pilha nativa do sistema operacional, sem download externo e sem deslocamento causado por webfont.
+5. **Iconografia:** símbolos decorativos ficam ocultos de tecnologias assistivas; ações ambíguas sempre possuem texto visível ou nome acessível.
 6. **Logotipos e imagens:** ativos de marca devem pertencer ao aplicativo, ser substituíveis por clínica e nunca reutilizar logos, fundos ou avatares de demonstração.
 
 ### 7.3 Tokens visuais extraídos
@@ -274,7 +274,7 @@ A implementação visual deve usar exclusivamente os ativos mantidos pelo própr
 
 ### 7.4 Tipografia
 
-1. Família principal: Cerebri Sans com fallback `sans-serif`.
+1. Família principal: fontes do sistema com fallback `sans-serif`.
 2. Corpo padrão: 14–16 px, peso 400 e altura de linha mínima de 1,5 em textos longos.
 3. Rótulos e ações: peso 500 ou 600.
 4. Títulos: pesos 600 ou 700, com hierarquia sem depender apenas do tamanho.
@@ -303,7 +303,7 @@ A implementação visual deve usar exclusivamente os ativos mantidos pelo própr
 1. Componentes novos têm variantes claro/escuro, mobile/desktop, teclado e leitor de tela.
 2. Cores semânticas não são o único meio de comunicar estado.
 3. Foco visível usa contraste AA e não é removido por CSS.
-4. Textos e dados de demonstração do template Sliced não chegam à produção.
+4. Textos e dados de demonstração do template Duralux não chegam à produção.
 5. Toda tela possui ação principal clara e estados de carregamento, vazio e erro.
 6. Testes visuais cobrem larguras de 360 px, 768 px, 1280 px e 1536 px.
 
@@ -370,29 +370,29 @@ A implementação visual deve usar exclusivamente os ativos mantidos pelo própr
   - [X] **8.1.5.3** Padronizar logs JSON com `request_id`, `tenant_id`, ator pseudonimizado, evento, resultado e latência, vedando payloads clínicos e credenciais.
   - [X] **8.1.5.4** Implementar páginas de erro e endpoints de saúde para aplicação e dependências, com respostas seguras e rastreáveis.
 
-### 8.2 Sprint 2 — Design system Sliced e experiência-base
+### 8.2 Sprint 2 — Design system Duralux e experiência-base
 
-**Objetivo:** transformar os ativos Sliced em um sistema visual reutilizável, responsivo e acessível para as jornadas profissionais, usando Tailwind CSS, Alpine.js e ApexCharts sem duplicar componentes ou incorporar lógica clínica à apresentação.
+**Objetivo:** transformar os ativos Duralux em um sistema visual reutilizável, responsivo e acessível para as jornadas profissionais, usando Bootstrap 5, JavaScript próprio e ApexCharts sem duplicar componentes ou incorporar lógica clínica à apresentação.
 
 **Critérios de saída:**
 
-- Tokens e componentes-base reproduzem a identidade Sliced com Cerebri Sans e Remix Icon.
+- Tokens e componentes-base reproduzem a identidade Duralux com fontes do sistema e iconografia textual.
 - Layouts vertical e detached funcionam em telas suportadas, nos modos claro e escuro.
 - Cards, tabelas e formulários possuem estados completos, navegação por teclado e mensagens acessíveis.
-- Alpine.js cobre somente interações progressivas, mantendo ações essenciais utilizáveis no servidor.
+- JavaScript próprio cobre somente interações progressivas, mantendo ações essenciais utilizáveis no servidor.
 - ApexCharts apresenta dados agregados com alternativa textual e não sugere diagnóstico ou decisão clínica automatizada.
 
-- [X] **8.2.1 — Consolidar tokens e ativos do design system Sliced.**
-  **Escopo:** inventariar e normalizar cores, tipografia, espaçamento, elevação, bordas, ícones e estados visuais mantidos pelo aplicativo. **Implementação:** consolidar a camada de utilitários em `static/css/framework.css`, mapear tokens semânticos em `static/css/tokens.css` e encapsular fontes e ícones locais, preservando consistência entre claro, escuro e personalizações futuras por clínica.
+- [X] **8.2.1 — Consolidar tokens e ativos do design system Duralux.**
+  **Escopo:** inventariar e normalizar cores, tipografia, espaçamento, elevação, bordas, ícones e estados visuais mantidos pelo aplicativo. **Implementação:** consolidar a camada de utilitários em `static/duralux/css/product-integration.css`, mapear tokens semânticos em `static/duralux/css/product-integration.css` e encapsular fontes e ícones locais, preservando consistência entre claro, escuro e personalizações futuras por clínica.
   - [X] **8.2.1.1** Registrar paleta semântica para fundo, superfície, texto, borda, marca, sucesso, atenção, erro e informação nos modos claro e escuro.
-  - [X] **8.2.1.2** Configurar Cerebri Sans nos pesos 400, 500, 600 e 700, com fallback legível e estratégia de carregamento sem deslocamento excessivo.
-  - [X] **8.2.1.3** Integrar Remix Icon com catálogo de usos, tamanho mínimo, rótulo acessível e proibição de ícones isolados em ações ambíguas.
+  - [X] **8.2.1.2** Configurar fontes do sistema nos pesos 400, 500, 600 e 700, com fallback legível e estratégia de carregamento sem deslocamento excessivo.
+  - [X] **8.2.1.3** Integrar iconografia textual com catálogo de usos, tamanho mínimo, rótulo acessível e proibição de ícones isolados em ações ambíguas.
   - [X] **8.2.1.4** Criar página interna de referência com tokens, tipografia, ícones e exemplos de contraste aprovados.
 
 - [X] **8.2.2 — Construir os layouts vertical e detached.**
-  **Escopo:** disponibilizar estruturas de navegação reutilizáveis para desktop, tablet e celular, com cabeçalho, menu lateral, conteúdo e contexto da clínica ativa. **Implementação:** criar templates Django compostos por blocos e componentes, usar Alpine.js para abertura e recolhimento do menu e persistir preferências visuais sem expor dados sensíveis.
+  **Escopo:** disponibilizar estruturas de navegação reutilizáveis para desktop, tablet e celular, com cabeçalho, menu lateral, conteúdo e contexto da clínica ativa. **Implementação:** criar templates Django compostos por blocos e componentes, usar JavaScript próprio para abertura e recolhimento do menu e persistir preferências visuais sem expor dados sensíveis.
   - [X] **8.2.2.1** Implementar layout vertical com menu lateral responsivo, item ativo, breadcrumbs e área principal dimensionada para tabelas e formulários.
-  - [X] **8.2.2.2** Implementar layout detached com fundo e superfícies Sliced, mantendo a mesma hierarquia semântica e rotas do layout vertical.
+  - [X] **8.2.2.2** Implementar layout detached com fundo e superfícies Duralux, mantendo a mesma hierarquia semântica e rotas do layout vertical.
   - [X] **8.2.2.3** Criar seletor de clínica e identificação do usuário no cabeçalho, exibindo somente associações autorizadas e confirmação ao trocar de contexto.
   - [X] **8.2.2.4** Validar foco, escape, bloqueio de rolagem e leitura por tecnologia assistiva no menu móvel e nos elementos expansíveis.
 
@@ -404,14 +404,14 @@ A implementação visual deve usar exclusivamente os ativos mantidos pelo própr
   - [X] **8.2.3.4** Documentar limites de densidade, truncamento, datas, fuso horário e mascaramento de identificadores pessoais nas listagens.
 
 - [X] **8.2.4 — Padronizar formulários e validação acessível.**
-  **Escopo:** uniformizar entrada e revisão de dados cadastrais e administrativos, reduzindo erros e exposição acidental de informações pessoais. **Implementação:** renderizar formulários Django com componentes Sliced/Tailwind, validação no servidor como fonte de verdade e Alpine.js apenas para revelação progressiva e feedback imediato não autoritativo.
+  **Escopo:** uniformizar entrada e revisão de dados cadastrais e administrativos, reduzindo erros e exposição acidental de informações pessoais. **Implementação:** renderizar formulários Django com componentes Duralux/Bootstrap, validação no servidor como fonte de verdade e JavaScript próprio apenas para revelação progressiva e feedback imediato não autoritativo.
   - [X] **8.2.4.1** Criar componentes para texto, seleção, data, telefone, documento, textarea, checkbox, radio, switch e upload com rótulos e ajuda persistentes.
   - [X] **8.2.4.2** Vincular erros aos campos por `aria-describedby`, produzir resumo de erros no topo e direcionar foco ao primeiro problema após envio.
   - [X] **8.2.4.3** Definir máscaras como auxílio visual sem alterar o valor canônico, aceitando colagem e entrada por tecnologias assistivas.
   - [X] **8.2.4.4** Implementar prevenção de envio duplicado, aviso de alterações não salvas e confirmação específica para ações destrutivas.
 
-- [X] **8.2.5 — Integrar tema, interações Alpine.js e gráficos ApexCharts.**
-  **Escopo:** disponibilizar modo claro/escuro, preferências de layout e visualizações gráficas consistentes, responsivas e compreensíveis. **Implementação:** manter estado visual em store Alpine.js, respeitar preferências do sistema e criar adaptador ApexCharts que receba séries agregadas já autorizadas pelo backend.
+- [X] **8.2.5 — Integrar tema, interações JavaScript próprio e gráficos ApexCharts.**
+  **Escopo:** disponibilizar modo claro/escuro, preferências de layout e visualizações gráficas consistentes, responsivas e compreensíveis. **Implementação:** manter estado visual em store JavaScript próprio, respeitar preferências do sistema e criar adaptador ApexCharts que receba séries agregadas já autorizadas pelo backend.
   - [X] **8.2.5.1** Implementar alternância claro/escuro com detecção inicial do sistema, persistência local e prevenção de flash de tema incorreto.
   - [X] **8.2.5.2** Persistir preferência entre vertical e detached por usuário, com valor padrão administrável e restauração segura quando o layout não estiver disponível.
   - [X] **8.2.5.3** Criar configuração ApexCharts para cores semânticas, contraste, tooltips, datas, responsividade e atualização coerente ao trocar de tema.
@@ -529,13 +529,13 @@ A implementação visual deve usar exclusivamente os ativos mantidos pelo própr
 - Paciente pode ser cadastrado com vínculo, contato e preferências essenciais, inclusive nome social e acessibilidade.
 - Onboarding registra progresso, consentimentos e limites do aplicativo, com retomada segura.
 - Terapeuta visualiza somente pacientes vinculados e indicadores operacionais baseados em fatos registrados.
-- Painel e listagens funcionam nos layouts Sliced, em claro/escuro, com estados acessíveis e gráficos acompanhados de alternativa textual.
+- Painel e listagens funcionam nos layouts Duralux, em claro/escuro, com estados acessíveis e gráficos acompanhados de alternativa textual.
 
 - [X] **8.5.1 — Implementar cadastro e configuração inicial da clínica.**
   **Escopo:** coletar dados institucionais e preferências indispensáveis para operar o tenant, sem antecipar módulos comerciais fora do escopo. **Implementação:** oferecer formulário em etapas para identificação, contatos, endereço, fuso, identidade visual básica e módulos habilitados, com validação, auditoria e pré-visualização.
   - [X] **8.5.1.1** Cadastrar razão social ou nome institucional, nome de exibição, documento aplicável, contatos administrativos e endereço estruturado.
   - [X] **8.5.1.2** Configurar fuso horário, idioma, canais institucionais, horários de atendimento e mensagem de orientação fora do expediente.
-  - [X] **8.5.1.3** Aplicar logotipo e cores permitidas sobre os tokens Sliced, validando contraste nos modos claro e escuro.
+  - [X] **8.5.1.3** Aplicar logotipo e cores permitidas sobre os tokens Duralux, validando contraste nos modos claro e escuro.
   - [X] **8.5.1.4** Selecionar módulos disponíveis no tenant com padrão mínimo seguro, registrar autoria da mudança e impedir ativação sem requisitos prévios.
 
 - [X] **8.5.2 — Implementar cadastro de profissionais e vínculos.**
@@ -587,7 +587,7 @@ Entregar o núcleo de acompanhamento diário do paciente, com diário emocional,
   - [X] **8.6.1.3** Aplicar política no backend que exclua itens Vermelhos de qualquer consulta do terapeuta e retenha itens Amarelos sem consentimento vigente.
   - [X] **8.6.1.4** Criar testes de autorização para paciente, terapeuta autorizado, terapeuta sem vínculo e usuário de outra clínica.
 
-- [X] **8.6.2 — Construir experiência do diário emocional.** Escopo: permitir registro e revisão diária de humor, emoções, gatilhos, reações e estratégias utilizadas. Implementação: usar componentes Sliced com Tailwind e Alpine.js, salvamento explícito e feedback acessível.
+- [X] **8.6.2 — Construir experiência do diário emocional.** Escopo: permitir registro e revisão diária de humor, emoções, gatilhos, reações e estratégias utilizadas. Implementação: usar componentes Duralux com Bootstrap e JavaScript próprio, salvamento explícito e feedback acessível.
   - [X] **8.6.2.1** Criar formulário responsivo com escala de humor, seleção múltipla de emoções, intensidade, contexto, gatilhos, reações físicas e “o que me ajudou”.
   - [X] **8.6.2.2** Implementar calendário emocional por cores com alternativa textual, legenda, foco visível e navegação completa por teclado.
   - [X] **8.6.2.3** Exibir histórico do próprio paciente com filtros por período e emoção, estados vazio/carregando/erro e paginação.
@@ -631,7 +631,7 @@ Permitir que paciente e profissional autorizado organizem metas e exercícios te
   - [X] **8.7.1.3** Aplicar as mesmas regras Verde, Amarelo e Vermelho ao acesso profissional, sem inferir compartilhamento por autoria conjunta.
   - [X] **8.7.1.4** Testar alterações concorrentes, prazo vencido, meta sem etapa e bloqueio de acesso após revogação.
 
-- [X] **8.7.2 — Criar painel de metas do paciente.** Escopo: oferecer visão simples das prioridades, próximos passos, obstáculos e conquistas. Implementação: cartões Sliced, filtros Alpine.js e interações acessíveis sem recarregamento integral.
+- [X] **8.7.2 — Criar painel de metas do paciente.** Escopo: oferecer visão simples das prioridades, próximos passos, obstáculos e conquistas. Implementação: cartões Duralux, filtros JavaScript próprio e interações acessíveis sem recarregamento integral.
   - [X] **8.7.2.1** Construir lista responsiva por prioridade e prazo, com progresso textual, barra com nome acessível e estados vazios orientativos.
   - [X] **8.7.2.2** Implementar criação e edição guiadas, dividindo a meta em ações pequenas com validação de prazo e ordem.
   - [X] **8.7.2.3** Permitir registrar obstáculo, plano de ação e conclusão sem pontos negativos, perda de sequência ou linguagem punitiva.
@@ -719,7 +719,7 @@ Transformar dados autorizados em visões úteis para paciente, profissional e cl
   - [X] **8.9.1.3** Excluir registros Vermelhos e Amarelos não autorizados de séries, totais, tendências, relatórios e contagens indiretas.
   - [X] **8.9.1.4** Criar testes com conjuntos conhecidos para validar fórmulas, ausência de dados, revogação e isolamento multiclínica.
 
-- [X] **8.9.2 — Construir dashboard de evolução do paciente.** Escopo: apresentar ao paciente seu humor, check-ins, progresso de metas, exercícios e frequência de consultas. Implementação: cards Sliced, ApexCharts e filtros de período sincronizados.
+- [X] **8.9.2 — Construir dashboard de evolução do paciente.** Escopo: apresentar ao paciente seu humor, check-ins, progresso de metas, exercícios e frequência de consultas. Implementação: cards Duralux, ApexCharts e filtros de período sincronizados.
   - [X] **8.9.2.1** Criar resumo com frequência de check-ins, distribuição de humor, metas em andamento, exercícios concluídos e próximas consultas.
   - [X] **8.9.2.2** Implementar gráficos semanais e mensais com escala íntegra, legenda, valores no foco e tabela acessível equivalente.
   - [X] **8.9.2.3** Permitir comparação apenas com períodos do próprio paciente, explicando que associação visual não representa causalidade ou diagnóstico.
@@ -755,7 +755,7 @@ Iniciar a fase comercial com administração segura de clínicas, unidades, prof
 - Financeiro básico cadastra preços, gera cobranças por consulta e controla vencimento, pagamento manual, cancelamento e inadimplência.
 - Dados financeiros são separados dos clínicos; pacientes e profissionais visualizam apenas o necessário para seu papel.
 
-- [X] **8.10.1 — Criar cadastro da clínica, unidades e salas.** Escopo: manter identidade operacional, contatos, fuso, unidades físicas e recursos de agenda. Implementação: entidades com escopo de locatário, validações e telas administrativas Sliced.
+- [X] **8.10.1 — Criar cadastro da clínica, unidades e salas.** Escopo: manter identidade operacional, contatos, fuso, unidades físicas e recursos de agenda. Implementação: entidades com escopo de locatário, validações e telas administrativas Duralux.
   - [X] **8.10.1.1** Modelar clínica, unidade e sala com nome, documento identificador, contatos, endereço, fuso horário e status ativo/inativo.
   - [X] **8.10.1.2** Aplicar chave de clínica obrigatória em consultas e restrições de unicidade, impedindo referência cruzada entre locatários.
   - [X] **8.10.1.3** Construir CRUD responsivo com confirmação para inativação e bloqueio quando houver consulta futura vinculada.
@@ -1431,8 +1431,7 @@ Concluído ao final do Sprint 20 com IA assistiva, API, offline, observabilidade
 
 - [X] **13.1 Produto:** validar objetivos, priorização, jornadas e métricas.
 - [X] **13.2 Engenharia:** validar arquitetura, estimativas, integrações e operação.
-- [X] **13.3 Design:** validar adaptação do Sliced, acessibilidade e linguagem visual.
+- [X] **13.3 Design:** validar adaptação do Duralux, acessibilidade e linguagem visual.
 - [X] **13.4 Segurança e privacidade:** validar LGPD, isolamento, retenção, incidentes e fornecedores.
 - [X] **13.5 Responsável clínico:** validar conteúdo, alertas, crise, medicamentos, sobriedade e limites de IA.
 - [X] **13.6 Jurídico/regulatório:** validar prontuário, assinatura, menores, consentimentos, pagamentos e termos.
-

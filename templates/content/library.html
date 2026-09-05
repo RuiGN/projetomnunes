@@ -3,44 +3,44 @@
 {% block title %}Biblioteca de Conteúdo | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
 {% block content %}
-<div class="content-library" style="max-width: 900px; margin: 0 auto; display: grid; gap: 24px;">
-  <header>
-    <span class="workspace-eyebrow">Acompanhamento e educação</span>
-    <h1 class="page-title" style="margin: 0;">Biblioteca de Conteúdo</h1>
+<div class="product-page" aria-labelledby="library-title">
+  <header class="product-page-header">
+    <span class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Acompanhamento e educação</span>
+    <h1 id="library-title" class="mb-0">Biblioteca de Conteúdo</h1>
   </header>
 
-  <form method="get" class="form-stack" style="display: flex; gap: 12px; flex-wrap: wrap;">
+  <form method="get" class="product-form-card d-grid gap-3" aria-label="Filtros da biblioteca">
     {% for field in form %}
-      <div class="form-field" style="flex: 1; min-width: 180px;">
+      <div class="mb-3">
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
         {{ field }}
       </div>
     {% endfor %}
-    <button type="submit" class="primary-action" style="align-self: flex-end;">Buscar</button>
+    <button type="submit" class="btn btn-primary">Buscar</button>
   </form>
 
   {% if results %}
-    <ul style="list-style: none; padding: 0; display: grid; gap: 16px;">
+    <ul class="list-unstyled product-stack mb-0">
       {% for content in results %}
-        <li class="card" style="padding: 20px; border: 1px solid var(--color-border); border-radius: 14px; background: var(--color-surface);">
-          <a href="{% url 'content_detail' slug=content.slug %}" style="text-decoration: none; font-weight: 600;">{{ content.title }}</a>
-          <p style="margin: 8px 0 0; color: var(--color-muted);">{{ content.get_kind_display }}</p>
+        <li class="product-table-card">
+          <a href="{% url 'content_detail' slug=content.slug %}">{{ content.title }}</a>
+          <p class="product-muted mb-0">{{ content.get_kind_display }}</p>
         </li>
       {% endfor %}
     </ul>
     {% if page_obj.has_other_pages %}
-      <nav aria-label="Paginação" style="display: flex; gap: 8px;">
+      <nav class="d-flex flex-wrap align-items-center gap-2" aria-label="Paginação">
         {% if page_obj.has_previous %}
-          <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+          <a class="btn btn-outline-secondary" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
         {% endif %}
         <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
         {% if page_obj.has_next %}
-          <a href="?page={{ page_obj.next_page_number }}">Próxima</a>
+          <a class="btn btn-outline-secondary" href="?page={{ page_obj.next_page_number }}">Próxima</a>
         {% endif %}
       </nav>
     {% endif %}
   {% else %}
-    <div class="empty-state">Nenhum conteúdo publicado encontrado.</div>
+    <div class="product-empty-state" role="status">Nenhum conteúdo publicado encontrado.</div>
   {% endif %}
 </div>
 {% endblock %}

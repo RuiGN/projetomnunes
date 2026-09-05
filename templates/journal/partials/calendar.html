@@ -4,14 +4,14 @@
     <nav class="calendar-nav" aria-label="Navegação do calendário por mês">
       <a
         href="?year={{ calendar_data.previous_year }}&month={{ calendar_data.previous_month }}&period={{ selected_period }}&emotion={{ selected_emotion }}&mood={{ selected_mood }}"
-        class="calendar-nav-btn"
+        class="btn btn-outline-secondary"
         aria-label="Mês anterior"
       >
         <span aria-hidden="true">&larr;</span> Anterior
       </a>
       <a
         href="?year={{ calendar_data.next_year }}&month={{ calendar_data.next_month }}&period={{ selected_period }}&emotion={{ selected_emotion }}&mood={{ selected_mood }}"
-        class="calendar-nav-btn"
+        class="btn btn-outline-secondary"
         aria-label="Próximo mês"
       >
         Próximo <span aria-hidden="true">&rarr;</span>
@@ -29,7 +29,7 @@
     <div class="calendar-day-header" role="columnheader">Sáb</div>
 
     {% for week in calendar_data.weeks %}
-      <div role="row" style="display: contents;">
+      <div role="row">
         {% for day in week %}
           <div
             role="gridcell"
@@ -60,18 +60,18 @@
       </span>
     {% endfor %}
     <span class="legend-item">
-      <span class="legend-swatch mood-empty" style="border: 1px dashed var(--color-border);" aria-hidden="true"></span>
+      <span class="legend-swatch mood-empty" aria-hidden="true"></span>
       <span>Sem registro</span>
     </span>
   </div>
 
   {% if calendar_data.text_summary_rows %}
-    <details class="calendar-accessible-summary" style="margin-top: 16px;">
-      <summary style="cursor: pointer; font-weight: 600; color: var(--color-text-muted);">
+    <details class="calendar-accessible-summary">
+      <summary>
         Ver resumo textual do mês (tabela acessível)
       </summary>
-      <div style="margin-top: 10px; overflow-x: auto;">
-        <table class="responsive-table" aria-label="Registros de humor de {{ calendar_data.month_name }}">
+      <div>
+        <table class="table product-table" aria-label="Registros de humor de {{ calendar_data.month_name }}">
           <caption>Histórico diário em {{ calendar_data.month_name }}</caption>
           <thead>
             <tr>

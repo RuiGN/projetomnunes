@@ -3,79 +3,79 @@
 {% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
 {% block content %}
-<div style="max-width: 640px; margin: 0 auto; display: grid; gap: 20px;">
-  <header style="text-align: center;">
-    <span class="workspace-eyebrow">Descanse sem culpa</span>
-    <h1 class="page-title" style="margin: 0;">Modo baixa energia</h1>
+<div>
+  <header>
+    <span class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Descanse sem culpa</span>
+    <h1 class="mb-0">Modo baixa energia</h1>
   </header>
 
   {% if session %}
-    <div class="card" style="padding: 24px; border: 1px solid var(--color-success); border-left-width: 6px; border-radius: 16px; background: var(--color-surface);">
-      <p role="status" style="margin: 0 0 14px; font-weight: 600;">
+    <div class="card">
+      <p role="status">
         Modo ativo até {{ session.ends_at|date:"d/m/Y \à\s H:i" }} — você está cuidado de si.
       </p>
-      <p style="margin: 0 0 18px; color: var(--color-text-muted); font-size: 14px;">
+      <p>
         Notificações não essenciais estão pausadas. Consultas e lembretes essenciais continuam.
       </p>
-      <h2 style="font-size: 16px; font-weight: 700; margin: 0 0 10px;">Uma ação por vez, no seu ritmo:</h2>
-      <ul style="display: grid; gap: 10px; margin: 0 0 18px; padding: 0; list-style: none;">
+      <h2>Uma ação por vez, no seu ritmo:</h2>
+      <ul>
         {% for action in ""|center:0 %}{% endfor %}
-        {% if session.action_1 %}<li style="padding: 12px 14px; border: 1px solid var(--color-border); border-radius: 10px; background: var(--color-canvas);">1. {{ session.action_1 }}</li>{% endif %}
-        {% if session.action_2 %}<li style="padding: 12px 12px; border: 1px solid var(--color-border); border-radius: 10px; background: var(--color-canvas);">2. {{ session.action_2 }}</li>{% endif %}
-        {% if session.action_3 %}<li style="padding: 12px 12px; border: 1px solid var(--color-border); border-radius: 10px; background: var(--color-canvas);">3. {{ session.action_3 }}</li>{% endif %}
+        {% if session.action_1 %}<li>1. {{ session.action_1 }}</li>{% endif %}
+        {% if session.action_2 %}<li>2. {{ session.action_2 }}</li>{% endif %}
+        {% if session.action_3 %}<li>3. {{ session.action_3 }}</li>{% endif %}
       </ul>
       <form method="post" action="{% url 'low_energy_deactivate' %}">
         {% csrf_token %}
-        <button type="submit" class="calendar-nav-btn" style="cursor: pointer;">
+        <button type="submit" class="btn btn-outline-secondary">
           Encerrar modo baixa energia agora
         </button>
       </form>
     </div>
   {% else %}
-    <div class="card" style="padding: 24px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-surface);">
-      <p style="margin: 0 0 16px; color: var(--color-text-muted);">
+    <div class="card">
+      <p>
         Em dias difíceis, o modo baixa energia mostra apenas algumas ações mínimas que você escolheu antes. Nada de cobrança — pausar é permitido.
       </p>
 
       {% if template %}
-        <form method="post" action="{% url 'low_energy_activate' %}" style="display: grid; gap: 12px;">
+        <form method="post" action="{% url 'low_energy_activate' %}">
           {% csrf_token %}
           <input type="hidden" name="duration_hours" value="8">
-          <div style="display: grid; gap: 6px; padding: 14px; border: 1px solid var(--color-border); border-radius: 10px; background: var(--color-canvas);">
+          <div>
             <strong>Suas ações configuradas:</strong>
             {% if template.action_1 %}<span>1. {{ template.action_1 }}</span>{% endif %}
             {% if template.action_2 %}<span>2. {{ template.action_2 }}</span>{% endif %}
             {% if template.action_3 %}<span>3. {{ template.action_3 }}</span>{% endif %}
           </div>
-          <label for="id_le_note" style="font-weight: 600;">Observação (opcional)</label>
+          <label for="id_le_note">Observação (opcional)</label>
           <input type="text" name="note" id="id_le_note" class="form-control" maxlength="500" placeholder="Como você está? (opcional)">
-          <button type="submit" class="primary-action" style="cursor: pointer;">
+          <button type="submit" class="btn btn-primary">
             Ativar modo baixa energia
           </button>
         </form>
       {% else %}
-        <form method="post" action="{% url 'low_energy_configure' %}" style="display: grid; gap: 10px;">
+        <form method="post" action="{% url 'low_energy_configure' %}">
           {% csrf_token %}
-          <h2 style="font-size: 16px; font-weight: 700; margin: 0;">Configure até 3 ações mínimas:</h2>
+          <h2>Configure até 3 ações mínimas:</h2>
           <div>
-            <label for="id_action_1" style="font-weight: 600;">Ação 1</label>
+            <label for="id_action_1">Ação 1</label>
             <input type="text" name="action_1" id="id_action_1" class="form-control" maxlength="255" placeholder="Beber um copo de água">
           </div>
           <div>
-            <label for="id_action_2" style="font-weight: 600;">Ação 2</label>
+            <label for="id_action_2">Ação 2</label>
             <input type="text" name="action_2" id="id_action_2" class="form-control" maxlength="255" placeholder="Abrir a janela">
           </div>
           <div>
-            <label for="id_action_3" style="font-weight: 600;">Ação 3</label>
+            <label for="id_action_3">Ação 3</label>
             <input type="text" name="action_3" id="id_action_3" class="form-control" maxlength="255" placeholder="Realizar uma etapa curta de uma meta">
           </div>
-          <button type="submit" class="primary-action" style="cursor: pointer;">Salvar ações</button>
+          <button type="submit" class="btn btn-primary">Salvar ações</button>
         </form>
       {% endif %}
     </div>
   {% endif %}
 
-  <p style="color: var(--color-text-muted); font-size: 13px; text-align: center; margin: 0;">
+  <p>
     Este modo não substitui orientação de crise. Em perigo imediato, acione os serviços de emergência da sua localidade.
   </p>
 </div>

@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from uuid import uuid4
 
 import pytest
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client
@@ -517,7 +519,8 @@ def test_branding_stage_uploads_logo_and_advances(client: Client) -> None:
     preview = client.get(f"{reverse('clinic_setup')}?stage=branding")
     preview_content = preview.content.decode()
     assert "Pré-visualização da marca" in preview_content
-    assert "--clinic-primary: #1D4ED8" in preview_content
+    assert 'data-brand-preview-primary="#1D4ED8"' in preview_content
+    assert 'data-brand-preview-secondary="#93C5FD"' in preview_content
     assert configuration.logo.url in preview_content
 
 
@@ -719,8 +722,13 @@ def test_saved_branding_is_applied_to_the_active_tenant_workspace(
     response = client.get(reverse("workspace_vertical"))
 
     content = response.content.decode()
-    assert "--clinic-primary: #1D4ED8" in content
-    assert "--clinic-secondary: #93C5FD" in content
+    assert 'data-clinic-primary="#1D4ED8"' in content
+    assert 'data-clinic-secondary="#93C5FD"' in content
+    shell_script = (
+        Path(settings.BASE_DIR) / "static" / "duralux" / "js" / "product-shell.js"
+    ).read_text(encoding="utf-8")
+    assert 'root.style.setProperty("--clinic-primary", primary)' in shell_script
+    assert 'root.style.setProperty("--clinic-secondary", secondary)' in shell_script
     assert configuration.logo.url in content
     assert 'alt="Clínica Marca"' in content
 

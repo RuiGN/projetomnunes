@@ -1,8 +1,10 @@
 {% extends "layouts/vertical.html" %}
 {% load i18n %}
 
+{% block title %}{% translate "Review your decision" %}{% endblock %}
+
 {% block content %}
-<section class="content-card" aria-labelledby="decision-error-title">
+<section class="product-table-card" aria-labelledby="decision-error-title">
   <h1 id="decision-error-title">{% translate "Review your decision" %}</h1>
   <p>{% translate "Select accept or refuse before continuing." %}</p>
   {% if form.errors %}
@@ -11,6 +13,6 @@
       {{ form.errors }}
     </div>
   {% endif %}
-  <a class="primary-action" href="{% url 'consent_center' %}">{% translate "Back to terms" %}</a>
+  <a class="btn btn-primary" href="{% url 'consent_center' %}">{% translate "Back to terms" %}</a>
 </section>
 {% endblock %}

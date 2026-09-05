@@ -3,14 +3,14 @@
 {% block title %}Domínios personalizados{% endblock %}
 
 {% block content %}
-<main style="max-width:1080px;margin:0 auto;display:grid;gap:24px;">
-  <header>
-    <span class="workspace-eyebrow">White label</span>
-    <h1 class="page-title">Domínios personalizados</h1>
+<div class="product-page">
+  <header class="product-page-header">
+    <span class="text-primary-emphasis fw-semibold text-uppercase small">White label</span>
+    <h1>Domínios personalizados</h1>
   </header>
-  <section class="card" style="padding:24px;display:grid;gap:16px;" aria-labelledby="domains-title">
+  <section class="product-table-card product-stack" aria-labelledby="domains-title">
     <h2 id="domains-title">Domínios desta clínica</h2>
-    <ul style="display:grid;gap:8px;">
+    <ul class="product-stack">
       {% for domain in domains %}
       <li>{{ domain.domain }} · {{ domain.get_status_display }} · TLS: {{ domain.get_tls_status_display }}</li>
       {% empty %}
@@ -18,5 +18,5 @@
       {% endfor %}
     </ul>
   </section>
-</main>
+</div>
 {% endblock %}

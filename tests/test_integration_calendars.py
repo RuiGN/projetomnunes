@@ -9,6 +9,7 @@ import pytest
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
+from accounts.models import User
 from clinics.models import Clinic, ClinicMembership
 from integrations.calendars import (
     ConflictResolutionStrategy,
@@ -37,7 +38,7 @@ def test_clinic() -> Clinic:
 
 
 @pytest.fixture
-def therapist_user(test_clinic: Clinic):
+def therapist_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="terapeuta.cal@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -49,7 +50,7 @@ def therapist_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def patient_user(test_clinic: Clinic):
+def patient_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="paciente.cal@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -61,7 +62,9 @@ def patient_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def test_appointment(test_clinic: Clinic, therapist_user, patient_user) -> Appointment:
+def test_appointment(
+    test_clinic: Clinic, therapist_user: User, patient_user: User
+) -> Appointment:
     profile = PatientProfile.infrastructure_objects.create(
         clinic=test_clinic,
         user=patient_user,
@@ -96,7 +99,7 @@ def test_appointment(test_clinic: Clinic, therapist_user, patient_user) -> Appoi
 
 @pytest.mark.django_db
 def test_oauth_state_tamper_and_expiry_protection(
-    test_clinic: Clinic, therapist_user
+    test_clinic: Clinic, therapist_user: User
 ) -> None:
     """OAuth state tokens are signed with anti-CSRF nonce and reject tampering."""
     state = generate_oauth_state(
@@ -115,8 +118,38 @@ def test_oauth_state_tamper_and_expiry_protection(
 
 
 @pytest.mark.django_db
+def test_oauth_state_accepts_signature_containing_separator(
+    test_clinic: Clinic,
+    therapist_user: User,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A valid raw SHA-256 digest may contain the token separator byte."""
+
+    class SeparatorDigest:
+        digest_size = 32
+
+        def digest(self) -> bytes:
+            return (b"A" * 10) + b"." + (b"B" * 21)
+
+    monkeypatch.setattr(
+        "integrations.calendars.hashlib.sha256", lambda _value=b"": SeparatorDigest()
+    )
+
+    state = generate_oauth_state(
+        clinic_id=test_clinic.id,
+        user_id=therapist_user.id,
+        provider="google_calendar",
+    )
+
+    decoded = validate_oauth_state(state)
+
+    assert decoded["clinic_id"] == str(test_clinic.id)
+    assert decoded["user_id"] == str(therapist_user.id)
+
+
+@pytest.mark.django_db
 def test_calendar_authorization_status_and_expiration_warning(
-    test_clinic: Clinic, therapist_user
+    test_clinic: Clinic, therapist_user: User
 ) -> None:
     """Calendar authorization alerts when tokens are expired or near expiry."""
     # 1. No credential
@@ -200,7 +233,7 @@ def test_appointment_calendar_sync_lifecycle_and_minimized_data(
 
 @pytest.mark.django_db
 def test_calendar_conflict_detection_and_resolution(
-    test_clinic: Clinic, test_appointment: Appointment, therapist_user
+    test_clinic: Clinic, test_appointment: Appointment, therapist_user: User
 ) -> None:
     """Conflicts are logged and resolved deterministically."""
     adapter = FakeCalendarAdapter()

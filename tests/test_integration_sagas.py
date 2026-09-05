@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 from datetime import date, timedelta
+from typing import Never
 from uuid import uuid4
 
 import pytest
 from django.utils import timezone
 
+from accounts.models import User
 from clinics.models import Clinic, ClinicMembership
 from integrations.contracts import (
     FakeCalendarAdapter,
@@ -34,7 +36,7 @@ def test_clinic() -> Clinic:
 
 
 @pytest.fixture
-def therapist_user(test_clinic: Clinic):
+def therapist_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="terapeuta.saga@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -46,7 +48,7 @@ def therapist_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def patient_user(test_clinic: Clinic):
+def patient_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="paciente.saga@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -58,7 +60,9 @@ def patient_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def test_appointment(test_clinic: Clinic, therapist_user, patient_user) -> Appointment:
+def test_appointment(
+    test_clinic: Clinic, therapist_user: User, patient_user: User
+) -> Appointment:
     profile = PatientProfile.infrastructure_objects.create(
         clinic=test_clinic,
         user=patient_user,
@@ -93,7 +97,7 @@ def test_appointment(test_clinic: Clinic, therapist_user, patient_user) -> Appoi
 
 @pytest.mark.django_db
 def test_appointment_saga_full_journey_success(
-    test_clinic: Clinic, test_appointment: Appointment, therapist_user
+    test_clinic: Clinic, test_appointment: Appointment, therapist_user: User
 ) -> None:
     """End-to-end saga succeeds across calendar, video room and WhatsApp reminder."""
     phone = "+5581988887777"
@@ -155,7 +159,7 @@ def test_appointment_saga_transactional_compensation(
     cal_adapter = FakeCalendarAdapter()
 
     class FailingVideoAdapter(FakeVideoAdapter):
-        def create_room(self, **kwargs):
+        def create_room(self, **kwargs: object) -> Never:
             raise ConnectionError("Video provider timeout")
 
     saga = execute_appointment_saga(
@@ -210,7 +214,7 @@ def test_circuit_breaker_trips_to_fallback(
 
 @pytest.mark.django_db
 def test_operational_dashboard_and_reconciliation(
-    test_clinic: Clinic, test_appointment: Appointment, therapist_user
+    test_clinic: Clinic, test_appointment: Appointment, therapist_user: User
 ) -> None:
     """Dashboard returns provider status; reconciliation fixes missing records."""
     dashboard = get_integration_operations_dashboard(clinic_id=test_clinic.id)

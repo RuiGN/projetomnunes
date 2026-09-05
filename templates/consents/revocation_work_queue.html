@@ -1,12 +1,14 @@
 {% extends "layouts/vertical.html" %}
 
+{% block title %}Revogações aguardando tratamento{% endblock %}
+
 {% block content %}
-<section class="content-card" aria-labelledby="revocation-work-title">
+<section class="product-table-card" aria-labelledby="revocation-work-title">
   <h1 id="revocation-work-title">Revogações aguardando tratamento</h1>
   <p>Confirme cada bloqueio operacional somente após concluir o atendimento no sistema de destino.</p>
 </section>
 
-<section class="content-card" aria-label="Fila operacional de revogações">
+<section class="product-table-card" aria-label="Fila operacional de revogações">
   {% if work_rows %}
     <ul class="space-y-4" role="list">
       {% for row in work_rows %}

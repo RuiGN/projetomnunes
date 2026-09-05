@@ -588,7 +588,7 @@ def test_journal_views_validation_error_rendering(client: Client) -> None:
     assert response.status_code == 200
     content = response.content.decode()
     assert "Revise os campos indicados" in content
-    assert "form-error-summary" in content
+    assert "alert alert-danger" in content
 
 
 def test_journal_detail_and_edit_flow(client: Client) -> None:

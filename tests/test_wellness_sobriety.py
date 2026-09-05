@@ -7,6 +7,7 @@ from datetime import date
 import pytest
 from django.core.exceptions import ValidationError
 
+from accounts.models import User
 from clinics.models import Clinic, ClinicMembership
 from people.models import PatientProfile
 from tests.factories import ClinicFactory, ClinicMembershipFactory, UserFactory
@@ -22,7 +23,7 @@ def test_clinic() -> Clinic:
 
 
 @pytest.fixture
-def patient_user(test_clinic: Clinic):
+def patient_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="paciente.sobriedade@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -34,7 +35,7 @@ def patient_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def patient_profile(test_clinic: Clinic, patient_user) -> PatientProfile:
+def patient_profile(test_clinic: Clinic, patient_user: User) -> PatientProfile:
     return PatientProfile.infrastructure_objects.create(
         clinic=test_clinic,
         user=patient_user,
@@ -45,7 +46,7 @@ def patient_profile(test_clinic: Clinic, patient_user) -> PatientProfile:
 
 @pytest.mark.django_db
 def test_setup_sobriety_goal_and_non_punitive_restart(
-    test_clinic: Clinic, patient_profile: PatientProfile, patient_user
+    test_clinic: Clinic, patient_profile: PatientProfile, patient_user: User
 ) -> None:
     """Sobriety goals support private tracking and non-punitive redefinition."""
     ref_date = date(2026, 8, 1)

@@ -8,6 +8,7 @@ import pytest
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
+from accounts.models import User
 from audit.models import AuditEvent
 from clinics.models import Clinic, ClinicMembership
 from integrations import selectors, services
@@ -35,7 +36,7 @@ def other_clinic() -> Clinic:
 
 
 @pytest.fixture
-def admin_user(test_clinic: Clinic):
+def admin_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="admin.integra@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -48,7 +49,7 @@ def admin_user(test_clinic: Clinic):
 
 @pytest.mark.django_db
 def test_credential_vault_encryption_decryption_and_integrity(
-    test_clinic: Clinic, admin_user
+    test_clinic: Clinic, admin_user: User
 ) -> None:
     """Credentials are encrypted at rest with envelope digest and audit evidence."""
     secret_token = "whsec_super_confidential_token_999"
@@ -92,7 +93,9 @@ def test_credential_vault_encryption_decryption_and_integrity(
 
 
 @pytest.mark.django_db
-def test_credential_rotation_and_revocation(test_clinic: Clinic, admin_user) -> None:
+def test_credential_rotation_and_revocation(
+    test_clinic: Clinic, admin_user: User
+) -> None:
     """Credentials can be rotated and revoked, preventing decryption once revoked."""
     cred = services.store_credential(
         clinic_id=test_clinic.id,
@@ -148,7 +151,7 @@ def test_credential_rotation_and_revocation(test_clinic: Clinic, admin_user) -> 
 
 @pytest.mark.django_db
 def test_credential_tenant_isolation(
-    test_clinic: Clinic, other_clinic: Clinic, admin_user
+    test_clinic: Clinic, other_clinic: Clinic, admin_user: User
 ) -> None:
     """Credentials are isolated per tenant and cannot be read across clinics."""
     services.store_credential(
@@ -266,7 +269,7 @@ def test_webhook_idempotent_deduplication(test_clinic: Clinic) -> None:
 
 @pytest.mark.django_db
 def test_webhook_processing_retries_and_dead_letter(
-    test_clinic: Clinic, admin_user
+    test_clinic: Clinic, admin_user: User
 ) -> None:
     """Transient webhook failures retry; terminal failures move to dead-letter queue."""
     raw_body = b'{"id": "evt_fail", "type": "test_failure"}'

@@ -1,0 +1,38 @@
+[
+  {
+    "width": 320,
+    "scroll": 320,
+    "main": 320,
+    "field": 246
+  },
+  {
+    "width": 375,
+    "scroll": 370,
+    "main": 370,
+    "field": 296
+  },
+  {
+    "width": 768,
+    "scroll": 763,
+    "main": 763,
+    "field": 661
+  },
+  {
+    "width": 1024,
+    "scroll": 1019,
+    "main": 1019,
+    "field": 858
+  },
+  {
+    "width": 1280,
+    "scroll": 1275,
+    "main": 995,
+    "field": 858
+  },
+  {
+    "width": 1440,
+    "scroll": 1435,
+    "main": 1155,
+    "field": 858
+  }
+]

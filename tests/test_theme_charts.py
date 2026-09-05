@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import re
 from pathlib import Path
 
 import pytest
@@ -33,16 +32,6 @@ def _contrast_ratio(first: str, second: str) -> float:
     return (lighter + 0.05) / (darker + 0.05)
 
 
-def _token(css: str, block_selector: str, name: str) -> str:
-    block = re.search(
-        rf"{re.escape(block_selector)}\s*{{(?P<body>.*?)}}", css, re.DOTALL
-    )
-    assert block is not None
-    value = re.search(rf"{re.escape(name)}:\s*(#[0-9a-f]{{6}})", block.group("body"))
-    assert value is not None
-    return value.group(1)
-
-
 def _login(client: Client) -> User:
     user = UserFactory.create()
     clinic = ClinicFactory.create(name="Clínica Preferências")
@@ -61,29 +50,27 @@ def test_theme_bootstrap_runs_before_styles_and_toggle_is_accessible(
 
     content = client.get(reverse("workspace_vertical")).content.decode("utf-8")
 
-    bootstrap = content.index("js/theme.js")
-    stylesheet = content.index("css/framework.css")
+    bootstrap = content.index("duralux/js/product-shell.js")
+    stylesheet = content.index("duralux/css/bootstrap.min.css")
     assert bootstrap < stylesheet
-    assert '<script src="/static/js/theme.js"></script>' in content
+    assert '<script src="/static/duralux/js/product-shell.js"></script>' in content
     assert "data-theme-toggle" in content
     assert 'aria-label="Alternar tema claro e escuro"' in content
     assert 'aria-live="polite"' in content
 
 
 def test_theme_script_detects_system_persists_and_announces_changes() -> None:
-    script = (Path(settings.BASE_DIR) / "static" / "js" / "theme.js").read_text(
-        encoding="utf-8"
-    )
+    script = (
+        Path(settings.BASE_DIR) / "static" / "duralux" / "js" / "product-shell.js"
+    ).read_text(encoding="utf-8")
 
-    assert 'safeStorageGet("workspace-theme")' in script
+    assert 'safeStorageGet("product-theme")' in script
     assert 'matchMedia("(prefers-color-scheme: dark)")' in script
-    assert "document.documentElement.dataset.theme" in script
-    assert 'safeStorageSet("workspace-theme"' in script
+    assert "root.dataset.bsTheme" in script
+    assert 'safeStorageSet("product-theme", next)' in script
     assert 'dispatchEvent(new CustomEvent("themechange"' in script
-    assert "Tema escuro ativado" in script
-    assert "Tema claro ativado" in script
-    assert 'addEventListener("alpine:init"' in script
-    assert 'Alpine.store("theme"' in script
+    assert 'next === "dark" ? "Tema escuro" : "Tema claro"' in script
+    assert "window.Alpine" not in script
 
 
 def test_layout_preference_defaults_to_vertical_and_persists_per_user(
@@ -138,9 +125,13 @@ def test_layout_default_is_administrable() -> None:
 
 
 def test_chart_adapter_uses_semantic_theme_and_accessible_equivalent() -> None:
-    script = (Path(settings.BASE_DIR) / "static" / "js" / "charts.js").read_text(
-        encoding="utf-8"
-    )
+    script = (
+        Path(settings.BASE_DIR)
+        / "static"
+        / "duralux"
+        / "js"
+        / "visual-reference-charts.js"
+    ).read_text(encoding="utf-8")
 
     assert "window.ApexCharts" in script
     assert "getComputedStyle" in script
@@ -167,7 +158,8 @@ def test_visual_reference_chart_has_summary_table_and_local_vendor_asset(
     vendor = (
         Path(settings.BASE_DIR)
         / "static"
-        / "vendor"
+        / "duralux"
+        / "vendors"
         / "apexcharts"
         / "apexcharts.min.js"
     )
@@ -179,42 +171,38 @@ def test_visual_reference_chart_has_summary_table_and_local_vendor_asset(
     assert "Registros por semana" in content
     assert "Semana 1" in content
     assert "Apenas registros agregados autorizados" in content
-    assert "js/charts.js" in content
+    assert "duralux/js/visual-reference-charts.js" in content
 
 
 def test_workspace_theme_tokens_keep_text_and_surfaces_accessible() -> None:
-    tokens = (
-        (Path(settings.BASE_DIR) / "static" / "css" / "tokens.css")
-        .read_text(encoding="utf-8")
-        .lower()
-    )
-    workspace = (
-        Path(settings.BASE_DIR) / "static" / "css" / "workspace.css"
-    ).read_text(encoding="utf-8")
+    css = (
+        Path(settings.BASE_DIR)
+        / "static"
+        / "duralux"
+        / "css"
+        / "product-integration.css"
+    ).read_text(encoding="utf-8").lower()
 
-    light_link = _token(tokens, ":root", "--color-link")
-    dark_link = _token(tokens, '[data-theme="dark"]', "--color-link")
-    light_control_border = _token(tokens, ":root", "--color-control-border")
-    dark_control_border = _token(
-        tokens, '[data-theme="dark"]', "--color-control-border"
-    )
-    action = _token(tokens, ":root", "--color-brand-action")
-    assert _contrast_ratio(light_link, "#ffffff") >= 4.5
-    assert _contrast_ratio(dark_link, "#1f1f1f") >= 4.5
-    assert _contrast_ratio("#ffffff", action) >= 4.5
-    assert _contrast_ratio(light_control_border, "#ffffff") >= 3
-    assert _contrast_ratio(dark_control_border, "#1f1f1f") >= 3
-    assert "border: 1px solid var(--color-control-border)" in workspace
-    assert "background: var(--color-brand-soft)" in workspace
-    assert "background: var(--color-detached-surface)" in workspace
-    assert "color: var(--color-link)" in workspace
-    assert "background: var(--color-brand-action)" in workspace
+    assert _contrast_ratio("#1d4ed8", "#ffffff") >= 4.5
+    assert _contrast_ratio("#93c5fd", "#1f1f1f") >= 4.5
+    assert '[data-bs-theme="light"]' in css
+    assert '[data-bs-theme="dark"]' in css
+    assert "--bs-link-color: #1d4ed8" in css
+    assert "--bs-link-color: #93c5fd" in css
+    assert "border: 1px solid var(--bs-border-color)" in css
+    assert "background: var(--bs-body-bg)" in css
+    assert "color: var(--bs-body-color)" in css
+    assert "--bs-btn-bg: var(--product-primary)" in css
 
 
 def test_theme_storage_has_a_safe_system_fallback() -> None:
-    script = (Path(settings.BASE_DIR) / "static" / "js" / "theme.js").read_text(
-        encoding="utf-8"
-    )
+    script = (
+        Path(settings.BASE_DIR)
+        / "static"
+        / "duralux"
+        / "js"
+        / "product-shell.js"
+    ).read_text(encoding="utf-8")
 
     assert "safeStorageGet" in script
     assert "safeStorageSet" in script

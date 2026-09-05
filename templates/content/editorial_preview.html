@@ -3,9 +3,9 @@
 {% block title %}Pré-visualização: {{ content.title }}{% endblock %}
 
 {% block content %}
-<main class="editorial-preview" style="width:min(100%,820px);margin:0 auto;display:grid;gap:24px;">
-  <header><span class="workspace-eyebrow">Pré-visualização responsiva · versão {{ version.version }}</span><h1 class="page-title">{{ content.title }}</h1></header>
-  <article class="card" aria-label="Conteúdo pré-visualizado" style="padding:clamp(16px,4vw,32px);overflow-wrap:anywhere;">{{ version.body|safe }}</article>
-  <a href="{% url 'content_editorial_detail' content_id=content.pk %}">Voltar ao editor</a>
-</main>
+<div class="product-page editorial-preview" aria-labelledby="preview-title">
+  <header class="product-page-header"><span class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Pré-visualização responsiva · versão {{ version.version }}</span><h1 id="preview-title">{{ content.title }}</h1></header>
+  <article class="product-table-card content-body" aria-label="Conteúdo pré-visualizado">{{ version.body|safe }}</article>
+  <a class="btn btn-outline-secondary align-self-start" href="{% url 'content_editorial_detail' content_id=content.pk %}">Voltar ao editor</a>
+</div>
 {% endblock %}

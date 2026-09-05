@@ -3,59 +3,59 @@
 {% block title %}Autoria de aprendizagem{% endblock %}
 
 {% block content %}
-<main style="max-width:1080px;margin:0 auto;display:grid;gap:24px;">
-  <header><span class="workspace-eyebrow">Cursos e coortes</span><h1 class="page-title">Autoria de aprendizagem</h1></header>
-  <section class="card" style="padding:24px;display:grid;gap:16px;" aria-labelledby="courses-title">
+<div class="product-page" aria-labelledby="learning-authoring-title">
+  <header class="product-page-header"><span class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Cursos e coortes</span><h1 id="learning-authoring-title">Autoria de aprendizagem</h1></header>
+  <section class="product-form-card" aria-labelledby="courses-title">
     <h2 id="courses-title">Cursos</h2>
-    <ul style="display:grid;gap:8px;">
+    <ul class="product-stack">
       {% for course in courses %}
       <li><a href="{% url 'content_course_authoring_detail' course.pk %}">{{ course.title }}</a> · {{ course.get_status_display }}</li>
       {% empty %}
       <li aria-live="polite">Nenhum curso ainda.</li>
       {% endfor %}
     </ul>
-    <form method="post" action="{% url 'content_course_create' %}" style="display:grid;gap:12px;">
+    <form class="product-stack" method="post" action="{% url 'content_course_create' %}">
       {% csrf_token %}
       <label for="course-slug">Slug do curso</label>
-      <input id="course-slug" name="slug" type="text" required maxlength="160" />
+      <input class="form-control" id="course-slug" name="slug" type="text" required maxlength="160" />
       <label for="course-title">Título</label>
-      <input id="course-title" name="title" type="text" required maxlength="255" />
+      <input class="form-control" id="course-title" name="title" type="text" required maxlength="255" />
       <label for="course-duration">Duração total (minutos)</label>
-      <input id="course-duration" name="duration_minutes" type="number" min="1" value="60" required />
+      <input class="form-control" id="course-duration" name="duration_minutes" type="number" min="1" value="60" required />
       <label for="course-instructor">Instrutor (ID)</label>
-      <input id="course-instructor" name="instructor_id" type="text" required />
-      <button type="submit">Criar curso</button>
+      <input class="form-control" id="course-instructor" name="instructor_id" type="text" required />
+      <button class="btn btn-primary" type="submit">Criar curso</button>
     </form>
   </section>
-  <section class="card" style="padding:24px;display:grid;gap:16px;" aria-labelledby="cohorts-title">
+  <section class="product-form-card" aria-labelledby="cohorts-title">
     <h2 id="cohorts-title">Coortes</h2>
-    <ul style="display:grid;gap:8px;">
+    <ul class="product-stack">
       {% for cohort in cohorts %}
       <li><a href="{% url 'content_cohort_detail' cohort.pk %}">{{ cohort.name }}</a></li>
       {% empty %}
       <li aria-live="polite">Nenhuma coorte ainda.</li>
       {% endfor %}
     </ul>
-    <form method="post" action="{% url 'content_cohort_create' %}" style="display:grid;gap:12px;">
+    <form class="product-stack" method="post" action="{% url 'content_cohort_create' %}">
       {% csrf_token %}
       <label for="cohort-name">Nome da coorte</label>
-      <input id="cohort-name" name="name" type="text" required maxlength="255" />
-      <button type="submit">Criar coorte</button>
+      <input class="form-control" id="cohort-name" name="name" type="text" required maxlength="255" />
+      <button class="btn btn-primary" type="submit">Criar coorte</button>
     </form>
   </section>
-  <section class="card" style="padding:24px;display:grid;gap:16px;" aria-labelledby="quizzes-title">
+  <section class="product-table-card" aria-labelledby="quizzes-title">
     <h2 id="quizzes-title">Questionários educacionais</h2>
-    <ul style="display:grid;gap:8px;">
+    <ul class="product-stack">
       {% for quiz in quizzes %}
       <li><a href="{% url 'content_quiz_detail' quiz.pk %}">{{ quiz.title }}</a> · {{ quiz.get_status_display }}</li>
       {% empty %}
       <li aria-live="polite">Nenhum questionário ainda.</li>
       {% endfor %}
     </ul>
-    <form method="post" style="display:grid;gap:12px;" data-quiz-form>
+    <form method="post" data-quiz-form>
       {% csrf_token %}
       <p>Nenhum curso selecionado — use a página de um curso para criar questionários.</p>
     </form>
   </section>
-</main>
+</div>
 {% endblock %}

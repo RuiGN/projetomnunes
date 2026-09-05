@@ -7,6 +7,7 @@ from datetime import UTC, date, datetime
 import pytest
 from django.core.exceptions import ValidationError
 
+from accounts.models import User
 from audit.models import AuditEvent
 from clinics.models import Clinic, ClinicMembership
 from people.models import PatientProfile
@@ -26,7 +27,7 @@ def test_clinic() -> Clinic:
 
 
 @pytest.fixture
-def patient_user(test_clinic: Clinic):
+def patient_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="paciente.atividade@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -38,7 +39,7 @@ def patient_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def patient_profile(test_clinic: Clinic, patient_user) -> PatientProfile:
+def patient_profile(test_clinic: Clinic, patient_user: User) -> PatientProfile:
     return PatientProfile.infrastructure_objects.create(
         clinic=test_clinic,
         user=patient_user,
@@ -49,7 +50,7 @@ def patient_profile(test_clinic: Clinic, patient_user) -> PatientProfile:
 
 @pytest.mark.django_db
 def test_record_manual_activity_with_rpe_and_accessibility(
-    test_clinic: Clinic, patient_profile: PatientProfile, patient_user
+    test_clinic: Clinic, patient_profile: PatientProfile, patient_user: User
 ) -> None:
     """Manual activity records support duration, RPE, and assisted adaptations."""
     start = datetime(2026, 9, 3, 10, 0, tzinfo=UTC)

@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+from base64 import b64decode
 from datetime import timedelta
+from urllib.parse import parse_qs, urlsplit
 
 import pytest
 from django.contrib.sessions.models import Session
@@ -17,6 +19,7 @@ from accounts.services import (
     SensitiveActionRateLimitedError,
     _mfa_rate_limit,
     administratively_reset_mfa,
+    build_totp_key_uri,
     confirm_totp_enrollment,
     consume_mfa_code,
     current_totp_code,
@@ -227,6 +230,176 @@ def test_totp_enrollment_requires_confirmation_and_recovery_codes_are_single_use
         consume_mfa_code(user=user, code=current_totp_code(secret=challenge.secret))
         is True
     )
+
+
+def test_totp_key_uri_encodes_label_components_and_rfc6238_parameters() -> None:
+    uri = build_totp_key_uri(
+        secret="JBSWY3DPEHPK3PXP",
+        issuer="Clínica São José / Produto",
+        account="Pessoa+Teste@Exemplo.COM",
+    )
+
+    assert uri == (
+        "otpauth://totp/"
+        "Cl%C3%ADnica%20S%C3%A3o%20Jos%C3%A9%20%2F%20Produto:"
+        "Pessoa%2BTeste%40Exemplo.COM"
+        "?secret=JBSWY3DPEHPK3PXP"
+        "&issuer=Cl%C3%ADnica%20S%C3%A3o%20Jos%C3%A9%20%2F%20Produto"
+        "&algorithm=SHA1&digits=6&period=30"
+    )
+
+
+@override_settings(MFA_TOTP_ISSUER="Plataforma Cuidado São José")
+def test_mfa_enroll_get_renders_local_qr_and_manual_key_without_cache(
+    client: Client,
+) -> None:
+    user, _clinic = authenticated_admin(client)
+    user.email = "Pessoa+Teste@Exemplo.COM"
+    user.save(update_fields=("email",))
+
+    response = client.get(reverse("mfa_enroll"))
+
+    assert response.status_code == 200
+    assert response.headers["Cache-Control"] == "no-store"
+    assert response.headers["X-Robots-Tag"] == "noindex, nofollow, noarchive"
+    assert any(
+        template.name == "accounts/mfa_enroll.html"
+        for template in response.templates
+    )
+    secret = UserMFA.objects.get(user=user).decrypt_secret()
+    uri = response.context["totp_uri"]
+    parsed = urlsplit(uri)
+    query = parse_qs(parsed.query)
+    assert parsed.scheme == "otpauth"
+    assert parsed.netloc == "totp"
+    assert parsed.path.endswith(
+        "/Plataforma%20Cuidado%20S%C3%A3o%20Jos%C3%A9:"
+        "pessoa%2Bteste%40exemplo.com"
+    )
+    assert query == {
+        "secret": [secret],
+        "issuer": ["Plataforma Cuidado São José"],
+        "algorithm": ["SHA1"],
+        "digits": ["6"],
+        "period": ["30"],
+    }
+    qr_data_uri = response.context["qr_data_uri"]
+    assert qr_data_uri.startswith("data:image/svg+xml;base64,")
+    assert b"<svg" in b64decode(qr_data_uri.partition(",")[2])
+    content = response.content.decode("utf-8")
+    assert secret in content
+    assert "Google Authenticator" in content
+    assert "otpauth://" not in content
+
+
+def test_mfa_enroll_post_confirms_factor_once_and_keeps_local_continue_url(
+    client: Client,
+) -> None:
+    user, _clinic = authenticated_admin(client)
+    enrollment = client.get(reverse("mfa_enroll"))
+    secret = enrollment.context["manual_secret"]
+    session = client.session
+    session["mfa_next"] = "https://attacker.example/redirect"
+    session.save()
+
+    response = client.post(
+        reverse("mfa_enroll"),
+        {"code": current_totp_code(secret=secret)},
+    )
+
+    assert response.status_code == 200
+    assert response.headers["Cache-Control"] == "no-store"
+    assert response.headers["Pragma"] == "no-cache"
+    assert response.headers["X-Robots-Tag"] == "noindex, nofollow, noarchive"
+    assert any(
+        template.name == "accounts/mfa_recovery_codes.html"
+        for template in response.templates
+    )
+    assert len(response.context["recovery_codes"]) == 8
+    assert response.context["continue_url"] == reverse("workspace_vertical")
+    assert UserMFA.objects.get(user=user).is_confirmed is True
+
+    follow_up = client.get(reverse("mfa_enroll"))
+
+    assert follow_up.status_code == 302
+    assert follow_up.headers["Location"] == reverse("mfa_verify")
+    assert not getattr(follow_up, "context", None)
+
+
+def test_mfa_enroll_invalid_code_preserves_pending_secret(client: Client) -> None:
+    user, _clinic = authenticated_admin(client)
+    enrollment = client.get(reverse("mfa_enroll"))
+    secret = enrollment.context["manual_secret"]
+
+    response = client.post(reverse("mfa_enroll"), {"code": "000000"})
+
+    assert response.status_code == 200
+    assert response.headers["Cache-Control"] == "no-store"
+    assert "Código inválido ou expirado" in response.content.decode("utf-8")
+    mfa = UserMFA.objects.get(user=user)
+    assert mfa.is_confirmed is False
+    assert mfa.decrypt_secret() == secret
+
+
+def test_confirmed_mfa_challenge_hides_provisioning_material_and_disables_cache(
+    client: Client,
+) -> None:
+    user, _clinic = authenticated_admin(client)
+    challenge = start_totp_enrollment(user=user)
+    confirm_totp_enrollment(
+        user=user,
+        code=current_totp_code(secret=challenge.secret),
+    )
+
+    response = client.get(reverse("mfa_verify"))
+
+    assert response.status_code == 200
+    assert response.headers["Cache-Control"] == "no-store"
+    assert response.headers["X-Robots-Tag"] == "noindex, nofollow, noarchive"
+    content = response.content.decode("utf-8")
+    assert challenge.secret not in content
+    assert "otpauth://" not in content
+    assert "data:image/svg+xml" not in content
+
+
+def test_pending_mfa_enrollment_can_be_restarted_without_confirming_factor(
+    client: Client,
+) -> None:
+    user, _clinic = authenticated_admin(client)
+    first_response = client.get(reverse("mfa_enroll"))
+    first_secret = first_response.context["manual_secret"]
+
+    response = client.post(reverse("mfa_enroll"), {"action": "restart"})
+
+    assert response.status_code == 200
+    assert response.headers["Cache-Control"] == "no-store"
+    assert response.headers["Pragma"] == "no-cache"
+    assert response.headers["X-Robots-Tag"] == "noindex, nofollow, noarchive"
+    second_secret = response.context["manual_secret"]
+    assert second_secret != first_secret
+    mfa = UserMFA.objects.get(user=user)
+    assert mfa.decrypt_secret() == second_secret
+    assert mfa.is_confirmed is False
+
+
+def test_mfa_enrollment_rate_limit_response_is_not_cacheable(
+    client: Client,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    authenticated_admin(client)
+    assert client.get(reverse("mfa_enroll")).status_code == 200
+
+    def reject_confirmation(**_kwargs: object) -> list[str]:
+        raise MFAAttemptRateLimitedError
+
+    monkeypatch.setattr("accounts.views.confirm_totp_enrollment", reject_confirmation)
+    response = client.post(reverse("mfa_enroll"), {"code": "123456"})
+
+    assert response.status_code == 429
+    assert response.headers["Cache-Control"] == "no-store"
+    assert response.headers["Pragma"] == "no-cache"
+    assert response.headers["X-Robots-Tag"] == "noindex, nofollow, noarchive"
+    assert response.headers["Retry-After"] == "300"
 
 
 @override_settings(MFA_ENFORCEMENT_ENABLED=True)
@@ -549,6 +722,11 @@ def test_recovery_codes_response_is_not_cacheable(client: Client) -> None:
 
     assert response.status_code == 200
     assert response.headers["Cache-Control"] == "no-store"
+    assert response.headers["Pragma"] == "no-cache"
+    assert response.headers["X-Robots-Tag"] == "noindex, nofollow, noarchive"
+    content = response.content.decode("utf-8")
+    assert "Códigos de recuperação" in content
+    assert "<title>Códigos de recuperação" in content
 
 
 @override_settings(MFA_ENFORCEMENT_ENABLED=True)

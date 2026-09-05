@@ -1,16 +1,18 @@
-<article class="summary-card {% if card.tone == 'info' %}tone-info{% elif card.tone == 'success' %}tone-success{% elif card.tone == 'warning' %}tone-warning{% elif card.tone == 'danger' %}tone-danger{% else %}tone-neutral{% endif %}" aria-labelledby="{{ card.id }}-title">
-  <div class="summary-card-heading">
-    <h2 id="{{ card.id }}-title">{{ card.title }}</h2>
-    {% if card.description %}<p>{{ card.description }}</p>{% endif %}
+<article class="card h-100 border-0 shadow-sm product-summary-card {% if card.tone == 'info' %}border-start border-info border-4{% elif card.tone == 'success' %}border-start border-success border-4{% elif card.tone == 'warning' %}border-start border-warning border-4{% elif card.tone == 'danger' %}border-start border-danger border-4{% else %}border-start border-secondary border-4{% endif %}" data-tone="{% if card.tone == 'info' or card.tone == 'success' or card.tone == 'warning' or card.tone == 'danger' %}{{ card.tone }}{% else %}neutral{% endif %}" aria-labelledby="{{ card.id }}-title">
+  <div class="card-body d-flex flex-column gap-2">
+    <div>
+      <h2 id="{{ card.id }}-title">{{ card.title }}</h2>
+      {% if card.description %}<p class="card-text text-muted mb-0">{{ card.description }}</p>{% endif %}
+    </div>
+    <div class="display-6 fw-semibold"><data value="{{ card.raw_value }}">{{ card.value }}</data></div>
+    {% if card.trend_label %}
+      <p class="small text-muted mb-0" aria-label="Tendência: {{ card.trend_label }}">
+        <span aria-hidden="true">↗</span>
+        <span>{{ card.trend_label }}</span>
+      </p>
+    {% endif %}
+    {% if card.action %}
+      <a class="btn btn-sm btn-outline-primary align-self-start mt-auto" href="{{ card.action.url }}">{{ card.action.label }}</a>
+    {% endif %}
   </div>
-  <data value="{{ card.raw_value }}">{{ card.value }}</data>
-  {% if card.trend_label %}
-    <p class="summary-card-trend" aria-label="Tendência: {{ card.trend_label }}">
-      <span aria-hidden="true">↗</span>
-      <span>{{ card.trend_label }}</span>
-    </p>
-  {% endif %}
-  {% if card.action %}
-    <a class="summary-card-action" href="{{ card.action.url }}">{{ card.action.label }}</a>
-  {% endif %}
 </article>

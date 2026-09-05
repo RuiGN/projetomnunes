@@ -7,6 +7,7 @@ from datetime import date
 import pytest
 from django.core.exceptions import ValidationError
 
+from accounts.models import User
 from audit.models import AuditEvent
 from clinics.models import Clinic, ClinicMembership
 from people.models import PatientProfile
@@ -23,7 +24,7 @@ def test_clinic() -> Clinic:
 
 
 @pytest.fixture
-def patient_user(test_clinic: Clinic):
+def patient_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="paciente.movimento@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -35,7 +36,7 @@ def patient_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def therapist_user(test_clinic: Clinic):
+def therapist_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="terapeuta.movimento@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -47,7 +48,7 @@ def therapist_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def other_patient_user(test_clinic: Clinic):
+def other_patient_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="outro.paciente.mov@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -59,7 +60,7 @@ def other_patient_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def patient_profile(test_clinic: Clinic, patient_user) -> PatientProfile:
+def patient_profile(test_clinic: Clinic, patient_user: User) -> PatientProfile:
     return PatientProfile.infrastructure_objects.create(
         clinic=test_clinic,
         user=patient_user,
@@ -70,7 +71,7 @@ def patient_profile(test_clinic: Clinic, patient_user) -> PatientProfile:
 
 @pytest.mark.django_db
 def test_wellness_checkin_scales_and_privacy_preference(
-    test_clinic: Clinic, patient_profile: PatientProfile, patient_user
+    test_clinic: Clinic, patient_profile: PatientProfile, patient_user: User
 ) -> None:
     """Check-ins enforce 1-5 scales and respect private vs shared preference."""
     day = date(2026, 9, 3)
@@ -124,8 +125,8 @@ def test_wellness_checkin_scales_and_privacy_preference(
 def test_safe_movement_plan_requires_professional_approval(
     test_clinic: Clinic,
     patient_profile: PatientProfile,
-    therapist_user,
-    other_patient_user,
+    therapist_user: User,
+    other_patient_user: User,
 ) -> None:
     """Movement plans require professional approval before activation."""
     # Proposal rejected if not healthcare professional
@@ -173,8 +174,8 @@ def test_safe_movement_plan_requires_professional_approval(
 def test_movement_plan_discomfort_feedback_pauses_plan(
     test_clinic: Clinic,
     patient_profile: PatientProfile,
-    therapist_user,
-    patient_user,
+    therapist_user: User,
+    patient_user: User,
 ) -> None:
     """Discomfort or pain feedback immediately pauses the active plan for review."""
     plan = services.propose_safe_movement_plan(

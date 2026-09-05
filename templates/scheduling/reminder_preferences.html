@@ -4,55 +4,24 @@
 {% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
 {% block content %}
-<div style="max-width: 900px; margin: 0 auto; display: grid; gap: 20px;">
-  <header class="journal-header">
-    <div>
-      <span class="workspace-eyebrow">Comunicação</span>
-      <h1 class="page-title" style="margin: 0;">Preferências de lembrete</h1>
-      <p style="margin: 4px 0 0; color: var(--color-text-muted); font-size: 14px;">
-        Escolha quando e como quer ser lembrado, sem excesso.
-      </p>
-    </div>
-  </header>
-
-  {% if preferences %}
-    <div style="display: grid; gap: 12px;">
+<div class="product-page product-page--narrow" aria-labelledby="reminder-preferences-title">
+  <header class="product-page-header"><p class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Comunicação</p><h1 id="reminder-preferences-title">Preferências de lembrete</h1><p class="product-page-meta">Escolha quando e como quer ser lembrado, sem excesso.</p></header>
+  <section class="product-stack" aria-labelledby="configured-reminders-title">
+    <h2 id="configured-reminders-title" class="h5 mb-0">Lembretes configurados</h2>
+    {% if preferences %}
       {% for preference in preferences %}
-        <article class="journal-entry-card">
-          <div>
-            <strong>{{ preference.get_reminder_type_display }}</strong>
-            <span class="mood-badge mood-neutral">{{ preference.get_channel_display }}</span>
-            <span class="visibility-badge {% if preference.enabled %}visibility-shareable{% else %}visibility-private{% endif %}">
-              {{ preference.enabled|yesno:"Ativado,Desativado" }}
-            </span>
-          </div>
-          <p style="margin: 6px 0 0; color: var(--color-text-muted); font-size: 13px;">
-            {{ preference.advance_minutes }} min antes · máx. {{ preference.max_daily }} por dia
-            {% if preference.silence_start %}· silêncio {{ preference.silence_start }}–{{ preference.silence_end }}{% endif %}
-          </p>
-        </article>
+        <article class="product-table-card product-list-item"><div><strong>{{ preference.get_reminder_type_display }}</strong><p class="product-muted mt-1">{{ preference.get_channel_display }} · {{ preference.advance_minutes }} min antes · máx. {{ preference.max_daily }} por dia{% if preference.silence_start %} · silêncio {{ preference.silence_start }}–{{ preference.silence_end }}{% endif %}</p></div><span class="badge {% if preference.enabled %}text-bg-success{% else %}text-bg-secondary{% endif %}">{{ preference.enabled|yesno:"Ativado,Desativado" }}</span></article>
       {% endfor %}
-    </div>
-  {% else %}
-    <div class="content-state" style="padding: 32px 24px; text-align: center; border: 1px dashed var(--color-border); border-radius: 14px; background: var(--color-surface);">
-      <p style="margin: 0; color: var(--color-text-muted);">Nenhuma preferência configurada ainda.</p>
-    </div>
-  {% endif %}
-
-  <div class="card" style="padding: 24px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-surface);">
-    <form class="form-stack" method="post" novalidate data-form-guard>
+    {% else %}<div class="product-empty-state" role="status"><p>Nenhuma preferência configurada ainda.</p></div>{% endif %}
+  </section>
+  <section class="product-form-card" aria-labelledby="reminder-form-title">
+    <h2 id="reminder-form-title" class="h5">Configurar lembrete</h2>
+    <form class="d-grid gap-3" method="post" novalidate data-form-guard>
       {% csrf_token %}
-      {% for field in form %}
-        <div class="form-field{% if field.errors %} has-error{% endif %}">
-          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-          {{ field|accessible_widget }}
-          {% for error in field.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
-        </div>
-      {% endfor %}
-      <div class="form-actions">
-        <button type="submit" class="primary-action" data-submit-button>{{ submit_label }}</button>
-      </div>
+      {% if form.non_field_errors %}<div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+      {% for field in form %}{% include "components/duralux_field.html" with field=field only %}{% endfor %}
+      <div><button type="submit" class="btn btn-primary" data-submit-button>{{ submit_label }}</button></div>
     </form>
-  </div>
+  </section>
 </div>
 {% endblock %}

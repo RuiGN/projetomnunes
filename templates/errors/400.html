@@ -1,15 +1,11 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ title }}</title>
-</head>
-<body>
-  <main>
-    <h1>{{ title }}</h1>
-    <p>{{ message }}</p>
-    <p>Referência: <code>{{ request_id }}</code></p>
-  </main>
-</body>
-</html>
+{% extends "accounts/auth_base.html" %}
+
+{% block auth_content %}
+<section class="product-auth-card card border-0 shadow-sm p-4 p-md-5 text-center" aria-labelledby="error-title">
+  <p class="text-primary fw-semibold mb-2">Erro 400</p>
+  <h1 id="error-title" class="h3 mb-3">{{ title }}</h1>
+  <p class="text-body-secondary">{{ message }}</p>
+  {% if request_id %}<p class="small">Referência: <code>{{ request_id }}</code></p>{% endif %}
+  <a class="btn btn-primary mt-2" href="{% url 'home' %}">Voltar ao início</a>
+</section>
+{% endblock %}

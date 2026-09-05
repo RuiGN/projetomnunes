@@ -7,6 +7,7 @@ from datetime import date, time, timedelta
 import pytest
 from django.core.exceptions import ValidationError
 
+from accounts.models import User
 from clinics.models import Clinic, ClinicMembership
 from people.models import PatientProfile
 from routines import services
@@ -24,7 +25,7 @@ def test_clinic() -> Clinic:
 
 
 @pytest.fixture
-def patient_user(test_clinic: Clinic):
+def patient_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="paciente.rotina@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -36,7 +37,7 @@ def patient_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def patient_profile(test_clinic: Clinic, patient_user) -> PatientProfile:
+def patient_profile(test_clinic: Clinic, patient_user: User) -> PatientProfile:
     return PatientProfile.infrastructure_objects.create(
         clinic=test_clinic,
         user=patient_user,

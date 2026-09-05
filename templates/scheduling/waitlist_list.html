@@ -3,58 +3,18 @@
 {% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
 {% block content %}
-<div style="max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem;">
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-    <h1 style="margin: 0;">Lista de espera</h1>
-    <a href="{% url 'waitlist_add' %}" class="button button-primary">Adicionar</a>
-  </div>
-
-  <form method="get" style="display: flex; gap: 0.5rem; align-items: center;">
-    <label for="status">Status</label>
-    <select id="status" name="status">
-      <option value="">Todos</option>
-      <option value="waiting" {% if selected_status == "waiting" %}selected{% endif %}>Aguardando</option>
-      <option value="offered" {% if selected_status == "offered" %}selected{% endif %}>Vaga oferecida</option>
-      <option value="filled" {% if selected_status == "filled" %}selected{% endif %}>Encaixado</option>
-      <option value="canceled" {% if selected_status == "canceled" %}selected{% endif %}>Cancelado</option>
-    </select>
-    <button type="submit" class="button">Filtrar</button>
+<div class="product-page" aria-labelledby="waitlist-title">
+  <header class="product-page-header d-flex flex-column flex-lg-row align-items-lg-end justify-content-between gap-3"><div><p class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Agenda</p><h1 id="waitlist-title">Lista de espera</h1><p class="product-page-meta">Acompanhe pedidos por unidade, serviço e período.</p></div><a href="{% url 'waitlist_add' %}" class="btn btn-primary">Adicionar à lista</a></header>
+  <form method="get" class="product-form-card d-flex flex-column flex-sm-row gap-2 align-items-sm-end" aria-label="Filtrar lista de espera">
+    <div class="flex-grow-1"><label for="status" class="form-label">Status</label><select id="status" name="status" class="form-select"><option value="">Todos</option><option value="waiting" {% if selected_status == "waiting" %}selected{% endif %}>Aguardando</option><option value="offered" {% if selected_status == "offered" %}selected{% endif %}>Vaga oferecida</option><option value="filled" {% if selected_status == "filled" %}selected{% endif %}>Encaixado</option><option value="canceled" {% if selected_status == "canceled" %}selected{% endif %}>Cancelado</option></select></div>
+    <button type="submit" class="btn btn-outline-primary">Filtrar</button>
   </form>
-
   {% if entries %}
-  <table>
-    <thead>
-      <tr>
-        <th scope="col">Paciente</th>
-        <th scope="col">Unidade</th>
-        <th scope="col">Serviço</th>
-        <th scope="col">Período</th>
-        <th scope="col">Status</th>
-        <th scope="col">Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for entry in entries %}
-      <tr>
-        <td>{{ entry.patient_profile.full_name }}</td>
-        <td>{{ entry.unit.name }}</td>
-        <td>{{ entry.service.name }}</td>
-        <td>{{ entry.preferred_period|default:"—" }}</td>
-        <td>{{ entry.get_status_display }}</td>
-        <td>
-          {% if entry.status == "waiting" %}
-          <form method="post" action="{% url 'waitlist_cancel' entry.pk %}" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="button button-danger">Cancelar</button>
-          </form>
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  {% else %}
-  <p>Nenhuma entrada na lista de espera.</p>
-  {% endif %}
+    <div class="product-table-card product-table-scroll" role="region" aria-label="Entradas na lista de espera" tabindex="0">
+      <table class="table product-table"><thead><tr><th scope="col">Paciente</th><th scope="col">Unidade</th><th scope="col">Serviço</th><th scope="col">Período</th><th scope="col">Status</th><th scope="col">Ações</th></tr></thead><tbody>
+      {% for entry in entries %}<tr><th scope="row">{{ entry.patient_profile.full_name }}</th><td>{{ entry.unit.name }}</td><td>{{ entry.service.name }}</td><td>{{ entry.preferred_period|default:"—" }}</td><td>{{ entry.get_status_display }}</td><td>{% if entry.status == "waiting" %}<form method="post" action="{% url 'waitlist_cancel' entry.pk %}">{% csrf_token %}<button type="submit" class="btn btn-sm btn-outline-danger">Cancelar entrada</button></form>{% endif %}</td></tr>{% endfor %}
+      </tbody></table>
+    </div>
+  {% else %}<div class="product-empty-state" role="status"><h2 class="h5">Nenhuma entrada na lista de espera</h2><p>Revise o filtro ou adicione uma nova solicitação.</p></div>{% endif %}
 </div>
 {% endblock %}

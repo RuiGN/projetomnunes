@@ -3,33 +3,33 @@
 {% block title %}Questionário: {{ quiz.title }}{% endblock %}
 
 {% block content %}
-<main style="max-width:1080px;margin:0 auto;display:grid;gap:24px;">
-  <header>
-    <span class="workspace-eyebrow">Curso: {{ course.title }}</span>
-    <h1 class="page-title">{{ quiz.title }}</h1>
-    <p role="note" aria-live="polite" style="border:1px solid var(--color-border);border-radius:8px;padding:12px;">
+<div class="product-page" aria-labelledby="quiz-participate-title">
+  <header class="product-page-header">
+    <span class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Curso: {{ course.title }}</span>
+    <h1 id="quiz-participate-title" class="mb-0">{{ quiz.title }}</h1>
+    <p class="product-notice" role="note" aria-live="polite">
       {{ disclaimer }}
     </p>
   </header>
-  <form method="post" action="{% url 'content_quiz_submit' quiz.pk %}" style="display:grid;gap:16px;">
+  <form class="product-stack" method="post" action="{% url 'content_quiz_submit' quiz.pk %}">
     {% csrf_token %}
     <input type="hidden" name="request_id" value="{{ request_id }}">
     <input type="hidden" name="shuffle_seed" value="{{ shuffle_seed }}">
     {% for question in questions %}
-    <fieldset class="card" style="padding:24px;display:grid;gap:12px;">
-      <legend>Questão {{ forloop.counter }}</legend>
+    <fieldset class="product-form-card product-stack">
+      <legend class="h5">Questão {{ forloop.counter }}</legend>
       <p>{{ question.prompt }}</p>
       {% for option in question.options %}
-      <label style="display:flex;gap:8px;align-items:center;">
-        <input type="radio" name="answer_{{ question.question_id }}" value="{{ option.key }}" required>
-        <span>{{ option.text }}</span>
+      <label class="form-check">
+        <input class="form-check-input" type="radio" name="answer_{{ question.question_id }}" value="{{ option.key }}" required>
+        <span class="form-check-label">{{ option.text }}</span>
       </label>
       {% endfor %}
     </fieldset>
     {% empty %}
     <p aria-live="polite">Este questionário ainda não possui perguntas.</p>
     {% endfor %}
-    <button type="submit" class="primary-action">Enviar respostas</button>
+    <button type="submit" class="btn btn-primary">Enviar respostas</button>
   </form>
-</main>
+</div>
 {% endblock %}

@@ -2,11 +2,30 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
+from typing import Any
+
 from django import forms, template
 from django.forms.boundfield import BoundField
 from django.utils.safestring import SafeString, mark_safe
 
 register = template.Library()
+
+
+class _DuraluxRadioGroup(forms.RadioSelect):
+    """Keep input styling on options, never on their containing element."""
+
+    def get_context(self, name: str, value: Any, attrs: Any) -> dict[str, Any]:
+        context = super().get_context(name, value, attrs)
+        context["widget"]["attrs"] = {
+            **context["widget"]["attrs"],
+            "class": "d-grid gap-2",
+        }
+        return context
+
+
+class _DuraluxCheckboxGroup(_DuraluxRadioGroup, forms.CheckboxSelectMultiple):
+    """Preserve Django multiple-choice selection and validation semantics."""
 
 
 @register.filter
@@ -29,9 +48,21 @@ def accessible_widget(field: BoundField) -> SafeString:
     if field.errors:
         attrs["aria-invalid"] = "true"
 
-    if input_type not in {"checkbox", "radio"}:
+    if input_type in {"checkbox", "radio"}:
+        attrs["class"] = "form-check-input"
+    elif isinstance(widget, forms.Select):
+        attrs["class"] = "form-select"
+    else:
         attrs["class"] = "form-control"
     render_widget = widget
+    if isinstance(widget, forms.CheckboxSelectMultiple):
+        render_widget = _DuraluxCheckboxGroup(
+            attrs=deepcopy(widget.attrs), choices=widget.choices
+        )
+    elif isinstance(widget, forms.RadioSelect):
+        render_widget = _DuraluxRadioGroup(
+            attrs=deepcopy(widget.attrs), choices=widget.choices
+        )
     if isinstance(field.field, forms.DateField):
         render_widget = forms.DateInput(
             attrs=widget.attrs,
@@ -57,7 +88,7 @@ def accessible_widget(field: BoundField) -> SafeString:
             }
         )
     if field.name == "enabled":
-        attrs["class"] = "switch-input"
+        attrs["class"] = "form-check-input"
         attrs["role"] = "switch"
 
     return mark_safe(field.as_widget(widget=render_widget, attrs=attrs))

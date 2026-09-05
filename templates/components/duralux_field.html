@@ -1,0 +1,12 @@
+{% load accessible_forms %}
+{% if field.use_fieldset %}
+<fieldset class="d-grid gap-2">
+  <legend class="fs-6 fw-semibold mb-0">{{ field.label }}</legend>
+{% else %}
+<div class="d-grid gap-2">
+  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+{% endif %}
+  {{ field|accessible_widget }}
+  {% if field.help_text %}<p id="{{ field.auto_id }}_helptext" class="form-text m-0">{{ field.help_text }}</p>{% endif %}
+  {% for error in field.errors %}<p id="{{ field.auto_id }}_error_{{ forloop.counter0 }}" class="invalid-feedback d-block m-0" role="alert">{{ error }}</p>{% endfor %}
+{% if field.use_fieldset %}</fieldset>{% else %}</div>{% endif %}

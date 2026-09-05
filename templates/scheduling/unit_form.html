@@ -1,14 +1,16 @@
 {% extends layout_template %}
+{% load accessible_forms %}
 
 {% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
 {% block content %}
-<div style="max-width: 640px; margin: 0 auto;">
-  <h1>{{ page_title }}</h1>
-  <form method="post">
+<div class="product-page product-page--narrow" aria-labelledby="unit-form-title">
+  <header class="product-page-header"><p class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Estrutura da agenda</p><h1 id="unit-form-title">{{ page_title }}</h1><p class="product-page-meta">Defina a identificação e o fuso horário da unidade.</p></header>
+  <form method="post" class="product-form-card d-grid gap-3" novalidate>
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="button button-primary">{{ submit_label }}</button>
+    {% if form.non_field_errors %}<div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+    {% for field in form %}{% include "components/duralux_field.html" with field=field only %}{% endfor %}
+    <div class="d-flex flex-wrap gap-2"><button type="submit" class="btn btn-primary">{{ submit_label }}</button><a href="{% url 'unit_list' %}" class="btn btn-outline-secondary">Cancelar alterações</a></div>
   </form>
 </div>
 {% endblock %}

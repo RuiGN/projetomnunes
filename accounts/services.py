@@ -8,12 +8,15 @@ import logging
 import secrets
 import struct
 import time
-from base64 import b32decode, b32encode
+from base64 import b32decode, b32encode, b64encode
 from dataclasses import dataclass
 from datetime import datetime, timedelta
+from io import BytesIO
 from typing import Protocol
+from urllib.parse import quote, urlencode
 from uuid import UUID, uuid4
 
+import segno
 from django.conf import settings
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
@@ -832,6 +835,37 @@ def current_totp_code(*, secret: str, at_time: int | None = None) -> str:
     offset = digest[-1] & 0x0F
     value = struct.unpack(">I", digest[offset : offset + 4])[0] & 0x7FFFFFFF
     return f"{value % 1_000_000:06d}"
+
+
+def build_totp_key_uri(*, secret: str, issuer: str, account: str) -> str:
+    """Build a standards-compatible TOTP provisioning URI without side effects."""
+    encoded_issuer = quote(issuer, safe="")
+    encoded_account = quote(account, safe="")
+    query = urlencode(
+        (
+            ("secret", secret),
+            ("issuer", issuer),
+            ("algorithm", "SHA1"),
+            ("digits", "6"),
+            ("period", "30"),
+        ),
+        quote_via=quote,
+    )
+    return f"otpauth://totp/{encoded_issuer}:{encoded_account}?{query}"
+
+
+def build_totp_qr_data_uri(*, uri: str) -> str:
+    """Generate a local SVG QR image without disclosing its payload externally."""
+    output = BytesIO()
+    segno.make_qr(uri, error="m").save(
+        output,
+        kind="svg",
+        scale=6,
+        border=4,
+        xmldecl=False,
+    )
+    encoded = b64encode(output.getvalue()).decode("ascii")
+    return f"data:image/svg+xml;base64,{encoded}"
 
 
 def _recovery_digest(*, user: User, code: str) -> str:

@@ -7,6 +7,7 @@ from datetime import UTC, date, datetime
 import pytest
 from django.core.exceptions import ValidationError
 
+from accounts.models import User
 from audit.models import AuditEvent
 from clinics.models import Clinic, ClinicMembership
 from people.models import PatientProfile
@@ -24,7 +25,7 @@ def test_clinic() -> Clinic:
 
 
 @pytest.fixture
-def patient_user(test_clinic: Clinic):
+def patient_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="paciente.med@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -36,7 +37,7 @@ def patient_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def therapist_user(test_clinic: Clinic):
+def therapist_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="terapeuta.med@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -48,7 +49,7 @@ def therapist_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def patient_profile(test_clinic: Clinic, patient_user) -> PatientProfile:
+def patient_profile(test_clinic: Clinic, patient_user: User) -> PatientProfile:
     return PatientProfile.infrastructure_objects.create(
         clinic=test_clinic,
         user=patient_user,
@@ -178,8 +179,8 @@ def test_medication_dose_adherence_and_no_double_dosing(
 def test_medication_sharing_consent_and_audit(
     test_clinic: Clinic,
     patient_profile: PatientProfile,
-    patient_user,
-    therapist_user,
+    patient_user: User,
+    therapist_user: User,
 ) -> None:
     """Clinicians cannot view medication history without explicit patient consent."""
     # Before consent

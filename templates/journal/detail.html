@@ -3,29 +3,29 @@
 {% block title %}Detalhes do Registro | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
 {% block content %}
-<div class="journal-detail-container" style="max-width: 800px; margin: 0 auto; display: grid; gap: 24px;">
+<div class="journal-detail-container">
   <header class="journal-header">
     <div>
-      <span class="workspace-eyebrow">Diário Emocional</span>
-      <h1 class="page-title" style="margin: 0;">Registro de {{ entry.created_at|date:"d/m/Y \à\s H:i" }}</h1>
+      <span class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Diário Emocional</span>
+      <h1 class="mb-0">Registro de {{ entry.created_at|date:"d/m/Y \à\s H:i" }}</h1>
     </div>
-    <div style="display: flex; gap: 8px;">
-      <a href="{% url 'journal_edit' entry.pk %}" class="primary-action" style="text-decoration: none; padding: 10px 16px; border-radius: 9px; font-weight: 600;">
+    <div>
+      <a href="{% url 'journal_edit' entry.pk %}" class="btn btn-primary">
         Editar
       </a>
-      <a href="{% url 'journal_list' %}" class="calendar-nav-btn" style="text-decoration: none;">
+      <a href="{% url 'journal_list' %}" class="btn btn-outline-secondary">
         Voltar ao diário
       </a>
     </div>
   </header>
 
-  <article class="journal-entry-card" style="padding: 24px;">
-    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--color-border);">
-      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
-        <span class="mood-badge mood-{{ entry.mood }}">
+  <article class="journal-entry-card">
+    <div>
+      <div>
+        <span class="badge text-bg-secondary mood-{{ entry.mood }}">
           Humor: {{ entry.get_mood_display }} ({{ entry.mood }}/5)
         </span>
-        <span style="font-size: 14px; color: var(--color-text-muted);">
+        <span>
           Intensidade: {{ entry.intensity }}/5
         </span>
       </div>
@@ -48,18 +48,18 @@
     </div>
 
     {# Context #}
-    <div style="margin-bottom: 20px;">
-      <h2 style="font-size: 16px; font-weight: 700; margin: 0 0 8px;">Relato do Diário</h2>
-      <p style="margin: 0; font-size: 16px; line-height: 1.6; white-space: pre-wrap;">{{ entry.context }}</p>
+    <div>
+      <h2>Relato do Diário</h2>
+      <p>{{ entry.context }}</p>
     </div>
 
     {# Emotions #}
     {% if entry.emotions %}
-      <div style="margin-bottom: 20px;">
-        <h2 style="font-size: 16px; font-weight: 700; margin: 0 0 8px;">Emoções Identificadas</h2>
+      <div>
+        <h2>Emoções Identificadas</h2>
         <div class="emotion-list">
           {% for emo in entry.emotions %}
-            <span class="emotion-tag" style="font-size: 14px; padding: 4px 10px;">{{ emo }}</span>
+            <span class="emotion-tag">{{ emo }}</span>
           {% endfor %}
         </div>
       </div>
@@ -67,40 +67,39 @@
 
     {# Triggers, Reactions, Strategies #}
     {% if entry.triggers or entry.reactions or entry.strategies %}
-      <div class="journal-entry-details" style="display: grid; gap: 14px; padding: 16px; margin-bottom: 20px;">
+      <div class="journal-entry-details">
         {% if entry.triggers %}
           <div>
-            <strong style="display: block; margin-bottom: 4px;">Gatilhos:</strong>
-            <p style="margin: 0;">{{ entry.triggers }}</p>
+            <strong>Gatilhos:</strong>
+            <p>{{ entry.triggers }}</p>
           </div>
         {% endif %}
         {% if entry.reactions %}
           <div>
-            <strong style="display: block; margin-bottom: 4px;">Reações físicas:</strong>
-            <p style="margin: 0;">{{ entry.reactions }}</p>
+            <strong>Reações físicas:</strong>
+            <p>{{ entry.reactions }}</p>
           </div>
         {% endif %}
         {% if entry.strategies %}
           <div>
-            <strong style="display: block; margin-bottom: 4px;">O que me ajudou:</strong>
-            <p style="margin: 0;">{{ entry.strategies }}</p>
+            <strong>O que me ajudou:</strong>
+            <p>{{ entry.strategies }}</p>
           </div>
         {% endif %}
       </div>
     {% endif %}
 
     {# Quick visibility change #}
-    <div style="padding-top: 16px; border-top: 1px solid var(--color-border);">
-      <h3 style="font-size: 15px; font-weight: 600; margin: 0 0 10px;">Alterar visibilidade deste registro:</h3>
-      <form method="post" action="{% url 'journal_set_visibility' entry.pk %}" style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+    <div>
+      <h3>Alterar visibilidade deste registro:</h3>
+      <form method="post" action="{% url 'journal_set_visibility' entry.pk %}">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ request.path }}">
         <button
           type="submit"
           name="visibility"
           value="shareable"
-          class="calendar-nav-btn{% if entry.visibility == 'shareable' %} is-active{% endif %}"
-          style="{% if entry.visibility == 'shareable' %}border-color: #50cd89; font-weight: 700;{% endif %}"
+          class="btn btn-outline-secondary{% if entry.visibility == 'shareable' %} is-active{% endif %}"
         >
           ● Verde (Compartilhável)
         </button>
@@ -108,8 +107,7 @@
           type="submit"
           name="visibility"
           value="confirmation_required"
-          class="calendar-nav-btn{% if entry.visibility == 'confirmation_required' %} is-active{% endif %}"
-          style="{% if entry.visibility == 'confirmation_required' %}border-color: #ffc700; font-weight: 700;{% endif %}"
+          class="btn btn-outline-secondary{% if entry.visibility == 'confirmation_required' %} is-active{% endif %}"
         >
           ● Amarelo (Perguntar antes)
         </button>
@@ -117,21 +115,19 @@
           type="submit"
           name="visibility"
           value="private"
-          class="calendar-nav-btn{% if entry.visibility == 'private' %} is-active{% endif %}"
-          style="{% if entry.visibility == 'private' %}border-color: #f1416c; font-weight: 700;{% endif %}"
+          class="btn btn-outline-secondary{% if entry.visibility == 'private' %} is-active{% endif %}"
         >
           ● Vermelho (Privado)
         </button>
       </form>
 
       {% if entry.visibility != "private" %}
-        <div style="margin-top: 16px;">
+        <div>
           <form method="post" action="{% url 'journal_revoke_sharing' entry.pk %}">
             {% csrf_token %}
             <button
               type="submit"
-              class="destructive-action"
-              style="padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;"
+              class="btn btn-outline-danger"
             >
               Revogar todo o compartilhamento deste registro
             </button>
@@ -142,17 +138,17 @@
 
     {# Access Requests History #}
     {% if access_requests %}
-      <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--color-border);">
-        <h3 style="font-size: 15px; font-weight: 600; margin: 0 0 12px;">Histórico de solicitações de acesso deste registro:</h3>
-        <div style="display: grid; gap: 8px;">
+      <div>
+        <h3>Histórico de solicitações de acesso deste registro:</h3>
+        <div>
           {% for req in access_requests %}
-            <div style="padding: 10px; border: 1px solid var(--color-border); border-radius: 8px; font-size: 13px; background: var(--color-canvas);">
-              <div style="display: flex; justify-content: space-between; gap: 8px;">
+            <div>
+              <div>
                 <span><strong>Terapeuta:</strong> {{ req.therapist.get_full_name|default:req.therapist.email }}</span>
                 <span><strong>Status:</strong> {{ req.get_status_display }}</span>
               </div>
               <div><strong>Finalidade:</strong> {{ req.purpose }}</div>
-              <div style="color: var(--color-text-muted); font-size: 12px;">
+              <div>
                 Solicitado em: {{ req.requested_at|date:"d/m/Y H:i" }}
                 {% if req.expires_at %} | Expira em: {{ req.expires_at|date:"d/m/Y H:i" }}{% endif %}
                 {% if req.revoked_at %} | Revogado em: {{ req.revoked_at|date:"d/m/Y H:i" }}{% endif %}

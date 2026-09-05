@@ -1,0 +1,98 @@
+[
+  {
+    "route": "patient-form",
+    "theme": "dark",
+    "width": 375,
+    "label": "rgb(226, 232, 240)",
+    "bg": "rgb(33, 37, 41)",
+    "overflow": false
+  },
+  {
+    "route": "patient-form",
+    "theme": "light",
+    "width": 375,
+    "label": "rgb(33, 37, 41)",
+    "bg": "rgb(255, 255, 255)",
+    "overflow": false
+  },
+  {
+    "route": "patient-form",
+    "theme": "dark",
+    "width": 1280,
+    "label": "rgb(226, 232, 240)",
+    "bg": "rgb(33, 37, 41)",
+    "overflow": false
+  },
+  {
+    "route": "patient-form",
+    "theme": "light",
+    "width": 1280,
+    "label": "rgb(33, 37, 41)",
+    "bg": "rgb(255, 255, 255)",
+    "overflow": false
+  },
+  {
+    "route": "onboarding-preferences-widget-fixture",
+    "theme": "dark",
+    "width": 375,
+    "label": "rgb(226, 232, 240)",
+    "bg": "rgb(33, 37, 41)",
+    "overflow": false
+  },
+  {
+    "route": "onboarding-preferences-widget-fixture",
+    "theme": "light",
+    "width": 375,
+    "label": "rgb(33, 37, 41)",
+    "bg": "rgb(255, 255, 255)",
+    "overflow": false
+  },
+  {
+    "route": "onboarding-preferences-widget-fixture",
+    "theme": "dark",
+    "width": 1280,
+    "label": "rgb(226, 232, 240)",
+    "bg": "rgb(33, 37, 41)",
+    "overflow": false
+  },
+  {
+    "route": "onboarding-preferences-widget-fixture",
+    "theme": "light",
+    "width": 1280,
+    "label": "rgb(33, 37, 41)",
+    "bg": "rgb(255, 255, 255)",
+    "overflow": false
+  },
+  {
+    "route": "clinic-modules-widget-fixture",
+    "theme": "dark",
+    "width": 375,
+    "label": "rgb(226, 232, 240)",
+    "bg": "rgb(33, 37, 41)",
+    "overflow": false
+  },
+  {
+    "route": "clinic-modules-widget-fixture",
+    "theme": "light",
+    "width": 375,
+    "label": "rgb(33, 37, 41)",
+    "bg": "rgb(255, 255, 255)",
+    "overflow": false
+  },
+  {
+    "route": "clinic-modules-widget-fixture",
+    "theme": "dark",
+    "width": 1280,
+    "label": "rgb(226, 232, 240)",
+    "bg": "rgb(33, 37, 41)",
+    "overflow": false
+  },
+  {
+    "route": "clinic-modules-widget-fixture",
+    "theme": "light",
+    "width": 1280,
+    "label": "rgb(33, 37, 41)",
+    "bg": "rgb(255, 255, 255)",
+    "overflow": false
+  }
+]

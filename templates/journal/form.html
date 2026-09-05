@@ -4,20 +4,20 @@
 {% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
 {% block content %}
-<div class="form-container" style="max-width: 800px; margin: 0 auto; display: grid; gap: 24px;">
-  <header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+<div class="form-container">
+  <header>
     <div>
-      <span class="workspace-eyebrow">Diário Emocional</span>
-      <h1 class="page-title" style="margin: 0;">{{ page_title }}</h1>
+      <span class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Diário Emocional</span>
+      <h1 class="mb-0">{{ page_title }}</h1>
     </div>
-    <a href="{% url 'journal_list' %}" class="calendar-nav-btn" style="text-decoration: none;">
+    <a href="{% url 'journal_list' %}" class="btn btn-outline-secondary">
       Voltar para o diário
     </a>
   </header>
 
-  <div class="card" style="padding: 24px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-surface);">
+  <div class="card">
     <form id="{{ form_id }}"
-      class="form-stack"
+      class="d-grid gap-3"
       method="post"
       novalidate
       data-form-guard
@@ -28,7 +28,7 @@
       {# Error Summary #}
       {% if form.errors %}
         <div
-          class="form-error-summary"
+          class="alert alert-danger form-error-summary"
           role="alert"
           tabindex="-1"
           data-focus-error-summary
@@ -50,154 +50,154 @@
       {% endif %}
 
       {# Mood Scale #}
-      <div class="form-field{% if form.mood.errors %} has-error{% endif %}">
-        <fieldset class="choice-group">
+      <div class="mb-3{% if form.mood.errors %} has-error{% endif %}">
+        <fieldset class="d-grid gap-2">
           <legend>
             {{ form.mood.label }} <span aria-hidden="true">*</span>
           </legend>
-          <p class="field-help" id="id_mood_help">Selecione como você avalia seu humor geral neste momento (1 = Muito mal a 5 = Muito bem).</p>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 8px;">
+          <p class="form-text" id="id_mood_help">Selecione como você avalia seu humor geral neste momento (1 = Muito mal a 5 = Muito bem).</p>
+          <div>
             {% for choice in form.mood %}
-              <div class="choice-control" style="padding: 10px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-canvas);">
+              <div class="form-check">
                 {{ choice.tag }}
-                <label for="{{ choice.id_for_label }}" style="font-weight: 600; cursor: pointer;">
+                <label for="{{ choice.id_for_label }}">
                   {{ choice.choice_label }}
                 </label>
               </div>
             {% endfor %}
           </div>
           {% for error in form.mood.errors %}
-            <p class="field-error" id="id_mood_error_{{ forloop.counter0 }}">{{ error }}</p>
+            <p class="invalid-feedback d-block" id="id_mood_error_{{ forloop.counter0 }}">{{ error }}</p>
           {% endfor %}
         </fieldset>
       </div>
 
       {# Emotions Multiple Choice #}
-      <div class="form-field{% if form.emotions.errors %} has-error{% endif %}">
-        <fieldset class="choice-group">
+      <div class="mb-3{% if form.emotions.errors %} has-error{% endif %}">
+        <fieldset class="d-grid gap-2">
           <legend>{{ form.emotions.label }}</legend>
-          <p class="field-help" id="id_emotions_help">Você pode selecionar mais de uma emoção.</p>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 8px;">
+          <p class="form-text" id="id_emotions_help">Você pode selecionar mais de uma emoção.</p>
+          <div>
             {% for choice in form.emotions %}
-              <div class="choice-control" style="padding: 8px 10px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-canvas);">
+              <div class="form-check">
                 {{ choice.tag }}
-                <label for="{{ choice.id_for_label }}" style="cursor: pointer;">
+                <label for="{{ choice.id_for_label }}">
                   {{ choice.choice_label }}
                 </label>
               </div>
             {% endfor %}
           </div>
           {% for error in form.emotions.errors %}
-            <p class="field-error" id="id_emotions_error_{{ forloop.counter0 }}">{{ error }}</p>
+            <p class="invalid-feedback d-block" id="id_emotions_error_{{ forloop.counter0 }}">{{ error }}</p>
           {% endfor %}
         </fieldset>
       </div>
 
       {# Intensity #}
-      <div class="form-field{% if form.intensity.errors %} has-error{% endif %}">
+      <div class="mb-3{% if form.intensity.errors %} has-error{% endif %}">
         <label for="{{ form.intensity.id_for_label }}">
           {{ form.intensity.label }} <span aria-hidden="true">*</span>
         </label>
         {{ form.intensity|accessible_widget }}
         {% if form.intensity.help_text %}
-          <p class="field-help" id="id_intensity_helptext">{{ form.intensity.help_text }}</p>
+          <p class="form-text" id="id_intensity_helptext">{{ form.intensity.help_text }}</p>
         {% endif %}
         {% for error in form.intensity.errors %}
-          <p class="field-error" id="id_intensity_error_{{ forloop.counter0 }}">{{ error }}</p>
+          <p class="invalid-feedback d-block" id="id_intensity_error_{{ forloop.counter0 }}">{{ error }}</p>
         {% endfor %}
       </div>
 
       {# Context (Required) #}
-      <div class="form-field{% if form.context.errors %} has-error{% endif %}">
+      <div class="mb-3{% if form.context.errors %} has-error{% endif %}">
         <label for="{{ form.context.id_for_label }}">
           {{ form.context.label }} <span aria-hidden="true">*</span>
         </label>
         {{ form.context|accessible_widget }}
         {% if form.context.help_text %}
-          <p class="field-help" id="id_context_helptext">{{ form.context.help_text }}</p>
+          <p class="form-text" id="id_context_helptext">{{ form.context.help_text }}</p>
         {% endif %}
         {% for error in form.context.errors %}
-          <p class="field-error" id="id_context_error_{{ forloop.counter0 }}">{{ error }}</p>
+          <p class="invalid-feedback d-block" id="id_context_error_{{ forloop.counter0 }}">{{ error }}</p>
         {% endfor %}
       </div>
 
       {# Triggers #}
-      <div class="form-field{% if form.triggers.errors %} has-error{% endif %}">
+      <div class="mb-3{% if form.triggers.errors %} has-error{% endif %}">
         <label for="{{ form.triggers.id_for_label }}">
           {{ form.triggers.label }}
         </label>
         {{ form.triggers|accessible_widget }}
         {% if form.triggers.help_text %}
-          <p class="field-help" id="id_triggers_helptext">{{ form.triggers.help_text }}</p>
+          <p class="form-text" id="id_triggers_helptext">{{ form.triggers.help_text }}</p>
         {% endif %}
         {% for error in form.triggers.errors %}
-          <p class="field-error" id="id_triggers_error_{{ forloop.counter0 }}">{{ error }}</p>
+          <p class="invalid-feedback d-block" id="id_triggers_error_{{ forloop.counter0 }}">{{ error }}</p>
         {% endfor %}
       </div>
 
       {# Reactions #}
-      <div class="form-field{% if form.reactions.errors %} has-error{% endif %}">
+      <div class="mb-3{% if form.reactions.errors %} has-error{% endif %}">
         <label for="{{ form.reactions.id_for_label }}">
           {{ form.reactions.label }}
         </label>
         {{ form.reactions|accessible_widget }}
         {% if form.reactions.help_text %}
-          <p class="field-help" id="id_reactions_helptext">{{ form.reactions.help_text }}</p>
+          <p class="form-text" id="id_reactions_helptext">{{ form.reactions.help_text }}</p>
         {% endif %}
         {% for error in form.reactions.errors %}
-          <p class="field-error" id="id_reactions_error_{{ forloop.counter0 }}">{{ error }}</p>
+          <p class="invalid-feedback d-block" id="id_reactions_error_{{ forloop.counter0 }}">{{ error }}</p>
         {% endfor %}
       </div>
 
       {# Strategies #}
-      <div class="form-field{% if form.strategies.errors %} has-error{% endif %}">
+      <div class="mb-3{% if form.strategies.errors %} has-error{% endif %}">
         <label for="{{ form.strategies.id_for_label }}">
           {{ form.strategies.label }}
         </label>
         {{ form.strategies|accessible_widget }}
         {% if form.strategies.help_text %}
-          <p class="field-help" id="id_strategies_helptext">{{ form.strategies.help_text }}</p>
+          <p class="form-text" id="id_strategies_helptext">{{ form.strategies.help_text }}</p>
         {% endif %}
         {% for error in form.strategies.errors %}
-          <p class="field-error" id="id_strategies_error_{{ forloop.counter0 }}">{{ error }}</p>
+          <p class="invalid-feedback d-block" id="id_strategies_error_{{ forloop.counter0 }}">{{ error }}</p>
         {% endfor %}
       </div>
 
       {# Visibility Traffic Light #}
-      <div class="form-field{% if form.visibility.errors %} has-error{% endif %}">
-        <fieldset class="choice-group">
+      <div class="mb-3{% if form.visibility.errors %} has-error{% endif %}">
+        <fieldset class="d-grid gap-2">
           <legend>{{ form.visibility.label }} <span aria-hidden="true">*</span></legend>
-          <p class="field-help" id="id_visibility_help">
+          <p class="form-text" id="id_visibility_help">
             Você tem controle total sobre o compartilhamento de cada registro:
           </p>
-          <div style="display: grid; gap: 10px; margin-top: 8px;">
+          <div>
             {% for choice in form.visibility %}
-              <div class="choice-control" style="padding: 12px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-canvas);">
+              <div class="form-check">
                 {{ choice.tag }}
-                <label for="{{ choice.id_for_label }}" style="cursor: pointer;">
+                <label for="{{ choice.id_for_label }}">
                   {% if choice.data.value == "shareable" %}
-                    <strong style="color: #0b7a42;">● Verde — Compartilhável:</strong> O terapeuta vinculado poderá ver este registro.
+                    <strong>● Verde — Compartilhável:</strong> O terapeuta vinculado poderá ver este registro.
                   {% elif choice.data.value == "confirmation_required" %}
-                    <strong style="color: #8c6d00;">● Amarelo — Confirmar antes:</strong> O terapeuta sabe que existe um registro, mas só terá acesso se você autorizar explicitamente.
+                    <strong>● Amarelo — Confirmar antes:</strong> O terapeuta sabe que existe um registro, mas só terá acesso se você autorizar explicitamente.
                   {% else %}
-                    <strong style="color: #b4234d;">● Vermelho — Privado:</strong> Somente você tem acesso. O terapeuta não vê e não é notificado.
+                    <strong>● Vermelho — Privado:</strong> Somente você tem acesso. O terapeuta não vê e não é notificado.
                   {% endif %}
                 </label>
               </div>
             {% endfor %}
           </div>
           {% for error in form.visibility.errors %}
-            <p class="field-error" id="id_visibility_error_{{ forloop.counter0 }}">{{ error }}</p>
+            <p class="invalid-feedback d-block" id="id_visibility_error_{{ forloop.counter0 }}">{{ error }}</p>
           {% endfor %}
         </fieldset>
       </div>
 
       {# Actions #}
-      <div class="form-actions" style="margin-top: 16px;">
-        <button class="primary-action" type="submit" data-submit-button>
+      <div class="d-flex flex-wrap gap-2">
+        <button class="btn btn-primary" type="submit" data-submit-button>
           {{ submit_label }}
         </button>
-        <a href="{% url 'journal_list' %}" class="calendar-nav-btn" style="text-decoration: none;">
+        <a href="{% url 'journal_list' %}" class="btn btn-outline-secondary">
           Cancelar
         </a>
       </div>

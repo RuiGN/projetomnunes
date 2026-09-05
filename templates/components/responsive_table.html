@@ -1,6 +1,6 @@
 {% load presentation %}
-<div class="responsive-table-wrapper">
-  <table class="responsive-table">
+<div class="table-responsive d-none d-md-block product-table-desktop">
+  <table class="table table-hover align-middle">
     <caption>{{ table.caption }}</caption>
     <thead>
       <tr>
@@ -18,27 +18,31 @@
           {% for cell in row.cells %}
             {% if forloop.first %}<th scope="row">{{ cell }}</th>{% else %}<td>{{ cell }}</td>{% endif %}
           {% endfor %}
-          <td class="table-actions">
-            {% for action in row.actions %}<a href="{{ action.url }}">{{ action.label }}</a>{% empty %}<span>Sem ações</span>{% endfor %}
+          <td>
+            <div class="d-flex flex-wrap gap-2">
+              {% for action in row.actions %}<a class="btn btn-sm btn-outline-primary" href="{{ action.url }}">{{ action.label }}</a>{% empty %}<span class="text-muted">Sem ações</span>{% endfor %}
+            </div>
           </td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
-<section class="mobile-row-list" aria-label="{{ table.caption }}">
+<section class="d-grid gap-3 d-md-none product-mobile-row-list" aria-label="{{ table.caption }}">
   {% for row in table.rows %}
-    <article class="mobile-row-card" aria-labelledby="{{ table.id }}-{{ row.id }}-title">
-      <h3 id="{{ table.id }}-{{ row.id }}-title">{{ row.cells|at_index:0 }}</h3>
-      <dl>
-        {% for column in table.columns %}
-          <div>
-            <dt>{{ column.label }}</dt>
-            <dd>{{ row.cells|at_index:forloop.counter0 }}</dd>
-          </div>
-        {% endfor %}
-      </dl>
-      {% if row.actions %}<div class="mobile-row-actions">{% for action in row.actions %}<a href="{{ action.url }}">{{ action.label }}</a>{% endfor %}</div>{% endif %}
+    <article class="card border-0 shadow-sm" aria-labelledby="{{ table.id }}-{{ row.id }}-title">
+      <div class="card-body">
+        <h3 class="h5 card-title" id="{{ table.id }}-{{ row.id }}-title">{{ row.cells|at_index:0 }}</h3>
+        <dl class="row mb-0">
+          {% for column in table.columns %}
+            <div class="col-12 mb-2">
+              <dt>{{ column.label }}</dt>
+              <dd>{{ row.cells|at_index:forloop.counter0 }}</dd>
+            </div>
+          {% endfor %}
+        </dl>
+        {% if row.actions %}<div class="d-flex flex-wrap gap-2 mt-3">{% for action in row.actions %}<a class="btn btn-sm btn-outline-primary" href="{{ action.url }}">{{ action.label }}</a>{% endfor %}</div>{% endif %}
+      </div>
     </article>
   {% endfor %}
 </section>

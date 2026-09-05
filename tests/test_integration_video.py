@@ -9,6 +9,7 @@ import pytest
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
+from accounts.models import User
 from clinics.models import Clinic, ClinicMembership
 from integrations.contracts import FakeVideoAdapter
 from integrations.models import (
@@ -42,7 +43,7 @@ def test_clinic() -> Clinic:
 
 
 @pytest.fixture
-def therapist_user(test_clinic: Clinic):
+def therapist_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="terapeuta.video@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -54,7 +55,7 @@ def therapist_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def patient_user(test_clinic: Clinic):
+def patient_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="paciente.video@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -66,7 +67,9 @@ def patient_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def test_appointment(test_clinic: Clinic, therapist_user, patient_user) -> Appointment:
+def test_appointment(
+    test_clinic: Clinic, therapist_user: User, patient_user: User
+) -> Appointment:
     profile = PatientProfile.infrastructure_objects.create(
         clinic=test_clinic,
         user=patient_user,
@@ -101,7 +104,7 @@ def test_appointment(test_clinic: Clinic, therapist_user, patient_user) -> Appoi
 
 @pytest.mark.django_db
 def test_clinical_video_session_and_ephemeral_token_lifecycle(
-    test_clinic: Clinic, test_appointment: Appointment, therapist_user
+    test_clinic: Clinic, test_appointment: Appointment, therapist_user: User
 ) -> None:
     """Clinical video session creates unique tokens and enforces entry windows."""
     adapter = FakeVideoAdapter()
@@ -142,7 +145,7 @@ def test_clinical_video_session_and_ephemeral_token_lifecycle(
 
 @pytest.mark.django_db
 def test_bilateral_recording_consent_controls(
-    test_clinic: Clinic, test_appointment: Appointment, therapist_user
+    test_clinic: Clinic, test_appointment: Appointment, therapist_user: User
 ) -> None:
     """Recording is blocked by default and requires explicit bilateral consent."""
     session = create_clinical_video_session(
@@ -172,7 +175,10 @@ def test_bilateral_recording_consent_controls(
 
 @pytest.mark.django_db
 def test_waiting_room_device_checks_and_admission(
-    test_clinic: Clinic, test_appointment: Appointment, therapist_user, patient_user
+    test_clinic: Clinic,
+    test_appointment: Appointment,
+    therapist_user: User,
+    patient_user: User,
 ) -> None:
     """Participants pass device check before waiting room, and therapist admits."""
     session = create_clinical_video_session(
@@ -212,7 +218,7 @@ def test_waiting_room_device_checks_and_admission(
 
 @pytest.mark.django_db
 def test_quality_telemetry_degradation_and_session_closing(
-    test_clinic: Clinic, test_appointment: Appointment, therapist_user
+    test_clinic: Clinic, test_appointment: Appointment, therapist_user: User
 ) -> None:
     """Network degradation triggers contingency; closing logs duration."""
     adapter = FakeVideoAdapter()

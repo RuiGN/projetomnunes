@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import pytest
 
+from accounts.models import User
 from clinics.models import Clinic, ClinicMembership
 from integrations import services
 from integrations.models import PartnerStatus
@@ -21,7 +22,7 @@ def test_clinic() -> Clinic:
 
 
 @pytest.fixture
-def admin_user(test_clinic: Clinic):
+def admin_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="admin.obs@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -141,7 +142,7 @@ def test_wcag_22_aa_compliance_validation() -> None:
 
 @pytest.mark.django_db
 def test_partner_homologation_dpa_and_data_residency(
-    test_clinic: Clinic, admin_user
+    test_clinic: Clinic, admin_user: User
 ) -> None:
     """Partner agreement requires signed DPA, Brazil data residency and exit plan."""
     # Non-compliant partner (US data residency, no exit plan)

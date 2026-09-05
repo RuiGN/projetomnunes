@@ -5,6 +5,7 @@ from __future__ import annotations
 import pytest
 from django.core.exceptions import PermissionDenied, ValidationError
 
+from accounts.models import User
 from clinics.models import Clinic, ClinicMembership
 from integrations.contracts import FakeWhatsAppAdapter
 from integrations.whatsapp import (
@@ -33,7 +34,7 @@ def test_clinic() -> Clinic:
 
 
 @pytest.fixture
-def patient_user(test_clinic: Clinic):
+def patient_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="paciente.wa@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -45,7 +46,7 @@ def patient_user(test_clinic: Clinic):
 
 @pytest.mark.django_db
 def test_whatsapp_consent_lifecycle_and_verification(
-    test_clinic: Clinic, patient_user
+    test_clinic: Clinic, patient_user: User
 ) -> None:
     """Consent is recorded, checked, and immediately stops sends when revoked."""
     phone = "+5581987654321"
@@ -130,7 +131,7 @@ def test_whatsapp_template_catalog_blocks_clinical_terms(test_clinic: Clinic) ->
 
 @pytest.mark.django_db
 def test_whatsapp_send_enforces_consent_and_updates_timeline(
-    test_clinic: Clinic, patient_user
+    test_clinic: Clinic, patient_user: User
 ) -> None:
     """Outbound dispatch enforces active consent and tracks delivery status."""
     phone = "+5581999998888"

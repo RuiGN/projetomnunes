@@ -1,0 +1,396 @@
+# PRD — Migração integral do layout para Duralux e QR Code no MFA
+
+Versão: 1.0
+Estado: em andamento — aceite da Sprint 4 bloqueado pelo gate global
+Projeto: projetomnunes
+Fonte visual obrigatória: `design_system_duralux/`
+Rastreamento: toda entrega usa checkbox `- [ ]`; somente evidência automatizada e revisão visual permitem alterar para `- [X]`.
+
+## 1. Objetivo
+
+Substituir integralmente o sistema visual antigo do projeto pelo Duralux, preservando as regras de negócio, segurança, isolamento multi-tenant, acessibilidade e conteúdo em português do Brasil. No primeiro cadastro do MFA TOTP, disponibilizar um QR Code compatível com Google Authenticator, sem enfraquecer a proteção já existente.
+
+## 2. Resultado esperado
+
+- [X] Todos os 77 arquivos HTML de `design_system_duralux/` foram lidos, classificados e registrados em uma matriz de adoção, adaptação ou descarte justificado.
+- [ ] Todos os 95 templates Django atuais foram migrados para a nova fundação Duralux e constam em uma matriz de cobertura.
+- [X] Os recursos Duralux necessários são servidos localmente pelo Django Staticfiles, sem CDN.
+- [ ] Nenhum template ou recurso ativo referencia o sistema visual anterior, seus nomes, caminhos, classes, fontes, ícones ou scripts substituídos.
+- [ ] A tela de login usa `design_system_duralux/assets/images/logo_login.webp`.
+- [ ] O cabeçalho usa `design_system_duralux/assets/images/logo_header.webp` como marca padrão.
+- [ ] O projeto usa `design_system_duralux/assets/images/favicon.svg` como favicon.
+- [ ] O cadastro inicial do MFA mostra QR Code escaneável pelo Google Authenticator e mantém a chave textual como alternativa acessível.
+- [ ] Todos os fluxos existentes continuam funcionando com o gate completo `pytest`, `ruff` e `mypy` aprovado.
+
+## 3. Baseline verificada
+
+### 3.1 Aplicação atual
+
+- 95 templates em `templates/`.
+- 17 recursos estáticos versionados em `static/`: 3 CSS, 7 fontes, 5 scripts próprios e 2 bibliotecas vendor.
+- Layouts centrais: `templates/layouts/base.html`, `vertical.html`, `detached.html` e três partials.
+- Recursos visuais antigos carregados pela base: `static/css/framework.css`, `static/css/tokens.css`, `static/css/workspace.css`, Cerebri Sans, Remix Icon e Alpine.js.
+- 62 templates possuem atributo `style` ou tag `script` (61 páginas, quando a base compartilhada é excluída); foram encontrados 660 atributos literais ` style=`, 661 atributos `style` no total e 13 tags `script`, que precisam ser migrados ou justificados.
+- O PRD principal ainda identifica Sliced/Tailwind/Alpine como fonte visual e deve ser atualizado quando a migração estiver comprovada.
+
+### 3.2 MFA atual
+
+- O backend TOTP RFC 6238 já existe em `accounts/services.py` com segredo criptografado, confirmação, tolerância de janela, prevenção de reutilização, rate limit e códigos de recuperação.
+- O fluxo HTTP está em `accounts/views.py:mfa_enroll` e `accounts/views.py:mfa_verify`.
+- A rota de cadastro é `/accounts/mfa/enroll/`; a rota de verificação é `/accounts/mfa/verify/`.
+- O cadastro atual expõe somente a chave textual dentro da descrição genérica de `templates/accounts/auth_form.html`.
+- Os testes existentes estão em `tests/test_account_session_mfa.py`.
+- O projeto usa Python 3.14, no qual `except TypeError, ValueError, AttributeError:` é sintaxe válida por PEP 758. A falha registrada na auditoria ocorreu sob Python 3.13 e não representa defeito do projeto; `uv run python -m py_compile accounts/services.py accounts/views.py` é o gate correto.
+
+### 3.3 Catálogo Duralux
+
+A pasta contém 77 arquivos HTML: 68 páginas de demonstração, 1 partial e 8 páginas de documentação. A auditoria também encontrou 12.694 referências locais nos HTML e 1.114 referências `url(...)` nos CSS; os recursos obrigatórios de marca existem no disco.
+
+- Autenticação e estados, 21: `auth-404-cover.html`, `auth-404-creative.html`, `auth-404-minimal.html`, `auth-login-cover.html`, `auth-login-creative.html`, `auth-login-minimal.html`, `auth-maintenance-cover.html`, `auth-maintenance-creative.html`, `auth-maintenance-minimal.html`, `auth-register-cover.html`, `auth-register-creative.html`, `auth-register-minimal.html`, `auth-reset-cover.html`, `auth-reset-creative.html`, `auth-reset-minimal.html`, `auth-resetting-cover.html`, `auth-resetting-creative.html`, `auth-resetting-minimal.html`, `auth-verify-cover.html`, `auth-verify-creative.html`, `auth-verify-minimal.html`.
+- Aplicativos, 6: `apps-calendar.html`, `apps-chat.html`, `apps-email.html`, `apps-notes.html`, `apps-storage.html`, `apps-tasks.html`.
+- CRM e gestão, 15: `customers.html`, `customers-create.html`, `customers-view.html`, `leads.html`, `leads-create.html`, `leads-view.html`, `projects.html`, `projects-create.html`, `projects-view.html`, `proposal.html`, `proposal-create.html`, `proposal-edit.html`, `proposal-view.html`, `invoice-create.html`, `invoice-view.html`.
+- Configurações, 13: `settings-customers.html`, `settings-email.html`, `settings-finance.html`, `settings-gateways.html`, `settings-general.html`, `settings-leads.html`, `settings-localization.html`, `settings-miscellaneous.html`, `settings-recaptcha.html`, `settings-seo.html`, `settings-support.html`, `settings-tags.html`, `settings-tasks.html`.
+- Relatórios, 4: `reports-leads.html`, `reports-project.html`, `reports-sales.html`, `reports-timesheets.html`.
+- Widgets, 5: `widgets-charts.html`, `widgets-lists.html`, `widgets-miscellaneous.html`, `widgets-statistics.html`, `widgets-tables.html`.
+- Páginas isoladas, 4: `index.html`, `analytics.html`, `payment.html`, `help-knowledgebase.html`.
+- Partial, 1: `partials/customizer.html`.
+- Documentação, 8: `docs/documentations.html`, `docs/html/changelog.html`, `docs/html/configuration.html`, `docs/html/credit-resource.html`, `docs/html/folder-structure.html`, `docs/html/get-started.html`, `docs/html/installation.html`, `docs/html/layouts.html`.
+
+## 4. Decisões de produto e arquitetura
+
+### 4.1 Fonte visual única
+
+- [ ] Duralux é a única fonte visual de runtime após a migração.
+- [ ] Páginas de demonstração não são copiadas integralmente; padrões visuais são convertidos em bases, partials e componentes Django reutilizáveis.
+- [X] Dados, links, avatares, banners, nomes e textos demonstrativos do fornecedor não chegam à aplicação.
+- [X] Apenas CSS, JS, fontes, imagens e plugins realmente utilizados são promovidos para `static/duralux/`.
+- [X] SCSS, sourcemaps, documentação, uploads de exemplo e plugins não utilizados não são publicados no `STATIC_ROOT`.
+- [ ] Dependências globais ficam na base; plugins específicos são carregados apenas nos blocos das páginas que os utilizam.
+- [ ] Nenhum asset é carregado de CDN; a política CSP continua permitindo apenas origens autorizadas.
+
+### 4.2 Marca
+
+- [X] Copiar `design_system_duralux/assets/images/logo_login.webp` para `static/duralux/images/logo_login.webp` e usá-la no layout de autenticação.
+- [X] Copiar `design_system_duralux/assets/images/logo_header.webp` para `static/duralux/images/logo_header.webp` e usá-la como fallback padrão do cabeçalho/sidebar.
+- [X] Preservar o logotipo white-label validado de `active_clinic_branding.logo` quando a clínica tiver marca própria; na ausência dele, usar obrigatoriamente `logo_header.webp`.
+- [ ] Copiar `design_system_duralux/assets/images/favicon.svg` para `static/duralux/images/favicon.svg` e declará-lo em todas as bases HTML completas.
+- [ ] Definir dimensões de `width` e `height`, texto alternativo e comportamento responsivo para evitar mudança de layout.
+
+### 4.3 MFA com QR Code
+
+- [X] Exibir QR Code somente durante cadastro ou recadastro do TOTP, nunca no desafio rotineiro de MFA já confirmado.
+- [X] Gerar URI no padrão Key URI Format: `otpauth://totp/<issuer>:<account>?secret=<secret>&issuer=<issuer>&algorithm=SHA1&digits=6&period=30`.
+- [X] Codificar corretamente issuer e conta; usar nome estável do produto como issuer e o e-mail normalizado do usuário como conta.
+- [X] Gerar a imagem localmente no servidor, sem enviar o segredo a API, CDN ou serviço de terceiros.
+- [X] Usar a biblioteca Python pura `segno` para gerar o QR Code; fixar a versão em `requirements.txt` e atualizar o ambiente reproduzível do projeto.
+- [X] Renderizar o QR em template de cadastro dedicado, mantendo a chave textual com ação de copiar e instruções para Google Authenticator.
+- [X] Não marcar o MFA como confirmado até o usuário informar um TOTP válido gerado após escanear ou cadastrar a chave.
+- [ ] Manter `Cache-Control: no-store`; impedir indexação, cache intermediário e registro do segredo/URI/QR em logs, mensagens de erro ou auditoria.
+- [X] Manter rate limit, criptografia do segredo, janela TOTP, prevenção de reutilização e códigos de recuperação atuais.
+- [X] Disponibilizar fluxo recuperável quando a imagem não carregar: chave manual, botão para reiniciar cadastro e orientação sem revelar dados além do necessário.
+
+### 4.4 Requisitos transversais
+
+- [ ] UI, mensagens e acessibilidade em `pt-BR`; código, símbolos e documentação técnica em `en-US`.
+- [ ] WCAG 2.2 AA: teclado, foco visível, contraste, landmarks, rótulos, mensagens de erro e redução de movimento.
+- [ ] Preservar CSRF, autorização, redirects seguros, isolamento por clínica, white-label e conteúdo clínico protegido.
+- [ ] Preservar modo claro/escuro apenas se implementado com componentes Duralux e sem carregar recursos antigos.
+- [ ] Preservar ApexCharts somente pelas dependências Duralux locais e com alternativa textual acessível.
+- [ ] Não alterar models, serviços ou regras de negócio apenas para acomodar o layout.
+- [ ] Não realizar deploy como parte desta PRD sem solicitação explícita.
+
+## 5. Plano por sprints
+
+## Sprint 0 — Inventário, matriz de migração e baseline
+
+Objetivo: eliminar decisões implícitas antes de alterar o runtime.
+
+- [X] Criar matriz `docs/duralux/template-migration-matrix.md` com uma linha para cada um dos 77 HTMLs do Duralux, categoria, componentes encontrados, plugins, destino no Django e decisão `adotar`, `adaptar` ou `não usar`, sempre com justificativa.
+- [X] Registrar separadamente as 8 páginas de documentação: elas orientam configuração/licenças, mas não viram telas do produto.
+- [X] Extrair de `docs/html/credit-resource.html` as licenças e atribuições dos recursos promovidos ao runtime.
+- [X] Registrar os 1.174 arquivos da fonte Duralux (1.059 em `assets/`) e impedir que a quantidade do pacote seja confundida com a lista mínima de runtime.
+- [X] Registrar e corrigir na adaptação as referências quebradas já identificadas em `help-knowledgebase.html`, `leads.html` e `widgets-lists.html`; nenhum caminho quebrado da demo pode ser copiado para Django.
+- [X] Criar matriz `docs/duralux/application-template-coverage.md` com os 95 templates atuais, rota/view consumidora, perfil autorizado, layout pai, referência Duralux e sprint responsável.
+- [X] Inventariar cada referência atual a CSS, JS, fonte, imagem, favicon, classe estrutural, Alpine e ApexCharts.
+- [X] Registrar os 62 templates com estilo/script inline (61 páginas mais `layouts/base.html`) e priorizar a extração dos 661 estilos inline para classes Duralux ou CSS de integração.
+- [X] Capturar baseline visual das jornadas críticas em desktop e mobile: login, MFA, dashboard, paciente, agenda, diário, metas, conteúdo, financeiro e erros.
+- [X] Confirmar no runtime Python 3.14 do projeto que os `except` múltiplos de `accounts/services.py` e `accounts/views.py` compilam sem alteração; evidência: `uv run python -m py_compile accounts/services.py accounts/views.py` concluído com código 0.
+- [X] Executar e registrar baseline técnico com `uv run pytest`, `uv run ruff check .` e `uv run mypy .`.
+- [X] Definir o manifesto final de assets Duralux permitidos; qualquer arquivo fora do manifesto não pode ser copiado para `static/`.
+
+Critérios de aceite:
+
+- [X] A soma da matriz Duralux é exatamente 77.
+- [X] A soma da matriz da aplicação é exatamente 95.
+- [X] Não existe template ou recurso sem decisão e sprint atribuída.
+- [X] Licenças e avisos necessários estão documentados antes da cópia dos vendors.
+
+## Sprint 1 — Fundação estática Duralux e identidade
+
+Objetivo: instalar a fundação visual local sem migrar ainda as páginas funcionais.
+
+- [X] Criar os namespaces Duralux necessários ao runtime atual em `static/duralux/`; `fonts/` permanece ausente e `vendors/` contém somente ApexCharts 3.52.0, com consumidor, licença e alternativa textual verificados, sem publicar `.gitkeep`.
+- [X] Promover os arquivos base necessários de `design_system_duralux/assets/css/`, `assets/js/` e distribuições oficiais compatíveis conforme o manifesto aprovado; nenhum vendor sem consumidor foi promovido.
+- [X] Manter Bootstrap, tema, vendors e inicializadores em versões locais compatíveis entre si.
+- [X] Remover do CSS promovido o `@import` externo de Google Fonts presente no `theme.min.css`; qualquer fonte adotada deve ser hospedada localmente e declarada pela camada de integração.
+- [X] Criar uma camada pequena de integração do produto sobre Duralux, sem editar arquivos minificados/vendor diretamente.
+- [X] Instalar `logo_login.webp`, `logo_header.webp` e `favicon.svg` nos destinos definidos.
+- [X] Substituir as referências demonstrativas a `logo-full.png`, `logo-abbr.png` e `favicon.ico`; esses arquivos não podem ser usados como marca final.
+- [X] Definir tokens semânticos para white-label sem reintroduzir o antigo sistema Sliced/Tailwind.
+- [X] Garantir que `collectstatic` inclua somente os arquivos runtime necessários e preserve hashes de cache.
+- [X] Criar testes que falhem para assets Duralux ausentes, referências externas, caminhos antigos reintroduzidos e saídas sem hash no manifesto.
+
+Critérios de aceite:
+
+- [X] Os três ativos de marca são encontrados pelo staticfiles.
+- [X] CSS, JS e imagens do manifesto carregam sem 404 e sem CDN; nenhuma fonte externa é usada.
+- [X] Nenhum dado/imagem de demonstração foi promovido sem uso explícito.
+- [X] `uv run python manage.py collectstatic --noinput --dry-run` conclui sem conflito de caminhos, e o probe real com storage de manifesto preserva hashes.
+
+## Sprint 2 — Shell, navegação e componentes compartilhados
+
+Objetivo: migrar a estrutura que sustenta todas as telas antes das páginas de domínio.
+
+Templates cobertos nesta sprint: 11 (`layouts`: 6; `components`: 5).
+
+- [ ] Migrar `templates/layouts/base.html` para head Duralux, favicon, blocos de CSS/JS por página, skip link e metadados.
+- [ ] Migrar `templates/layouts/vertical.html` para header, navigation e content shell Duralux.
+- [ ] Migrar `templates/layouts/detached.html` para uma variante Duralux suportada ou removê-la com migração explícita das preferências existentes para vertical.
+- [ ] Migrar `templates/layouts/partials/header.html`, `navigation.html` e `messages.html`.
+- [ ] Aplicar `logo_header.webp` no header/sidebar padrão e manter precedência segura do white-label.
+- [ ] Recriar seletor de clínica, identidade do usuário, preferência de layout e alternância de tema com os componentes Duralux.
+- [ ] Migrar `components/form.html`, `pagination.html`, `responsive_table.html`, `summary_card.html` e `content_state.html`.
+- [ ] Consolidar padrões Duralux para botão, formulário, card, tabela, badge, alerta, dropdown, tabs, paginação, modal, offcanvas, breadcrumb e estados vazios/erro/loading.
+- [ ] Remover estilos inline da camada compartilhada e encapsular comportamentos em JS próprio sob o namespace Duralux.
+- [ ] Garantir sidebar e header responsivos em 320, 375, 768, 1024, 1280 e 1440 px.
+
+Critérios de aceite:
+
+- [ ] Todos os 11 templates constam como migrados na matriz.
+- [ ] Navegação funciona por teclado, fecha com Escape e mantém foco previsível.
+- [ ] Nenhum template filho precisa carregar novamente o bundle global.
+- [ ] Tema e layout persistem sem Alpine ou assets antigos.
+
+## Sprint 3 — Autenticação, MFA e páginas de erro
+
+Objetivo: migrar os fluxos sem sessão e entregar o QR Code do Google Authenticator.
+
+Templates cobertos nesta sprint: 8 (`accounts`: 4; `errors`: 4).
+Referências principais: família `auth-*` do Duralux, especialmente `auth-login-*`, `auth-verify-*`, `auth-reset-*`, `auth-resetting-*` e `auth-404-*`.
+
+- [X] Criar base de autenticação Duralux reutilizável e migrar `templates/accounts/auth_form.html`.
+- [X] Usar `logo_login.webp` em login, recuperação, redefinição, convite e MFA.
+- [X] Criar template específico para cadastro MFA em vez de concatenar o segredo na descrição genérica.
+- [X] Criar serviço/função testável que produza a URI `otpauth` com issuer e conta codificados.
+- [X] Gerar QR Code local a partir da URI e renderizá-lo com nome acessível e dimensões definidas.
+- [X] Manter chave manual visível somente no cadastro pendente e permitir cópia sem dependência externa.
+- [X] Migrar desafio MFA confirmado sem mostrar QR Code nem segredo.
+- [ ] Migrar `mfa_recovery_codes.html`, preservando exibição única e `no-store`.
+- [X] Migrar `auth_message.html` e `sessions.html`.
+- [X] Migrar `errors/400.html`, `403.html`, `404.html` e `500.html` com Duralux, sem vazar detalhes internos.
+- [ ] Atualizar testes de autenticação e MFA para novo template e marca.
+
+Testes mínimos:
+
+- [X] GET de `mfa_enroll` retorna 200, `Cache-Control: no-store`, QR local e URI com `secret`, `issuer`, `algorithm=SHA1`, `digits=6` e `period=30` corretos.
+- [ ] O QR representa a mesma URI usada pela chave manual e gera código aceito por `confirm_totp_enrollment`.
+- [X] Issuer e conta com espaços, `+`, `@`, acentos ou separadores são codificados sem alterar o segredo.
+- [ ] POST com TOTP correto confirma o fator, mostra oito códigos de recuperação uma única vez e preserva `continue_url` seguro.
+- [ ] Código incorreto/expirado mantém rate limit e não troca o segredo silenciosamente.
+- [X] `mfa_verify` para fator já confirmado não contém QR, segredo ou URI `otpauth`.
+- [ ] Nenhum response cacheável, log, evento de auditoria ou mensagem de erro contém o segredo.
+- [ ] Fluxo manual funciona quando imagem ou JavaScript está indisponível.
+- [ ] QR real é escaneado em Google Authenticator em Android ou iOS e o primeiro código confirma o cadastro.
+
+Critérios de aceite:
+
+- [ ] Os 8 templates estão migrados e responsivos.
+- [X] Login apresenta exatamente `logo_login.webp`.
+- [ ] MFA funciona de ponta a ponta com scan e entrada manual.
+- [X] Recuperação, convite, sessões e páginas de erro não regrediram.
+
+## Sprint 4 — Workspace, dashboards, clínica, pessoas e onboarding
+
+Objetivo: migrar as jornadas de entrada e gestão operacional.
+
+Templates cobertos nesta sprint: 15 (`workspace`: 1; `analytics`: 4; `therapist_dashboard`: 1; `clinics`: 3; `people`: 4; `onboarding`: 2).
+Referências Duralux: `index.html`, `analytics.html`, `customers*`, `settings-*`, `widgets-statistics.html`, `widgets-charts.html`, `widgets-lists.html` e `widgets-tables.html`.
+
+- [ ] Migrar `workspace/home.html` com dashboard Duralux e ações principais por perfil.
+- [ ] Migrar quatro templates de `analytics/` e `therapist_dashboard/home.html`.
+- [ ] Migrar três templates de `clinics/`, preservando troca de clínica, configuração e white-label.
+- [ ] Migrar quatro templates de `people/` usando padrões `customers*` para listas, formulário e detalhe.
+- [ ] Migrar dois templates de `onboarding/` com progresso, estados e retomada acessível.
+- [ ] Substituir estilos inline por classes/componentes reutilizáveis.
+- [ ] Adaptar gráficos ao bundle Duralux e manter tabela/resumo textual equivalente.
+
+Critérios de aceite:
+
+- [ ] Os 15 templates estão marcados na matriz com referência e evidência visual.
+- [ ] Dashboards não expõem dados de outra clínica ou perfil.
+- [ ] Upload de marca da clínica continua seguro e o fallback usa `logo_header.webp`.
+- [ ] Estados loading, vazio, erro e sem permissão existem nas listagens e dashboards.
+
+Checkpoint da Sprint 4: correções de shell, landmarks, widgets, contraste e foco implementadas e revisadas. Evidência e limites em `docs/duralux/sprint4-corrective-verification.md`. O gate completo revelou falha intermitente preexistente no parser OAuth do calendário; nenhum checkbox adicional recebe `[X]` enquanto esse bloqueio e a validação integral das rotas permanecerem abertos.
+
+## Sprint 5 — Agenda, comunicação e financeiro
+
+Objetivo: migrar jornadas operacionais de alta frequência.
+
+Templates cobertos nesta sprint: 15 (`scheduling`: 13; `finance`: 2).
+Referências Duralux: `apps-calendar.html`, `apps-chat.html`, `apps-email.html`, `payment.html`, `invoice-*`, `proposal-*`, `widgets-tables.html`.
+
+- [ ] Migrar os 13 templates de `templates/scheduling/`.
+- [ ] Migrar `finance/charge_list.html` e `finance/service_price_form.html`.
+- [ ] Usar calendário, filtros, tabelas, formulários, offcanvas e conversas Duralux sem copiar dados demo.
+- [ ] Preservar idempotência e confirmação explícita de agendamento, remarcação, cancelamento e ações financeiras.
+- [ ] Garantir que fluxos longos usem página/offcanvas recuperável, não modal frágil.
+- [ ] Remover scripts inline e carregar plugins apenas nas páginas que dependem deles.
+
+Critérios de aceite:
+
+- [ ] Os 15 templates estão migrados.
+- [ ] Calendário funciona por teclado e em mobile sem perda de ações.
+- [ ] Valores financeiros, estados e ações destrutivas possuem rótulos inequívocos.
+- [ ] Nenhuma operação de agenda, conversa ou cobrança mudou de autorização.
+
+## Sprint 6 — Consentimentos, diário e metas
+
+Objetivo: migrar as jornadas clínicas mais sensíveis sem alterar semântica, privacidade ou tom.
+
+Templates cobertos nesta sprint: 24 (`consents`: 6; `journal`: 7; `goals`: 11).
+Referências Duralux: `projects*`, `apps-tasks.html`, `apps-notes.html`, `widgets-*` e padrões de settings/forms.
+
+- [ ] Migrar os 6 templates de `templates/consents/`, incluindo o partial de decisão.
+- [ ] Migrar os 7 templates de `templates/journal/`, incluindo calendário e check-in.
+- [ ] Migrar os 11 templates de `templates/goals/`, incluindo modo baixa energia e execução de exercícios.
+- [ ] Resolver `templates/goals/placeholder.html`, atualmente sem consumidor identificado: migrá-lo se houver rota válida ou removê-lo após teste de ausência de referência; em ambos os casos ele permanece contabilizado na matriz 95/95.
+- [ ] Preservar semáforo de compartilhamento com texto e ícone, nunca apenas cor.
+- [ ] Preservar conteúdo privado, confirmação de compartilhamento e avisos de não emergência.
+- [ ] Extrair estilos inline para componentes Duralux, priorizando `journal/list.html`, `journal/detail.html`, `goals/low_energy.html`, `goals/detail.html` e `goals/list.html`.
+- [ ] Garantir uma ação principal visível em check-in, diário, metas e baixa energia.
+
+Critérios de aceite:
+
+- [ ] Os 24 templates estão migrados.
+- [ ] Consentimento e privacidade mantêm testes de autorização e isolamento.
+- [ ] Mobile, leitor de tela e redução de movimento funcionam nas jornadas clínicas.
+- [ ] Linguagem permanece não punitiva e não diagnóstica.
+
+## Sprint 7 — Conteúdo, aprendizagem e comunicação editorial
+
+Objetivo: completar a migração das experiências de conteúdo.
+
+Templates cobertos nesta sprint: 21 (`content`: 21).
+Referências Duralux: `apps-email.html`, `apps-notes.html`, `apps-storage.html`, `help-knowledgebase.html`, `proposal-*`, `widgets-lists.html` e `widgets-tables.html`.
+
+- [ ] Migrar os 21 templates de `templates/content/`, incluindo os 10 de `content/learning/`.
+- [ ] Migrar biblioteca, recomendações, notificações, denúncias, detalhe e fluxos editoriais.
+- [ ] Migrar aula, módulo, curso, questionário, coorte e certificado sem quebrar conteúdo seguro já sanitizado.
+- [ ] Preservar player, legendas, transcript, progresso, resultados e versão imprimível do certificado.
+- [ ] Remover estilos/scripts inline e evitar inicializar plugins em páginas que não os usam.
+- [ ] Garantir que HTML de conteúdo não consiga injetar scripts ou sobrepor o shell Duralux.
+
+Critérios de aceite:
+
+- [ ] Os 21 templates estão migrados.
+- [ ] Conteúdo seguro continua renderizado e conteúdo perigoso continua bloqueado.
+- [ ] Player e questionários funcionam com teclado e leitor de tela.
+- [ ] Certificado público carrega favicon, marca e CSS Duralux sem depender de sessão.
+
+## Sprint 8 — Referência visual, remoção definitiva do legado e documentação
+
+Objetivo: tornar a migração exclusiva, auditável e difícil de regredir.
+
+Template coberto nesta sprint: 1 (`visual_reference/reference.html`).
+
+- [ ] Reescrever `templates/visual_reference/reference.html` como catálogo dos componentes Duralux realmente suportados.
+- [ ] Atualizar `PRD.md` para substituir Sliced/Tailwind/Alpine pela arquitetura Duralux comprovadamente entregue.
+- [ ] Atualizar documentação técnica ativa que referencia `framework.css`, `tokens.css`, `workspace.css`, Cerebri Sans, Remix Icon, Sliced, Tailwind visual ou templates antigos.
+- [ ] Remover ou arquivar com indicação explícita de superseded os planos/especificações históricos incompatíveis; eles não podem ser tratados como fonte vigente.
+- [ ] Remover referências runtime a `static/css/framework.css`, `static/css/tokens.css`, `static/css/workspace.css`, `static/fonts/cerebrisans-*`, `static/fonts/remixicon*`, `static/vendor/alpine/` e scripts visuais substituídos.
+- [ ] Remover do repositório os arquivos antigos que ficaram sem consumidor, após prova automatizada de ausência de referência.
+- [ ] Remover classes e atributos antigos dos 95 templates; nenhum template pode combinar dois sistemas visuais.
+- [ ] Criar teste de guarda que varre templates, CSS, JS e documentação ativa contra caminhos e identificadores proibidos.
+- [ ] Validar que nenhum template referencia diretamente arquivos dentro de `design_system_duralux/`; runtime deve usar apenas Django Staticfiles.
+- [ ] Validar que nenhum HTML demonstrativo do Duralux é servido como página final sem conversão para template Django.
+
+Critérios de aceite:
+
+- [ ] A matriz da aplicação soma 95 templates migrados, sem pendências.
+- [ ] Busca automatizada por caminhos/identificadores antigos retorna zero em runtime e documentação ativa.
+- [ ] `git ls-files static` contém apenas Duralux, integrações próprias ainda necessárias e arquivos não visuais comprovadamente usados.
+- [ ] Não há 404 de assets nem carregamento duplicado de frameworks.
+
+## Sprint 9 — Validação integrada e encerramento
+
+Objetivo: provar equivalência funcional, qualidade visual e ausência de legado.
+
+- [ ] Executar `uv run python manage.py check`.
+- [ ] Executar testes focados de MFA, autenticação, layouts, staticfiles, branding e templates.
+- [ ] Executar `uv run pytest` sem reduzir cobertura ou ignorar falhas novas.
+- [ ] Executar `uv run ruff check .`.
+- [ ] Executar `uv run mypy .`.
+- [ ] Executar `uv run python manage.py collectstatic --noinput --dry-run`.
+- [ ] Percorrer todas as rotas HTML com perfis anônimo, paciente, terapeuta, administrativo, gestor de clínica e staff autorizados.
+- [ ] Validar jornadas críticas em 320, 375, 768, 1024, 1280 e 1440 px, claro/escuro quando suportado.
+- [ ] Validar console sem erro JavaScript, rede sem 404, sem CDN e sem requisições de demonstração.
+- [ ] Validar teclado, foco, contraste, landmarks, labels, mensagens de erro, zoom de 200% e `prefers-reduced-motion`.
+- [ ] Comparar com a baseline e registrar diferenças intencionais.
+- [ ] Fazer revisão independente de segurança do QR MFA e revisão independente de cobertura dos 95 templates.
+- [ ] Atualizar checkboxes para `[X]` apenas depois de anexar comando, teste, captura ou revisão que prove cada critério.
+
+Critérios de aceite:
+
+- [ ] Gate técnico completo aprovado.
+- [ ] Gate visual e de acessibilidade aprovado.
+- [ ] Google Authenticator validado em dispositivo real.
+- [ ] Zero referência ativa ao sistema visual antigo.
+- [ ] 77/77 referências Duralux analisadas e 95/95 templates Django migrados.
+
+## 6. Matriz obrigatória de cobertura dos templates da aplicação
+
+A implementação deve cobrir integralmente esta baseline e marcar cada grupo somente quando todos os seus arquivos estiverem migrados ou removidos com prova de ausência de consumidor. A contagem 95/95 mede cobertura da migração, não obriga conservar templates órfãos:
+
+- [ ] `accounts/`: 4/4.
+- [ ] `analytics/`: 4/4.
+- [ ] `clinics/`: 3/3.
+- [ ] `components/`: 5/5.
+- [ ] `consents/`: 6/6.
+- [ ] `content/`: 21/21.
+- [ ] `errors/`: 4/4.
+- [ ] `finance/`: 2/2.
+- [ ] `goals/`: 11/11.
+- [ ] `journal/`: 7/7.
+- [ ] `layouts/`: 6/6.
+- [ ] `onboarding/`: 2/2.
+- [ ] `people/`: 4/4.
+- [ ] `scheduling/`: 13/13.
+- [ ] `therapist_dashboard/`: 1/1.
+- [ ] `visual_reference/`: 1/1.
+- [ ] `workspace/`: 1/1.
+- [ ] Total: 95/95.
+
+## 7. Fora de escopo
+
+- Reescrever regras de negócio, banco de dados ou APIs sem necessidade direta da migração.
+- Copiar páginas demonstrativas, dados fictícios ou identidade do fornecedor para produção.
+- Carregar plugins Duralux não utilizados.
+- Enviar segredo MFA a serviço externo para gerar QR Code.
+- Mostrar QR Code em toda solicitação de MFA depois que o fator já foi confirmado.
+- Alterar requisitos clínicos, jurídicos, LGPD ou multi-tenant existentes.
+- Fazer commit, push ou deploy automaticamente.
+
+## 8. Definição global de pronto
+
+Uma tarefa só pode receber `[X]` quando:
+
+1. A implementação correspondente existe e está ligada à rota real.
+2. Há teste automatizado cobrindo o comportamento e a prevenção de regressão.
+3. A revisão visual foi feita em desktop e mobile.
+4. Acessibilidade por teclado e leitor de tela foi verificada quando aplicável.
+5. Não há referência ao recurso/template antigo no escopo migrado.
+6. A matriz de cobertura foi atualizada com evidência.
+7. O gate `pytest`, `ruff` e `mypy` permanece aprovado.
+
+A PRD só pode ser encerrada quando todos os critérios da Sprint 9 estiverem em `[X]`.

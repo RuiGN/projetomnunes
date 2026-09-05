@@ -3,23 +3,23 @@
 {% block title %}Notificações | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
 {% block content %}
-<div class="content-notifications" style="max-width: 820px; margin: 0 auto; display: grid; gap: 20px;">
-  <header>
-    <span class="workspace-eyebrow">Avisos da plataforma</span>
-    <h1 class="page-title" style="margin: 0;">Notificações</h1>
+<div class="product-page product-page--narrow" aria-labelledby="notifications-title">
+  <header class="product-page-header">
+    <span class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Avisos da plataforma</span>
+    <h1 id="notifications-title" class="mb-0">Notificações</h1>
   </header>
 
   {% if notifications %}
-    <ul style="list-style: none; padding: 0; display: grid; gap: 16px;">
+    <ul class="list-unstyled product-stack mb-0">
       {% for notification in notifications %}
-        <li class="card" style="padding: 20px; border: 1px solid var(--color-border); border-radius: 14px; background: var(--color-surface);">
-          <p style="margin: 0;">{{ notification.body }}</p>
-          <p style="margin: 8px 0 0; color: var(--color-muted);">{{ notification.created_at }}</p>
+        <li class="product-table-card">
+          <p class="mb-2">{{ notification.body }}</p>
+          <p class="product-muted mb-0"><time datetime="{{ notification.created_at|date:'c' }}">{{ notification.created_at }}</time></p>
         </li>
       {% endfor %}
     </ul>
   {% else %}
-    <div class="empty-state">Nenhuma notificação.</div>
+    <div class="product-empty-state" role="status">Nenhuma notificação.</div>
   {% endif %}
 </div>
 {% endblock %}

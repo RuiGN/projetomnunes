@@ -3,83 +3,83 @@
 {% block title %}Criar conteúdo{% endblock %}
 
 {% block content %}
-<main style="max-width:820px;margin:0 auto;display:grid;gap:24px;">
-  <header><span class="workspace-eyebrow">CMS</span><h1 class="page-title">Criar conteúdo</h1></header>
-  <form method="post" class="card" style="padding:24px;display:grid;gap:16px;">
+<div class="product-page product-page--narrow" aria-labelledby="create-content-title">
+  <header class="product-page-header"><span class="text-primary-emphasis fw-semibold text-uppercase small mb-0">CMS</span><h1 id="create-content-title">Criar conteúdo</h1></header>
+  <form method="post" class="product-form-card product-stack">
     {% csrf_token %}
     {{ form.non_field_errors }}
-    <div style="display:grid;gap:6px;"><label for="{{ form.slug.id_for_label }}">{{ form.slug.label }}</label>{{ form.slug }}</div>
-    <div style="display:grid;gap:6px;"><label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>{{ form.title }}</div>
-    <div style="display:grid;gap:6px;"><label for="{{ form.kind.id_for_label }}">{{ form.kind.label }}</label>{{ form.kind }}</div>
-    <div style="display:grid;gap:6px;"><label for="{{ form.language_code.id_for_label }}">{{ form.language_code.label }}</label>{{ form.language_code }}</div>
-    <div style="display:grid;gap:6px;"><label for="{{ form.audience.id_for_label }}">{{ form.audience.label }}</label>{{ form.audience }}</div>
-    <div style="display:grid;gap:6px;"><label for="{{ form.categories.id_for_label }}">{{ form.categories.label }}</label>{{ form.categories }}</div>
-    <div style="display:grid;gap:6px;"><label for="{{ form.tags.id_for_label }}">{{ form.tags.label }}</label>{{ form.tags }}</div>
-    <div style="display:grid;gap:6px;"><label for="{{ form.contraindications.id_for_label }}">{{ form.contraindications.label }}</label>{{ form.contraindications }}</div>
-    <div style="display:grid;gap:6px;"><label for="{{ form.source_reference.id_for_label }}">{{ form.source_reference.label }}</label>{{ form.source_reference }}</div>
-    <div style="display:grid;gap:6px;"><label for="{{ form.valid_until.id_for_label }}">{{ form.valid_until.label }}</label>{{ form.valid_until }}</div>
-    <fieldset id="block-editor" style="display:grid;gap:12px;padding:16px;">
+    <div class="product-stack gap-1"><label for="{{ form.slug.id_for_label }}">{{ form.slug.label }}</label>{{ form.slug }}</div>
+    <div class="product-stack gap-1"><label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>{{ form.title }}</div>
+    <div class="product-stack gap-1"><label for="{{ form.kind.id_for_label }}">{{ form.kind.label }}</label>{{ form.kind }}</div>
+    <div class="product-stack gap-1"><label for="{{ form.language_code.id_for_label }}">{{ form.language_code.label }}</label>{{ form.language_code }}</div>
+    <div class="product-stack gap-1"><label for="{{ form.audience.id_for_label }}">{{ form.audience.label }}</label>{{ form.audience }}</div>
+    <div class="product-stack gap-1"><label for="{{ form.categories.id_for_label }}">{{ form.categories.label }}</label>{{ form.categories }}</div>
+    <div class="product-stack gap-1"><label for="{{ form.tags.id_for_label }}">{{ form.tags.label }}</label>{{ form.tags }}</div>
+    <div class="product-stack gap-1"><label for="{{ form.contraindications.id_for_label }}">{{ form.contraindications.label }}</label>{{ form.contraindications }}</div>
+    <div class="product-stack gap-1"><label for="{{ form.source_reference.id_for_label }}">{{ form.source_reference.label }}</label>{{ form.source_reference }}</div>
+    <div class="product-stack gap-1"><label for="{{ form.valid_until.id_for_label }}">{{ form.valid_until.label }}</label>{{ form.valid_until }}</div>
+    <fieldset id="block-editor" class="product-stack border rounded p-3">
       <legend>Editor de blocos</legend>
       <p id="editor-help">Estruture o texto com títulos, parágrafos e listas. Cada bloco é mantido na ordem definida abaixo.</p>
-      <div id="block-list" style="display:grid;gap:12px;">
-        <div class="block-row" style="display:grid;gap:6px;">
+      <div id="block-list" class="product-stack">
+        <div class="block-row product-stack border rounded p-3">
           <label for="id_block_type_0">Tipo do bloco 1</label>
-          <select id="id_block_type_0" name="block_type" aria-label="Tipo do bloco 1">
+          <select class="form-select" id="id_block_type_0" name="block_type" aria-label="Tipo do bloco 1">
             <option value="paragraph">Parágrafo</option>
             <option value="heading">Título</option>
             <option value="list_item">Item de lista</option>
           </select>
           <label for="id_block_text_0">Texto do bloco 1</label>
-          <textarea id="id_block_text_0" name="block_text" rows="3" aria-label="Texto do bloco 1"></textarea>
-          <div style="display:flex;gap:8px;">
-            <button type="button" data-block-move="up" aria-label="Mover bloco 1 para cima">Mover para cima</button>
-            <button type="button" data-block-move="down" aria-label="Mover bloco 1 para baixo">Mover para baixo</button>
-            <button type="button" data-block-remove aria-label="Remover bloco 1">Remover bloco</button>
+          <textarea class="form-control" id="id_block_text_0" name="block_text" rows="3" aria-label="Texto do bloco 1"></textarea>
+          <div class="d-flex flex-wrap gap-2">
+            <button class="btn btn-outline-secondary" type="button" data-block-move="up" aria-label="Mover bloco 1 para cima">Mover para cima</button>
+            <button class="btn btn-outline-secondary" type="button" data-block-move="down" aria-label="Mover bloco 1 para baixo">Mover para baixo</button>
+            <button class="btn btn-outline-danger" type="button" data-block-remove aria-label="Remover bloco 1">Remover bloco</button>
           </div>
         </div>
-        <div class="block-row" style="display:grid;gap:6px;">
+        <div class="block-row product-stack border rounded p-3">
           <label for="id_block_type_1">Tipo do bloco 2</label>
-          <select id="id_block_type_1" name="block_type" aria-label="Tipo do bloco 2">
+          <select class="form-select" id="id_block_type_1" name="block_type" aria-label="Tipo do bloco 2">
             <option value="paragraph">Parágrafo</option>
             <option value="heading">Título</option>
             <option value="list_item">Item de lista</option>
           </select>
           <label for="id_block_text_1">Texto do bloco 2</label>
-          <textarea id="id_block_text_1" name="block_text" rows="3" aria-label="Texto do bloco 2"></textarea>
-          <div style="display:flex;gap:8px;">
-            <button type="button" data-block-move="up" aria-label="Mover bloco 2 para cima">Mover para cima</button>
-            <button type="button" data-block-move="down" aria-label="Mover bloco 2 para baixo">Mover para baixo</button>
-            <button type="button" data-block-remove aria-label="Remover bloco 2">Remover bloco</button>
+          <textarea class="form-control" id="id_block_text_1" name="block_text" rows="3" aria-label="Texto do bloco 2"></textarea>
+          <div class="d-flex flex-wrap gap-2">
+            <button class="btn btn-outline-secondary" type="button" data-block-move="up" aria-label="Mover bloco 2 para cima">Mover para cima</button>
+            <button class="btn btn-outline-secondary" type="button" data-block-move="down" aria-label="Mover bloco 2 para baixo">Mover para baixo</button>
+            <button class="btn btn-outline-danger" type="button" data-block-remove aria-label="Remover bloco 2">Remover bloco</button>
           </div>
         </div>
-        <div class="block-row" style="display:grid;gap:6px;">
+        <div class="block-row product-stack border rounded p-3">
           <label for="id_block_type_2">Tipo do bloco 3</label>
-          <select id="id_block_type_2" name="block_type" aria-label="Tipo do bloco 3">
+          <select class="form-select" id="id_block_type_2" name="block_type" aria-label="Tipo do bloco 3">
             <option value="paragraph">Parágrafo</option>
             <option value="heading">Título</option>
             <option value="list_item">Item de lista</option>
           </select>
           <label for="id_block_text_2">Texto do bloco 3</label>
-          <textarea id="id_block_text_2" name="block_text" rows="3" aria-label="Texto do bloco 3"></textarea>
-          <div style="display:flex;gap:8px;">
-            <button type="button" data-block-move="up" aria-label="Mover bloco 3 para cima">Mover para cima</button>
-            <button type="button" data-block-move="down" aria-label="Mover bloco 3 para baixo">Mover para baixo</button>
-            <button type="button" data-block-remove aria-label="Remover bloco 3">Remover bloco</button>
+          <textarea class="form-control" id="id_block_text_2" name="block_text" rows="3" aria-label="Texto do bloco 3"></textarea>
+          <div class="d-flex flex-wrap gap-2">
+            <button class="btn btn-outline-secondary" type="button" data-block-move="up" aria-label="Mover bloco 3 para cima">Mover para cima</button>
+            <button class="btn btn-outline-secondary" type="button" data-block-move="down" aria-label="Mover bloco 3 para baixo">Mover para baixo</button>
+            <button class="btn btn-outline-danger" type="button" data-block-remove aria-label="Remover bloco 3">Remover bloco</button>
           </div>
         </div>
       </div>
-      <div style="display:flex;gap:8px;">
-        <button type="button" data-block-add aria-label="Adicionar bloco">Adicionar bloco</button>
-        <button type="button" data-block-move-up aria-label="Mover último bloco para cima">Mover último para cima</button>
+      <div class="d-flex flex-wrap gap-2">
+        <button class="btn btn-outline-primary" type="button" data-block-add aria-label="Adicionar bloco">Adicionar bloco</button>
+        <button class="btn btn-outline-secondary" type="button" data-block-move-up aria-label="Mover último bloco para cima">Mover último para cima</button>
       </div>
-      <details>
+      <details class="border rounded p-3">
         <summary>Editar HTML bruto (fallback)</summary>
         <label for="{{ form.body.id_for_label }}">{{ form.body.label }}</label>
         {{ form.body }}
       </details>
     </fieldset>
     {% for field in form %}{% for error in field.errors %}<div role="alert">{{ error }}</div>{% endfor %}{% endfor %}
-    <button class="primary-action" type="submit">Salvar rascunho</button>
+    <button class="btn btn-primary" type="submit">Salvar rascunho</button>
   </form>
-</main>
+</div>
 {% endblock %}

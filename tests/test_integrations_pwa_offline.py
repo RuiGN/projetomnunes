@@ -8,6 +8,7 @@ import pytest
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
+from accounts.models import User
 from clinics.models import Clinic, ClinicMembership
 from integrations.models import OfflineSyncQueueItem, OfflineSyncStatus
 from integrations.pwa import (
@@ -28,7 +29,7 @@ def test_clinic() -> Clinic:
 
 
 @pytest.fixture
-def mobile_user(test_clinic: Clinic):
+def mobile_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="user.mobile@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -63,7 +64,7 @@ def test_pwa_manifest_and_service_worker_cache_rules() -> None:
 
 @pytest.mark.django_db
 def test_offline_reading_allowed_and_forbidden_resources(
-    test_clinic: Clinic, mobile_user
+    test_clinic: Clinic, mobile_user: User
 ) -> None:
     """Offline reading is permitted for routines, but forbidden for medical records."""
     # 1. Prohibited clinical records
@@ -106,7 +107,7 @@ def test_offline_reading_allowed_and_forbidden_resources(
 
 @pytest.mark.django_db
 def test_offline_sync_queue_conflict_detection_and_explicit_resolution(
-    test_clinic: Clinic, mobile_user
+    test_clinic: Clinic, mobile_user: User
 ) -> None:
     """Offline sync queue detects divergence and requires explicit user choice."""
     device_id = "device_android_pixel_8"
@@ -173,7 +174,7 @@ def test_offline_sync_queue_conflict_detection_and_explicit_resolution(
 
 @pytest.mark.django_db
 def test_remote_wipe_command_invalidates_offline_queue(
-    test_clinic: Clinic, mobile_user
+    test_clinic: Clinic, mobile_user: User
 ) -> None:
     """Remote wipe marks pending queue items as rejected and issues wipe command."""
     device_id = "device_lost_tablet_123"
@@ -199,4 +200,6 @@ def test_remote_wipe_command_invalidates_offline_queue(
     items = OfflineSyncQueueItem.objects.for_clinic(test_clinic.id).filter(
         device_id=device_id
     )
-    assert items.first().status == OfflineSyncStatus.REJECTED
+    item = items.first()
+    assert item is not None
+    assert item.status == OfflineSyncStatus.REJECTED

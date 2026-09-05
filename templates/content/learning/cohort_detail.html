@@ -3,11 +3,11 @@
 {% block title %}Coorte: {{ cohort.name }}{% endblock %}
 
 {% block content %}
-<main style="max-width:1080px;margin:0 auto;display:grid;gap:24px;">
-  <header><span class="workspace-eyebrow">Coortes</span><h1 class="page-title">{{ cohort.name }}</h1></header>
-  <section class="card" style="padding:24px;display:grid;gap:16px;" aria-labelledby="members-title">
+<div class="product-page product-page--narrow" aria-labelledby="cohort-title">
+  <header class="product-page-header"><span class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Coortes</span><h1 id="cohort-title">{{ cohort.name }}</h1></header>
+  <section class="product-table-card" aria-labelledby="members-title">
     <h2 id="members-title">Membros</h2>
-    <ul style="display:grid;gap:8px;">
+    <ul class="product-stack mb-0">
       {% for member in members %}
       <li>{{ member.user.get_full_name|default:member.user.email }}</li>
       {% empty %}
@@ -15,14 +15,14 @@
       {% endfor %}
     </ul>
   </section>
-  <section class="card" style="padding:24px;display:grid;gap:12px;" aria-labelledby="add-member-title">
+  <section class="product-form-card" aria-labelledby="add-member-title">
     <h2 id="add-member-title">Adicionar membro</h2>
-    <form method="post" action="{% url 'content_cohort_member_add' cohort.pk %}" style="display:grid;gap:12px;">
+    <form class="product-stack" method="post" action="{% url 'content_cohort_member_add' cohort.pk %}">
       {% csrf_token %}
       <label for="member-user">Usuário (ID)</label>
-      <input id="member-user" name="user_id" type="text" required />
-      <button type="submit">Adicionar membro</button>
+      <input class="form-control" id="member-user" name="user_id" type="text" required />
+      <button class="btn btn-primary" type="submit">Adicionar membro</button>
     </form>
   </section>
-</main>
+</div>
 {% endblock %}

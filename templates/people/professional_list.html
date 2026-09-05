@@ -1,19 +1,22 @@
 {% extends layout_template %}
 
+{% block title %}Profissionais{% endblock %}
+
 {% block content %}
-<section class="welcome-panel" aria-labelledby="professional-list-title">
+<div class="product-page" aria-labelledby="professional-list-title">
+<section class="product-page-header d-flex flex-column flex-lg-row align-items-lg-end justify-content-between gap-3" aria-labelledby="professional-list-title">
   <div>
-    <p class="workspace-eyebrow">Equipe da clínica ativa</p>
+    <p class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Equipe da clínica ativa</p>
     <h1 id="professional-list-title">Profissionais</h1>
-    <p class="workspace-intro">Perfis, vínculos e credenciais informadas, sem confirmação automática pela plataforma.</p>
+    <p class="lead mb-0">Perfis, vínculos e credenciais informadas, sem confirmação automática pela plataforma.</p>
   </div>
-  <a class="primary-action" href="{% url 'invitation_issue' %}">Convidar profissional</a>
+  <a class="btn btn-primary" href="{% url 'invitation_issue' %}">Convidar profissional</a>
 </section>
 
-<form method="get" class="content-card form-stack" aria-label="Filtros de profissionais">
-  <div class="form-field">
+<form method="get" class="product-form-card d-grid gap-3" aria-label="Filtros de profissionais">
+  <div class="d-grid gap-2">
     <label for="professional-status">Status</label>
-    <select id="professional-status" name="status">
+    <select class="form-select" id="professional-status" name="status">
       <option value="">Todos</option>
       <option value="active"{% if selected_status == 'active' %} selected{% endif %}>Ativo</option>
       <option value="scheduled"{% if selected_status == 'scheduled' %} selected{% endif %}>Agendado</option>
@@ -21,26 +24,26 @@
       <option value="expired"{% if selected_status == 'expired' %} selected{% endif %}>Encerrado</option>
     </select>
   </div>
-  <div class="form-field">
+  <div class="d-grid gap-2">
     <label for="professional-role">Papel</label>
-    <select id="professional-role" name="role">
+    <select class="form-select" id="professional-role" name="role">
       <option value="">Todos</option>
       <option value="therapist"{% if selected_role == 'therapist' %} selected{% endif %}>Terapeuta</option>
       <option value="administrative_staff"{% if selected_role == 'administrative_staff' %} selected{% endif %}>Equipe administrativa</option>
     </select>
   </div>
-  <div class="form-field">
+  <div class="d-grid gap-2">
     <label for="professional-specialty">Especialidade técnica</label>
-    <input id="professional-specialty" name="specialty" value="{{ selected_specialty }}">
+    <input class="form-control" id="professional-specialty" name="specialty" value="{{ selected_specialty }}">
   </div>
-  <button type="submit" class="primary-action">Aplicar filtros</button>
+  <button type="submit" class="btn btn-primary">Aplicar filtros</button>
 </form>
 
-<section class="component-section" aria-labelledby="professional-results-title">
+<section class="d-grid gap-3" aria-labelledby="professional-results-title">
   <h2 id="professional-results-title">Resultado</h2>
   {% if professionals %}
-    <div class="table-scroll" role="region" aria-label="Lista de profissionais" tabindex="0">
-      <table>
+    <div class="product-table-card product-table-scroll" role="region" aria-label="Lista de profissionais" tabindex="0">
+      <table class="table product-table">
         <thead><tr><th scope="col">Nome</th><th scope="col">Papel</th><th scope="col">Status</th><th scope="col">Unidade</th><th scope="col">Especialidades</th><th scope="col">Ações</th></tr></thead>
         <tbody>
           {% for professional in professionals %}
@@ -52,9 +55,9 @@
             <td>{{ professional.specialties|join:", "|default:"Não informadas" }}</td>
             <td>
               {% if professional.status == "suspended" %}
-                <form method="post" action="{% url 'professional_reactivate' professional.membership_id %}">{% csrf_token %}<button type="submit">Reativar</button></form>
+                <form method="post" action="{% url 'professional_reactivate' professional.membership_id %}">{% csrf_token %}<button type="submit" class="btn btn-sm btn-outline-primary">Reativar</button></form>
               {% else %}
-                <form method="post" action="{% url 'professional_suspend' professional.membership_id %}">{% csrf_token %}<button type="submit" class="destructive-action">Suspender</button></form>
+                <form method="post" action="{% url 'professional_suspend' professional.membership_id %}">{% csrf_token %}<button type="submit" class="btn btn-sm btn-outline-danger">Suspender</button></form>
               {% endif %}
             </td>
           </tr>
@@ -63,7 +66,8 @@
       </table>
     </div>
   {% else %}
-    <div class="content-card" role="status"><h3>Nenhum profissional encontrado</h3><p>Revise os filtros ou convide o primeiro profissional.</p></div>
+    <div class="product-empty-state" role="status"><h3>Nenhum profissional encontrado</h3><p>Revise os filtros ou convide o primeiro profissional.</p></div>
   {% endif %}
 </section>
+</div>
 {% endblock %}

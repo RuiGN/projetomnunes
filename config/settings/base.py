@@ -152,6 +152,7 @@ MFA_RATE_LIMIT_ATTEMPTS = int(os.environ.get("MFA_RATE_LIMIT_ATTEMPTS", "5"))
 MFA_RATE_LIMIT_WINDOW_SECONDS = int(
     os.environ.get("MFA_RATE_LIMIT_WINDOW_SECONDS", "300")
 )
+MFA_TOTP_ISSUER = os.environ.get("MFA_TOTP_ISSUER", "Plataforma de cuidado")
 SENSITIVE_REAUTH_RATE_LIMIT_ATTEMPTS = int(
     os.environ.get("SENSITIVE_REAUTH_RATE_LIMIT_ATTEMPTS", "5")
 )

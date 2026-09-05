@@ -1,8 +1,7 @@
-"""Contracts for the application-owned Sliced token and asset layer."""
+"""Contracts for the application-owned Duralux asset layer."""
 
 from __future__ import annotations
 
-import re
 from pathlib import Path
 
 import pytest
@@ -18,32 +17,7 @@ from tests.factories import ClinicFactory, ClinicMembershipFactory, UserFactory
 pytestmark = pytest.mark.django_db
 
 STATIC_ROOT = Path(settings.BASE_DIR) / "static"
-TOKENS_PATH = STATIC_ROOT / "css" / "tokens.css"
-FRAMEWORK_PATH = STATIC_ROOT / "css" / "framework.css"
-
-EXPECTED_LIGHT_TOKENS = {
-    "--color-brand": "#6a69f5",
-    "--color-success": "#50cd89",
-    "--color-warning": "#ffc700",
-    "--color-danger": "#f1416c",
-    "--color-info": "#009ef7",
-    "--color-text": "#151515",
-    "--color-text-secondary": "#94989a",
-    "--color-text-muted": "#6b7280",
-    "--color-canvas": "#f9fbfd",
-    "--color-surface": "#ffffff",
-}
-EXPECTED_DARK_TOKENS = {
-    "--color-canvas": "#151515",
-    "--color-surface": "#1f1f1f",
-    "--color-border": "#323a46",
-}
-
-
-def _css_block(css: str, selector: str) -> str:
-    match = re.search(rf"{re.escape(selector)}\s*\{{(?P<body>.*?)\}}", css, re.DOTALL)
-    assert match is not None, f"Missing CSS block: {selector}"
-    return match.group("body").lower()
+PRODUCT_CSS_PATH = STATIC_ROOT / "duralux" / "css" / "product-integration.css"
 
 
 def _relative_luminance(color: str) -> float:
@@ -73,63 +47,39 @@ def _staff_with_clinic() -> tuple[User, Clinic]:
     return user, clinic
 
 
-def test_semantic_palette_has_exact_light_and_dark_tokens() -> None:
-    css = TOKENS_PATH.read_text(encoding="utf-8").lower()
-    light = _css_block(css, ":root")
-    dark = _css_block(css, '[data-theme="dark"]')
+def test_duralux_semantic_tokens_and_focus_meet_accessibility_contract() -> None:
+    css = PRODUCT_CSS_PATH.read_text(encoding="utf-8").lower()
 
-    for name, value in EXPECTED_LIGHT_TOKENS.items():
-        assert f"{name}: {value}" in light
-    for name, value in EXPECTED_DARK_TOKENS.items():
-        assert f"{name}: {value}" in dark
-
+    assert "--product-primary" in css
+    assert "--product-secondary" in css
+    assert "--bs-primary: var(--product-primary)" in css
+    assert "--bs-secondary: var(--product-secondary)" in css
+    assert '[data-bs-theme="light"]' in css
+    assert '[data-bs-theme="dark"]' in css
     assert ":focus-visible" in css
-    assert "outline: 3px solid var(--color-focus)" in css
-    assert _contrast_ratio("#6b7280", "#f9fbfd") >= 4.5
-    assert _contrast_ratio("#3533d8", "#ffffff") >= 4.5
+    assert "outline: 3px solid var(--product-focus-ring)" in css
+    assert _contrast_ratio("#1d4ed8", "#ffffff") >= 4.5
+    assert _contrast_ratio("#93c5fd", "#1f1f1f") >= 4.5
 
 
-def test_danger_text_token_meets_contrast_in_both_themes() -> None:
-    tokens = TOKENS_PATH.read_text(encoding="utf-8").lower()
-    workspace = (STATIC_ROOT / "css" / "workspace.css").read_text(encoding="utf-8")
-    light = _css_block(tokens, ":root")
-    dark = _css_block(tokens, '[data-theme="dark"]')
+def test_duralux_uses_system_fonts_without_external_font_downloads() -> None:
+    css = PRODUCT_CSS_PATH.read_text(encoding="utf-8").lower()
 
-    assert "--color-danger-text: #b4234d" in light
-    assert "--color-danger-text: #ff8dac" in dark
-    assert _contrast_ratio("#b4234d", "#ffffff") >= 4.5
-    assert _contrast_ratio("#ff8dac", "#1f1f1f") >= 4.5
-    assert "color: var(--color-danger-text)" in workspace
-
-
-def test_cerebri_sans_has_all_local_weights_and_swap_loading() -> None:
-    css = TOKENS_PATH.read_text(encoding="utf-8").lower()
-
-    assert css.count("@font-face") >= 5
-    for filename, weight in (
-        ("cerebrisans-regular.woff", "400"),
-        ("cerebrisans-medium.woff", "500"),
-        ("cerebrisans-semibold.woff", "600"),
-        ("cerebrisans-bold.woff", "700"),
-    ):
-        assert (STATIC_ROOT / "fonts" / filename).is_file()
-        assert f'url("../fonts/{filename}")' in css
-        assert f"font-weight: {weight}" in css
-    assert css.count("font-display: swap") >= 4
-    assert 'font-family: "cerebri sans",' in css
+    assert "--product-font-sans: system-ui" in css
+    assert "@font-face" not in css
+    assert "fonts.googleapis.com" not in css
 
 
 def test_only_allowlisted_application_assets_are_in_static_storage() -> None:
     expected = {
-        "css/tokens.css",
-        "fonts/cerebrisans-bold.woff",
-        "fonts/cerebrisans-medium.woff",
-        "fonts/cerebrisans-regular.woff",
-        "fonts/cerebrisans-semibold.woff",
-        "fonts/remixicon.ttf",
-        "fonts/remixicon.woff",
-        "fonts/remixicon.woff2",
-        "css/framework.css",
+        "duralux/css/bootstrap.min.css",
+        "duralux/css/theme.min.css",
+        "duralux/css/product-integration.css",
+        "duralux/images/favicon.svg",
+        "duralux/images/logo_header.webp",
+        "duralux/images/logo_login.webp",
+        "duralux/js/bootstrap.bundle.min.js",
+        "duralux/js/product-shell.js",
     }
     promoted = {
         str(path.relative_to(STATIC_ROOT))
@@ -139,32 +89,29 @@ def test_only_allowlisted_application_assets_are_in_static_storage() -> None:
 
     assert expected <= promoted
     assert not any(path.endswith(("index.html", "user.png")) for path in promoted)
-    assert not any("logo-" in path or "bg-main" in path for path in promoted)
+    assert not any("logo-full" in path or "bg-main" in path for path in promoted)
     for asset in expected:
         assert find(asset) is not None, f"Static finder cannot resolve {asset}"
 
 
 def test_design_assets_are_application_owned() -> None:
     base_dir = Path(settings.BASE_DIR)
-    legacy_source_names = (
-        "design" + "_system",
-        "design" + "_system_v2",
-    )
+    source = base_dir / "design_system_duralux"
 
-    assert FRAMEWORK_PATH.is_file()
-    assert find("css/framework.css") is not None
-    assert not (STATIC_ROOT / "vendor" / "sliced" / "main.css").exists()
-    assert all(not (base_dir / name).exists() for name in legacy_source_names)
+    assert source.is_dir()
+    assert PRODUCT_CSS_PATH.is_file()
+    assert find("duralux/css/product-integration.css") is not None
+    assert not (STATIC_ROOT / "vendor").exists()
 
     tool_config = (base_dir / "pyproject.toml").read_text(encoding="utf-8")
-    assert all(name not in tool_config for name in legacy_source_names)
+    assert "fonts.googleapis.com" not in tool_config
 
 
-def test_remix_icon_is_local_and_has_accessible_usage_contract() -> None:
-    css = TOKENS_PATH.read_text(encoding="utf-8").lower()
-    for filename in ("remixicon.woff", "remixicon.woff2", "remixicon.ttf"):
-        assert (STATIC_ROOT / "fonts" / filename).is_file()
-    assert 'font-family: "remixicon"' in css
+def test_design_system_has_no_legacy_icon_font_dependency() -> None:
+    css = PRODUCT_CSS_PATH.read_text(encoding="utf-8").lower()
+
+    assert "@font-face" not in css
+    assert not (STATIC_ROOT / "fonts").exists()
     assert "https://" not in css
 
 
@@ -213,18 +160,16 @@ def test_design_reference_is_pt_br_accessible_and_demo_free(client: Client) -> N
     assert response.status_code == 200
     assert '<html lang="pt-BR"' in content
     assert "Referência do sistema visual" in content
-    assert "Cerebri Sans" in content
-    assert "Remix Icon" in content
-    assert "Tema claro" in content
-    assert "Tema escuro" in content
+    assert "Fundação Duralux" in content
+    assert "Bootstrap" in content
     assert "aria-label=" in content
     assert 'aria-hidden="true"' in content
     assert "não depende apenas da cor" in lowered
-    assert "contraste aa" in lowered
-    assert ">Sliced<" not in content
+    assert "rótulos visíveis" in lowered
     assert "john doe" not in lowered
     assert "dashboard" not in lowered
     assert "logo-dark.svg" not in lowered
 
-    assert "/static/css/framework.css" in content
-    assert "/static/css/tokens.css" in content
+    assert "/static/duralux/css/bootstrap.min.css" in content
+    assert "/static/duralux/css/theme.min.css" in content
+    assert "/static/duralux/css/product-integration.css" in content

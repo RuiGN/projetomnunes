@@ -3,39 +3,39 @@
 {% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
 {% block content %}
-<div style="max-width: 720px; margin: 0 auto; display: grid; gap: 20px;">
+<div>
   <header>
-    <a href="{% url 'exercise_catalog' %}" class="calendar-nav-btn" style="display: inline-block; margin-bottom: 8px;">← Voltar ao catálogo</a>
-    <h1 class="page-title" style="margin: 0;">{{ page_title }}</h1>
+    <a href="{% url 'exercise_catalog' %}" class="btn btn-outline-secondary">← Voltar ao catálogo</a>
+    <h1 class="mb-0">{{ page_title }}</h1>
   </header>
 
-  <div class="card" style="padding: 24px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-surface);">
-    <form method="post" style="display: grid; gap: 16px;">
+  <div class="card">
+    <form method="post">
       {% csrf_token %}
       <div>
-        <label for="id_title" style="font-weight: 600; display: block; margin-bottom: 6px;">Título do exercício *</label>
+        <label for="id_title">Título do exercício *</label>
         <input type="text" name="title" id="id_title" class="form-control" required value="{{ exercise.title|default:'' }}" placeholder="Ex.: Respiração e ancoragem">
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+      <div>
         <div>
-          <label for="id_approach" style="font-weight: 600; display: block; margin-bottom: 6px;">Abordagem</label>
+          <label for="id_approach">Abordagem</label>
           <input type="text" name="approach" id="id_approach" class="form-control" value="{{ exercise.approach|default:'Geral' }}" placeholder="Ex.: TCC, Mindfulness, ACT">
         </div>
         <div>
-          <label for="id_estimated_minutes" style="font-weight: 600; display: block; margin-bottom: 6px;">Duração estimada (minutos)</label>
+          <label for="id_estimated_minutes">Duração estimada (minutos)</label>
           <input type="number" name="estimated_minutes" id="id_estimated_minutes" class="form-control" min="1" max="120" value="{{ exercise.estimated_minutes|default:'10' }}">
         </div>
       </div>
 
       <div>
-        <label for="id_instructions" style="font-weight: 600; display: block; margin-bottom: 6px;">Instruções detalhadas *</label>
+        <label for="id_instructions">Instruções detalhadas *</label>
         <textarea name="instructions" id="id_instructions" class="form-control" rows="6" required placeholder="Descreva os passos para o paciente realizar o exercício...">{{ exercise.instructions|default:'' }}</textarea>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+      <div>
         <div>
-          <label for="id_response_format" style="font-weight: 600; display: block; margin-bottom: 6px;">Formato da resposta</label>
+          <label for="id_response_format">Formato da resposta</label>
           <select name="response_format" id="id_response_format" class="form-control">
             {% for code, label in response_formats %}
               <option value="{{ code }}" {% if exercise.response_format == code %}selected{% endif %}>{{ label }}</option>
@@ -43,7 +43,7 @@
           </select>
         </div>
         <div>
-          <label for="id_status" style="font-weight: 600; display: block; margin-bottom: 6px;">Status de publicação</label>
+          <label for="id_status">Status de publicação</label>
           <select name="status" id="id_status" class="form-control">
             {% for code, label in statuses %}
               <option value="{{ code }}" {% if exercise.status == code %}selected{% endif %}>{{ label }}</option>
@@ -53,13 +53,13 @@
       </div>
 
       <div>
-        <label for="id_accessibility_notes" style="font-weight: 600; display: block; margin-bottom: 6px;">Notas de acessibilidade (opcional)</label>
+        <label for="id_accessibility_notes">Notas de acessibilidade (opcional)</label>
         <input type="text" name="accessibility_notes" id="id_accessibility_notes" class="form-control" value="{{ exercise.accessibility_notes|default:'' }}" placeholder="Ex.: Leitura simples, pode ser feito sentado">
       </div>
 
-      <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 12px;">
-        <a href="{% url 'exercise_catalog' %}" class="calendar-nav-btn">Cancelar</a>
-        <button type="submit" class="primary-action">Salvar exercício</button>
+      <div>
+        <a href="{% url 'exercise_catalog' %}" class="btn btn-outline-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Salvar exercício</button>
       </div>
     </form>
   </div>

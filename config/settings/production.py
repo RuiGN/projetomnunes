@@ -26,6 +26,7 @@ from .base import (  # noqa: F401
     MEDIA_URL,
     MFA_RATE_LIMIT_ATTEMPTS,
     MFA_RATE_LIMIT_WINDOW_SECONDS,
+    MFA_TOTP_ISSUER,
     MIDDLEWARE,
     PASSWORD_RECOVERY_RATE_LIMIT_ATTEMPTS,
     PASSWORD_RECOVERY_RATE_LIMIT_WINDOW_SECONDS,
@@ -76,7 +77,7 @@ ALLOWED_HOSTS = [
     if host.strip()
 ]
 DATABASES = {"default": postgres_database_from_environment()}
-db_sslmode = os.environ.get("DB_SSLMODE", "prefer")
+db_sslmode = os.environ.get("DB_SSLMODE", "verify-full")
 DATABASES["default"]["OPTIONS"] = {"sslmode": db_sslmode}
 if db_sslmode in {"verify-ca", "verify-full"}:
     DATABASES["default"]["OPTIONS"]["sslrootcert"] = required_environment(
@@ -99,7 +100,7 @@ STORAGES = {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 

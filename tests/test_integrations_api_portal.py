@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 import pytest
 from django.core.exceptions import ValidationError
 
+from accounts.models import User
 from clinics.models import Clinic, ClinicMembership
 from integrations import services
 from integrations.contracts import (
@@ -35,7 +38,7 @@ def clinic_beta() -> Clinic:
 
 
 @pytest.fixture
-def admin_user(clinic_alpha: Clinic):
+def admin_user(clinic_alpha: Clinic) -> User:
     user = UserFactory.create(email="admin.alpha@test.org")
     ClinicMembershipFactory.create(
         clinic=clinic_alpha,
@@ -48,7 +51,7 @@ def admin_user(clinic_alpha: Clinic):
 
 @pytest.mark.django_db
 def test_api_openapi_spec_and_forbidden_scope_enforcement(
-    clinic_alpha: Clinic, admin_user
+    clinic_alpha: Clinic, admin_user: User
 ) -> None:
     """OpenAPI spec documents scopes and deprecation; forbidden scopes are rejected."""
     spec = services.get_api_openapi_spec()
@@ -74,7 +77,7 @@ def test_api_openapi_spec_and_forbidden_scope_enforcement(
 
 @pytest.mark.django_db
 def test_api_client_registration_and_secret_rotation(
-    clinic_alpha: Clinic, admin_user
+    clinic_alpha: Clinic, admin_user: User
 ) -> None:
     """Confidential clients have hashed secrets and support grace periods."""
     client, raw_secret = services.register_api_client(
@@ -123,7 +126,7 @@ def test_api_client_registration_and_secret_rotation(
 
 @pytest.mark.django_db
 def test_api_token_lifecycle_authentication_and_scopes(
-    clinic_alpha: Clinic, admin_user
+    clinic_alpha: Clinic, admin_user: User
 ) -> None:
     """Tokens are short-lived, validated per scope, and can be immediately revoked."""
     client, raw_secret = services.register_api_client(
@@ -187,7 +190,7 @@ def test_api_token_lifecycle_authentication_and_scopes(
 
 @pytest.mark.django_db
 def test_multi_tenant_isolation_rejects_cross_tenant_token(
-    clinic_alpha: Clinic, clinic_beta: Clinic, admin_user
+    clinic_alpha: Clinic, clinic_beta: Clinic, admin_user: User
 ) -> None:
     """A valid token issued for Clinic Alpha cannot access Clinic Beta."""
     client, raw_secret = services.register_api_client(
@@ -211,7 +214,7 @@ def test_multi_tenant_isolation_rejects_cross_tenant_token(
 
 @pytest.mark.django_db
 def test_api_client_revocation_invalidates_all_tokens(
-    clinic_alpha: Clinic, admin_user
+    clinic_alpha: Clinic, admin_user: User
 ) -> None:
     """Revoking an API client immediately invalidates all active tokens and secrets."""
     client, raw_secret = services.register_api_client(
@@ -243,7 +246,7 @@ def test_api_client_revocation_invalidates_all_tokens(
 
 @pytest.mark.django_db
 def test_api_idempotency_caching_and_conflict_detection(
-    clinic_alpha: Clinic, admin_user
+    clinic_alpha: Clinic, admin_user: User
 ) -> None:
     """Identical idempotency key returns cache; different payload raises conflict."""
     client, _ = services.register_api_client(
@@ -254,7 +257,7 @@ def test_api_idempotency_caching_and_conflict_detection(
 
     call_count = 0
 
-    def sample_mutation():
+    def sample_mutation() -> tuple[int, dict[str, Any]]:
         nonlocal call_count
         call_count += 1
         return 201, {"resource_id": "item_123", "call": call_count}
@@ -284,9 +287,7 @@ def test_api_idempotency_caching_and_conflict_detection(
     assert call_count == 1  # Not incremented!
 
     # Third call with conflicting payload for same key: raises IdempotencyConflictError
-    with pytest.raises(
-        IdempotencyConflictError, match="mismatched request payload"
-    ):
+    with pytest.raises(IdempotencyConflictError, match="mismatched request payload"):
         services.process_api_idempotency(
             clinic_id=clinic_alpha.id,
             client_id=client.client_id,
@@ -297,7 +298,7 @@ def test_api_idempotency_caching_and_conflict_detection(
 
 
 @pytest.mark.django_db
-def test_api_rate_limiting_enforcement(clinic_alpha: Clinic, admin_user) -> None:
+def test_api_rate_limiting_enforcement(clinic_alpha: Clinic, admin_user: User) -> None:
     """Rate limit per tenant/client rejects bursts beyond quota."""
     client, _ = services.register_api_client(
         clinic_id=clinic_alpha.id,

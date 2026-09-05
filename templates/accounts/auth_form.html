@@ -1,47 +1,49 @@
-{% extends "layouts/base.html" %}
+{% extends "accounts/auth_base.html" %}
 {% load accessible_forms %}
 
-{% block workspace %}
-<main id="main-content" class="auth-page" tabindex="-1">
-  <section class="auth-card" aria-labelledby="auth-title">
-    <a class="brand-mark auth-brand" href="{% url 'home' %}" aria-label="Início da plataforma">
-      <span aria-hidden="true">◒</span><span>Cuidado contínuo</span>
-    </a>
-    <div class="auth-heading">
-      <h1 id="auth-title">{{ title }}</h1>
-      <p>{{ description }}</p>
-    </div>
-    <form method="post" class="form-stack" novalidate>
-      {% csrf_token %}
-      {% if form.errors %}
-        <div class="form-error-summary" role="alert" tabindex="-1" aria-labelledby="auth-error-title">
-          <h2 id="auth-error-title">Não foi possível continuar</h2>
-          <ul>
-            {% for field in form %}
-              {% for error in field.errors %}
-                <li><a href="#{{ field|error_target_id }}">{{ field.label }}: {{ error }}</a></li>
-              {% endfor %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
-          </ul>
-        </div>
-      {% endif %}
-      {% for field in form %}
-        <div class="form-field{% if field.errors %} has-error{% endif %}">
-          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-          {{ field|accessible_widget }}
-          {% for error in field.errors %}
-            <p class="field-error" id="{{ field.auto_id }}_error_{{ forloop.counter0 }}">{{ error }}</p>
-          {% endfor %}
-        </div>
-      {% endfor %}
-      <div class="form-actions">
-        <button class="primary-action" type="submit">{{ submit_label }}</button>
+{% block auth_content %}
+<section class="product-auth-card card border-0 shadow-sm p-4 p-md-5" aria-labelledby="auth-title">
+  <div class="mb-4">
+    <h1 id="auth-title" class="h3 mb-2">{{ title }}</h1>
+    {% if description %}<p class="text-body-secondary mb-0">{{ description }}</p>{% endif %}
+  </div>
+
+  <form class="d-grid gap-3" method="post" novalidate data-form-guard>
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger" role="alert" tabindex="-1" data-focus-error-summary>
+        {% for error in form.non_field_errors %}<p class="mb-0">{{ error }}</p>{% endfor %}
       </div>
-    </form>
-    {% if secondary_url and secondary_label %}
-      <a class="auth-secondary-link" href="{{ secondary_url }}">{{ secondary_label }}</a>
     {% endif %}
-  </section>
-</main>
+
+    {% for field in form %}
+      <div>
+        {% if field.field.widget.input_type == "checkbox" %}
+          <div class="form-check">
+            {{ field|accessible_widget }}
+            <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          </div>
+        {% else %}
+          <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field|accessible_widget }}
+        {% endif %}
+        {% if field.help_text %}<p class="form-text" id="{{ field.auto_id }}_helptext">{{ field.help_text }}</p>{% endif %}
+        {% for error in field.errors %}
+          <p class="invalid-feedback d-block" id="{{ field.auto_id }}_error_{{ forloop.counter0 }}">{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endfor %}
+
+    {% if show_forgot_password %}
+      <div class="text-end">
+        <a href="{% url 'password_recovery' %}">Esqueci minha senha</a>
+      </div>
+    {% endif %}
+    <button class="btn btn-primary" type="submit" data-submit-button>{{ submit_label }}</button>
+  </form>
+
+  {% if secondary_url and secondary_label %}
+    <a class="btn btn-link mt-3 px-0" href="{{ secondary_url }}">{{ secondary_label }}</a>
+  {% endif %}
+</section>
 {% endblock %}

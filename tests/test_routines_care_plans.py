@@ -7,6 +7,7 @@ from datetime import date
 import pytest
 from django.core.exceptions import ValidationError
 
+from accounts.models import User
 from audit.models import AuditEvent
 from clinics.models import Clinic, ClinicMembership
 from people.models import PatientProfile
@@ -24,7 +25,7 @@ def test_clinic() -> Clinic:
 
 
 @pytest.fixture
-def patient_user(test_clinic: Clinic):
+def patient_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="paciente.plano@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -36,7 +37,7 @@ def patient_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def therapist_user(test_clinic: Clinic):
+def therapist_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="terapeuta.plano@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -48,7 +49,7 @@ def therapist_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def other_patient_user(test_clinic: Clinic):
+def other_patient_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="outro.paciente@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -60,7 +61,7 @@ def other_patient_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def patient_profile(test_clinic: Clinic, patient_user) -> PatientProfile:
+def patient_profile(test_clinic: Clinic, patient_user: User) -> PatientProfile:
     return PatientProfile.infrastructure_objects.create(
         clinic=test_clinic,
         user=patient_user,
@@ -73,8 +74,8 @@ def patient_profile(test_clinic: Clinic, patient_user) -> PatientProfile:
 def test_propose_care_plan_draft_and_actions(
     test_clinic: Clinic,
     patient_profile: PatientProfile,
-    therapist_user,
-    other_patient_user,
+    therapist_user: User,
+    other_patient_user: User,
 ) -> None:
     """Clinicians propose draft care plans with actions, blocked for non-clinicians."""
     # Unauthorized proposal by patient
@@ -120,7 +121,7 @@ def test_propose_care_plan_draft_and_actions(
 def test_sign_care_plan_activates_with_cryptographic_digest(
     test_clinic: Clinic,
     patient_profile: PatientProfile,
-    therapist_user,
+    therapist_user: User,
 ) -> None:
     """Care plans require professional signature and digest before becoming active."""
     plan = care_plan_services.propose_care_plan(
@@ -158,8 +159,8 @@ def test_sign_care_plan_activates_with_cryptographic_digest(
 def test_patient_autonomous_response_workflow(
     test_clinic: Clinic,
     patient_profile: PatientProfile,
-    patient_user,
-    therapist_user,
+    patient_user: User,
+    therapist_user: User,
 ) -> None:
     """Patients can accept, pause, or request review of care plans autonomously."""
     plan = care_plan_services.propose_care_plan(
@@ -211,7 +212,7 @@ def test_patient_autonomous_response_workflow(
 def test_professional_supervision_dashboard_overview(
     test_clinic: Clinic,
     patient_profile: PatientProfile,
-    therapist_user,
+    therapist_user: User,
 ) -> None:
     """Supervision dashboard aggregates habits, sleep, and care plans transparently."""
     plan = care_plan_services.propose_care_plan(

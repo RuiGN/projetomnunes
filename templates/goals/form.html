@@ -4,21 +4,21 @@
 {% block title %}{{ page_title }} | {{ active_clinic.name|default:"Clínica" }}{% endblock %}
 
 {% block content %}
-<div style="max-width: 760px; margin: 0 auto; display: grid; gap: 24px;">
-  <header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+<div>
+  <header>
     <div>
-      <span class="workspace-eyebrow">Minhas Metas</span>
-      <h1 class="page-title" style="margin: 0;">{{ page_title }}</h1>
+      <span class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Minhas Metas</span>
+      <h1 class="mb-0">{{ page_title }}</h1>
     </div>
-    <a href="{% url 'goal_list' %}" class="calendar-nav-btn" style="text-decoration: none;">Voltar às metas</a>
+    <a href="{% url 'goal_list' %}" class="btn btn-outline-secondary">Voltar às metas</a>
   </header>
 
-  <div class="card" style="padding: 24px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-surface);">
-    <form id="{{ form_id }}" class="form-stack" method="post" novalidate data-form-guard>
+  <div class="card">
+    <form id="{{ form_id }}" class="d-grid gap-3" method="post" novalidate data-form-guard>
       {% csrf_token %}
 
       {% if form.errors %}
-        <div class="form-error-summary" role="alert" tabindex="-1" data-focus-error-summary aria-labelledby="{{ form_id }}-error-title">
+        <div class="alert alert-danger" role="alert" tabindex="-1" data-focus-error-summary aria-labelledby="{{ form_id }}-error-title">
           <h2 id="{{ form_id }}-error-title">Revise os campos indicados</h2>
           <p>Não foi possível salvar. Corrija os problemas abaixo.</p>
           <ul>
@@ -34,25 +34,25 @@
         </div>
       {% endif %}
 
-      <div class="form-field{% if form.title.errors %} has-error{% endif %}">
+      <div class="mb-3{% if form.title.errors %} has-error{% endif %}">
         <label for="{{ form.title.id_for_label }}">{{ form.title.label }} <span aria-hidden="true">*</span></label>
         {{ form.title|accessible_widget }}
-        {% if form.title.help_text %}<p class="field-help">{{ form.title.help_text }}</p>{% endif %}
-        {% for error in form.title.errors %}<p class="field-error" id="{{ form.title.auto_id }}_error_{{ forloop.counter0 }}">{{ error }}</p>{% endfor %}
+        {% if form.title.help_text %}<p class="form-text">{{ form.title.help_text }}</p>{% endif %}
+        {% for error in form.title.errors %}<p class="invalid-feedback d-block" id="{{ form.title.auto_id }}_error_{{ forloop.counter0 }}">{{ error }}</p>{% endfor %}
       </div>
 
-      <div class="form-field{% if form.description.errors %} has-error{% endif %}">
+      <div class="mb-3{% if form.description.errors %} has-error{% endif %}">
         <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
         {{ form.description|accessible_widget }}
-        {% if form.description.help_text %}<p class="field-help">{{ form.description.help_text }}</p>{% endif %}
+        {% if form.description.help_text %}<p class="form-text">{{ form.description.help_text }}</p>{% endif %}
       </div>
 
-      <div class="form-field">
-        <fieldset class="choice-group">
+      <div class="mb-3">
+        <fieldset class="d-grid gap-2">
           <legend>{{ form.horizon.label }}</legend>
-          <div style="display: grid; gap: 8px; margin-top: 8px;">
+          <div>
             {% for choice in form.horizon %}
-              <div class="choice-control">
+              <div class="form-check">
                 {{ choice.tag }}
                 <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
               </div>
@@ -61,12 +61,12 @@
         </fieldset>
       </div>
 
-      <div class="form-field">
-        <fieldset class="choice-group">
+      <div class="mb-3">
+        <fieldset class="d-grid gap-2">
           <legend>{{ form.priority.label }}</legend>
-          <div style="display: grid; gap: 6px; margin-top: 8px;">
+          <div>
             {% for choice in form.priority %}
-              <div class="choice-control">
+              <div class="form-check">
                 {{ choice.tag }}
                 <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
               </div>
@@ -75,38 +75,38 @@
         </fieldset>
       </div>
 
-      <div class="form-field{% if form.due_date.errors %} has-error{% endif %}">
+      <div class="mb-3{% if form.due_date.errors %} has-error{% endif %}">
         <label for="{{ form.due_date.id_for_label }}">{{ form.due_date.label }}</label>
         {{ form.due_date|accessible_widget }}
-        {% if form.due_date.help_text %}<p class="field-help">{{ form.due_date.help_text }}</p>{% endif %}
-        {% for error in form.due_date.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+        {% if form.due_date.help_text %}<p class="form-text">{{ form.due_date.help_text }}</p>{% endif %}
+        {% for error in form.due_date.errors %}<p class="invalid-feedback d-block">{{ error }}</p>{% endfor %}
       </div>
 
-      <div class="form-field{% if form.steps_raw.errors %} has-error{% endif %}">
+      <div class="mb-3{% if form.steps_raw.errors %} has-error{% endif %}">
         <label for="{{ form.steps_raw.id_for_label }}">{{ form.steps_raw.label }}</label>
         {{ form.steps_raw }}
-        {% if form.steps_raw.help_text %}<p class="field-help">{{ form.steps_raw.help_text }}</p>{% endif %}
-        {% for error in form.steps_raw.errors %}<p class="field-error" id="{{ form.steps_raw.auto_id }}_error_{{ forloop.counter0 }}">{{ error }}</p>{% endfor %}
+        {% if form.steps_raw.help_text %}<p class="form-text">{{ form.steps_raw.help_text }}</p>{% endif %}
+        {% for error in form.steps_raw.errors %}<p class="invalid-feedback d-block" id="{{ form.steps_raw.auto_id }}_error_{{ forloop.counter0 }}">{{ error }}</p>{% endfor %}
       </div>
 
-      <div class="form-field">
-        <fieldset class="choice-group">
+      <div class="mb-3">
+        <fieldset class="d-grid gap-2">
           <legend>{{ form.visibility.label }}</legend>
-          <div style="display: grid; gap: 8px; margin-top: 8px;">
+          <div>
             {% for choice in form.visibility %}
-              <div class="choice-control" style="padding: 10px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-canvas);">
+              <div class="form-check">
                 {{ choice.tag }}
                 <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
               </div>
             {% endfor %}
           </div>
-          {% if form.visibility.help_text %}<p class="field-help" style="margin-top: 6px;">{{ form.visibility.help_text }}</p>{% endif %}
+          {% if form.visibility.help_text %}<p class="form-text">{{ form.visibility.help_text }}</p>{% endif %}
         </fieldset>
       </div>
 
-      <div class="form-actions">
-        <button type="submit" class="primary-action" data-submit-button>{{ submit_label }}</button>
-        <a href="{% url 'goal_list' %}" class="calendar-nav-btn" style="text-decoration: none;">Cancelar</a>
+      <div class="d-flex flex-wrap gap-2">
+        <button type="submit" class="btn btn-primary" data-submit-button>{{ submit_label }}</button>
+        <a href="{% url 'goal_list' %}" class="btn btn-outline-secondary">Cancelar</a>
       </div>
     </form>
   </div>

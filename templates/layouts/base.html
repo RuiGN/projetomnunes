@@ -4,23 +4,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ page_title }} · Plataforma de cuidado</title>
-  <script src="{% static 'js/theme.js' %}?v=080dbc6"></script>
-  <link rel="stylesheet" href="{% static 'css/framework.css' %}">
-  <link rel="stylesheet" href="{% static 'css/tokens.css' %}">
-  <link rel="stylesheet" href="{% static 'css/workspace.css' %}">
-  {% if active_clinic_branding %}
-    <style>:root { --clinic-primary: {{ active_clinic_branding.primary_color }}; --clinic-secondary: {{ active_clinic_branding.secondary_color }}; }</style>
-  {% endif %}
-  <script defer src="{% static 'js/workspace-navigation.js' %}"></script>
-  <script defer src="{% static 'js/form-behaviors.js' %}"></script>
-  <script defer src="{% static 'js/lesson-player.js' %}"></script>
-  <script defer src="{% static 'vendor/apexcharts/apexcharts.min.js' %}"></script>
-  <script defer src="{% static 'js/charts.js' %}"></script>
-  <script defer src="{% static 'vendor/alpine/alpine-3.14.1.min.js' %}"></script>
+  <meta name="color-scheme" content="light dark">
+  <title>{% block title %}{{ page_title }}{% endblock %} · Plataforma de cuidado</title>
+  <link rel="icon" href="{% static 'duralux/images/favicon.svg' %}" type="image/svg+xml">
+  <script src="{% static 'duralux/js/product-shell.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'duralux/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'duralux/css/theme.min.css' %}">
+  <link rel="stylesheet" href="{% static 'duralux/css/product-integration.css' %}">
+  {% block page_styles %}{% endblock %}
+  {% block head_scripts %}{% endblock %}
 </head>
-<body class="workspace-body">
+<body class="product-workspace-body" data-clinic-primary="{% if active_clinic_branding %}{{ active_clinic_branding.primary_color }}{% endif %}" data-clinic-secondary="{% if active_clinic_branding %}{{ active_clinic_branding.secondary_color }}{% endif %}">
   <a class="skip-link" href="#main-content">Ir para o conteúdo principal</a>
   {% block workspace %}{% endblock %}
+  <script defer src="{% static 'duralux/js/bootstrap.bundle.min.js' %}"></script>
+  <script defer src="{% static 'duralux/js/form-behaviors.js' %}"></script>
+  {% block page_scripts %}{% endblock %}
 </body>
 </html>

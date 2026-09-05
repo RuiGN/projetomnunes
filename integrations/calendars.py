@@ -63,9 +63,14 @@ def validate_oauth_state(state_token: str) -> dict[str, Any]:
     """Validate and decode the anti-CSRF state token."""
     try:
         token_bytes = base64.urlsafe_b64decode(state_token.encode("ascii"))
-        if b"." not in token_bytes:
+        digest_size = hashlib.sha256().digest_size
+        separator_index = len(token_bytes) - digest_size - 1
+        if separator_index < 0 or b"." not in token_bytes:
             raise ValidationError("Formato do estado OAuth inválido.")
-        raw, sig = token_bytes.rsplit(b".", 1)
+        if token_bytes[separator_index : separator_index + 1] != b".":
+            raise ValidationError("Assinatura do estado OAuth inválida.")
+        raw = token_bytes[:separator_index]
+        sig = token_bytes[separator_index + 1 :]
         expected_sig = hashlib.sha256(
             settings.SECRET_KEY.encode("utf-8") + raw
         ).digest()

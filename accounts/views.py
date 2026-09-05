@@ -40,6 +40,8 @@ from .services import (
     SensitiveActionRateLimitedError,
     accept_invitation,
     administratively_reset_mfa,
+    build_totp_key_uri,
+    build_totp_qr_data_uri,
     confirm_totp_enrollment,
     consume_mfa_code,
     invitation_clinic_id,
@@ -429,6 +431,42 @@ def _authenticated_user(request: HttpRequest) -> User:
     return actor
 
 
+def _protect_mfa_response(response: HttpResponse) -> HttpResponse:
+    """Prevent MFA enrollment material from being cached or indexed."""
+    response.headers["Cache-Control"] = "no-store"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["X-Robots-Tag"] = "noindex, nofollow, noarchive"
+    return response
+
+
+def _mfa_enrollment_response(
+    request: HttpRequest,
+    *,
+    form: MFACodeForm,
+    secret: str,
+    status: int = 200,
+) -> HttpResponse:
+    """Render local TOTP provisioning data without exposing it to third parties."""
+    totp_uri = build_totp_key_uri(
+        secret=secret,
+        issuer=settings.MFA_TOTP_ISSUER,
+        account=_authenticated_user(request).email.strip().lower(),
+    )
+    response = TemplateResponse(
+        request,
+        "accounts/mfa_enroll.html",
+        {
+            "page_title": "Ativar autenticação em duas etapas",
+            "form": form,
+            "manual_secret": secret,
+            "totp_uri": totp_uri,
+            "qr_data_uri": build_totp_qr_data_uri(uri=totp_uri),
+        },
+        status=status,
+    )
+    return _protect_mfa_response(response)
+
+
 @login_required
 @require_http_methods(["GET", "POST"])
 def mfa_enroll(request: HttpRequest) -> HttpResponse:
@@ -442,6 +480,13 @@ def mfa_enroll(request: HttpRequest) -> HttpResponse:
         if mfa is None
         else mfa.decrypt_secret()
     )
+    if request.method == "POST" and request.POST.get("action") == "restart":
+        secret = start_totp_enrollment(user=actor).secret
+        return _mfa_enrollment_response(
+            request,
+            form=MFACodeForm(),
+            secret=secret,
+        )
     form = MFACodeForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         try:
@@ -451,18 +496,16 @@ def mfa_enroll(request: HttpRequest) -> HttpResponse:
             )
         except MFAAttemptRateLimitedError:
             form.add_error("code", "Muitas tentativas. Tente novamente mais tarde.")
-            response = _form_response(
+            response = _mfa_enrollment_response(
                 request,
                 form=form,
-                title="Ativar autenticação em duas etapas",
-                description="Confirme o código do seu aplicativo autenticador.",
-                submit_label="Ativar proteção",
+                secret=secret,
                 status=429,
             )
             response.headers["Retry-After"] = str(
                 settings.MFA_RATE_LIMIT_WINDOW_SECONDS
             )
-            return response
+            return _protect_mfa_response(response)
         except ValueError:
             form.add_error("code", "Código inválido ou expirado.")
         else:
@@ -475,24 +518,22 @@ def mfa_enroll(request: HttpRequest) -> HttpResponse:
                 request,
                 "accounts/mfa_recovery_codes.html",
                 {
+                    "page_title": "Códigos de recuperação",
+                    "title": "Códigos de recuperação",
+                    "description": (
+                        "Guarde estes códigos antes de continuar; "
+                        "eles não serão exibidos novamente."
+                    ),
                     "recovery_codes": recovery_codes,
                     "continue_url": continue_url,
                 },
             )
-            response.headers["Cache-Control"] = "no-store"
-            return response
-    response = _form_response(
+            return _protect_mfa_response(response)
+    return _mfa_enrollment_response(
         request,
         form=form,
-        title="Ativar autenticação em duas etapas",
-        description=(
-            "Adicione a chave ao seu aplicativo autenticador e informe o código: "
-            f"{secret}"
-        ),
-        submit_label="Ativar proteção",
+        secret=secret,
     )
-    response.headers["Cache-Control"] = "no-store"
-    return response
 
 
 @login_required
@@ -517,7 +558,7 @@ def mfa_verify(request: HttpRequest) -> HttpResponse:
             response.headers["Retry-After"] = str(
                 settings.MFA_RATE_LIMIT_WINDOW_SECONDS
             )
-            return response
+            return _protect_mfa_response(response)
         if verified:
             request.session["mfa_verified"] = True
             next_url = _safe_local_next(
@@ -528,12 +569,14 @@ def mfa_verify(request: HttpRequest) -> HttpResponse:
                 return redirect(next_url)
             return redirect("workspace_vertical")
         form.add_error("code", "Código inválido ou já utilizado.")
-    return _form_response(
-        request,
-        form=form,
-        title="Confirmar autenticação em duas etapas",
-        description="Informe o código do aplicativo ou um código de recuperação.",
-        submit_label="Verificar",
+    return _protect_mfa_response(
+        _form_response(
+            request,
+            form=form,
+            title="Confirmar autenticação em duas etapas",
+            description="Informe o código do aplicativo ou um código de recuperação.",
+            submit_label="Verificar",
+        )
     )
 
 

@@ -7,6 +7,7 @@ from datetime import UTC, date, datetime, timedelta
 import pytest
 from django.core.exceptions import ValidationError
 
+from accounts.models import User
 from audit.models import AuditEvent
 from clinics.models import Clinic, ClinicMembership
 from people.models import PatientProfile
@@ -24,7 +25,7 @@ def test_clinic() -> Clinic:
 
 
 @pytest.fixture
-def patient_user(test_clinic: Clinic):
+def patient_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="paciente.recaida@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -36,7 +37,7 @@ def patient_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def therapist_user(test_clinic: Clinic):
+def therapist_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="terapeuta.recaida@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -48,7 +49,7 @@ def therapist_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def other_user(test_clinic: Clinic):
+def other_user(test_clinic: Clinic) -> User:
     user = UserFactory.create(email="desconhecido.recaida@test.org")
     ClinicMembershipFactory.create(
         clinic=test_clinic,
@@ -60,7 +61,7 @@ def other_user(test_clinic: Clinic):
 
 
 @pytest.fixture
-def patient_profile(test_clinic: Clinic, patient_user) -> PatientProfile:
+def patient_profile(test_clinic: Clinic, patient_user: User) -> PatientProfile:
     return PatientProfile.infrastructure_objects.create(
         clinic=test_clinic,
         user=patient_user,
@@ -71,7 +72,7 @@ def patient_profile(test_clinic: Clinic, patient_user) -> PatientProfile:
 
 @pytest.mark.django_db
 def test_create_and_version_relapse_prevention_plan(
-    test_clinic: Clinic, patient_profile: PatientProfile, patient_user
+    test_clinic: Clinic, patient_profile: PatientProfile, patient_user: User
 ) -> None:
     """Relapse plan contains structured sections and increments version on updates."""
     sections = [
@@ -130,8 +131,8 @@ def test_create_and_version_relapse_prevention_plan(
 def test_granular_section_sharing_and_revocation(
     test_clinic: Clinic,
     patient_profile: PatientProfile,
-    therapist_user,
-    other_user,
+    therapist_user: User,
+    other_user: User,
 ) -> None:
     """Sharing allows granular section access with expiration and instant revocation."""
     plan = relapse_services.create_or_update_relapse_plan(
@@ -195,7 +196,7 @@ def test_granular_section_sharing_and_revocation(
 
 @pytest.mark.django_db
 def test_post_lapse_supportive_event_registration(
-    test_clinic: Clinic, patient_profile: PatientProfile, patient_user
+    test_clinic: Clinic, patient_profile: PatientProfile, patient_user: User
 ) -> None:
     """Post-lapse flow is supportive, non-punitive, and logs protective actions."""
     plan = relapse_services.create_or_update_relapse_plan(
