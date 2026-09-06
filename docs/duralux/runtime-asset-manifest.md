@@ -152,7 +152,7 @@ Recorded SHA-256 values:
 |---|---|
 | `css/bootstrap.min.css` | `26db49828d6701fcfce37a96da6ec3f0ed481abae49c8c9969a575b064413cad` |
 | `css/theme.min.css` | `71257c55b10217bf94a0f71c3fda141545ad500a6bebec5bbeb29ee65c5d0be9` |
-| `css/product-integration.css` | `84270accde4d48c8dd18373d742cc45eeccf3d141a430c938d970521975a495f` |
+| `css/product-integration.css` | `487b05a78889678f303d7fb56a2024d79571454ab9d20e491d3e01a7a938ab33` |
 | `js/bootstrap.bundle.min.js` | `073254afbfc06331b8b548b7fc0532b4ffe2cfdd588368dcc338e7abd50810e1` |
 | `js/dashboard-charts.js` | `773ba64d6e553379af0f422633bd76fc3e3727a6ec5e770bdf41bb9601135fd2` |
 | `js/form-behaviors.js` | `2aa3ea86ef5e59ba1b0091e3fc2a30d6e942a5a301eca4a63e0323a98336665f` |

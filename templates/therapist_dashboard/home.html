@@ -3,152 +3,204 @@
 
 {% block title %}Painel do terapeuta{% endblock %}
 
+{% block header_title %}Painel do Terapeuta{% endblock %}
+{% block breadcrumb_active %}Pacientes vinculados{% endblock %}
+
+{% block header_actions %}
+<div class="d-flex align-items-center gap-2">
+  <a class="btn btn-primary btn-md" href="{% url 'patient_create' %}">
+    <i class="feather-user-plus me-2"></i><span>Cadastrar paciente</span>
+  </a>
+  <a class="btn btn-outline-primary btn-md" href="{% url 'patient_list' %}">
+    <i class="feather-mail me-2"></i><span>Enviar convite</span>
+  </a>
+  <a class="btn btn-outline-primary btn-md" href="{% url 'clinic_onboarding' %}">
+    <i class="feather-check-square me-2"></i><span>Revisar pendências</span>
+  </a>
+</div>
+{% endblock %}
+
 {% block content %}
-<section class="product-page-header d-flex flex-column flex-lg-row align-items-lg-end justify-content-between gap-3"
-  aria-labelledby="therapist-dashboard-title">
-  <div>
-    <p class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Área inicial</p>
-    <h1 id="therapist-dashboard-title">Pacientes vinculados</h1>
-    <p class="lead mb-0">Indicadores factuais, sem classificação ou diagnóstico automatizado.</p>
-  </div>
-  <div class="d-flex flex-wrap gap-2">
-    <a class="btn btn-primary" href="{% url 'patient_create' %}">Cadastrar paciente</a>
-    <a class="btn btn-outline-primary" href="{% url 'patient_list' %}">Enviar convite</a>
-    <a class="btn btn-outline-primary" href="{% url 'clinic_onboarding' %}">Revisar pendências</a>
-  </div>
-</section>
-
-<section class="row g-3" aria-label="Indicadores factuais">
-  <div class="col-12 col-sm-6 col-xl-3">
-    <article class="card h-100 product-metric-card border-start border-secondary border-4"
-      aria-labelledby="metric-active-title">
-      <div class="card-body">
-        <h2 class="h5" id="metric-active-title">Pacientes ativos vinculados</h2>
-        <p class="product-muted">Vínculos terapêuticos vigentes.</p><data class="product-metric-value"
-          value="{{ snapshot.active_patients }}">{{ snapshot.active_patients }}</data>
+<div class="product-page" aria-labelledby="therapist-dashboard-title">
+  <section class="row g-4 mb-4" aria-label="Indicadores factuais">
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="card stretch stretch-full border-0 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex align-items-start justify-content-between mb-3">
+            <div class="avatar-text avatar-lg rounded bg-soft-primary text-primary">
+              <i class="feather-users"></i>
+            </div>
+            <span class="badge bg-soft-primary text-primary fs-11">Vigentes</span>
+          </div>
+          <div class="fs-4 fw-bold text-dark mb-1">
+            <data class="product-metric-value" value="{{ snapshot.active_patients }}">{{ snapshot.active_patients
+              }}</data>
+          </div>
+          <h2 class="h6 fw-semibold text-truncate-1-line mb-1" id="metric-active-title">Pacientes ativos vinculados</h2>
+          <p class="fs-12 text-muted mb-0">Vínculos terapêuticos vigentes.</p>
+        </div>
       </div>
-    </article>
-  </div>
-  <div class="col-12 col-sm-6 col-xl-3">
-    <article class="card h-100 product-metric-card border-start border-info border-4"
-      aria-labelledby="metric-new-title">
-      <div class="card-body">
-        <h2 class="h5" id="metric-new-title">Novos vínculos</h2>
-        <p class="product-muted">Criados nos últimos 30 dias.</p><data class="product-metric-value"
-          value="{{ snapshot.new_links }}">{{ snapshot.new_links }}</data>
-      </div>
-    </article>
-  </div>
-  <div class="col-12 col-sm-6 col-xl-3">
-    <article class="card h-100 product-metric-card border-start border-warning border-4"
-      aria-labelledby="metric-incomplete-title">
-      <div class="card-body">
-        <h2 class="h5" id="metric-incomplete-title">Cadastros incompletos</h2>
-        <p class="product-muted">Sem telefone registrado.</p><data class="product-metric-value"
-          value="{{ snapshot.incomplete_registrations }}">{{ snapshot.incomplete_registrations }}</data>
-      </div>
-    </article>
-  </div>
-  <div class="col-12 col-sm-6 col-xl-3">
-    <article class="card h-100 product-metric-card border-start border-warning border-4"
-      aria-labelledby="metric-consent-title">
-      <div class="card-body">
-        <h2 class="h5" id="metric-consent-title">Consentimentos pendentes</h2>
-        <p class="product-muted">Pacientes vinculados sem aceite registrado.</p><data class="product-metric-value"
-          value="{{ snapshot.pending_consents }}">{{ snapshot.pending_consents }}</data>
-      </div>
-    </article>
-  </div>
-</section>
-
-<section class="d-grid gap-3" aria-labelledby="registrations-title">
-  <h2 id="registrations-title">Cadastros por período</h2>
-  <p class="lead mb-0">Registros de pacientes vinculados, por mês. A tabela abaixo é o equivalente acessível do gráfico.
-  </p>
-  {{ snapshot.registration_series|json_script:"registration-series" }}
-  <div class="product-chart-summary">
-    <div id="registrations-chart" role="img" aria-label="Gráfico de cadastros por mês"></div>
-  </div>
-  <div class="product-table-card product-table-scroll">
-    <table class="table product-table">
-      <caption>Cadastros por mês</caption>
-      <thead>
-        <tr>
-          <th scope="col">Mês</th>
-          <th scope="col">Cadastros</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for item in snapshot.registration_series %}<tr>
-          <th scope="row">{{ item.label }}</th>
-          <td>{{ item.count }}</td>
-        </tr>{% endfor %}
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<section class="d-grid gap-3" aria-labelledby="patients-title">
-  <div class="product-section-heading d-flex flex-column flex-lg-row align-items-lg-end justify-content-between gap-3">
-    <div>
-      <h2 id="patients-title">Pacientes</h2>
     </div>
-    <form class="d-flex flex-wrap align-items-end gap-2" method="get">
-      <label for="patient-search">Buscar</label>
-      <input class="form-control" id="patient-search" name="q" type="search" value="{{ query }}">
-      <button class="btn btn-outline-primary" type="submit">Buscar</button>
-    </form>
-  </div>
-  {% if patients %}
-  <div class="product-table-card product-table-scroll" role="region" aria-label="Pacientes vinculados" tabindex="0">
-    <table class="table product-table">
-      <thead>
-        <tr>
-          <th scope="col">Nome</th>
-          <th scope="col">Contato</th>
-          <th scope="col">Última atividade</th>
-          <th scope="col">Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for row in patients %}
-        <tr>
-          <th scope="row">{{ row.full_name }}{% if row.social_name %}<br><small>Nome social: {{ row.social_name
-              }}</small>{% endif %}</th>
-          <td>{{ row.email }}<br>{{ row.phone|default:"Telefone não informado" }}</td>
-          <td>{{ row.updated_at|date:"d/m/Y" }}</td>
-          <td>
-            <div class="d-flex flex-wrap gap-2"><a class="btn btn-sm btn-outline-primary"
-                href="{% url 'patient_detail' row.patient_profile_id %}">Abrir ficha</a></div>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  {% if patients.has_other_pages %}
-  <nav class="d-flex flex-wrap align-items-center justify-content-between gap-2 pt-3"
-    aria-label="Paginação de pacientes">
-    <p class="small text-body-secondary mb-0">Página {{ patients.number }} de {{ patients.paginator.num_pages }}</p>
-    <ul class="list-unstyled d-flex align-items-center gap-2 mb-0 pagination-common-style">
-      {% if patients.has_previous %}
-      <li><a href="?q={{ query }}&page={{ patients.previous_page_number }}" aria-label="Página anterior"><i
-            class="feather-arrow-left"></i></a></li>
-      {% endif %}
-      <li><span class="active" aria-current="page">{{ patients.number }}</span></li>
-      {% if patients.has_next %}
-      <li><a href="?q={{ query }}&page={{ patients.next_page_number }}" aria-label="Próxima página"><i
-            class="feather-arrow-right"></i></a></li>
-      {% endif %}
-    </ul>
-  </nav>
-  {% endif %}
-  {% else %}<div class="product-empty-state" role="status">
-    <h3>Nenhum paciente vinculado</h3>
-    <p>Cadastre um paciente ou aguarde novos vínculos.</p>
-  </div>{% endif %}
-</section>
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="card stretch stretch-full border-0 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex align-items-start justify-content-between mb-3">
+            <div class="avatar-text avatar-lg rounded bg-soft-success text-success">
+              <i class="feather-user-plus"></i>
+            </div>
+            <span class="badge bg-soft-success text-success fs-11">30 dias</span>
+          </div>
+          <div class="fs-4 fw-bold text-dark mb-1">
+            <data class="product-metric-value" value="{{ snapshot.new_links }}">{{ snapshot.new_links }}</data>
+          </div>
+          <h2 class="h6 fw-semibold text-truncate-1-line mb-1" id="metric-new-title">Novos vínculos</h2>
+          <p class="fs-12 text-muted mb-0">Criados nos últimos 30 dias.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="card stretch stretch-full border-0 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex align-items-start justify-content-between mb-3">
+            <div class="avatar-text avatar-lg rounded bg-soft-warning text-warning">
+              <i class="feather-alert-triangle"></i>
+            </div>
+            <span class="badge bg-soft-warning text-warning fs-11">Pendente</span>
+          </div>
+          <div class="fs-4 fw-bold text-dark mb-1">
+            <data class="product-metric-value" value="{{ snapshot.incomplete_registrations }}">{{
+              snapshot.incomplete_registrations }}</data>
+          </div>
+          <h2 class="h6 fw-semibold text-truncate-1-line mb-1" id="metric-incomplete-title">Cadastros incompletos</h2>
+          <p class="fs-12 text-muted mb-0">Sem telefone registrado.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="card stretch stretch-full border-0 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex align-items-start justify-content-between mb-3">
+            <div class="avatar-text avatar-lg rounded bg-soft-danger text-danger">
+              <i class="feather-shield"></i>
+            </div>
+            <span class="badge bg-soft-danger text-danger fs-11">Ação requerida</span>
+          </div>
+          <div class="fs-4 fw-bold text-dark mb-1">
+            <data class="product-metric-value" value="{{ snapshot.pending_consents }}">{{ snapshot.pending_consents
+              }}</data>
+          </div>
+          <h2 class="h6 fw-semibold text-truncate-1-line mb-1" id="metric-consent-title">Consentimentos pendentes</h2>
+          <p class="fs-12 text-muted mb-0">Pacientes vinculados sem aceite registrado.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <section class="card stretch stretch-full border-0 shadow-sm mb-4" aria-labelledby="registrations-title">
+    <div class="card-header py-3">
+      <h2 class="card-title h5 mb-1" id="registrations-title">Cadastros por período</h2>
+      <p class="fs-12 text-muted mb-0">Registros de pacientes vinculados, por mês. A tabela abaixo é o equivalente
+        acessível do gráfico.</p>
+    </div>
+    <div class="card-body">
+      {{ snapshot.registration_series|json_script:"registration-series" }}
+      <div class="product-chart-summary mb-3">
+        <div id="registrations-chart" role="img" aria-label="Gráfico de cadastros por mês"></div>
+      </div>
+      <div class="table-responsive">
+        <table class="table product-table table-hover align-middle mb-0">
+          <caption>Cadastros por mês</caption>
+          <thead>
+            <tr>
+              <th scope="col">Mês</th>
+              <th scope="col">Cadastros</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in snapshot.registration_series %}<tr>
+              <th scope="row">{{ item.label }}</th>
+              <td>{{ item.count }}</td>
+            </tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="card stretch stretch-full border-0 shadow-sm" aria-labelledby="patients-title">
+    <div class="card-header d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 py-3">
+      <div>
+        <h2 class="card-title h5 mb-0" id="patients-title">Pacientes</h2>
+      </div>
+      <div class="card-header-action ms-auto">
+        <form class="d-flex flex-wrap align-items-center gap-2" method="get">
+          <label for="patient-search" class="visually-hidden">Buscar</label>
+          <div class="input-group input-group-sm">
+            <span class="input-group-text bg-light-subtle"><i class="feather-search text-muted"></i></span>
+            <input class="form-control" id="patient-search" name="q" type="search" value="{{ query }}"
+              placeholder="Buscar paciente...">
+          </div>
+          <button class="btn btn-sm btn-primary" type="submit">Buscar</button>
+        </form>
+      </div>
+    </div>
+    <div class="card-body p-0">
+      {% if patients %}
+      <div class="table-responsive" role="region" aria-label="Pacientes vinculados" tabindex="0">
+        <table class="table table-hover align-middle mb-0">
+          <thead>
+            <tr>
+              <th scope="col">Nome</th>
+              <th scope="col">Contato</th>
+              <th scope="col">Última atividade</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in patients %}
+            <tr>
+              <th scope="row">{{ row.full_name }}{% if row.social_name %}<br><small class="text-muted">Nome social: {{
+                  row.social_name }}</small>{% endif %}</th>
+              <td>{{ row.email }}<br><span class="text-muted fs-12">{{ row.phone|default:"Telefone não informado"
+                  }}</span></td>
+              <td>{{ row.updated_at|date:"d/m/Y" }}</td>
+              <td>
+                <a class="btn btn-sm btn-outline-primary" href="{% url 'patient_detail' row.patient_profile_id %}">Abrir
+                  ficha</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="p-5 text-center text-muted" role="status">
+        <div class="avatar-text avatar-lg rounded bg-light-subtle text-muted mx-auto mb-3">
+          <i class="feather-users"></i>
+        </div>
+        <h5 class="fw-bold text-dark">Nenhum paciente vinculado</h5>
+        <p class="fs-12 mb-0">Cadastre um paciente ou aguarde novos vínculos.</p>
+      </div>
+      {% endif %}
+    </div>
+    {% if patients.has_other_pages %}
+    <div class="card-footer d-flex flex-wrap align-items-center justify-content-between gap-2 py-2 px-3 border-top">
+      <p class="small text-muted mb-0">Página {{ patients.number }} de {{ patients.paginator.num_pages }}</p>
+      <ul class="list-unstyled d-flex align-items-center gap-2 mb-0 pagination-common-style">
+        {% if patients.has_previous %}
+        <li><a href="?q={{ query }}&page={{ patients.previous_page_number }}" aria-label="Página anterior"><i
+              class="feather-arrow-left"></i></a></li>
+        {% endif %}
+        <li><span class="active" aria-current="page">{{ patients.number }}</span></li>
+        {% if patients.has_next %}
+        <li><a href="?q={{ query }}&page={{ patients.next_page_number }}" aria-label="Próxima página"><i
+              class="feather-arrow-right"></i></a></li>
+        {% endif %}
+      </ul>
+    </div>
+    {% endif %}
+  </section>
+</div>
 {% endblock %}
 
 {% block page_scripts %}
