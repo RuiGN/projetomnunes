@@ -178,8 +178,7 @@ textarea {
 .product-page {
   display: grid;
   gap: 1.5rem;
-  max-width: 67.5rem;
-  margin-inline: auto;
+  width: 100%;
 }
 
 .product-page > section {
@@ -749,7 +748,12 @@ ul.pagination-common-style li span.active,
   top: 0;
   bottom: 0;
   left: 0;
+  width: 260px;
   height: 100vh;
+  z-index: 1026;
+  background: var(--bs-body-bg, #fff);
+  border-right: 1px solid var(--bs-border-color, #e2e8f0);
+  transition: all 0.3s ease;
   overflow: hidden;
 }
 
@@ -763,6 +767,10 @@ ul.pagination-common-style li span.active,
 .nxl-navigation .m-header {
   flex: 0 0 80px;
   height: 80px;
+  display: flex;
+  align-items: center;
+  padding: 15px 25px;
+  border-bottom: 1px solid var(--bs-border-color, #e2e8f0);
 }
 
 .nxl-navigation .navbar-content {
@@ -772,6 +780,7 @@ ul.pagination-common-style li span.active,
   overflow-y: auto !important;
   overflow-x: hidden !important;
   overscroll-behavior: contain;
+  padding: 10px 0 30px;
   scrollbar-width: thin;
   scrollbar-color: rgba(100, 116, 139, 0.25) transparent;
 }
@@ -804,4 +813,230 @@ ul.pagination-common-style li span.active,
 [data-bs-theme="dark"] .nxl-navigation .navbar-content::-webkit-scrollbar-thumb:hover {
   background: rgba(148, 163, 184, 0.45);
 }
+
+/* Duralux Submenu Accordions */
+.nxl-navbar {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.nxl-navbar .nxl-caption {
+  display: block;
+  color: var(--bs-secondary-color, #64748b);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  padding: 15px 20px 8px;
+  text-transform: uppercase;
+}
+
+.nxl-navbar .nxl-caption label {
+  margin-bottom: 0;
+}
+
+.nxl-navbar .nxl-item {
+  position: relative;
+}
+
+.nxl-navbar .nxl-link {
+  display: flex;
+  align-items: center;
+  line-height: 1.2;
+  padding: 10px 20px;
+  margin: 2px 10px;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  color: var(--bs-body-color, #334155);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.nxl-navbar .nxl-link .nxl-micon {
+  margin-right: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  width: 20px;
+  color: inherit;
+}
+
+.nxl-navbar .nxl-link .nxl-mtext {
+  flex: 1 1 auto;
+}
+
+.nxl-navbar .nxl-link .nxl-arrow {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.2s ease-in-out;
+  font-size: 0.875rem;
+}
+
+.nxl-navbar .nxl-link:hover,
+.nxl-navbar .nxl-link.active,
+.nxl-navbar .nxl-link.is-active {
+  color: var(--product-primary, #3454d1);
+  background-color: color-mix(in srgb, var(--product-primary, #3454d1) 8%, transparent);
+}
+
+.nxl-navbar .nxl-submenu {
+  display: none;
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.nxl-navbar .nxl-hasmenu.nxl-trigger > .nxl-submenu {
+  display: block;
+}
+
+.nxl-navbar .nxl-hasmenu.nxl-trigger > .nxl-link .nxl-arrow {
+  transform: rotate(90deg);
+}
+
+.nxl-navbar .nxl-submenu .nxl-link {
+  font-size: 0.8rem;
+  padding: 8px 15px 8px 42px;
+  margin: 1px 10px;
+  font-weight: 500;
+  color: var(--bs-secondary-color, #64748b);
+}
+
+.nxl-navbar .nxl-submenu .nxl-link:hover,
+.nxl-navbar .nxl-submenu .nxl-link.active,
+.nxl-navbar .nxl-submenu .nxl-link.is-active {
+  color: var(--product-primary, #3454d1);
+  background-color: color-mix(in srgb, var(--product-primary, #3454d1) 8%, transparent);
+}
+
+/* Duralux Fixed Header */
+.nxl-header {
+  position: fixed;
+  top: 0;
+  left: 260px;
+  right: 0;
+  height: 80px;
+  min-height: 80px;
+  z-index: 1025;
+  background: var(--bs-body-bg, #fff);
+  border-bottom: 1px solid var(--bs-border-color, #e2e8f0);
+  transition: all 0.3s ease;
+}
+
+.nxl-header .header-wrapper {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 25px;
+}
+
+.nxl-header .nxl-head-link {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--bs-secondary-color, #64748b);
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  position: relative;
+  text-decoration: none;
+}
+
+.nxl-header .nxl-head-link:hover,
+.nxl-header .nxl-head-link:focus-visible {
+  color: var(--product-primary, #3454d1);
+  background: color-mix(in srgb, var(--product-primary, #3454d1) 8%, transparent);
+  border-color: color-mix(in srgb, var(--product-primary, #3454d1) 15%, transparent);
+}
+
+.nxl-header .nxl-h-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 0.625rem;
+  padding: 0.2em 0.45em;
+  border-radius: 50rem;
+}
+
+/* Duralux Container & Content Spacing */
+.nxl-container {
+  position: relative;
+  margin-left: 260px;
+  margin-top: 80px;
+  min-height: calc(100vh - 80px);
+  transition: all 0.3s ease;
+}
+
+.nxl-container .nxl-content {
+  padding: 0;
+  width: 100%;
+}
+
+.nxl-container .main-content {
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Minimenu state (desktop collapsed sidebar) */
+html.minimenu .nxl-navigation {
+  width: 80px;
+}
+
+html.minimenu .nxl-navigation .logo-lg,
+html.minimenu .nxl-navigation .nxl-mtext,
+html.minimenu .nxl-navigation .nxl-arrow,
+html.minimenu .nxl-navigation .nxl-caption,
+html.minimenu .nxl-navigation .nxl-submenu {
+  display: none !important;
+}
+
+html.minimenu .nxl-navigation .logo-sm {
+  display: block;
+}
+
+html.minimenu .nxl-header {
+  left: 80px;
+}
+
+html.minimenu .nxl-container {
+  margin-left: 80px;
+}
+
+/* Mobile viewport adjustments */
+@media (max-width: 1199.98px) {
+  .nxl-navigation {
+    left: -280px;
+    z-index: 1095;
+    box-shadow: none;
+    transition: left 0.3s ease;
+  }
+
+  .nxl-navigation.mob-navigation-active {
+    left: 0 !important;
+    box-shadow: var(--bs-box-shadow-lg);
+  }
+
+  .nxl-header {
+    left: 0 !important;
+  }
+
+  .nxl-container {
+    margin-left: 0 !important;
+  }
+
+  html.minimenu .nxl-header {
+    left: 0 !important;
+  }
+
+  html.minimenu .nxl-container {
+    margin-left: 0 !important;
+  }
+}
+
 

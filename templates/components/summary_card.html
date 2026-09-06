@@ -1,29 +1,30 @@
-<article class="card h-100 border-0 shadow-sm product-summary-card {% if card.tone == 'info' %}border-start border-info border-4{% elif card.tone == 'success' %}border-start border-success border-4{% elif card.tone == 'warning' %}border-start border-warning border-4{% elif card.tone == 'danger' %}border-start border-danger border-4{% else %}border-start border-secondary border-4{% endif %}"
+<article class="card h-100 stretch stretch-full border-0 shadow-sm product-summary-card"
   data-tone="{% if card.tone == 'info' or card.tone == 'success' or card.tone == 'warning' or card.tone == 'danger' %}{{ card.tone }}{% else %}neutral{% endif %}"
   aria-labelledby="{{ card.id }}-title">
-  <div class="card-body d-flex flex-column gap-3">
-    <div class="d-flex align-items-center justify-content-between">
-      <div
-        class="avatar-text avatar-lg rounded {% if card.tone == 'info' %}bg-soft-primary text-primary{% elif card.tone == 'success' %}bg-soft-success text-success{% elif card.tone == 'warning' %}bg-soft-warning text-warning{% elif card.tone == 'danger' %}bg-soft-danger text-danger{% else %}bg-gray-200 text-dark{% endif %}">
-        {% if card.tone == 'info' %}<i class="feather-info"></i>{% elif card.tone == 'success' %}<i
-          class="feather-check-circle"></i>{% elif card.tone == 'warning' %}<i class="feather-alert-triangle"></i>{%
-        elif card.tone == 'danger' %}<i class="feather-alert-octagon"></i>{% else %}<i
-          class="feather-bar-chart-2"></i>{% endif %}
-      </div>
-    </div>
+  <div class="card-body d-flex flex-column justify-content-between p-4">
     <div>
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div
+          class="avatar-text avatar-lg rounded {% if card.tone == 'info' %}bg-soft-primary text-primary{% elif card.tone == 'success' %}bg-soft-success text-success{% elif card.tone == 'warning' %}bg-soft-warning text-warning{% elif card.tone == 'danger' %}bg-soft-danger text-danger{% else %}bg-gray-200 text-dark{% endif %}">
+          {% if card.tone == 'info' %}<i class="feather-info"></i>{% elif card.tone == 'success' %}<i
+            class="feather-check-circle"></i>{% elif card.tone == 'warning' %}<i class="feather-alert-triangle"></i>{%
+          elif card.tone == 'danger' %}<i class="feather-alert-octagon"></i>{% else %}<i
+            class="feather-bar-chart-2"></i>{% endif %}
+        </div>
+        {% if card.trend_label %}
+        <span class="badge bg-soft-success text-success fs-11" aria-label="Tendência: {{ card.trend_label }}">
+          <i class="feather-trending-up me-1"></i>{{ card.trend_label }}
+        </span>
+        {% endif %}
+      </div>
+      <div class="display-6 fw-bold text-dark mb-1"><data value="{{ card.raw_value }}">{{ card.value }}</data></div>
       <h2 id="{{ card.id }}-title">{{ card.title }}</h2>
-      {% if card.description %}<p class="card-text text-muted mb-0">{{ card.description }}</p>{% endif %}
+      {% if card.description %}<p class="fs-12 text-muted mb-0">{{ card.description }}</p>{% endif %}
     </div>
-    <div class="display-6 fw-semibold"><data value="{{ card.raw_value }}">{{ card.value }}</data></div>
-    {% if card.trend_label %}
-    <p class="small text-muted mb-0" aria-label="Tendência: {{ card.trend_label }}">
-      <span aria-hidden="true"><i class="feather-trending-up me-1"></i></span>
-      <span>{{ card.trend_label }}</span>
-    </p>
-    {% endif %}
     {% if card.action %}
-    <a class="btn btn-sm btn-outline-primary align-self-start mt-auto" href="{{ card.action.url }}">{{ card.action.label }}</a>
+    <div class="pt-3 mt-3 border-top">
+      <a class="btn btn-sm btn-light-brand w-100" href="{{ card.action.url }}">{{ card.action.label }}</a>
+    </div>
     {% endif %}
   </div>
 </article>

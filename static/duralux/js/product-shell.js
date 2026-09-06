@@ -148,6 +148,37 @@
     };
     updateThemeIcons(root.dataset.bsTheme || initialTheme);
 
+    // Duralux navigation accordion for submenus
+    const currentPath = window.location.pathname;
+    document.querySelectorAll(".nxl-navbar .nxl-hasmenu").forEach((item) => {
+      const parentLink = item.querySelector(":scope > .nxl-link");
+      const submenu = item.querySelector(":scope > .nxl-submenu");
+      if (!parentLink || !submenu) return;
+
+      // Auto-expand if a child link matches current URL or has is-active
+      const hasActiveChild = submenu.querySelector(".nxl-link.is-active, .nxl-link[aria-current='page']") ||
+        Array.from(submenu.querySelectorAll(".nxl-link")).some((a) => a.pathname === currentPath);
+      if (hasActiveChild) {
+        item.classList.add("active", "nxl-trigger");
+      }
+
+      parentLink.addEventListener("click", (e) => {
+        const href = parentLink.getAttribute("href");
+        if (!href || href === "#" || href.startsWith("javascript:")) {
+          e.preventDefault();
+        }
+        const isAlreadyOpen = item.classList.contains("nxl-trigger");
+        item.parentElement?.querySelectorAll(":scope > .nxl-hasmenu.nxl-trigger").forEach((sibling) => {
+          if (sibling !== item) sibling.classList.remove("nxl-trigger");
+        });
+        if (isAlreadyOpen) {
+          item.classList.remove("nxl-trigger");
+        } else {
+          item.classList.add("nxl-trigger");
+        }
+      });
+    });
+
     document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
       button.addEventListener("click", () => {
         const next = root.dataset.bsTheme === "dark" ? "light" : "dark";

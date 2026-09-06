@@ -152,12 +152,12 @@ Recorded SHA-256 values:
 |---|---|
 | `css/bootstrap.min.css` | `26db49828d6701fcfce37a96da6ec3f0ed481abae49c8c9969a575b064413cad` |
 | `css/theme.min.css` | `71257c55b10217bf94a0f71c3fda141545ad500a6bebec5bbeb29ee65c5d0be9` |
-| `css/product-integration.css` | `487b05a78889678f303d7fb56a2024d79571454ab9d20e491d3e01a7a938ab33` |
+| `css/product-integration.css` | `d4526c6df6e735414b8d7b0ff96a98d58d912519c3a193f4bcd1e04f3d864d59` |
 | `js/bootstrap.bundle.min.js` | `073254afbfc06331b8b548b7fc0532b4ffe2cfdd588368dcc338e7abd50810e1` |
 | `js/dashboard-charts.js` | `773ba64d6e553379af0f422633bd76fc3e3727a6ec5e770bdf41bb9601135fd2` |
 | `js/form-behaviors.js` | `2aa3ea86ef5e59ba1b0091e3fc2a30d6e942a5a301eca4a63e0323a98336665f` |
 | `js/lesson-player.js` | `ea7ec89f8b738db3d7cb467466c2a5803cdad380f7656855bd2d514ddc6169a7` |
-| `js/product-shell.js` | `d563621e714d8c8262c44b212f364696d173a6b001d7a27f3b60d6eb177329e9` |
+| `js/product-shell.js` | `71885e15bc59532992cd5056b096a32999c8447e80d3c3af3ce8bf9d2c883c1d` |
 | `js/visual-reference-charts.js` | `784d21260be824e0b58ebe000983ede4dbec762a68e4ec2bc87a3bc39d53c5ca` |
 | `vendors/apexcharts/apexcharts.min.js` | `dacc69f7eb21440e4b331ce1831f9fa5e40f218d995a005db789a9e55d989fe1` |
 | `vendors/css/feather.min.css` | `fc163d4b37fa11a3457978e56d33b1efe45f713fd7bb7f0a7ef0ff7ea6401ed6` |
