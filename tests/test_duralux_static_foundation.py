@@ -27,6 +27,10 @@ DURALUX_RUNTIME_FILES = {
     "duralux/js/product-shell.js",
     "duralux/js/visual-reference-charts.js",
     "duralux/vendors/apexcharts/apexcharts.min.js",
+    "duralux/vendors/css/feather.min.css",
+    "duralux/vendors/fonts/feather.eot",
+    "duralux/vendors/fonts/feather.ttf",
+    "duralux/vendors/fonts/feather.woff",
 }
 
 
@@ -251,7 +255,13 @@ def test_font_namespace_is_deferred_and_vendor_is_licensed_and_scoped() -> None:
         for path in vendor_root.rglob("*")
         if path.is_file()
     }
-    assert vendor_files == {"vendors/apexcharts/apexcharts.min.js"}
+    assert vendor_files == {
+        "vendors/apexcharts/apexcharts.min.js",
+        "vendors/css/feather.min.css",
+        "vendors/fonts/feather.eot",
+        "vendors/fonts/feather.ttf",
+        "vendors/fonts/feather.woff",
+    }
     assert not list(
         (Path(settings.BASE_DIR) / "static" / "duralux").rglob(".gitkeep")
     )

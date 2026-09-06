@@ -108,6 +108,16 @@
       });
     });
 
+    const updateThemeIcons = (theme) => {
+      document.querySelectorAll(".dark-button").forEach((el) => {
+        el.style.display = theme === "dark" ? "none" : "";
+      });
+      document.querySelectorAll(".light-button").forEach((el) => {
+        el.style.display = theme === "dark" ? "" : "none";
+      });
+    };
+    updateThemeIcons(root.dataset.bsTheme || initialTheme);
+
     document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
       button.addEventListener("click", () => {
         const next = root.dataset.bsTheme === "dark" ? "light" : "dark";
@@ -115,6 +125,7 @@
         root.dataset.theme = next;
         root.style.colorScheme = next;
         safeStorageSet("product-theme", next);
+        updateThemeIcons(next);
         window.dispatchEvent(new CustomEvent("themechange", { detail: { theme: next } }));
         const status = button.querySelector("[data-theme-status]");
         if (status) status.textContent = next === "dark" ? "Tema escuro" : "Tema claro";

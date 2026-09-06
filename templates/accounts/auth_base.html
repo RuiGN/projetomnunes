@@ -1,32 +1,45 @@
 {% load static %}
 <!doctype html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
   <meta name="robots" content="noindex, nofollow">
-  <title>{% block title %}{% if page_title %}{{ page_title }}{% else %}{{ title }}{% endif %}{% endblock %} · Plataforma de cuidado</title>
+  <title>{% block title %}{% if page_title %}{{ page_title }}{% else %}{{ title }}{% endif %}{% endblock %} · Plataforma
+    de cuidado</title>
   <link rel="icon" href="{% static 'duralux/images/favicon.svg' %}" type="image/svg+xml">
   <script src="{% static 'duralux/js/product-shell.js' %}"></script>
   <link rel="stylesheet" href="{% static 'duralux/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'duralux/vendors/css/feather.min.css' %}">
   <link rel="stylesheet" href="{% static 'duralux/css/theme.min.css' %}">
   <link rel="stylesheet" href="{% static 'duralux/css/product-integration.css' %}">
   {% block page_styles %}{% endblock %}
 </head>
+
 <body class="bg-body-tertiary">
   <a class="skip-link" href="#main-content">Ir para o conteúdo principal</a>
-  <main id="main-content" class="container min-vh-100 d-flex align-items-center justify-content-center py-4">
-    <div class="card border-0 shadow-sm product-auth-card w-100">
-      <div class="card-body p-4 p-md-5">
-        <header class="text-center mb-4">
-          <img src="{% static 'duralux/images/logo_login.webp' %}" width="220" height="72" class="img-fluid product-auth-logo" alt="Plataforma de cuidado">
-        </header>
-        {% block auth_content %}{% endblock %}
+  <main id="main-content" class="auth-minimal-wrapper d-flex align-items-center justify-content-center min-vh-100 py-4">
+    <div class="auth-minimal-inner w-100" style="max-width: 38rem;">
+      <div class="card border-0 shadow-sm product-auth-card position-relative overflow-visible mx-3 mx-sm-0">
+        <div
+          class="wd-50 ht-50 bg-white p-2 rounded-circle shadow position-absolute translate-middle top-0 start-50 d-flex align-items-center justify-content-center"
+          style="width: 54px; height: 54px;">
+          <img src="{% static 'duralux/images/favicon.svg' %}" alt="" width="32" height="32" class="img-fluid">
+        </div>
+        <div class="card-body p-4 p-md-5 pt-5">
+          <header class="text-center mb-4 pt-2">
+            <img src="{% static 'duralux/images/logo_login.webp' %}" width="220" height="72"
+              class="img-fluid product-auth-logo" alt="Plataforma de cuidado">
+          </header>
+          {% block auth_content %}{% endblock %}
+        </div>
       </div>
     </div>
   </main>
   <script defer src="{% static 'duralux/js/bootstrap.bundle.min.js' %}"></script>
   {% block page_scripts %}{% endblock %}
 </body>
+
 </html>

@@ -157,9 +157,13 @@ Recorded SHA-256 values:
 | `js/dashboard-charts.js` | `773ba64d6e553379af0f422633bd76fc3e3727a6ec5e770bdf41bb9601135fd2` |
 | `js/form-behaviors.js` | `2aa3ea86ef5e59ba1b0091e3fc2a30d6e942a5a301eca4a63e0323a98336665f` |
 | `js/lesson-player.js` | `ea7ec89f8b738db3d7cb467466c2a5803cdad380f7656855bd2d514ddc6169a7` |
-| `js/product-shell.js` | `803b3465b5ae7c6641508e6b23433aadc8ff5308891b41dff7f29af66aa2f5d3` |
+| `js/product-shell.js` | `e12b82ae63d412680f4225eb2036c0d68968445d38faf1d4fee4ed8100f4dfe2` |
 | `js/visual-reference-charts.js` | `784d21260be824e0b58ebe000983ede4dbec762a68e4ec2bc87a3bc39d53c5ca` |
 | `vendors/apexcharts/apexcharts.min.js` | `dacc69f7eb21440e4b331ce1831f9fa5e40f218d995a005db789a9e55d989fe1` |
+| `vendors/css/feather.min.css` | `fc163d4b37fa11a3457978e56d33b1efe45f713fd7bb7f0a7ef0ff7ea6401ed6` |
+| `vendors/fonts/feather.eot` | `2495770aa8837a3afb8084ea275c469d18965228579231ec5fae6e86d5c2cc84` |
+| `vendors/fonts/feather.ttf` | `3bcfe225579659dbaf31019171840d5f4e4b02e63481706aa8f9a3841f450e7e` |
+| `vendors/fonts/feather.woff` | `5495042500a1bbf616f91d717aa3637efca7eb4c646683818f5c6c1998500ff9` |
 | `images/favicon.svg` | `d63db9ca2250589dd76fafc71d4029d8e5096ae80b8501f97903d5afa738c6f3` |
 | `images/logo_header.webp` | `79e97f09938fecb76293b31c33e991c374e2f71a07ad4fa56be9318f6851042b` |
 | `images/logo_login.webp` | `4e0c19623a22cca4705144a4763543dd344c14a3ecfc182838b418a2596fd386` |

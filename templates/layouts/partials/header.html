@@ -1,55 +1,109 @@
 <header class="nxl-header">
   <div class="header-wrapper">
     <div class="header-left d-flex align-items-center gap-3">
-      <button class="btn btn-outline-secondary d-xl-none" type="button" data-sidebar-open aria-expanded="false" aria-controls="mobile-sidebar">
-        <span aria-hidden="true">☰</span>
-        <span>Abrir menu</span>
-      </button>
-      <div class="clinic-context">
-        <span class="text-muted d-block">Clínica ativa</span>
-        <strong>{{ active_clinic.name }}</strong>
+      <a href="javascript:void(0);" class="nxl-head-mobile-toggler d-xl-none" id="mobile-collapse" data-sidebar-open aria-expanded="false" aria-controls="mobile-sidebar" aria-label="Abrir menu">
+        <div class="hamburger hamburger--arrowturn is-active">
+          <div class="hamburger-box">
+            <div class="hamburger-inner"></div>
+          </div>
+        </div>
+      </a>
+
+      <div class="nxl-navigation-toggle d-none d-xl-flex">
+        <a href="javascript:void(0);" id="menu-mini-button" data-sidebar-mini aria-label="Recolher navegação">
+          <i class="feather-align-left"></i>
+        </a>
+        <a href="javascript:void(0);" id="menu-expend-button" style="display: none;" data-sidebar-expand aria-label="Expandir navegação">
+          <i class="feather-arrow-right"></i>
+        </a>
+      </div>
+
+      <div class="clinic-context d-flex align-items-center gap-2">
+        <div class="avatar-text avatar-sm bg-light text-primary rounded">
+          <i class="feather-home"></i>
+        </div>
+        <div>
+          <span class="fs-11 text-muted d-block lh-1">Clínica ativa</span>
+          <strong class="fs-13 text-dark">{{ active_clinic.name }}</strong>
+        </div>
       </div>
     </div>
 
-    <div class="header-right ms-auto d-flex align-items-center gap-3 flex-wrap">
+    <div class="header-right ms-auto d-flex align-items-center gap-2">
       {% if available_clinics|length > 1 %}
-        <form class="d-flex align-items-end gap-2" method="get" action="{% url 'clinic_switch_review' %}">
-          <div>
-            <label class="form-label mb-1" for="clinic-id">Trocar clínica</label>
-            <select class="form-select form-select-sm" id="clinic-id" name="clinic_id">
-              {% for clinic in available_clinics %}
-                <option value="{{ clinic.pk }}"{% if clinic.pk == active_clinic.pk %} selected{% endif %}>{{ clinic.name }}</option>
-              {% endfor %}
-            </select>
+        <div class="dropdown nxl-h-item">
+          <button class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="feather-repeat"></i>
+            <span class="d-none d-md-inline">Trocar clínica</span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end p-3 shadow-sm" style="min-width: 280px;">
+            <h6 class="dropdown-header px-0 text-dark fw-bold mb-2">Alternar Clínica</h6>
+            <form method="get" action="{% url 'clinic_switch_review' %}">
+              <div class="mb-2">
+                <label class="form-label fs-12 mb-1" for="clinic-id">Selecionar clínica</label>
+                <select class="form-select form-select-sm" id="clinic-id" name="clinic_id">
+                  {% for clinic in available_clinics %}
+                    <option value="{{ clinic.pk }}"{% if clinic.pk == active_clinic.pk %} selected{% endif %}>{{ clinic.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <input type="hidden" name="next" value="{{ request.path }}">
+              <button class="btn btn-sm btn-primary w-100" type="submit">Revisar troca</button>
+            </form>
           </div>
-          <input type="hidden" name="next" value="{{ request.path }}">
-          <button class="btn btn-sm btn-outline-primary" type="submit">Revisar troca</button>
-        </form>
+        </div>
       {% endif %}
 
-      <div class="d-flex align-items-center gap-2">
-        <span class="avatar-text avatar-sm bg-primary text-white" aria-hidden="true">{{ user.first_name|first|default:"U" }}</span>
-        <span><span class="text-muted d-block">Sessão de</span><strong>{{ user.get_full_name|default:user.email }}</strong></span>
+      <div class="nxl-h-item dark-light-theme">
+        <button class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-2" type="button" data-theme-toggle aria-label="Alternar tema claro e escuro">
+          <i class="feather-moon dark-button" data-theme-icon></i>
+          <i class="feather-sun light-button" style="display: none;"></i>
+          <span class="d-none d-sm-inline">Tema</span>
+          <span class="visually-hidden" data-theme-status aria-live="polite">Tema do sistema</span>
+        </button>
       </div>
 
-      <button class="btn btn-sm btn-outline-secondary" type="button" data-theme-toggle aria-label="Alternar tema claro e escuro">
-        <span aria-hidden="true" data-theme-icon>◐</span>
-        <span>Tema</span>
-        <span class="visually-hidden" data-theme-status aria-live="polite">Tema do sistema</span>
-      </button>
+      <div class="dropdown nxl-h-item">
+        <a href="javascript:void(0);" data-bs-toggle="dropdown" role="button" data-bs-auto-close="outside" aria-expanded="false" class="d-flex align-items-center gap-2 text-decoration-none">
+          <span class="avatar-text avatar-sm bg-primary text-white rounded-circle fw-bold" aria-hidden="true">{{ user.first_name|first|default:user.email|first|upper }}</span>
+          <span class="d-none d-md-block text-start lh-sm">
+            <strong class="fs-13 text-dark d-block">{{ user.get_full_name|default:user.email }}</strong>
+            <span class="fs-11 text-muted">{% if is_clinic_admin %}Administrador{% elif is_therapist %}Profissional{% elif is_patient %}Paciente{% else %}Usuário{% endif %}</span>
+          </span>
+          <i class="feather-chevron-down fs-12 text-muted d-none d-md-inline"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-user-dropdown p-2 shadow-sm" style="min-width: 250px;">
+          <div class="dropdown-header px-2 py-2 mb-2 bg-light-subtle rounded">
+            <h6 class="text-dark mb-0 fw-bold fs-13">{{ user.get_full_name|default:user.email }}</h6>
+            <span class="fs-11 text-muted text-truncate d-block">{{ user.email }}</span>
+          </div>
 
-      <form class="d-flex align-items-end gap-2" method="post" action="{% url 'workspace_layout_preference' %}">
-        {% csrf_token %}
-        <div>
-          <label class="form-label mb-1" for="preferred-layout">Layout</label>
-          <select class="form-select form-select-sm" id="preferred-layout" name="layout">
-            <option value="vertical"{% if user.preferred_layout == 'vertical' %} selected{% endif %}>Vertical</option>
-            <option value="detached"{% if user.preferred_layout == 'detached' %} selected{% endif %}>Destacado</option>
-          </select>
+          <div class="px-2 py-1 mb-2">
+            <form method="post" action="{% url 'workspace_layout_preference' %}">
+              {% csrf_token %}
+              <label class="form-label fs-11 text-muted text-uppercase fw-semibold mb-1" for="preferred-layout">Modo de Exibição</label>
+              <div class="input-group input-group-sm">
+                <select class="form-select form-select-sm" id="preferred-layout" name="layout">
+                  <option value="vertical"{% if user.preferred_layout == 'vertical' %} selected{% endif %}>Vertical</option>
+                  <option value="detached"{% if user.preferred_layout == 'detached' %} selected{% endif %}>Destacado</option>
+                </select>
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <button class="btn btn-outline-secondary btn-sm" type="submit">OK</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="dropdown-divider"></div>
+
+          <form method="post" action="{% url 'account_logout' %}" class="m-0 p-0">
+            {% csrf_token %}
+            <button type="submit" class="dropdown-item d-flex align-items-center gap-2 text-danger">
+              <i class="feather-log-out"></i>
+              <span>Sair da conta</span>
+            </button>
+          </form>
         </div>
-        <input type="hidden" name="next" value="{{ request.path }}">
-        <button class="btn btn-sm btn-primary" type="submit">Aplicar</button>
-      </form>
+      </div>
     </div>
   </div>
 </header>

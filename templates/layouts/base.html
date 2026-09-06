@@ -1,6 +1,7 @@
 {% load static %}
 <!doctype html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,15 +10,20 @@
   <link rel="icon" href="{% static 'duralux/images/favicon.svg' %}" type="image/svg+xml">
   <script src="{% static 'duralux/js/product-shell.js' %}"></script>
   <link rel="stylesheet" href="{% static 'duralux/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'duralux/vendors/css/feather.min.css' %}">
   <link rel="stylesheet" href="{% static 'duralux/css/theme.min.css' %}">
   <link rel="stylesheet" href="{% static 'duralux/css/product-integration.css' %}">
   {% block page_styles %}{% endblock %}
   {% block head_scripts %}{% endblock %}
 </head>
-<body class="product-workspace-body" data-clinic-primary="{% if active_clinic_branding %}{{ active_clinic_branding.primary_color }}{% endif %}" data-clinic-secondary="{% if active_clinic_branding %}{{ active_clinic_branding.secondary_color }}{% endif %}">
+
+<body class="product-workspace-body"
+  data-clinic-primary="{% if active_clinic_branding %}{{ active_clinic_branding.primary_color }}{% endif %}"
+  data-clinic-secondary="{% if active_clinic_branding %}{{ active_clinic_branding.secondary_color }}{% endif %}">
   <a class="skip-link" href="#main-content">Ir para o conteúdo principal</a>
   {% block workspace %}{% endblock %}
   <script defer src="{% static 'duralux/js/bootstrap.bundle.min.js' %}"></script>
   {% block page_scripts %}{% endblock %}
 </body>
+
 </html>

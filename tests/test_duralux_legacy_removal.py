@@ -63,6 +63,7 @@ def test_runtime_templates_reference_no_legacy_or_demo_source_paths() -> None:
 def test_base_loads_only_global_duralux_dependencies() -> None:
     base = _read(Path(settings.BASE_DIR) / "templates/layouts/base.html")
     assert "duralux/css/bootstrap.min.css" in base
+    assert "duralux/vendors/css/feather.min.css" in base
     assert "duralux/css/theme.min.css" in base
     assert "duralux/css/product-integration.css" in base
     assert "duralux/js/bootstrap.bundle.min.js" in base
