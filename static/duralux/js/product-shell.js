@@ -22,6 +22,11 @@
   root.dataset.bsTheme = initialTheme;
   root.dataset.theme = initialTheme;
   root.style.colorScheme = initialTheme;
+  if (initialTheme === "dark") {
+    root.classList.add("app-skin-dark");
+  } else {
+    root.classList.remove("app-skin-dark");
+  }
 
   const applyBranding = () => {
     const primary = document.body.dataset.clinicPrimary;
@@ -53,8 +58,8 @@
     const overlay = document.querySelector("[data-sidebar-overlay]");
 
     const closeSidebar = () => {
-      if (!sidebar || sidebar.hidden) return;
-      sidebar.hidden = true;
+      if (!sidebar) return;
+      sidebar.classList.remove("mob-navigation-active");
       if (overlay) overlay.hidden = true;
       openButton?.setAttribute("aria-expanded", "false");
       root.classList.remove("product-scroll-locked");
@@ -63,6 +68,7 @@
 
     const openSidebar = () => {
       if (!sidebar) return;
+      sidebar.classList.add("mob-navigation-active");
       sidebar.hidden = false;
       if (overlay) overlay.hidden = false;
       openButton?.setAttribute("aria-expanded", "true");
@@ -79,7 +85,7 @@
     });
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") closeSidebar();
-      if (event.key !== "Tab" || !sidebar || sidebar.hidden) return;
+      if (event.key !== "Tab" || !sidebar || !sidebar.classList.contains("mob-navigation-active")) return;
       const focusable = focusableElements(sidebar);
       if (!focusable.length) return;
       const first = focusable[0];
@@ -91,6 +97,30 @@
         event.preventDefault();
         first.focus();
       }
+    });
+
+    // Desktop mini menu toggle (Duralux minimenu)
+    const miniButton = document.getElementById("menu-mini-button");
+    const expandButton = document.getElementById("menu-expend-button");
+    const storedMini = safeStorageGet("nexel-classic-dashboard-menu-mini-theme");
+    if (storedMini === "menu-mini-theme") {
+      root.classList.add("minimenu");
+      if (miniButton) miniButton.style.display = "none";
+      if (expandButton) expandButton.style.display = "";
+    }
+
+    miniButton?.addEventListener("click", () => {
+      root.classList.add("minimenu");
+      miniButton.style.display = "none";
+      if (expandButton) expandButton.style.display = "";
+      safeStorageSet("nexel-classic-dashboard-menu-mini-theme", "menu-mini-theme");
+    });
+
+    expandButton?.addEventListener("click", () => {
+      root.classList.remove("minimenu");
+      expandButton.style.display = "none";
+      if (miniButton) miniButton.style.display = "";
+      safeStorageSet("nexel-classic-dashboard-menu-mini-theme", "menu-expend-theme");
     });
 
     document.querySelectorAll("[data-copy-target]").forEach((button) => {
@@ -124,12 +154,18 @@
         root.dataset.bsTheme = next;
         root.dataset.theme = next;
         root.style.colorScheme = next;
+        if (next === "dark") {
+          root.classList.add("app-skin-dark");
+        } else {
+          root.classList.remove("app-skin-dark");
+        }
         safeStorageSet("product-theme", next);
         updateThemeIcons(next);
         window.dispatchEvent(new CustomEvent("themechange", { detail: { theme: next } }));
-        const status = button.querySelector("[data-theme-status]");
+        const status = button.querySelector("[data-theme-status]") || document.querySelector("[data-theme-status]");
         if (status) status.textContent = next === "dark" ? "Tema escuro" : "Tema claro";
       });
     });
   });
 })();
+

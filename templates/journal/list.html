@@ -19,49 +19,51 @@
 
   {# Pending Access Requests from Therapist #}
   {% if pending_access_requests %}
-    <section class="card" aria-labelledby="pending-requests-title">
-      <div class="card-body">
-        <h2 id="pending-requests-title">
-          Solicitações de Acesso Pendentes ({{ pending_access_requests|length }})
-        </h2>
-        <p>
-          Seu terapeuta solicitou permissão para visualizar os registros abaixo. Você decide se autoriza ou recusa cada solicitação.
-        </p>
+  <section class="card" aria-labelledby="pending-requests-title">
+    <div class="card-body">
+      <h2 id="pending-requests-title">
+        Solicitações de Acesso Pendentes ({{ pending_access_requests|length }})
+      </h2>
+      <p>
+        Seu terapeuta solicitou permissão para visualizar os registros abaixo. Você decide se autoriza ou recusa cada
+        solicitação.
+      </p>
+      <div>
+        {% for req in pending_access_requests %}
         <div>
-          {% for req in pending_access_requests %}
-            <div>
-              <div>
-                <p>
-                  Terapeuta: {{ req.therapist.get_full_name|default:req.therapist.email }}
-                </p>
-                <p>
-                  Finalidade declarada: {{ req.purpose }}
-                </p>
-                <p>
-                  Registro de {{ req.journal_entry.created_at|date:"d/m/Y \à\s H:i" }} ({{ req.journal_entry.get_mood_display }})
-                </p>
-              </div>
-              <form method="post" action="{% url 'journal_respond_access_request' req.pk %}">
-                {% csrf_token %}
-                <label class="form-label" for="id_expires_days_{{ req.pk }}">Validade da autorização</label>
-                <select name="expires_days" id="id_expires_days_{{ req.pk }}" class="form-control">
-                  <option value="7">Válido por 7 dias</option>
-                  <option value="30" selected>Válido por 30 dias</option>
-                  <option value="90">Válido por 90 dias</option>
-                  <option value="">Sem data de expiração</option>
-                </select>
-                <button type="submit" name="decision" value="approve" class="btn btn-primary">
-                  Autorizar
-                </button>
-                <button type="submit" name="decision" value="reject" class="btn btn-outline-secondary">
-                  Recusar
-                </button>
-              </form>
-            </div>
-          {% endfor %}
+          <div>
+            <p>
+              Terapeuta: {{ req.therapist.get_full_name|default:req.therapist.email }}
+            </p>
+            <p>
+              Finalidade declarada: {{ req.purpose }}
+            </p>
+            <p>
+              Registro de {{ req.journal_entry.created_at|date:"d/m/Y \à\s H:i" }} ({{
+              req.journal_entry.get_mood_display }})
+            </p>
+          </div>
+          <form method="post" action="{% url 'journal_respond_access_request' req.pk %}">
+            {% csrf_token %}
+            <label class="form-label" for="id_expires_days_{{ req.pk }}">Validade da autorização</label>
+            <select name="expires_days" id="id_expires_days_{{ req.pk }}" class="form-control">
+              <option value="7">Válido por 7 dias</option>
+              <option value="30" selected>Válido por 30 dias</option>
+              <option value="90">Válido por 90 dias</option>
+              <option value="">Sem data de expiração</option>
+            </select>
+            <button type="submit" name="decision" value="approve" class="btn btn-primary">
+              Autorizar
+            </button>
+            <button type="submit" name="decision" value="reject" class="btn btn-outline-secondary">
+              Recusar
+            </button>
+          </form>
         </div>
+        {% endfor %}
       </div>
-    </section>
+    </div>
+  </section>
   {% endif %}
 
   {# Emotional Calendar #}
@@ -73,21 +75,22 @@
       <h2 id="history-heading">
         Histórico de Registros
         {% if total_entries_count %}
-          <span>({{ total_entries_count }} encontrado{{ total_entries_count|pluralize:"s" }})</span>
+        <span>({{ total_entries_count }} encontrado{{ total_entries_count|pluralize:"s" }})</span>
         {% endif %}
       </h2>
 
       <form method="get" class="d-flex flex-wrap gap-2" aria-label="Filtrar histórico do diário">
         <input type="hidden" name="year" value="{{ calendar_data.year }}">
         <input type="hidden" name="month" value="{{ calendar_data.month }}">
-        
+
         <div>
           <label for="id_period">Período:</label>
           <select name="period" id="id_period" class="form-control">
-            <option value="7d"{% if selected_period == "7d" %} selected{% endif %}>Últimos 7 dias</option>
-            <option value="30d"{% if selected_period == "30d" or not selected_period %} selected{% endif %}>Últimos 30 dias</option>
-            <option value="90d"{% if selected_period == "90d" %} selected{% endif %}>Últimos 90 dias</option>
-            <option value="all"{% if selected_period == "all" %} selected{% endif %}>Todo o histórico</option>
+            <option value="7d" {% if selected_period=="7d" %} selected{% endif %}>Últimos 7 dias</option>
+            <option value="30d" {% if selected_period=="30d" or not selected_period %} selected{% endif %}>Últimos 30
+              dias</option>
+            <option value="90d" {% if selected_period=="90d" %} selected{% endif %}>Últimos 90 dias</option>
+            <option value="all" {% if selected_period=="all" %} selected{% endif %}>Todo o histórico</option>
           </select>
         </div>
 
@@ -96,9 +99,9 @@
           <select name="emotion" id="id_emotion" class="form-control">
             <option value="">Todas as emoções</option>
             {% for emo_key, emo_lbl in filter_form.fields.emotion.choices %}
-              {% if emo_key %}
-                <option value="{{ emo_key }}"{% if selected_emotion == emo_key %} selected{% endif %}>{{ emo_lbl }}</option>
-              {% endif %}
+            {% if emo_key %}
+            <option value="{{ emo_key }}" {% if selected_emotion==emo_key %} selected{% endif %}>{{ emo_lbl }}</option>
+            {% endif %}
             {% endfor %}
           </select>
         </div>
@@ -108,130 +111,140 @@
           <select name="mood" id="id_mood" class="form-control">
             <option value="">Todos os humores</option>
             {% for mood_val, mood_lbl in filter_form.fields.mood.choices %}
-              {% if mood_val %}
-                <option value="{{ mood_val }}"{% if selected_mood == mood_val %} selected{% endif %}>{{ mood_lbl }}</option>
-              {% endif %}
+            {% if mood_val %}
+            <option value="{{ mood_val }}" {% if selected_mood==mood_val %} selected{% endif %}>{{ mood_lbl }}</option>
+            {% endif %}
             {% endfor %}
           </select>
         </div>
 
         <button type="submit" class="btn btn-outline-secondary">Filtrar</button>
         {% if selected_period != "30d" or selected_emotion or selected_mood %}
-          <a href="?year={{ calendar_data.year }}&month={{ calendar_data.month }}" class="btn btn-outline-secondary">Limpar filtros</a>
+        <a href="?year={{ calendar_data.year }}&month={{ calendar_data.month }}"
+          class="btn btn-outline-secondary">Limpar filtros</a>
         {% endif %}
       </form>
     </div>
 
     {# Entries List #}
     {% if entries.object_list %}
-      <div>
-        {% for entry in entries %}
-          <article class="journal-entry-card" aria-labelledby="entry-title-{{ entry.pk }}">
-            <header class="journal-entry-header">
-              <div class="journal-entry-meta">
-                <span class="badge text-bg-secondary mood-{{ entry.mood }}">
-                  Humor: {{ entry.get_mood_display }} ({{ entry.mood }}/5)
-                </span>
-                <span class="journal-entry-date">
-                  {{ entry.created_at|date:"d/m/Y \à\s H:i" }}
-                </span>
-                {% if entry.visibility == "shareable" %}
-                  <span class="visibility-badge visibility-shareable" title="Visível para o terapeuta vinculado">
-                    <span aria-hidden="true">●</span> Verde — Compartilhável
-                  </span>
-                {% elif entry.visibility == "confirmation_required" %}
-                  <span class="visibility-badge visibility-confirmation" title="Requer sua confirmação antes de liberar ao terapeuta">
-                    <span aria-hidden="true">●</span> Amarelo — Confirmar antes
-                  </span>
-                {% else %}
-                  <span class="visibility-badge visibility-private" title="Privado: somente você tem acesso">
-                    <span aria-hidden="true">●</span> Vermelho — Privado
-                  </span>
-                {% endif %}
-              </div>
-              <div>
-                <a href="{% url 'journal_detail' entry.pk %}" class="btn btn-outline-secondary">Ver detalhes</a>
-                <a href="{% url 'journal_edit' entry.pk %}" class="btn btn-outline-secondary">Editar</a>
-              </div>
-            </header>
-
-            <div class="journal-entry-body">
-              <p>{{ entry.context|linebreaksbr }}</p>
-            </div>
-
-            {% if entry.emotions %}
-              <div class="emotion-list" aria-label="Emoções identificadas">
-                {% for emo in entry.emotions %}
-                  <span class="emotion-tag">{{ emo }}</span>
-                {% endfor %}
-              </div>
-            {% endif %}
-
-            {% if entry.triggers or entry.reactions or entry.strategies %}
-              <div class="journal-entry-details">
-                {% if entry.triggers %}
-                  <div class="journal-detail-item">
-                    <strong>Gatilhos:</strong> <span>{{ entry.triggers }}</span>
-                  </div>
-                {% endif %}
-                {% if entry.reactions %}
-                  <div class="journal-detail-item">
-                    <strong>Reações físicas:</strong> <span>{{ entry.reactions }}</span>
-                  </div>
-                {% endif %}
-                {% if entry.strategies %}
-                  <div class="journal-detail-item">
-                    <strong>O que me ajudou:</strong> <span>{{ entry.strategies }}</span>
-                  </div>
-                {% endif %}
-              </div>
-            {% endif %}
-          </article>
-        {% endfor %}
-      </div>
-
-      {# Pagination #}
-      {% if entries.paginator.num_pages > 1 %}
-        <nav class="pagination" aria-label="Paginação do diário">
-          <p class="product-muted">
-            Página {{ entries.number }} de {{ entries.paginator.num_pages }}
-          </p>
-          <div class="d-flex flex-wrap gap-2">
-            {% if entries.has_previous %}
-              <a href="?page={{ entries.previous_page_number }}&period={{ selected_period }}&emotion={{ selected_emotion }}&mood={{ selected_mood }}&year={{ calendar_data.year }}&month={{ calendar_data.month }}" class="btn btn-outline-secondary" aria-label="Página anterior">Anterior</a>
-            {% endif %}
-            
-            {% for num in entries.paginator.page_range %}
-              {% if num == entries.number %}
-                <span class="btn btn-outline-secondary is-active" aria-current="page">{{ num }}</span>
-              {% else %}
-                <a href="?page={{ num }}&period={{ selected_period }}&emotion={{ selected_emotion }}&mood={{ selected_mood }}&year={{ calendar_data.year }}&month={{ calendar_data.month }}" class="btn btn-outline-secondary">{{ num }}</a>
-              {% endif %}
-            {% endfor %}
-
-            {% if entries.has_next %}
-              <a href="?page={{ entries.next_page_number }}&period={{ selected_period }}&emotion={{ selected_emotion }}&mood={{ selected_mood }}&year={{ calendar_data.year }}&month={{ calendar_data.month }}" class="btn btn-outline-secondary" aria-label="Próxima página">Próxima</a>
+    <div>
+      {% for entry in entries %}
+      <article class="journal-entry-card" aria-labelledby="entry-title-{{ entry.pk }}">
+        <header class="journal-entry-header">
+          <div class="journal-entry-meta">
+            <span class="badge text-bg-secondary mood-{{ entry.mood }}">
+              Humor: {{ entry.get_mood_display }} ({{ entry.mood }}/5)
+            </span>
+            <span class="journal-entry-date">
+              {{ entry.created_at|date:"d/m/Y \à\s H:i" }}
+            </span>
+            {% if entry.visibility == "shareable" %}
+            <span class="visibility-badge visibility-shareable" title="Visível para o terapeuta vinculado">
+              <span aria-hidden="true">●</span> Verde — Compartilhável
+            </span>
+            {% elif entry.visibility == "confirmation_required" %}
+            <span class="visibility-badge visibility-confirmation"
+              title="Requer sua confirmação antes de liberar ao terapeuta">
+              <span aria-hidden="true">●</span> Amarelo — Confirmar antes
+            </span>
+            {% else %}
+            <span class="visibility-badge visibility-private" title="Privado: somente você tem acesso">
+              <span aria-hidden="true">●</span> Vermelho — Privado
+            </span>
             {% endif %}
           </div>
-        </nav>
-      {% endif %}
+          <div>
+            <a href="{% url 'journal_detail' entry.pk %}" class="btn btn-outline-secondary">Ver detalhes</a>
+            <a href="{% url 'journal_edit' entry.pk %}" class="btn btn-outline-secondary">Editar</a>
+          </div>
+        </header>
+
+        <div class="journal-entry-body">
+          <p>{{ entry.context|linebreaksbr }}</p>
+        </div>
+
+        {% if entry.emotions %}
+        <div class="emotion-list" aria-label="Emoções identificadas">
+          {% for emo in entry.emotions %}
+          <span class="emotion-tag">{{ emo }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if entry.triggers or entry.reactions or entry.strategies %}
+        <div class="journal-entry-details">
+          {% if entry.triggers %}
+          <div class="journal-detail-item">
+            <strong>Gatilhos:</strong> <span>{{ entry.triggers }}</span>
+          </div>
+          {% endif %}
+          {% if entry.reactions %}
+          <div class="journal-detail-item">
+            <strong>Reações físicas:</strong> <span>{{ entry.reactions }}</span>
+          </div>
+          {% endif %}
+          {% if entry.strategies %}
+          <div class="journal-detail-item">
+            <strong>O que me ajudou:</strong> <span>{{ entry.strategies }}</span>
+          </div>
+          {% endif %}
+        </div>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+
+    {# Pagination #}
+    {% if entries.paginator.num_pages > 1 %}
+    <nav class="d-flex flex-wrap align-items-center justify-content-between gap-3 pt-3"
+      aria-label="Paginação do diário">
+      <p class="product-muted mb-0">
+        Página {{ entries.number }} de {{ entries.paginator.num_pages }}
+      </p>
+      <ul class="list-unstyled d-flex align-items-center gap-2 mb-0 pagination-common-style">
+        {% if entries.has_previous %}
+        <li><a
+            href="?page={{ entries.previous_page_number }}&period={{ selected_period }}&emotion={{ selected_emotion }}&mood={{ selected_mood }}&year={{ calendar_data.year }}&month={{ calendar_data.month }}"
+            aria-label="Página anterior"><i class="feather-arrow-left"></i></a></li>
+        {% endif %}
+
+        {% for num in entries.paginator.page_range %}
+        {% if num == entries.number %}
+        <li><span class="active" aria-current="page">{{ num }}</span></li>
+        {% else %}
+        <li><a
+            href="?page={{ num }}&period={{ selected_period }}&emotion={{ selected_emotion }}&mood={{ selected_mood }}&year={{ calendar_data.year }}&month={{ calendar_data.month }}">{{
+            num }}</a></li>
+        {% endif %}
+        {% endfor %}
+
+        {% if entries.has_next %}
+        <li><a
+            href="?page={{ entries.next_page_number }}&period={{ selected_period }}&emotion={{ selected_emotion }}&mood={{ selected_mood }}&year={{ calendar_data.year }}&month={{ calendar_data.month }}"
+            aria-label="Próxima página"><i class="feather-arrow-right"></i></a></li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
 
     {% else %}
-      <div class="product-empty-state">
-        <p>Nenhum registro encontrado</p>
-        <p>
-          {% if selected_emotion or selected_mood or selected_period != "30d" %}
-            Não há registros correspondentes aos filtros selecionados.
-          {% else %}
-            Você ainda não criou registros no seu diário emocional. Comece registrando como você se sente hoje.
-          {% endif %}
-        </p>
+    <div class="product-empty-state">
+      <p>Nenhum registro encontrado</p>
+      <p>
         {% if selected_emotion or selected_mood or selected_period != "30d" %}
-          <a href="?year={{ calendar_data.year }}&month={{ calendar_data.month }}" class="btn btn-outline-secondary">Limpar filtros</a>
+        Não há registros correspondentes aos filtros selecionados.
         {% else %}
-          <a href="{% url 'journal_create' %}" class="btn btn-primary">Criar primeiro registro</a>
+        Você ainda não criou registros no seu diário emocional. Comece registrando como você se sente hoje.
         {% endif %}
-      </div>
+      </p>
+      {% if selected_emotion or selected_mood or selected_period != "30d" %}
+      <a href="?year={{ calendar_data.year }}&month={{ calendar_data.month }}" class="btn btn-outline-secondary">Limpar
+        filtros</a>
+      {% else %}
+      <a href="{% url 'journal_create' %}" class="btn btn-primary">Criar primeiro registro</a>
+      {% endif %}
+    </div>
     {% endif %}
   </section>
 </div>

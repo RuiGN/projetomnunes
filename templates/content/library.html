@@ -11,36 +11,41 @@
 
   <form method="get" class="product-form-card d-grid gap-3" aria-label="Filtros da biblioteca">
     {% for field in form %}
-      <div class="mb-3">
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{ field }}
-      </div>
+    <div class="mb-3">
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+    </div>
     {% endfor %}
     <button type="submit" class="btn btn-primary">Buscar</button>
   </form>
 
   {% if results %}
-    <ul class="list-unstyled product-stack mb-0">
-      {% for content in results %}
-        <li class="product-table-card">
-          <a href="{% url 'content_detail' slug=content.slug %}">{{ content.title }}</a>
-          <p class="product-muted mb-0">{{ content.get_kind_display }}</p>
-        </li>
-      {% endfor %}
+  <ul class="list-unstyled product-stack mb-0">
+    {% for content in results %}
+    <li class="product-table-card">
+      <a href="{% url 'content_detail' slug=content.slug %}">{{ content.title }}</a>
+      <p class="product-muted mb-0">{{ content.get_kind_display }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+  {% if page_obj.has_other_pages %}
+  <nav class="d-flex flex-wrap align-items-center justify-content-between gap-3 pt-3" aria-label="Paginação">
+    <span class="fs-12 text-muted mb-0">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+    <ul class="list-unstyled d-flex align-items-center gap-2 mb-0 pagination-common-style">
+      {% if page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.previous_page_number }}" aria-label="Página anterior"><i
+            class="feather-arrow-left"></i></a></li>
+      {% endif %}
+      <li><span class="active" aria-current="page">{{ page_obj.number }}</span></li>
+      {% if page_obj.has_next %}
+      <li><a href="?page={{ page_obj.next_page_number }}" aria-label="Próxima página"><i
+            class="feather-arrow-right"></i></a></li>
+      {% endif %}
     </ul>
-    {% if page_obj.has_other_pages %}
-      <nav class="d-flex flex-wrap align-items-center gap-2" aria-label="Paginação">
-        {% if page_obj.has_previous %}
-          <a class="btn btn-outline-secondary" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
-        {% endif %}
-        <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
-        {% if page_obj.has_next %}
-          <a class="btn btn-outline-secondary" href="?page={{ page_obj.next_page_number }}">Próxima</a>
-        {% endif %}
-      </nav>
-    {% endif %}
+  </nav>
+  {% endif %}
   {% else %}
-    <div class="product-empty-state" role="status">Nenhum conteúdo publicado encontrado.</div>
+  <div class="product-empty-state" role="status">Nenhum conteúdo publicado encontrado.</div>
   {% endif %}
 </div>
 {% endblock %}

@@ -1,5 +1,4 @@
-<article
-  class="card h-100 border-0 shadow-sm product-summary-card {% if card.tone == 'info' %}border-start border-info border-4{% elif card.tone == 'success' %}border-start border-success border-4{% elif card.tone == 'warning' %}border-start border-warning border-4{% elif card.tone == 'danger' %}border-start border-danger border-4{% else %}border-start border-secondary border-4{% endif %}"
+<article class="card h-100 border-0 shadow-sm product-summary-card {% if card.tone == 'info' %}border-start border-info border-4{% elif card.tone == 'success' %}border-start border-success border-4{% elif card.tone == 'warning' %}border-start border-warning border-4{% elif card.tone == 'danger' %}border-start border-danger border-4{% else %}border-start border-secondary border-4{% endif %}"
   data-tone="{% if card.tone == 'info' or card.tone == 'success' or card.tone == 'warning' or card.tone == 'danger' %}{{ card.tone }}{% else %}neutral{% endif %}"
   aria-labelledby="{{ card.id }}-title">
   <div class="card-body d-flex flex-column gap-2">
@@ -15,8 +14,7 @@
     </p>
     {% endif %}
     {% if card.action %}
-    <a class="btn btn-sm btn-outline-primary align-self-start mt-auto" href="{{ card.action.url }}">{{ card.action.label
-      }}</a>
+    <a class="btn btn-sm btn-outline-primary align-self-start mt-auto" href="{{ card.action.url }}">{{ card.action.label }}</a>
     {% endif %}
   </div>
 </article>

@@ -3,15 +3,22 @@
 
 {% block workspace %}
 <div class="layout-detached product-shell product-shell--detached">
-  <nav class="nxl-navigation">
+  <nav id="mobile-sidebar" class="nxl-navigation" data-mobile-sidebar role="dialog" aria-modal="true"
+    aria-label="Navegação principal">
     <div class="navbar-wrapper">
-      <div class="m-header">
+      <div class="m-header d-flex align-items-center justify-content-between">
         <a class="b-brand" href="{% url 'workspace_vertical' %}" aria-label="Início da plataforma">
           {% if active_clinic_branding.logo %}
-            <img src="{{ active_clinic_branding.logo.url }}" alt="{{ active_clinic_branding.display_name }}" class="product-brand-logo" width="140" height="30">
+          <img src="{{ active_clinic_branding.logo.url }}" alt="{{ active_clinic_branding.display_name }}"
+            class="product-brand-logo" width="140" height="30">
           {% else %}
-            <img src="{% static 'duralux/images/logo_header.webp' %}" alt="RGN Terapêutica" class="product-brand-logo" width="140" height="30">
+          <img src="{% static 'duralux/images/logo_header.webp' %}" alt="RGN Terapêutica" class="product-brand-logo"
+            width="140" height="30">
           {% endif %}
+        </a>
+        <a href="javascript:void(0);" class="nxl-head-mobile-toggler d-xl-none" data-sidebar-close
+          aria-label="Fechar menu">
+          <i class="feather-x"></i>
         </a>
       </div>
       <div class="navbar-content">
@@ -24,7 +31,10 @@
   <main class="nxl-container">
     <div class="nxl-content">
       <nav aria-label="Caminho de navegação" class="page-header product-breadcrumbs">
-        <ol class="breadcrumb mb-0"><li class="breadcrumb-item"><a href="{% url 'workspace_vertical' %}">Início</a></li><li class="breadcrumb-item active" aria-current="page">Área de trabalho</li></ol>
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="{% url 'workspace_vertical' %}">Início</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Área de trabalho</li>
+        </ol>
       </nav>
       {% include "layouts/partials/messages.html" %}
       <div id="main-content" class="main-content" tabindex="-1">
@@ -33,13 +43,7 @@
     </div>
   </main>
 
-  <button class="product-drawer-overlay" type="button" data-sidebar-overlay hidden tabindex="-1" aria-label="Fechar menu"></button>
-  <aside id="mobile-sidebar" class="product-mobile-sidebar" data-mobile-sidebar hidden role="dialog" aria-modal="true" aria-label="Menu principal">
-    <div class="product-mobile-sidebar__heading">
-      <strong>Menu</strong>
-      <button class="btn btn-sm btn-outline-secondary" type="button" data-sidebar-close>Fechar menu</button>
-    </div>
-    {% include "layouts/partials/navigation.html" with navigation_label="Navegação destacada" %}
-  </aside>
+  <div class="nxl-menu-overlay product-drawer-overlay" data-sidebar-overlay hidden tabindex="-1"
+    aria-label="Fechar menu"></div>
 </div>
 {% endblock %}

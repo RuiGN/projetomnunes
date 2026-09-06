@@ -9,9 +9,9 @@
       <span class="text-primary-emphasis fw-semibold text-uppercase small mb-0">Acompanhamento pessoal</span>
       <h1 class="mb-0">Histórico de Check-ins</h1>
       {% if total_checkins_count %}
-        <p>
-          {{ total_checkins_count }} registro{{ total_checkins_count|pluralize:"s" }} no total
-        </p>
+      <p>
+        {{ total_checkins_count }} registro{{ total_checkins_count|pluralize:"s" }} no total
+      </p>
       {% endif %}
     </div>
     <div>
@@ -25,23 +25,23 @@
   </header>
 
   {% if checkins.object_list %}
-    <div class="card shadow-sm border-0">
-      <div class="card-body">
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
       <div class="table-responsive">
-      <table class="table product-table">
-        <caption>Respostas enviadas por dia</caption>
-        <thead>
-          <tr>
-            <th scope="col">Data</th>
-            <th scope="col">Estado geral</th>
-            <th scope="col">Ansiedade</th>
-            <th scope="col">Energia</th>
-            <th scope="col">Sono</th>
-            <th scope="col">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for checkin in checkins %}
+        <table class="table product-table">
+          <caption>Respostas enviadas por dia</caption>
+          <thead>
+            <tr>
+              <th scope="col">Data</th>
+              <th scope="col">Estado geral</th>
+              <th scope="col">Ansiedade</th>
+              <th scope="col">Energia</th>
+              <th scope="col">Sono</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for checkin in checkins %}
             <tr>
               <th scope="row">{{ checkin.date|date:"d/m/Y" }}</th>
               <td>{{ checkin.answers.general_state|default:"—" }}/5</td>
@@ -50,60 +50,76 @@
               <td>{{ checkin.answers.sleep_quality|default:"—" }}/5</td>
               <td>
                 {% if checkin.is_draft %}
-                  <span class="visibility-badge visibility-confirmation">Rascunho</span>
+                <span class="visibility-badge visibility-confirmation">Rascunho</span>
                 {% else %}
-                  <span class="visibility-badge visibility-shareable">Enviado</span>
+                <span class="visibility-badge visibility-shareable">Enviado</span>
                 {% endif %}
               </td>
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      </div>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
+  </div>
 
-    <div class="mobile-row-list">
-      {% for checkin in checkins %}
-        <article class="mobile-row-card">
-          <h3>{{ checkin.date|date:"d/m/Y" }}</h3>
-          <dl>
-            <div><dt>Estado geral</dt><dd>{{ checkin.answers.general_state|default:"—" }}/5</dd></div>
-            <div><dt>Ansiedade</dt><dd>{{ checkin.answers.anxiety|default:"—" }}/5</dd></div>
-            <div><dt>Energia</dt><dd>{{ checkin.answers.energy|default:"—" }}/5</dd></div>
-            <div><dt>Sono</dt><dd>{{ checkin.answers.sleep_quality|default:"—" }}/5</dd></div>
-            <div>
-              <dt>Status</dt>
-              <dd>{% if checkin.is_draft %}Rascunho{% else %}Enviado{% endif %}</dd>
-            </div>
-          </dl>
-        </article>
-      {% endfor %}
-    </div>
-
-    {% if checkins.paginator.num_pages > 1 %}
-      <nav class="pagination" aria-label="Paginação do histórico de check-ins">
-        <p class="product-muted">Página {{ checkins.number }} de {{ checkins.paginator.num_pages }}</p>
-        <div class="d-flex flex-wrap gap-2">
-          {% if checkins.has_previous %}
-            <a href="?page={{ checkins.previous_page_number }}" class="btn btn-outline-secondary" aria-label="Página anterior">Anterior</a>
-          {% endif %}
-          {% if checkins.has_next %}
-            <a href="?page={{ checkins.next_page_number }}" class="btn btn-outline-secondary" aria-label="Próxima página">Próxima</a>
-          {% endif %}
+  <div class="mobile-row-list">
+    {% for checkin in checkins %}
+    <article class="mobile-row-card">
+      <h3>{{ checkin.date|date:"d/m/Y" }}</h3>
+      <dl>
+        <div>
+          <dt>Estado geral</dt>
+          <dd>{{ checkin.answers.general_state|default:"—" }}/5</dd>
         </div>
-      </nav>
-    {% endif %}
+        <div>
+          <dt>Ansiedade</dt>
+          <dd>{{ checkin.answers.anxiety|default:"—" }}/5</dd>
+        </div>
+        <div>
+          <dt>Energia</dt>
+          <dd>{{ checkin.answers.energy|default:"—" }}/5</dd>
+        </div>
+        <div>
+          <dt>Sono</dt>
+          <dd>{{ checkin.answers.sleep_quality|default:"—" }}/5</dd>
+        </div>
+        <div>
+          <dt>Status</dt>
+          <dd>{% if checkin.is_draft %}Rascunho{% else %}Enviado{% endif %}</dd>
+        </div>
+      </dl>
+    </article>
+    {% endfor %}
+  </div>
+
+  {% if checkins.paginator.num_pages > 1 %}
+  <nav class="d-flex flex-wrap align-items-center justify-content-between gap-3 pt-3"
+    aria-label="Paginação do histórico de check-ins">
+    <p class="product-muted mb-0">Página {{ checkins.number }} de {{ checkins.paginator.num_pages }}</p>
+    <ul class="list-unstyled d-flex align-items-center gap-2 mb-0 pagination-common-style">
+      {% if checkins.has_previous %}
+      <li><a href="?page={{ checkins.previous_page_number }}" aria-label="Página anterior"><i
+            class="feather-arrow-left"></i></a></li>
+      {% endif %}
+      <li><span class="active" aria-current="page">{{ checkins.number }}</span></li>
+      {% if checkins.has_next %}
+      <li><a href="?page={{ checkins.next_page_number }}" aria-label="Próxima página"><i
+            class="feather-arrow-right"></i></a></li>
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
   {% else %}
-    <div class="product-empty-state">
-      <p>Nenhum check-in registrado ainda</p>
-      <p>
-        O check-in diário é rápido e ajuda você a acompanhar seu dia a dia. Comece agora.
-      </p>
-      <a href="{% url 'checkin_today' %}" class="btn btn-primary">
-        Fazer meu primeiro check-in
-      </a>
-    </div>
+  <div class="product-empty-state">
+    <p>Nenhum check-in registrado ainda</p>
+    <p>
+      O check-in diário é rápido e ajuda você a acompanhar seu dia a dia. Comece agora.
+    </p>
+    <a href="{% url 'checkin_today' %}" class="btn btn-primary">
+      Fazer meu primeiro check-in
+    </a>
+  </div>
   {% endif %}
 </div>
 {% endblock %}

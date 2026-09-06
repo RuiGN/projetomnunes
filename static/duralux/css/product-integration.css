@@ -148,6 +148,7 @@ textarea {
   position: fixed;
   z-index: 1090;
   inset: 0;
+  top: 0;
   width: 100%;
   border: 0;
   background: rgb(15 23 42 / 55%);
@@ -670,57 +671,75 @@ textarea {
   color: #fff;
 }
 
+/* Duralux Pagination Common Style */
+ul.pagination-common-style,
+.nxl-container .pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0;
+  list-style: none;
+  padding-left: 0;
+  border-radius: 0;
+}
+
+ul.pagination-common-style li a,
+ul.pagination-common-style li span,
+.nxl-container .pagination .page-link {
+  width: 32px;
+  height: 32px;
+  color: var(--bs-body-color, #1e293b);
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50% !important;
+  transition: all 0.2s ease;
+  border: 1px solid var(--bs-border-color, #e2e8f0);
+  background-color: var(--bs-body-bg, #fff);
+  text-decoration: none;
+  padding: 0;
+}
+
+ul.pagination-common-style li a:hover,
+ul.pagination-common-style li a.active,
+ul.pagination-common-style li span.active,
+.nxl-container .pagination .page-item.active .page-link,
+.nxl-container .pagination .page-link:hover {
+  color: #fff !important;
+  background-color: var(--product-primary, #3454d1) !important;
+  border-color: var(--product-primary, #3454d1) !important;
+}
+
+[data-bs-theme="dark"] ul.pagination-common-style li a,
+[data-bs-theme="dark"] ul.pagination-common-style li span,
+[data-bs-theme="dark"] .nxl-container .pagination .page-link {
+  color: #cbd5e1;
+  border-color: #334155;
+  background-color: #1e293b;
+}
+
+[data-bs-theme="dark"] ul.pagination-common-style li a:hover,
+[data-bs-theme="dark"] ul.pagination-common-style li a.active,
+[data-bs-theme="dark"] ul.pagination-common-style li span.active,
+[data-bs-theme="dark"] .nxl-container .pagination .page-item.active .page-link,
+[data-bs-theme="dark"] .nxl-container .pagination .page-link:hover {
+  color: #fff !important;
+  background-color: var(--product-primary, #3454d1) !important;
+  border-color: var(--product-primary, #3454d1) !important;
+}
+
+/* Responsive layout bridge & mobile drawer */
 @media (max-width: 1199.98px) {
-  .nxl-navigation {
-    display: none;
-  }
-
-  .nxl-header,
-  .nxl-container {
-    margin-left: 0;
-  }
-
-  .nxl-container {
-    top: 0;
-    margin-top: 0;
-  }
-
   [data-sidebar-open] {
     display: inline-flex !important;
-  }
-
-  .nxl-header {
-    position: static;
-    height: auto;
-  }
-
-  .nxl-header .header-wrapper {
-    min-height: 4.5rem;
-    flex-wrap: wrap;
-    padding: 0.75rem 1rem;
-  }
-
-  .nxl-header .header-right {
-    width: 100%;
   }
 }
 
 @media (max-width: 991.98px) {
-  .nxl-navigation {
-    display: none;
-  }
-
-  .nxl-header,
-  .nxl-container {
-    margin-left: 0;
-  }
-
-  .nxl-header .header-wrapper {
-    min-height: 4.5rem;
+  .product-breadcrumbs {
     padding: 0.75rem 1rem;
   }
-
-  .nxl-header .header-right {
-    width: 100%;
-  }
 }
+

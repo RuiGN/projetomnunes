@@ -1,12 +1,16 @@
 <nav aria-label="Paginação">
   <p class="small text-muted mb-2">{{ pagination.current_label }}</p>
   <ul class="pagination">
-    {% if pagination.first %}<li class="page-item"><a class="page-link" href="{{ pagination.first }}">Primeira</a></li>{% endif %}
-    {% if pagination.previous %}<li class="page-item"><a class="page-link" href="{{ pagination.previous }}">Anterior</a></li>{% endif %}
+    {% if pagination.first %}<li class="page-item"><a class="page-link" href="{{ pagination.first }}"><i
+          class="feather-chevrons-left me-1" aria-hidden="true"></i>Primeira</a></li>{% endif %}
+    {% if pagination.previous %}<li class="page-item"><a class="page-link" href="{{ pagination.previous }}"><i
+          class="feather-arrow-left me-1" aria-hidden="true"></i>Anterior</a></li>{% endif %}
     {% for page in pagination.pages %}
       {% if page.current %}<li class="page-item active"><span class="page-link" aria-current="page">{{ page.number }}</span></li>{% else %}<li class="page-item"><a class="page-link" href="{{ page.url }}" aria-label="Ir para a página {{ page.number }}">{{ page.number }}</a></li>{% endif %}
     {% endfor %}
-    {% if pagination.next %}<li class="page-item"><a class="page-link" href="{{ pagination.next }}">Próxima</a></li>{% endif %}
-    {% if pagination.last %}<li class="page-item"><a class="page-link" href="{{ pagination.last }}">Última</a></li>{% endif %}
+    {% if pagination.next %}<li class="page-item"><a class="page-link" href="{{ pagination.next }}">Próxima<i
+          class="feather-arrow-right ms-1" aria-hidden="true"></i></a></li>{% endif %}
+    {% if pagination.last %}<li class="page-item"><a class="page-link" href="{{ pagination.last }}">Última<i
+          class="feather-chevrons-right ms-1" aria-hidden="true"></i></a></li>{% endif %}
   </ul>
 </nav>
